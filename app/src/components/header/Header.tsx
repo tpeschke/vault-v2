@@ -1,6 +1,7 @@
 import './Header.css'
 import logo from '../../assets/images/logo.png'
 import { Link } from 'react-router-dom'
+import LoginLogoutIcons from './icons/LoginLogoutIcons'
 
 interface Props {
 }
@@ -15,6 +16,7 @@ export default function Header({ }: Props) {
                 </Link>
             </div>
             <div className='icon-shell'>
+                <LoginLogoutIcons />
                 <Link to={'/'}>
                     <i className="fa-solid fa-house"></i>
                 </Link>

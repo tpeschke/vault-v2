@@ -29,9 +29,17 @@
 }
 
 .header-shell i {
-  color: white
+    color: white
 }
 
 .header-shell i:hover {
     color: #b45f06
+}
+
+.icon-shell {
+    display: flex;
+}
+
+.icon-shell a {
+    margin-left: 25px;
 }
