@@ -20,6 +20,7 @@ import authRoutesWithoutPassword from './routes/authentication'
 import query from './db/database'
 import userSQL from './db/queries/user'
 import userRoutes from './controllers/user/userRoutes'
+import homeRoutes from './v1/controllers/home/HomeRoutes'
 
 const app = express()
 app.use(bodyParser.json({ limit: '10mb' }))
@@ -62,6 +63,7 @@ app.use(fakeAuth)
 
 app.use('/auth', authRoutesWithoutPassword(passport))
 app.use('/user', userRoutes)
+app.use('/home', homeRoutes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
 // app.get('/*', (request: Request, response: Response) => {

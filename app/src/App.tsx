@@ -7,8 +7,11 @@ import { isUserLoggedOn, setUser } from './redux/slices/userSlice'
 import AllRoutes from './routes/AllRoutes'
 import { accessURL } from './frontend-config'
 import { Tooltip } from 'react-tooltip'
+import LocationHook from './hooks/LocationHook'
 
 function App() {
+  const { pathname } = LocationHook()
+
   const userIsLoggedIn = useSelector(isUserLoggedOn)
   const dispatch = useDispatch()
 
@@ -24,7 +27,7 @@ function App() {
     <div className='background'>
       <div className='container'>
         <Header />
-        <AllRoutes />
+        <AllRoutes pathname={pathname} />
         <Tooltip id="my-tooltip" place="bottom" />
       </div>
     </div>

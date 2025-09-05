@@ -4,19 +4,20 @@ import Home from "../pages/home/Home";
 import View from "../pages/view/View";
 
 interface Props {
+    pathname: string
 }
 
-export default function AllRoutes({  }: Props) {
+export default function AllRoutes({ pathname }: Props) {
     return (
         <Routes>
             <Route index element={
                 <Loading>
-                    <Home />
+                    <Home pathname={pathname} />
                 </Loading>
             } />
             <Route path="view/:characterID" element={
                 <Loading>
-                    <View/>
+                    <View />
                 </Loading>
             } />
             <Route path="*" element={<Navigate to='/' replace />} />
