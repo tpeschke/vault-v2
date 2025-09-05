@@ -1,0 +1,15 @@
+{
+    "packages": [
+        "app",
+        "backend/**/*"
+    ],
+    "command": {
+        "version": {
+            "allowBranch": [
+                "main"
+            ]
+        }
+    },
+    "version": "1.0.0",
+    "npmClient": "npm"
+}
