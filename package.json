@@ -1,11 +1,11 @@
 {
-  "name": "@vault-vite/main",
+  "name": "@vault/main",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite app",
+    "build": "lerna run build && npm run replace",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "npx tsx backend/server/vault.ts"
