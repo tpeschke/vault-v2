@@ -1,0 +1,37 @@
+.header-shell {
+    height: 64px;
+    padding: 6px 16px;
+    background: #06465b;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.header-shell a {
+    display: flex;
+    align-items: center;
+}
+
+.header-shell a:hover h1 {
+    color: #b45f06;
+}
+
+.header-shell img {
+    border-radius: 0;
+    width: 55px;
+}
+
+.header-shell h1 {
+    font-size: 35px;
+    color: white;
+}
+
+.header-shell i {
+  color: white
+}
+
+.header-shell i:hover {
+    color: #b45f06
+}
