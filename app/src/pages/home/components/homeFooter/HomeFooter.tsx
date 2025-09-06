@@ -3,10 +3,11 @@ import { getUserPatreon, isOwner } from '../../../../redux/slices/userSlice'
 import './HomeFooter.css'
 
 interface Props {
-    numberOfCharacters: number | undefined
+    numberOfCharacters: number | undefined,
+    addCharacter: () => void
 }
 
-export default function HomeFooter({ numberOfCharacters = 0 }: Props) {
+export default function HomeFooter({ numberOfCharacters = 0, addCharacter }: Props) {
     const usersPatreon = useSelector(getUserPatreon)
     const userIsOwner = useSelector(isOwner)
 
@@ -16,7 +17,7 @@ export default function HomeFooter({ numberOfCharacters = 0 }: Props) {
     return (
         <div className="home-footer-shell">
             {!userIsAtLimit && (
-                <button className='secondary' data-tooltip-id="my-tooltip" data-tooltip-content='Add New Character'>
+                <button onClick={addCharacter} className='secondary' data-tooltip-id="my-tooltip" data-tooltip-content='Add New Character'>
                     <i className="fa-solid fa-user-plus"></i>
                 </button>
             )}
