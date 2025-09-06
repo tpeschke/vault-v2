@@ -2,12 +2,11 @@
     display: flex;
 }
 
-.page-one .page-one-columns .left {
-    background: lightblue;
-}
-
 .page-one .page-one-columns .right {
-    background: lightgoldenrodyellow;
+    background: lightblue;
+    min-width: 325px;
+    height: 150px;
+    margin-top: -20px;
 }
 
 .page-one .abilities-and-burdens-shell {
