@@ -95,6 +95,11 @@ button {
   padding: 10px 15px;
 }
 
+button:hover {
+  background: #b45f06;
+  color: white;
+}
+
 button.transparent-warn {
   background: transparent;
 }
