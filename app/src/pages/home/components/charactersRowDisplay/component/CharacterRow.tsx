@@ -33,7 +33,7 @@ export default function CharacterRow({ character }: Props) {
             {!!confirmDelete && (
                 <>
                     <button data-tooltip-id="my-tooltip" data-tooltip-content={`Yes, delete ${name ?? '?'}`} className='warn'><i className="fa-solid fa-trash-check"></i></button>
-                    <button data-tooltip-id="my-tooltip" data-tooltip-content='Never mind' className='secondary' onClick={toggleCheckDelete}><i className="fa-solid fa-rotate-left"></i></button>
+                    <button data-tooltip-id="my-tooltip" data-tooltip-content='Never mind' className='primary' onClick={toggleCheckDelete}><i className="fa-solid fa-rotate-left"></i></button>
                 </>
             )}
         </div>

@@ -67,6 +67,7 @@ table {
 
 h1, h2 {
   font-family: 'HamletOrNot';
+  letter-spacing: 1px;
 }
 
 p, label {
@@ -112,13 +113,22 @@ button.warn:hover {
   background: #5a0000;
 }
 
-button.secondary {
+button.primary {
   background: #06465b;
   color: white;
 }
 
-button.secondary:hover {
+button.primary:hover {
   background: #032530;
+}
+
+button.secondary {
+  background: #b45f06;
+  color: white
+}
+
+button.secondary:hover {
+  background: #693804;
 }
 
 button.disabled {
