@@ -1,0 +1,40 @@
+
+.user-characters-shell>div {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.user-characters-shell>div:nth-child(even) {
+    background: whitesmoke;
+}
+
+.user-characters-shell>div:hover {
+    background: lightgray;
+}
+
+.user-characters-shell>div strong, .user-characters-shell>div p {
+    width: 25%;
+    padding: 10px 5px 10px 0;
+}
+
+.user-characters-shell>div button {
+    width: 5%;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.user-characters-shell strong {
+    color: #06465b;
+	font-family: 'oldClaude';
+}
+
+.user-characters-shell button {
+    width: 75px;
+}
+
+.user-characters-shell>div button.secondary {
+    margin-right: 15px;
+}

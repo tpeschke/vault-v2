@@ -10,7 +10,7 @@ interface UsersCharactersReturn {
 }
 
 export default function UsersCharactersHook(pathname?: string): UsersCharactersReturn {
-    const [usersCharacters, setUsersCharacters] = useState<CharacterHomeInfo[] | null>([])
+    const [usersCharacters, setUsersCharacters] = useState<CharacterHomeInfo[] | null>(null)
 
     const dispatch = useDispatch()
 

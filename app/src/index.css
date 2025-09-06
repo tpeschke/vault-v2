@@ -6,13 +6,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
 
 @font-face {
-	font-family: 'oldClaude';
-	src: url('./assets/fonts/OldClaude.otf') format("opentype");
+  font-family: 'oldClaude';
+  src: url('./assets/fonts/OldClaude.otf') format("opentype");
 }
 
 @font-face {
-	font-family: 'HamletOrNot';
-	src: url('./assets/fonts/HamletOrNot.ttf') format("truetype");
+  font-family: 'HamletOrNot';
+  src: url('./assets/fonts/HamletOrNot.ttf') format("truetype");
 }
 
 html, body, div, span, applet, object, iframe,
@@ -66,10 +66,45 @@ table {
 }
 
 h1, h2 {
-	font-family: 'HamletOrNot';
+  font-family: 'HamletOrNot';
 }
 
-a{
-	text-decoration: none;
-	cursor: pointer;
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: unset
+}
+
+button {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.transparent-warn {
+  background: transparent;
+}
+
+button.transparent-warn:hover {
+  background: #b45f06;
+  color: white;
+}
+
+button.warn {
+  background: #b45f06;
+  color: white;
+}
+
+button.warn:hover {
+  background: #703c04;
+}
+
+button.secondary {
+  background: #06465b;
+  color: white;
+}
+
+button.secondary:hover {
+  background: #032530;
+  color: white;
 }

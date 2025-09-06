@@ -1,8 +1,8 @@
 import "./Home.css"
 import { useEffect } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
-import { Link } from "react-router-dom"
 import UsersCharactersHook from "../../hooks/UsersCharactersHook"
+import CharacterRowDisplay from "./components/charactersRowDisplay/CharacterRowsDisplay"
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -16,7 +16,7 @@ export default function Home({ setLoading, pathname }: Props) {
         if (setLoading) {
             setLoading(!!usersCharacters)
         }
-    }, [])
+    }, [usersCharacters])
 
     return (
         <div className="home-shell card">
@@ -24,15 +24,7 @@ export default function Home({ setLoading, pathname }: Props) {
                 <i className="fa-solid fa-users"></i>
                 <h1>Your Characters</h1>
             </div>
-            <div>
-                {usersCharacters?.map(({ id, name }, index) => {
-                    return (
-                        <Link to={`/view/${id}`} key={index}>
-                            <p>{name}</p>
-                        </Link>
-                    )
-                })}
-            </div>
+            <CharacterRowDisplay usersCharacters={usersCharacters} />
         </div>
     )
 }
