@@ -5,8 +5,11 @@ import { CharacterHomeInfo } from '@vault/common/interfaces/characterInterfaces'
 import { useDispatch, useSelector } from "react-redux"
 import { cacheCharacters } from "../redux/slices/usersCharactersSlice"
 
+export type DeleteCharacterFunction = (characterID: number) => void
+
 interface UsersCharactersReturn {
     usersCharacters: CharacterHomeInfo[] | null,
+    deleteCharacter: DeleteCharacterFunction
 }
 
 export default function UsersCharactersHook(pathname?: string): UsersCharactersReturn {
@@ -29,7 +32,16 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
         }
     }, [pathname])
 
+    function deleteCharacter(characterID: number) {
+        const newUsersCharacters = usersCharacters?.filter((({id}) => id !== characterID))
+        if (newUsersCharacters) {
+            setUsersCharacters(newUsersCharacters)
+            dispatch(cacheCharacters(newUsersCharacters))
+        }
+    }
+
     return {
-        usersCharacters
+        usersCharacters,
+        deleteCharacter
     }
 }

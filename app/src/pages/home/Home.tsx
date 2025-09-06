@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function Home({ setLoading, pathname }: Props) {
-    const { usersCharacters } = UsersCharactersHook(pathname)
+    const { usersCharacters, deleteCharacter } = UsersCharactersHook(pathname)
 
     useEffect(() => {
         if (setLoading) {
@@ -25,7 +25,7 @@ export default function Home({ setLoading, pathname }: Props) {
                 <i className="fa-solid fa-users"></i>
                 <h1>Your Characters</h1>
             </div>
-            <CharacterRowDisplay usersCharacters={usersCharacters} />
+            <CharacterRowDisplay usersCharacters={usersCharacters} deleteCharacter={deleteCharacter} />
             <HomeFooter numberOfCharacters={usersCharacters?.length} />
         </div>
     )

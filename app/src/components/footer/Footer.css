@@ -13,3 +13,11 @@
     width: 15%;
     text-align: center;
 }
+
+.footer-shell a:first-child {
+    text-align: left;
+}
+
+.footer-shell a:last-child {
+    text-align: right;
+}

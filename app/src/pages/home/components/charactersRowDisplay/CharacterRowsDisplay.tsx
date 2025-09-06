@@ -1,16 +1,17 @@
 import './CharacterRowsDisplay.css'
 import { CharacterHomeInfo } from "@vault/common/interfaces/characterInterfaces"
-import { useNavigate } from "react-router-dom"
 import CharacterRow from './component/CharacterRow'
+import { DeleteCharacterFunction } from '../../../../hooks/UsersCharactersHook'
 
 interface Props {
-    usersCharacters: CharacterHomeInfo[] | null
+    usersCharacters: CharacterHomeInfo[] | null,
+    deleteCharacter: DeleteCharacterFunction
 }
 
-export default function CharacterRowsDisplay({ usersCharacters }: Props) {
+export default function CharacterRowsDisplay({ usersCharacters, deleteCharacter }: Props) {
     return (
         <div className="user-characters-shell">
-            {usersCharacters?.map((character, index) => <CharacterRow character={character} key={index} />)}
+            {usersCharacters?.map((character) => <CharacterRow character={character} deleteCharacter={deleteCharacter} key={character.id} />)}
         </div>
     )
 }

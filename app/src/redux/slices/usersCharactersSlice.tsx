@@ -14,7 +14,7 @@ export const usersCharactersSlice = createSlice({
     name: 'chapter',
     initialState,
     reducers: {
-        cacheCharacters: (state: State, action: PayloadAction<CharacterHomeInfo[]>) => {
+        cacheCharacters: (state: State, action: PayloadAction<CharacterHomeInfo[] | null>) => {
             const { payload } = action
             state.usersCharactersCache = payload
         }

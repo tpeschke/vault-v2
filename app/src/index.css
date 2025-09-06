@@ -92,7 +92,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 15px;
 }
 
 button.transparent-warn {
