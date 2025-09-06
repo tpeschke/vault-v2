@@ -71,10 +71,14 @@
 }
 
 .general-info-shell .crp-shell {
-    width: 50%;
+    width: 466px;
 }
 
 .general-info-shell .crp-shell span {
+    width: 25%;
+}
+
+.general-info-shell .crp-shell span:last-child {
     width: 50%;
 }
 
@@ -84,7 +88,7 @@
 
 .general-info-shell .crp-shell p {
     text-align: center;
-    width: 35%;
+    width: 64%;
 }
 
 .general-info-shell .to-next-level-info {
