@@ -3,6 +3,8 @@ import FlawsDisplay from './leftColumnComponents/FlawsDisplay';
 import GoalsDisplay from './leftColumnComponents/GoalsDisplay';
 import IntegrityDisplay from "./leftColumnComponents/IntegrityDisplay";
 import RelationshipsDisplay from './leftColumnComponents/RelationshipsDisplay';
+import ConvictionsDisplay from './rightColumnComponents/ConvictionsDisplay';
+import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
 
 interface Props {
 
@@ -20,7 +22,12 @@ export default function CharacteristicsDisplay({ }: Props) {
                     <FlawsDisplay />
                 </div>
                 <div className='right'>
-
+                    <DescriptionsDisplay />
+                    <ConvictionsDisplay />
+                    <div className="cultural-strength-shell">
+                        <h3>Cultural Strength</h3>
+                        <p>Creation</p>
+                    </div>
                 </div>
             </div>
         </div>

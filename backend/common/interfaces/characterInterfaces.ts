@@ -56,5 +56,6 @@ export interface PairObject {
 export interface CharacteristicInfo {
     goals: string[],
     relationships: PairObject[],
-    flaws: string[]
+    flaws: string[],
+    culturalStrength: string
 }

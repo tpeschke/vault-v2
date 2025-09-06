@@ -17,7 +17,6 @@
 }
 
 .integrity-shell>span {
-    padding: 3px 3px;
     display: flex;
     align-items: center;
 }
@@ -59,6 +58,6 @@
     border-right: 1px solid #515151;
 }
 
-.characteristics-columns>.right {
-    background: lightcoral;
+.characteristics-columns .cultural-strength-shell p {
+    padding-left: 5px;
 }
