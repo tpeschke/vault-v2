@@ -1,6 +1,6 @@
 .version-one-shell .sidebar-shell {
     position: sticky;
-    top: 0;
+    top: 15px;
     height: 150px;
     width: 100%;
     margin-left: 15px;
