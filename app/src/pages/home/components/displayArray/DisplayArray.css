@@ -1,0 +1,7 @@
+.display-array-shell p:nth-child(even) {
+    background: lightgray;
+}
+
+.display-array-shell p {
+    min-height: 19px;
+}

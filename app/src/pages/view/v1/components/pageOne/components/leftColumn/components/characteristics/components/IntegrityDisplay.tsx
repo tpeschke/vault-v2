@@ -3,12 +3,6 @@ interface Props {
 }
 
 export default function IntegrityDisplay({}: Props) {
-    // n/a 21px
-    // d4 76px
-    // d6 135px
-    // d8 194px
-    // d10 258px
-
     const integrity = 9
 
     function getLeftPosition(integrity: number): number {
