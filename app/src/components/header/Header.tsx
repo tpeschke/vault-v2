@@ -1,5 +1,5 @@
 import './Header.css'
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/logo-white.png'
 import { Link } from 'react-router-dom'
 import LoginLogoutIcons from './icons/LoginLogoutIcons'
 

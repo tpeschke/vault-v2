@@ -5,3 +5,7 @@
 .version-one-shell .page-shell .page {
     margin-bottom: 15px;
 }
+
+.version-one-shell .page-shell .page:last-child {
+    margin-bottom: 0;
+}

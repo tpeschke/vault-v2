@@ -1,0 +1,15 @@
+.page-one .page-one-columns {
+    display: flex;
+}
+
+.page-one .page-one-columns .left {
+    background: lightblue;
+}
+
+.page-one .page-one-columns .right {
+    background: lightgoldenrodyellow;
+}
+
+.page-one .abilities-and-burdens-shell {
+    background: lightgreen;
+}

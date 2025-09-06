@@ -1,0 +1,96 @@
+.general-info-shell {
+    display: flex;
+    justify-content: space-between;
+}
+
+.general-info-shell .logo-shell {
+    display: flex;
+}
+
+.general-info-shell .logo-shell img {
+    height: 35px;
+    margin-right: -8px;
+}
+
+.general-info-shell .logo-shell h1 {
+    font-size: 36px;
+}
+
+.general-info-shell .info-shell {
+    width: 100%;
+}
+
+.general-info-shell strong {
+    border-bottom: 1px solid transparent;
+}
+
+.general-info-shell>div>div, .general-info-shell>div>div span {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+}
+
+.general-info-shell>div>div span {
+    padding: 3px 0;
+}
+
+.general-info-shell>div>div span strong {
+    font-weight: unset;
+}
+
+.general-info-shell .info-shell p {
+    border-bottom: 1px solid black;
+    margin: 0 5px;
+    padding-left: 5px;
+    width: 100%;
+}
+
+.general-info-shell .name-info {
+    width: 75%;
+}
+
+.general-info-shell .player-info {
+    width: 25%;
+}
+
+.general-info-shell .ancestry-info {
+    width: 45%;
+}
+
+.general-info-shell .class-info strong:first-child {
+    width: 55%;
+}
+
+.general-info-shell .level-info {
+    width: 15%;
+}
+
+.general-info-shell .level-info p {
+    text-align: center;
+}
+
+.general-info-shell .crp-shell {
+    width: 50%;
+}
+
+.general-info-shell .crp-shell span {
+    width: 50%;
+}
+
+.general-info-shell .crp-shell>strong {
+    margin-right: 5px;
+}
+
+.general-info-shell .crp-shell p {
+    text-align: center;
+    width: 35%;
+}
+
+.general-info-shell .to-next-level-info {
+    width: 50%;
+}
+
+.general-info-shell .to-next-level-info strong {
+    width: 124px;
+}

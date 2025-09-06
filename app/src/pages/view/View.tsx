@@ -1,6 +1,7 @@
+import './View.css'
 import { useEffect } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
-import ViewVersionOne from "./components/v1/ViewVersionOne"
+import ViewVersionOne from "./v1/ViewVersionOne"
 
 interface Props {
     setLoading?: SetLoadingFunction

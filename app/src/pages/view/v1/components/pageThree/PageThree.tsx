@@ -1,10 +1,10 @@
-import './Page.css'
+import './PageThree.css'
 
 interface Props {
 
 }
 
-export default function Page({}: Props) {
+export default function PageThree({}: Props) {
     return (
         <div className='page-shell page card'>
             
