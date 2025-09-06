@@ -79,7 +79,12 @@ p, label {
 a {
   text-decoration: none;
   cursor: pointer;
-  color: unset
+  color: unset;
+  color: white
+}
+
+a:hover {
+  color: #b45f06
 }
 
 button {

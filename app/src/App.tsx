@@ -8,6 +8,7 @@ import AllRoutes from './routes/AllRoutes'
 import { accessURL } from './frontend-config'
 import { Tooltip } from 'react-tooltip'
 import LocationHook from './hooks/LocationHook'
+import Footer from './components/footer/Footer'
 
 function App() {
   const { pathname } = LocationHook()
@@ -29,6 +30,7 @@ function App() {
         <Header />
         <AllRoutes pathname={pathname} />
         <Tooltip id="my-tooltip" place="bottom" />
+        <Footer />
       </div>
     </div>
   )
