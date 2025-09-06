@@ -12,3 +12,9 @@
 .page-one .abilities-and-burdens-shell {
     background: lightgreen;
 }
+
+.page-one h2 {
+    background: #900;
+    color: white;
+    padding: 3px 5px;
+}

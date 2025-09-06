@@ -9,3 +9,14 @@
 .version-one-shell .page-shell .page:last-child {
     margin-bottom: 0;
 }
+
+.version-one-shell .false-table span {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 3px 5px;
+}
+
+.version-one-shell .false-table span:nth-child(odd) {
+    background: whitesmoke;
+}

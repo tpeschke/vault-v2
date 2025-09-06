@@ -9,6 +9,8 @@ interface Props {
 
 export default function View({ setLoading }: Props) {
     useEffect(() => {
+        window.scrollTo(0, 0)
+
         if (setLoading) {
             setLoading(true)
         }

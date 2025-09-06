@@ -2,3 +2,40 @@
     width: 100%;
     margin: 5px 5px 0 0;
 }
+
+.page-one .left .flex-pair {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-one .left .stats-shell {
+    width: 32%;
+}
+
+.page-one .left .movement-shell {
+    width: 66%;
+}
+
+.stats-shell.false-table span>* {
+    width: 45%;
+    text-align: center;
+}
+
+.version-one-shell .movement-shell.false-table span {
+    justify-content: start;
+}
+
+.movement-shell.false-table span strong {
+    text-align: left;
+    font-weight: unset;
+    width: 25%;
+}
+
+.movement-shell.false-table span p {
+    text-align: center;
+    width: 25%;
+}
+
+.movement-shell.false-table span strong:last-child {
+    width: 45%;
+}
