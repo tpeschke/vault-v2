@@ -16,7 +16,8 @@ export interface CharacterVersion1 extends CharacterBase {
     id: number,
     generalInfo: GeneralInfo,
     statInfo: StatsInfo,
-    movementInfo: MovementInfo
+    movementInfo: MovementInfo,
+    characteristicInfo: CharacteristicInfo
 }
 
 export interface GeneralInfo {
@@ -45,4 +46,8 @@ export interface MovementInfo {
     jog: number,
     run: number,
     sprint: number
+}
+
+export interface CharacteristicInfo {
+    goals: string[]
 }
