@@ -39,3 +39,7 @@
 .movement-shell.false-table span strong:last-child {
     width: 45%;
 }
+
+.page-one .characteristics-shell {
+    margin-top: 10px;
+}

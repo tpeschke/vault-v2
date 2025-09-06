@@ -5,6 +5,11 @@
 
 .general-info-shell .logo-shell {
     display: flex;
+    flex-direction: column;
+}
+
+.general-info-shell .logo-shell span {
+    display: flex;
 }
 
 .general-info-shell .logo-shell img {
@@ -14,6 +19,14 @@
 
 .general-info-shell .logo-shell h1 {
     font-size: 36px;
+}
+
+.general-info-shell .logo-shell h2 {
+    background: unset;
+    color: black;
+    padding: 0;
+    font-size: 12px;
+    text-align: right;
 }
 
 .general-info-shell .info-shell {

@@ -1,3 +1,4 @@
+import CharacteristicsDisplay from './components/characteristics/CharacteristicsDisplay'
 import MovementDisplay from './components/MovementDisplay'
 import StatsDisplay from './components/StatsDisplay'
 import './LeftColumn.css'
@@ -13,6 +14,7 @@ export default function LeftColumn({ }: Props) {
                 <StatsDisplay />
                 <MovementDisplay />
             </div>
+            <CharacteristicsDisplay />
         </div>
     )
 }

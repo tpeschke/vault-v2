@@ -52,8 +52,11 @@ export default function GeneralInfo({ }: Props) {
                 </div>
             </div>
             <div className='logo-shell'>
-                <img src={logo} />
-                <h1>Bonfire</h1>
+                <span>
+                    <img src={logo} />
+                    <h1>Bonfire</h1>
+                </span>
+                <h2>The Roleplaying Game</h2>
             </div>
         </div>
     )
