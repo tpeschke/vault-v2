@@ -1,4 +1,4 @@
-import DisplayArray from "../../../../../../../../../home/components/displayArray/DisplayArray"
+import DisplayArray from "../../../../../../../../../../components/displayArray/DisplayArray"
 
 interface Props {
 
