@@ -1,0 +1,11 @@
+.home-footer-shell {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 5px 0;
+    border-top: 3px solid lightgray;
+}
+
+.home-footer-shell h2 {
+    font-size: 35px;
+    color: #990000;
+}

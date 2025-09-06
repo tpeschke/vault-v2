@@ -28,7 +28,7 @@ export default function CharacterRow({ character }: Props) {
             <strong>{name ?? '?'}</strong>
             <p>{race ?? '?'}</p>
             <p>{primarya ?? '?'} / {secondarya ?? '?'}</p>
-            <p>lvl: {level ?? '?'}</p>
+            <p>lvl {level ?? '?'}</p>
             {!confirmDelete && <button className='transparent-warn' onClick={toggleCheckDelete} data-tooltip-id="my-tooltip" data-tooltip-content={`Delete ${name ?? '?'}`}><i className="fa-solid fa-trash"></i></button>}
             {!!confirmDelete && (
                 <>

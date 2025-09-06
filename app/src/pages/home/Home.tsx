@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import UsersCharactersHook from "../../hooks/UsersCharactersHook"
 import CharacterRowDisplay from "./components/charactersRowDisplay/CharacterRowsDisplay"
+import HomeFooter from "./components/homeFooter/HomeFooter"
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -25,6 +26,7 @@ export default function Home({ setLoading, pathname }: Props) {
                 <h1>Your Characters</h1>
             </div>
             <CharacterRowDisplay usersCharacters={usersCharacters} />
+            <HomeFooter numberOfCharacters={usersCharacters?.length} />
         </div>
     )
 }

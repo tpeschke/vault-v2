@@ -69,6 +69,13 @@ h1, h2 {
   font-family: 'HamletOrNot';
 }
 
+p, label {
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 15px;
+	min-height: 1px;
+	line-height: 1.2;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;
@@ -79,6 +86,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  padding: 10px;
 }
 
 button.transparent-warn {
@@ -86,17 +94,17 @@ button.transparent-warn {
 }
 
 button.transparent-warn:hover {
-  background: #b45f06;
+  background: #990000;
   color: white;
 }
 
 button.warn {
-  background: #b45f06;
+  background: #990000;
   color: white;
 }
 
 button.warn:hover {
-  background: #703c04;
+  background: #5a0000;
 }
 
 button.secondary {
@@ -106,5 +114,17 @@ button.secondary {
 
 button.secondary:hover {
   background: #032530;
-  color: white;
+}
+
+button.disabled {
+  color: gray
+}
+
+button.disabled:hover {
+  cursor: not-allowed;
+}
+
+.react-tooltip {
+  max-width: 350px;
+  white-space: pre-line
 }
