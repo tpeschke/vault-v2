@@ -33,7 +33,12 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
     }, [pathname])
 
     function deleteCharacter(characterID: number) {
-        const newUsersCharacters = usersCharacters?.filter((({id}) => id !== characterID))
+        const newUsersCharacters = usersCharacters?.filter((({ id }) => id !== characterID))
+
+        axios.delete(homeURL + '/' + characterID).then(({ data }) => {
+            console.log(data)
+        })
+
         if (newUsersCharacters) {
             setUsersCharacters(newUsersCharacters)
             dispatch(cacheCharacters(newUsersCharacters))
