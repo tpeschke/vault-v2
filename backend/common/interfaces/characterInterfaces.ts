@@ -49,11 +49,12 @@ export interface MovementInfo {
 }
 
 export interface PairObject {
-    title: string,
+    title: string | null,
     value: string | number
 }
 
 export interface CharacteristicInfo {
     goals: string[],
-    relationships: PairObject[]
+    relationships: PairObject[],
+    flaws: string[]
 }
