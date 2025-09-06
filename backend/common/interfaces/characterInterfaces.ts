@@ -48,6 +48,12 @@ export interface MovementInfo {
     sprint: number
 }
 
+export interface PairObject {
+    title: string,
+    value: string | number
+}
+
 export interface CharacteristicInfo {
-    goals: string[]
+    goals: string[],
+    relationships: PairObject[]
 }

@@ -1,6 +1,7 @@
 import './CharacteristicsDisplay.css'
 import GoalsDisplay from './components/GoalsDisplay';
 import IntegrityDisplay from "./components/IntegrityDisplay";
+import RelationshipsDisplay from './components/RelationshipsDisplay';
 
 interface Props {
 
@@ -14,6 +15,7 @@ export default function CharacteristicsDisplay({ }: Props) {
             <div className='characteristics-columns'>
                 <div className='left'>
                     <GoalsDisplay />
+                    <RelationshipsDisplay />
                 </div>
                 <div className='right'>
 
