@@ -43,3 +43,46 @@
 .page-one .characteristics-shell {
     margin-top: 10px;
 }
+
+.integrity-shell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.integrity-shell input {
+    width: 25px;
+    text-align: center;
+}
+
+.integrity-shell>span {
+    padding: 3px 3px;
+    display: flex;
+    align-items: center;
+}
+
+.integrity-shell>div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.integrity-shell .circle {
+    position: absolute;
+    border-radius: 10px;
+    border: 2px solid black;
+    height: 18px;
+    width: 28px;
+}
+
+.integrity-shell p {
+    font-family: 'OldClaude';
+    padding: 3px;
+    font-size: 13px;
+}
+
+.integrity-shell>div p:nth-child(even) {
+    background: lightgray;
+}

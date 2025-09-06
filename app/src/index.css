@@ -150,7 +150,10 @@ button.disabled:hover {
   cursor: not-allowed;
 }
 
-.react-tooltip {
-  max-width: 350px;
-  white-space: pre-line
+input {
+  border: unset;
+}
+
+input:hover {
+  background: lightblue;
 }

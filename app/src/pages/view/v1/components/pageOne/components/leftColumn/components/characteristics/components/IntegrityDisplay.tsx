@@ -1,0 +1,50 @@
+interface Props {
+
+}
+
+export default function IntegrityDisplay({}: Props) {
+    // n/a 21px
+    // d4 76px
+    // d6 135px
+    // d8 194px
+    // d10 258px
+
+    const integrity = 9
+
+    function getLeftPosition(integrity: number): number {
+        if (integrity <= 5) {
+            return 21
+        } else if (integrity <= 10) {
+            return 76
+        } else if (integrity <= 15) {
+            return 135
+        } else if (integrity <= 20) {
+            return 194
+        } else if (integrity <= 25) {
+            return 258
+        } else {
+            return 21
+        }
+    }
+
+    return (
+        <div className="integrity-shell">
+            <span>
+                <input value={integrity} />
+                <strong>Integrity</strong>
+            </span>
+            <div>
+                <div className="circle" style={{left: `${getLeftPosition(integrity)}px`}}></div>
+                <p>0-5 N/A</p>
+                <p>6-10 d4!</p>
+                <p>11-15 d6!</p>
+                <p>16-20 d8!</p>
+                <p>21-25 d10!</p>
+            </div>
+            <span>
+                <strong>Grit Dice</strong>
+                <input value={1} />
+            </span>
+        </div>
+    )
+}

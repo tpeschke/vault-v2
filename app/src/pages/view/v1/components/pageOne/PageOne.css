@@ -18,3 +18,9 @@
     color: white;
     padding: 3px 5px;
 }
+
+.page-one h3 {
+    background: #515151;
+    color: white;
+    font-family: 'OldClaude';
+}
