@@ -52,7 +52,7 @@
     font-weight: unset;
 }
 
-.general-info-shell .info-shell p {
+.general-info-shell .info-shell p, .general-info-shell .info-shell input {
     border-bottom: 1px solid black;
     margin: 0 5px;
     padding-left: 5px;
@@ -99,7 +99,7 @@
     margin-right: 5px;
 }
 
-.general-info-shell .crp-shell p {
+.general-info-shell .crp-shell p, .general-info-shell .crp-shell input {
     text-align: center;
     width: 64%;
 }

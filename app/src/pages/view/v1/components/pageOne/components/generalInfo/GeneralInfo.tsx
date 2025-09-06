@@ -39,11 +39,11 @@ export default function GeneralInfo({ }: Props) {
                     <strong>CrP</strong>
                     <span className='unspent-crp-info'>
                         <strong>Unspent</strong>
-                        <p>0</p>
+                        <input value={0} />
                     </span>
                     <span className='spent-crp-info'>
                         <strong>Spent</strong>
-                        <p>0</p>
+                        <input value={0} />
                     </span>
                     <span className='to-next-level-info'>
                         <strong>Spent to Next LvL</strong>
