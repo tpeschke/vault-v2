@@ -61,3 +61,20 @@
 .characteristics-columns .cultural-strength-shell p {
     padding-left: 5px;
 }
+
+.reputation-shell span {
+    display: flex;
+    height: 19px;
+}
+
+.reputation-shell strong, .reputation-shell p {
+    padding-top: 2px;
+}
+
+.reputation-shell span strong {
+    padding-right: 5px;
+}
+
+.reputation-shell span:nth-child(odd) {
+    background: lightgray;
+}

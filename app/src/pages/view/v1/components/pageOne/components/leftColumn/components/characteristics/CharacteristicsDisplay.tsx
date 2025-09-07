@@ -5,6 +5,7 @@ import IntegrityDisplay from "./leftColumnComponents/IntegrityDisplay";
 import RelationshipsDisplay from './leftColumnComponents/RelationshipsDisplay';
 import ConvictionsDisplay from './rightColumnComponents/ConvictionsDisplay';
 import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
+import ReputationDisplay from './rightColumnComponents/ReputationDisplay';
 
 interface Props {
 
@@ -30,6 +31,7 @@ export default function CharacteristicsDisplay({ }: Props) {
                     </div>
                 </div>
             </div>
+            <ReputationDisplay />
         </div>
     )
 }
