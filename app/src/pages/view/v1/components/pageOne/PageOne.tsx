@@ -1,3 +1,4 @@
+import AbilitiesNBurdensDisplay from './components/abilitiesNBurdens/AbilitiesNBurdensDisplay'
 import GeneralInfo from './components/generalInfo/GeneralInfo'
 import LeftColumn from './components/leftColumn/LeftColumn'
 import './PageOne.css'
@@ -16,7 +17,7 @@ export default function PageOne({}: Props) {
 
                 </div>
             </div>
-            <div className='abilities-and-burdens-shell'></div>
+            <AbilitiesNBurdensDisplay />
         </div>
     )
 }

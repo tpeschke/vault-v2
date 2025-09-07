@@ -26,3 +26,10 @@
 .text-area-shell textarea:hover {
     background: rgba(173, 216, 230, 0.5);
 }
+
+.text-area-shell p.value {
+    position: inherit;
+    z-index: 1;
+    line-height: 1.3;
+    white-space: pre-line;
+}

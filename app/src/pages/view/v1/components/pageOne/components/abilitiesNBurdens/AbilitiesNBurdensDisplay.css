@@ -1,0 +1,39 @@
+.abilities-and-burdens-shell {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.abilities-and-burdens-shell>div:first-child {
+    width: 66%;
+}
+
+.abilities-and-burdens-shell>div:last-child {
+    width: 33%;
+}
+
+.abilities-shell {
+    display: flex;
+    justify-content: space-between;
+}
+
+.abilities-shell .text-area-shell {
+    width: 49.5%;
+}
+
+.abilities-and-burdens-shell .removed-shell {
+    display: flex;
+}
+
+.abilities-and-burdens-shell .removed-shell>* {
+    width: 50%;
+    text-align: center;
+}
+
+.abilities-and-burdens-shell .removed-shell strong {
+    background: #515151;
+    color: white;
+    font-family: 'oldClaude';
+    padding-top: 3px;
+    font-weight: unset;
+}
