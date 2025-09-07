@@ -1,5 +1,6 @@
 .page-one .page-one-columns > .right {
     min-width: 325px;
+    max-width: 325px;
     height: 150px;
     margin-top: -20px;
 }
