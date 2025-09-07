@@ -1,9 +1,8 @@
-export interface PageOneInfo {
+export interface LeftColumnInfo {
     generalInfo: GeneralInfo,
     statInfo: StatsInfo,
     movementInfo: MovementInfo,
     characteristicInfo: CharacteristicInfo,
-    abilitiesNBurdensInfo: AbilitiesNBurdensInfo
 }
 
 export interface GeneralInfo {
@@ -46,11 +45,4 @@ export interface CharacteristicInfo {
     culturalStrength: string,
     reputation: string[],
     assets: string
-}
-
-export interface AbilitiesNBurdensInfo {
-    abilityOne: string,
-    abilityTwo: string,
-    removedAbility: string
-    burdens: string,
 }

@@ -14,7 +14,7 @@ export default function PageOne({}: Props) {
             <div className='page-one-columns'>
                 <LeftColumn />
                 <div className='right'>
-
+                
                 </div>
             </div>
             <AbilitiesNBurdensDisplay />
