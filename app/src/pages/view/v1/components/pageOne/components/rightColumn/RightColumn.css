@@ -1,6 +1,30 @@
-.page-one .page-one-columns > .right {
+.page-one .page-one-columns>.right {
     min-width: 325px;
     max-width: 325px;
     height: 150px;
     margin-top: -20px;
+}
+
+.page-one .page-one-columns>.right .columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-one .page-one-columns>.right .columns>.right, .page-one .page-one-columns>.right .columns>.left {
+    width: 49.5%;
+}
+
+.page-one-columns .ranged-display-shell>span {
+    display: flex;
+}
+
+.page-one-columns .ranged-display-shell>span:nth-child(odd) {
+    background: lightgray;
+}
+
+.page-one-columns .ranged-display-shell>span>* {
+    width: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
 }
