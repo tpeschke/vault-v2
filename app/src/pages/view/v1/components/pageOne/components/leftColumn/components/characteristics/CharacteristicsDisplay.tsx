@@ -1,3 +1,4 @@
+import TextArea from '../../../../../../../../../components/textArea/TextArea';
 import './CharacteristicsDisplay.css'
 import FlawsDisplay from './leftColumnComponents/FlawsDisplay';
 import GoalsDisplay from './leftColumnComponents/GoalsDisplay';
@@ -32,6 +33,8 @@ export default function CharacteristicsDisplay({ }: Props) {
                 </div>
             </div>
             <ReputationDisplay />
+            <h3>Allies, Contacts, & Assets</h3>
+            <TextArea lines={6} />
         </div>
     )
 }

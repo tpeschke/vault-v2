@@ -1,0 +1,28 @@
+.text-area-shell {
+    position: relative;
+}
+
+.text-area-shell>div:first-child {
+    position: absolute;
+    width: 100%;
+}
+
+.text-area-shell>div:first-child p {
+    height: 19px;
+}
+
+.text-area-shell>div:first-child p:nth-child(even) {
+    background: lightgray;
+}
+
+.text-area-shell textarea {
+    background: transparent;
+    position: inherit;
+    resize: none;
+    width: calc(100% - 4px);
+    border: unset;
+}
+
+.text-area-shell textarea:hover {
+    background: rgba(173, 216, 230, 0.5);
+}
