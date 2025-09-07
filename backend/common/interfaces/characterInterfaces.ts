@@ -1,4 +1,4 @@
-import { PageOneInfo } from "./pageOneInterfaces"
+import { PageOneInfo } from "./pageOne/pageOneInterfaces"
 
 export interface CharacterHomeInfo {
     id: number,
@@ -16,5 +16,6 @@ export interface CharacterBase {
 export interface CharacterVersion1 extends CharacterBase {
     version: 1,
     id: number,
+    userID: number,
     pageOneInfo: PageOneInfo
 }

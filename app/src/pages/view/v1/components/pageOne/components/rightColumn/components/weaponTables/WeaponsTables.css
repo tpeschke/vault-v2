@@ -1,0 +1,65 @@
+.weapons-tables-shell {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.weapons-table-shell {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 49%;
+    margin-bottom: 5px;
+}
+
+.weapons-table-shell>div {
+    display: flex;
+}
+
+.weapon-table-column {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.weapons-table-shell .weapon-table-column:first-child {
+    border-right: 1px solid #515151;
+}
+
+.weapon-table-column h4 {
+    background: #515151;
+    color: white;
+    font-family: 'OldClaude';
+    padding: 1px 3px;
+    font-size: 12px;
+    letter-spacing: .5px;
+}
+
+.weapon-table-column span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px 3px;
+}
+
+.weapon-table-column span:nth-child(odd) {
+    background: lightgray;
+}
+
+.weapon-table-column .damage-shell, .weapon-table-column .double-row {
+    flex-direction: column;
+    align-items: start;
+}
+
+.weapon-table-column .damage-shell p {
+    height: 42px;
+}
+
+.weapon-table-column .damage-shell p.fake-button:hover {
+    background: rgba(173, 216, 230, 0.5);
+    cursor: pointer;
+}
+
+.weapon-table-column span p, .weapon-table-column span strong {
+    font-size: 13px;
+}

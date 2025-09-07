@@ -2,13 +2,6 @@
     display: flex;
 }
 
-.page-one .page-one-columns>.right {
-    background: lightblue;
-    min-width: 325px;
-    height: 150px;
-    margin-top: -20px;
-}
-
 .page-one h2 {
     background: #900;
     color: white;
