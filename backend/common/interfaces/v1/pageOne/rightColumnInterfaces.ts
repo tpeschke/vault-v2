@@ -1,6 +1,7 @@
 export interface RightColumnInfo {
     weapons: WeaponTable[],
-    favorInfo: FavorInfo
+    favorInfo: FavorInfo,
+    vitalityNNerveCalcInfo: VitalityNNerveCalcInfo
 }
 
 export interface WeaponTable {
@@ -27,4 +28,11 @@ export interface FavorInfo {
     favor: number,
     maxFavor: number,
     anointed: boolean
+}
+
+export interface VitalityNNerveCalcInfo {
+    vitalityDie: string,
+    minVitality: string,
+    nerveDie: string,
+    minNerve: string,
 }
