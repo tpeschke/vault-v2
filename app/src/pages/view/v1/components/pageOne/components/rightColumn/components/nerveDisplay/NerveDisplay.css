@@ -1,0 +1,40 @@
+.nerve-categories-shell {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.nerve-categories-shell span {
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 5px
+}
+
+.nerve-categories-shell span:nth-child(even) {
+    background: lightgray;
+}
+
+.nerve-categories-shell .circle {
+    position: absolute;
+    top: 0;
+    border: 2px solid black;
+    border-radius: 10px;
+    height: 20px;
+    width: 21px;
+}
+
+.stress-n-relaxation-shell {
+    display: flex;
+}
+
+.stress-n-relaxation-shell span {
+    display: flex;
+    align-items: center;
+}
+
+.stress-n-relaxation-shell span>* {
+    width: 50%;
+    padding: 3px 5px;
+}

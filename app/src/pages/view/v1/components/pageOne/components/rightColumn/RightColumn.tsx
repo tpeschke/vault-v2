@@ -1,6 +1,7 @@
 import FavorDisplay from './components/favorVitalityNRanges/FavorDisplay'
 import RangeDisplay from './components/favorVitalityNRanges/RangeDisplay'
 import VitalityNNerveCalcDisplay from './components/favorVitalityNRanges/VitalityNNerveCalcDisplay'
+import NerveDisplay from './components/nerveDisplay/NerveDisplay'
 import WeaponsTables from './components/weaponTables/WeaponsTables'
 import './RightColumn.css'
 
@@ -19,6 +20,7 @@ export default function RightColumn({ }: Props) {
                 </div>
                 <RangeDisplay />
             </div>
+            <NerveDisplay />
         </div>
     )
 }

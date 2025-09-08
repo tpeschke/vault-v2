@@ -8,6 +8,7 @@
 .page-one .page-one-columns>.right .columns {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 5px;
 }
 
 .page-one .page-one-columns>.right .columns>.right, .page-one .page-one-columns>.right .columns>.left {
