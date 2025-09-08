@@ -1,0 +1,88 @@
+.vitality-categories-shell {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.vitality-categories-shell span {
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 5px
+}
+
+.vitality-categories-shell span:nth-child(even) {
+    background: lightgray;
+}
+
+.vitality-categories-shell .circle {
+    position: absolute;
+    top: 0;
+    border: 2px solid black;
+    border-radius: 10px;
+    height: 20px;
+    width: 21px;
+}
+
+.wounds-shell {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 105px;
+    border-bottom: 1px solid #515151;
+}
+
+.wounds-shell span {
+    display: flex;
+    width: 50%;
+}
+
+.wounds-shell span>* {
+    width: 33%;
+    padding: 3px 5px;
+}
+
+.wounds-shell span>strong {
+    font-weight: unset;
+}
+
+.wounds-shell span>input {
+    text-align: center;
+}
+
+.wounds-shell span:nth-child(even)>* {
+    background: lightgray;
+}
+
+.wounds-headings-shell {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    text-align: center;
+}
+
+.wounds-headings-shell>* {
+    width: 33%;
+}
+
+.wounds-headings-shell>strong {
+    font-weight: unset;
+}
+
+.wounds-headings-shell>span {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #515151
+}
+
+.size-mod {
+    display: flex;
+    align-items: center;
+    padding: 3px 5px;
+}
+
+.size-mod>* {
+    width: 20%;
+}

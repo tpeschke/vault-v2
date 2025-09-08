@@ -155,5 +155,5 @@ input {
 }
 
 input:hover, textarea:hover {
-  background: rgba(173, 216, 230, 0.5);
+  background: rgba(173, 216, 230, 0.5) !important;
 }

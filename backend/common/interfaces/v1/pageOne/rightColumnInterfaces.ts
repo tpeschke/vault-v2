@@ -33,7 +33,11 @@ export interface FavorInfo {
 export interface NerveAndVitalityInfo {
     vitalityNNerveCalcInfo: VitalityNNerveCalcInfo,
     nerve: number,
-    fatigue: number
+    stress: number,
+    fatigue: number,
+    vitality: number,
+    wounds: Wound[],
+    sizeMod: number
 }
 
 export interface VitalityNNerveCalcInfo {
@@ -41,4 +45,9 @@ export interface VitalityNNerveCalcInfo {
     minVitality: string,
     nerveDie: string,
     minNerve: string,
+}
+
+export interface Wound {
+    severity: number,
+    days: number
 }

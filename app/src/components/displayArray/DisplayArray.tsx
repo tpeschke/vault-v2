@@ -1,4 +1,4 @@
-import { PairObject } from '@vault/common/interfaces/pageOneInterfaces'
+import { PairObject } from '@vault/common/interfaces/v1/pageOne/leftColumnInterfaces'
 import './DisplayArray.css'
 
 interface Props {
