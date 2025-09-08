@@ -1,5 +1,6 @@
 export interface RightColumnInfo {
-    weapons: WeaponTable[]
+    weapons: WeaponTable[],
+    favorInfo: FavorInfo
 }
 
 export interface WeaponTable {
@@ -20,4 +21,10 @@ export interface WeaponTable {
         parryDR: string,
         dr: string
     }
+}
+
+export interface FavorInfo {
+    favor: number,
+    maxFavor: number,
+    anointed: boolean
 }
