@@ -1,0 +1,42 @@
+.favor-display-shell, .v-n-n-calc-display-shell {
+    display: flex;
+    flex-direction: column;
+}
+
+.v-n-n-calc-display-shell {
+    border: 1px solid #515151;
+    margin-top: 5px;
+}
+
+.favor-display-shell span, .v-n-n-calc-display-shell span {
+    display: flex;
+}
+
+.favor-display-shell span>*, .v-n-n-calc-display-shell span>* {
+    width: 50%;
+}
+
+.favor-display-shell span h3 {
+    background: #990000;
+    border-bottom: 1px solid #990000;
+}
+
+.favor-display-shell span strong, .v-n-n-calc-display-shell span strong {
+    padding: 3px 5px;
+}
+
+.v-n-n-calc-display-shell span strong {
+    font-weight: unset;
+}
+
+.favor-display-shell span i, .favor-display-shell span p, .favor-display-shell span input, .v-n-n-calc-display-shell span p {
+    text-align: center;
+}
+
+.favor-display-shell span input {
+    border-bottom: 1px solid #990000;
+}
+
+.v-n-n-calc-display-shell span:nth-child(even) {
+    background: lightgray;
+}

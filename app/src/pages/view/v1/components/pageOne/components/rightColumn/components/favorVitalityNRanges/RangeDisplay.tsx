@@ -1,4 +1,4 @@
-import '../../RightColumn.css'
+import './FavorVitalityNRanges.css'
 
 interface Props {
 
