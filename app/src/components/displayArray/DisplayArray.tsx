@@ -9,13 +9,13 @@ interface Props {
 export default function DisplayArray({ max, arrayToDisplay }: Props) {
     const leftOver = max - arrayToDisplay.length
 
-    function formatValue(element: string | number | PairObject) {
+    function formatValue(element: string | number | PairObject, index: number) {
         if (typeof element === 'string' || typeof element === 'number') {
-            return <p>- {element}</p>
+            return <p key={index}>- {element}</p>
         } else {
             const { title, value } = element
             return (
-                <div className='display-pair'>
+                <div key={index} className='display-pair'>
                     <p>- {title}</p>
                     <p>{value}</p>
                 </div>
@@ -26,7 +26,7 @@ export default function DisplayArray({ max, arrayToDisplay }: Props) {
     return (
         <div className="display-array-shell">
             {arrayToDisplay.map(formatValue)}
-            {[...Array(leftOver).keys()].map(_ => <p></p>)}
+            {[...Array(leftOver).keys()].map((_, index) => <p key={index}></p>)}
         </div>
     )
 }

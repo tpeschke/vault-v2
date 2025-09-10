@@ -71,10 +71,10 @@ h1, h2 {
 }
 
 p, label {
-	font-family: "Source Sans 3", sans-serif;
-	font-size: 15px;
-	min-height: 1px;
-	line-height: 1.2;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 15px;
+  min-height: 1px;
+  line-height: 1.2;
 }
 
 a {
@@ -89,7 +89,7 @@ a:hover {
 }
 
 strong {
-	font-family: 'oldClaude';
+  font-family: 'oldClaude';
   font-weight: bold;
   font-size: 12px;
 }
@@ -152,8 +152,13 @@ button.disabled:hover {
 
 input {
   border: unset;
+  background: transparent;
 }
 
-input:hover, textarea:hover {
+input:hover {
+  background: rgba(173, 216, 230) !important;
+}
+
+textarea:hover {
   background: rgba(173, 216, 230, 0.5) !important;
 }

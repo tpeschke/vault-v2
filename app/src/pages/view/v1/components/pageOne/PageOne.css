@@ -1,17 +1,3 @@
 .page-one .page-one-columns {
     display: flex;
 }
-
-.page-one h2 {
-    background: #900;
-    color: white;
-    padding: 3px 5px;
-}
-
-.page-one h3 {
-    background: #515151;
-    color: white;
-    font-family: 'OldClaude';
-    padding: 3px 5px;
-    font-size: 13px;
-}

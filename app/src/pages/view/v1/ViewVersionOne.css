@@ -20,3 +20,17 @@
 .version-one-shell .false-table span:nth-child(odd) {
     background: lightgray;
 }
+
+.version-one-shell h2 {
+    background: #900;
+    color: white;
+    padding: 3px 5px;
+}
+
+.version-one-shell h3 {
+    background: #515151;
+    color: white;
+    font-family: 'OldClaude';
+    padding: 3px 5px;
+    font-size: 13px;
+}

@@ -23,7 +23,7 @@ export default function RangeDisplay({ }: Props) {
 
 function RangeRow(penalty: number, lowEndValue: number, highEndValue: number) {
     return (
-        <span>
+        <span key={penalty}>
             <strong>{penalty}</strong>
             <span>
                 <p>{lowEndValue}</p>

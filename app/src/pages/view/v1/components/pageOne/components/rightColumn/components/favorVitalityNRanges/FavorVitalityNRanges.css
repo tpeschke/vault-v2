@@ -18,7 +18,7 @@
 
 .favor-display-shell span h3 {
     background: #990000;
-    border-bottom: 1px solid #990000;
+    border: 1px solid #990000;
 }
 
 .favor-display-shell span strong, .v-n-n-calc-display-shell span strong {
@@ -34,7 +34,7 @@
 }
 
 .favor-display-shell span input {
-    border-bottom: 1px solid #990000;
+    border: 1px solid #990000;
 }
 
 .v-n-n-calc-display-shell span:nth-child(even) {

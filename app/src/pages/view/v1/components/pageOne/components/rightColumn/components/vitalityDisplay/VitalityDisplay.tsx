@@ -92,9 +92,9 @@ export default function VitalityDisplay({ }: Props) {
     )
 }
 
-function woundRow({ severity, days }: Wound) {
+function woundRow({ severity, days }: Wound, index: number) {
     return (
-        <span>
+        <span key={index}>
             <strong>Wound</strong>
             <input value={severity} />
             <input value={days} />
@@ -102,9 +102,9 @@ function woundRow({ severity, days }: Wound) {
     )
 }
 
-function nullWoundRow() {
+function nullWoundRow(_: any, index: number) {
     return (
-        <span>
+        <span key={index}>
             <strong>Wound</strong>
             <input />
             <input />

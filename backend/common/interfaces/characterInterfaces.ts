@@ -1,4 +1,5 @@
 import { PageOneInfo } from "./v1/pageOne/pageOneInterfaces"
+import { PageTwoInfo } from "./v1/pageTwo/pageTwoInterfaces"
 
 export interface CharacterHomeInfo {
     id: number,
@@ -17,5 +18,6 @@ export interface CharacterVersion1 extends CharacterBase {
     version: 1,
     id: number,
     userID: number,
-    pageOneInfo: PageOneInfo
+    pageOneInfo: PageOneInfo,
+    pageTwoInfo: PageTwoInfo
 }
