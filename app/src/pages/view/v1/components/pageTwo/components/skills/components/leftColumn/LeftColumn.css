@@ -1,0 +1,70 @@
+.check-mods-display-shell h3 {
+    text-align: center;
+}
+
+.check-mods-display-shell>div {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #515151;
+}
+
+.check-mods-display-shell>div>span {
+    width: calc(33.33% - 10px);
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.check-mods-display-shell>div>span:nth-child(even) {
+    background: lightgray;
+}
+
+.check-mods-display-shell>div>span>* {
+    width: 50%;
+}
+
+.check-mods-display-shell>div>span>p {
+    text-align: center;
+}
+
+.check-mods-display-shell>span {
+    display: flex;
+    align-items: center;
+    padding: 1px 3px;
+}
+
+.check-mods-display-shell>span>* {
+    width: 50%;
+}
+
+.check-mods-display-shell>span>p {
+    text-align: center;
+}
+
+.skill-suites-display-shell>span {
+    display: flex;
+    align-items: center;
+}
+
+.skill-suites-display-shell>span:nth-child(odd) {
+    background: lightgray;
+}
+
+.skill-suites-display-shell>span>* {
+    width: 15%;
+    text-align: center;
+}
+
+.skill-suites-display-shell>span>*:first-child {
+    width: 50%;
+    text-align: left;
+}
+
+.skill-suite-row>* {
+    padding: 1px 5px;
+}
+
+.native-lang {
+    height: 19px;
+}

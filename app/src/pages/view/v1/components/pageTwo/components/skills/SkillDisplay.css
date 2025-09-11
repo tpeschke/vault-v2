@@ -1,0 +1,60 @@
+.skill-display-shell {
+    margin-bottom: 5px;
+}
+
+.skill-display-shell>div {
+    display: flex;
+}
+
+.skill-column {
+    width: 33.3333%;
+}
+
+.skill-left-column-shell {
+    border-right: 2px solid #515151;
+}
+
+.advanced-skill-display {
+    width: 66.666%;
+}
+
+.advanced-skill-display>div {
+    display: flex;
+}
+
+.advanced-skill-display>div>span {
+    width: 50%;
+    display: flex;
+}
+
+.advanced-skill-shell {
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 234px;
+}
+
+.advanced-skill-row {
+    width: 50%
+}
+
+.advanced-skill-row:nth-child(even) {
+    background: lightgray;
+}
+
+.advanced-skill-display>div>span>h3, .advanced-skill-row>p {
+    width: 15%;
+    text-align: center;
+}
+
+.advanced-skill-row>p {
+    padding: 0 5px;
+}
+
+.advanced-skill-display>div>span>h3:first-child, .advanced-skill-row>p:first-child {
+    width: 50%;
+    text-align: left;
+}
+
+.null-advanced-skill-row {
+    height: 18px;
+}
