@@ -26,7 +26,7 @@ export default function VitalityDisplay({ }: Props) {
     const bloodied = Math.floor(vitality * .5)
     const wounded = Math.ceil(vitality * .75)
 
-    const leftOver = 10 - wounds.length
+    const leftOver = 9 - wounds.length
 
     function getLeftPosition(fatigue: number): number {
         if (fatigue === 0) {
@@ -81,6 +81,11 @@ export default function VitalityDisplay({ }: Props) {
                 </div>
                 <div className='wounds-shell'>
                     {wounds.map(woundRow)}
+                    <span>
+                        <strong>Wound</strong>
+                        <input />
+                        <input />
+                    </span>
                     {[...Array(leftOver).keys()].map(nullWoundRow)}
                 </div>
                 <span className='size-mod'>
@@ -104,10 +109,10 @@ function woundRow({ severity, days }: Wound, index: number) {
 
 function nullWoundRow(_: any, index: number) {
     return (
-        <span key={index}>
+        <span key={index} className='null-wound-row'>
             <strong>Wound</strong>
-            <input />
-            <input />
+            <p></p>
+            <p></p>
         </span>
     )
 }

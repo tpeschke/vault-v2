@@ -77,6 +77,10 @@
     border: 1px solid #515151
 }
 
+.null-wound-row {
+    height: 21px;
+}
+
 .size-mod {
     display: flex;
     align-items: center;

@@ -42,7 +42,7 @@ export default function GearDisplay({ }: Props) {
         }
     ]
 
-    const leftOver = 27 - gear.length
+    const leftOver = 26 - gear.length
 
     function calculateCarry(gear: GearObject[]) {
         return gear.reduce((total, { size }) => {
@@ -129,6 +129,10 @@ export default function GearDisplay({ }: Props) {
             </div>
             <div className='gear-rows-shell'>
                 {gear.map(gearRow)}
+                <span>
+                    <input />
+                    <input />
+                </span>
                 {[...Array(leftOver).keys()].map(nullGearRow)}
                 <span className='carry-info'>
                     <p>{smallCarry}S {mediumCarry}M {largeCarry}L</p>
@@ -151,9 +155,9 @@ function gearRow({ item, size, id }: GearObject) {
 
 function nullGearRow(_: any, index: number) {
     return (
-        <span key={index}>
-            <input />
-            <input />
+        <span key={index} className='gear-null-row'>
+            <p></p>
+            <p></p>
         </span>
     )
 }

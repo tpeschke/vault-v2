@@ -72,3 +72,7 @@
     border: 1px solid;
     width: calc(25% - 2px);
 }
+
+.gear-null-row {
+    height: 17px;
+}
