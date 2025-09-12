@@ -4,6 +4,10 @@
     display: flex;
 }
 
+.combat-skills-display-shell h3 {
+    text-align: center;
+}
+
 .combat-skills-display-shell .left {
     height: 100%;
     width: 151px;
