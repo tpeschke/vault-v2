@@ -1,3 +1,4 @@
+import CombatSkillsDisplay from './components/combatSkills/CombatSkills'
 import GearDisplay from './components/gearDisplay/GearDisplay'
 import SkillDisplay from './components/skills/SkillDisplay'
 import './PageTwo.css'
@@ -11,6 +12,7 @@ export default function PageTwo({}: Props) {
         <div className='page-shell page card page-two'>
             <GearDisplay />
             <SkillDisplay />
+            <CombatSkillsDisplay />
         </div>
     )
 }

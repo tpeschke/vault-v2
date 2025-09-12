@@ -3,7 +3,8 @@ export interface PageTwoInfo {
     skillInfo: SkillInfo,
     skillSuites: SkillObject[],
     nativeLanguage: SkillObject,
-    advancedSkills: SkillObject[]
+    advancedSkills: SkillObject[],
+    combatWorkspaceInfo: CombatWorkspaceInfo
 }
 
 export interface GearInfo {
@@ -40,4 +41,22 @@ export interface SkillObject {
     isTrained?: boolean,
     rank: number,
     mod: number
+}
+
+export interface CombatWorkspaceInfo {
+    armorInfo: ArmorInfo
+}
+
+export interface ArmorInfo {
+    def: ArmorStatObject,
+    fat: ArmorStatObject,
+    rcv: ArmorStatObject
+    init: ArmorStatObject
+}
+
+export interface ArmorStatObject {
+    base?: number,
+    skill?: number,
+    misc?: number,
+    total: number,
 }

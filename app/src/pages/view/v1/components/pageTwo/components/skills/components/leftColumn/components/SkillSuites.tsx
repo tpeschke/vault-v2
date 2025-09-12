@@ -61,7 +61,7 @@ export default function SkillSuitesDisplay({ }: Props) {
                 <h3>Rank</h3>
                 <h3>Mod</h3>
             </span>
-            {skillSuites.map(suite => skillSuiteRow(suite, int, skillAdept))}
+            {skillSuites.map((suite, index) => skillSuiteRow(suite, index, int, skillAdept))}
             <span>
                 <h3>Native Lang.</h3>
                 <h3>Cost</h3>
@@ -78,9 +78,9 @@ export default function SkillSuitesDisplay({ }: Props) {
     )
 }
 
-export function skillSuiteRow({ skill, cost, isTrained, rank, mod }: SkillObject, int: number, skillAdept: number) {
+export function skillSuiteRow({ skill, cost, isTrained, rank, mod }: SkillObject, index: number, int: number, skillAdept: number) {
     return (
-        <span className='skill-suite-row'>
+        <span className='skill-suite-row' key={index}>
             <strong>{skill}</strong>
             <p>{(cost - int + (rank * 10)) * (1 - (skillAdept * .10))}</p>
             {isTrained ?
