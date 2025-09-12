@@ -34,6 +34,10 @@ export default function ShieldWorkspace({ }: Props) {
 
     const { def, fat, pry, brk } = shieldModifiers
 
+    function placeholderFunction() {
+
+    }
+
     return (
         <div className='shield-workspace-shell'>
             <h3>Shield Workspace</h3>
@@ -81,16 +85,16 @@ export default function ShieldWorkspace({ }: Props) {
                     </tr>
                     <tr>
                         <td>
-                            <input value={def.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={def.misc ?? undefined} />
                         </td>
                         <td>
-                            <input value={fat.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={fat.misc ?? undefined} />
                         </td>
                         <td>
-                            <input value={pry.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={pry.misc ?? undefined} />
                         </td>
                         <td>
-                            <input value={brk.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={brk.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>

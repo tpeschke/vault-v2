@@ -5,11 +5,16 @@ interface Props {
 }
 
 export default function FavorDisplay({ }: Props) {
+    
+    function placeholderFunction() {
+
+    }
+
     return (
         <div className='favor-display-shell'>
             <span>
                 <h3>Favor</h3>
-                <input />
+                <input onClick={placeholderFunction} />
             </span>
             <span>
                 <strong>Max</strong>

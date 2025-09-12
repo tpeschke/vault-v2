@@ -41,6 +41,10 @@ export default function VitalityDisplay({ }: Props) {
             return 243
         }
     }
+    
+    function placeholderFunction() {
+
+    }
 
     return (
         <div className='vitality-display-shell'>
@@ -83,8 +87,8 @@ export default function VitalityDisplay({ }: Props) {
                     {wounds.map(woundRow)}
                     <span>
                         <strong>Wound</strong>
-                        <input />
-                        <input />
+                        <input onClick={placeholderFunction} />
+                        <input onClick={placeholderFunction} />
                     </span>
                     {[...Array(leftOver).keys()].map(nullWoundRow)}
                 </div>
@@ -98,11 +102,16 @@ export default function VitalityDisplay({ }: Props) {
 }
 
 function woundRow({ severity, days }: Wound, index: number) {
+    
+    function placeholderFunction() {
+
+    }
+
     return (
         <span key={index}>
             <strong>Wound</strong>
-            <input value={severity} />
-            <input value={days} />
+            <input onClick={placeholderFunction} defaultValue={severity} />
+            <input onClick={placeholderFunction} defaultValue={days} />
         </span>
     )
 }

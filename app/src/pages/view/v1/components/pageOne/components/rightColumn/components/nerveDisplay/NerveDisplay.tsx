@@ -26,6 +26,10 @@ export default function NerveDisplay({ }: Props) {
         }
     }
 
+    function placeholderFunction() {
+
+    }
+
     return (
         <div className='nerve-display-shell'>
             <div>
@@ -52,11 +56,11 @@ export default function NerveDisplay({ }: Props) {
                 <div className='stress-n-relaxation-shell'>
                     <span>
                         <strong>Stress</strong>
-                        <input />
+                        <input onClick={placeholderFunction} />
                     </span>
                     <span>
                         <strong>Relaxation</strong>
-                        <input />
+                        <input onClick={placeholderFunction} />
                     </span>
                 </div>
             </div>

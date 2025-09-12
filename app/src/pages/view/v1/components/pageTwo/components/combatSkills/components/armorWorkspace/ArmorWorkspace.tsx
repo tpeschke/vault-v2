@@ -33,6 +33,10 @@ export default function ArmorWorkspace({ }: Props) {
     }
 
     const { def, fat, rcv, init } = armorModifiers
+    
+    function placeholderFunction() {
+
+    }
 
     return (
         <div className='armor-workspace-shell'>
@@ -77,16 +81,16 @@ export default function ArmorWorkspace({ }: Props) {
                     </tr>
                     <tr>
                         <td>
-                            <input value={def.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={def.misc ?? undefined} />
                         </td>
                         <td>
-                            <input value={fat.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={fat.misc ?? undefined} />
                         </td>
                         <td>
-                            <input value={rcv.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={rcv.misc ?? undefined} />
                         </td>
                         <td>
-                            <input value={init.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={init.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>

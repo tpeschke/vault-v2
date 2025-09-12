@@ -15,7 +15,7 @@ export default function CombatSkillsDisplay({}: Props) {
                 <ShieldWorkspace />
             </div>
             <div className='right'>
-                {/* <CombatSkillsDisplay /> */}
+                <CombatSkillsDisplay />
                 <div>
                     {/* <WeaponWorkspace />
                     <WeaponWorkspace />

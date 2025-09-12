@@ -21,10 +21,15 @@ export default function IntegrityDisplay({}: Props) {
         }
     }
 
+    
+    function placeholderFunction() {
+
+    }
+
     return (
         <div className="integrity-shell">
             <span>
-                <input value={integrity} />
+                <input onChange={placeholderFunction} defaultValue={integrity} />
                 <strong>Integrity</strong>
             </span>
             <div>
@@ -37,7 +42,7 @@ export default function IntegrityDisplay({}: Props) {
             </div>
             <span>
                 <strong>Grit Dice</strong>
-                <input value={1} />
+                <input onChange={placeholderFunction} defaultValue={1} />
             </span>
         </div>
     )

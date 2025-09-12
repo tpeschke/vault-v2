@@ -1,4 +1,4 @@
-import { GearObject } from '@vault/common/interfaces/v1/pageTwo/pageTwoInterfaces'
+import { GearObject } from '@vault/common/interfaces/v1/pageTwo/gearInterfaces'
 import './GearDisplay.css'
 
 interface Props {
@@ -86,6 +86,11 @@ export default function GearDisplay({ }: Props) {
     const mediumRemainder = carryValue % 3
     const smallCarry = mediumRemainder
 
+    
+    function placeholderFunction() {
+
+    }
+
     return (
         <div className='gear-display-shell'>
             <span>
@@ -93,19 +98,19 @@ export default function GearDisplay({ }: Props) {
                 <div className='coins-shell'>
                     <span>
                         <strong>CC</strong>
-                        <input value={0} />
+                        <input onClick={placeholderFunction} defaultValue={0} />
                     </span>
                     <span>
                         <strong>SC</strong>
-                        <input value={1} />
+                        <input onClick={placeholderFunction} defaultValue={1} />
                     </span>
                     <span>
                         <strong>GC</strong>
-                        <input value={2} />
+                        <input onClick={placeholderFunction} defaultValue={2} />
                     </span>
                     <span>
                         <strong>PC</strong>
-                        <input value={3} />
+                        <input onClick={placeholderFunction} defaultValue={3} />
                     </span>
                 </div>
             </span>
@@ -130,8 +135,8 @@ export default function GearDisplay({ }: Props) {
             <div className='gear-rows-shell'>
                 {gear.map(gearRow)}
                 <span>
-                    <input />
-                    <input />
+                    <input onClick={placeholderFunction} />
+                    <input onClick={placeholderFunction} />
                 </span>
                 {[...Array(leftOver).keys()].map(nullGearRow)}
                 <span className='carry-info'>
@@ -145,10 +150,15 @@ export default function GearDisplay({ }: Props) {
 }
 
 function gearRow({ item, size, id }: GearObject) {
+    
+    function placeholderFunction() {
+
+    }
+
     return (
         <span key={id}>
-            <input value={item} />
-            <input value={size} />
+            <input onClick={placeholderFunction} defaultValue={item} />
+            <input onClick={placeholderFunction} defaultValue={size} />
         </span>
     )
 }
