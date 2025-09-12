@@ -1,3 +1,8 @@
+import { ArmorInfo } from "./armorInterfaces"
+import { GearInfo } from "./gearInterfaces"
+import { ShieldInfo } from "./shieldInterfaces"
+import { SkillInfo, SkillObject } from "./skillInterfaces"
+
 export interface PageTwoInfo {
     gearInfo: GearInfo,
     skillInfo: SkillInfo,
@@ -7,71 +12,7 @@ export interface PageTwoInfo {
     combatWorkspaceInfo: CombatWorkspaceInfo
 }
 
-export interface GearInfo {
-    copper: number,
-    silver: number,
-    gold: number,
-    carry: number,
-    gear: GearObject[]
-}
-
-export interface GearObject {
-    id: number,
-    item?: string,
-    size?: string
-}
-
-export interface SkillInfo {
-    checkMods: CheckModsObject,
-    adepts: number
-}
-
-export interface CheckModsObject {
-    str: number,
-    dex: number,
-    con: number,
-    int: number,
-    will: number,
-    pre: number
-}
-
-export interface SkillObject {
-    skill: string,
-    cost: number,
-    isTrained?: boolean,
-    rank: number,
-    mod: number
-}
-
 export interface CombatWorkspaceInfo {
     armorInfo: ArmorInfo,
     shieldInfo: ShieldInfo
-}
-
-export interface ArmorInfo {
-    def: ArmorStatObject,
-    fat: ArmorStatObject,
-    rcv: ArmorStatObject
-    init: ArmorStatObject
-}
-
-export interface ArmorStatObject {
-    base?: number,
-    skill?: number,
-    misc?: number,
-    total: number
-}
-
-export interface ShieldInfo {
-    def: ShieldStatObject,
-    fat: ShieldStatObject,
-    pry: ShieldStatObject
-    brk: ShieldStatObject
-}
-
-export interface ShieldStatObject {
-    base?: number,
-    skill?: number,
-    misc?: number,
-    total: number
 }
