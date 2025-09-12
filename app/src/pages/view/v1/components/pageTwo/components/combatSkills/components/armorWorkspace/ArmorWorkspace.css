@@ -10,7 +10,7 @@
     align-items: center;
 }
 
-.armor-workspace-shell>span:nth-child(odd) {
+.armor-workspace-shell>span:nth-child(even) {
     background: lightgray;
 }
 
