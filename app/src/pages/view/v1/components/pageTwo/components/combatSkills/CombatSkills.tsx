@@ -12,7 +12,7 @@ export default function CombatSkillsDisplay({}: Props) {
         <div className='combat-skills-display-shell'>
             <div className='left'>
                 <ArmorWorkspace />
-                {/* <ShieldWorkspace /> */}
+                <ShieldWorkspace />
             </div>
             <div className='right'>
                 {/* <CombatSkillsDisplay /> */}

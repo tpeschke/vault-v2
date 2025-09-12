@@ -1,0 +1,44 @@
+.shield-workspace-shell {
+    border: 2px solid #515151;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.shield-workspace-shell>span {
+    display: flex;
+    align-items: center;
+}
+
+.shield-workspace-shell>span:nth-child(even) {
+    background: lightgray;
+}
+
+.shield-workspace-shell>span>* {
+    padding: 1px 5px;
+    width: 50%;
+}
+
+.shield-workspace-shell>span>p {
+    text-align: center;
+}
+
+.shield-workspace-shell>span.bonus-shell {
+    position: relative;
+    display: unset;
+    height: 100px;
+}
+
+.shield-workspace-shell>span.bonus-shell p {
+    position: absolute;
+    top: 0;
+    text-indent: 40px;
+    width: calc(100% - 10px);
+    text-align: left;
+    height: 100%;
+    font-size: 13px;
+}
+
+.shield-workspace-shell tr>*>* {
+    width: 13px;
+}

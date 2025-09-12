@@ -26,7 +26,7 @@
 .armor-workspace-shell>span.bonus-shell {
     position: relative;
     display: unset;
-    height: 75px;
+    height: 85px;
 }
 
 .armor-workspace-shell>span.bonus-shell p {
@@ -36,6 +36,7 @@
     width: calc(100% - 10px);
     text-align: left;
     height: 100%;
+    font-size: 13px;
 }
 
 .armor-workspace-shell tr>*>* {

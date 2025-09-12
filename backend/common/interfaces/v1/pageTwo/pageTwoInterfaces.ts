@@ -44,7 +44,8 @@ export interface SkillObject {
 }
 
 export interface CombatWorkspaceInfo {
-    armorInfo: ArmorInfo
+    armorInfo: ArmorInfo,
+    shieldInfo: ShieldInfo
 }
 
 export interface ArmorInfo {
@@ -58,5 +59,19 @@ export interface ArmorStatObject {
     base?: number,
     skill?: number,
     misc?: number,
-    total: number,
+    total: number
+}
+
+export interface ShieldInfo {
+    def: ShieldStatObject,
+    fat: ShieldStatObject,
+    pry: ShieldStatObject
+    brk: ShieldStatObject
+}
+
+export interface ShieldStatObject {
+    base?: number,
+    skill?: number,
+    misc?: number,
+    total: number
 }

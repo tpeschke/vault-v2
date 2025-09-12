@@ -37,7 +37,7 @@ export default function ArmorWorkspace({ }: Props) {
     return (
         <div className='armor-workspace-shell'>
             <h3>Armor Workspace</h3>
-            <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Weather Armor is Factored into Weapon Tables." className='workspace-button'>Coat of Plates</button>
+            <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Armor is Factored into Weapon Tables." className='workspace-button'>Coat of Plates</button>
             <span>
                 <strong>DR</strong>
                 <p>5</p>
