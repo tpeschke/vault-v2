@@ -54,12 +54,12 @@
 }
 
 .combat-skill-suites-shell>span>*:first-child {
-    width: 50%;
+    width: 51%;
     text-align: left;
 }
 
 .combat-adv-skills-shell {
-    width: 66.666%;
+    width: calc(100% - 227px);
 }
 
 .combat-adv-skills-shell>div {

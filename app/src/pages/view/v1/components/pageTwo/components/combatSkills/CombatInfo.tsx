@@ -17,6 +17,7 @@ export default function CombatInfoDisplay({}: Props) {
             </div>
             <div className='right'>
                 <CombatSkillsArea />
+                <h3>Weapon Workspaces</h3>
                 <div>
                     {/* <WeaponWorkspace />
                     <WeaponWorkspace />

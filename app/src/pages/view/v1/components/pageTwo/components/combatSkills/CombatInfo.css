@@ -1,7 +1,7 @@
 .combat-skills-display-shell {
     width: 100%;
-    height: 100%;
     display: flex;
+    justify-content: space-between;
 }
 
 .combat-skills-display-shell h3 {
@@ -9,13 +9,11 @@
 }
 
 .combat-skills-display-shell .left {
-    height: 100%;
-    width: 151px;
+    width: 155px;
 }
 
 .combat-skills-display-shell .right {
-    height: 100%;
-    width: calc(100% - 151px);
+    width: calc(100% - 159px);
 }
 
 .workspace-button {
