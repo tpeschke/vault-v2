@@ -17,3 +17,4 @@ export interface CombatSkillObject {
     isTrained?: boolean,
     rank: number,
 }
+

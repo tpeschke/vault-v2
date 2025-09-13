@@ -14,7 +14,7 @@ export default function CombatSkillsArea({}: Props) {
                 <StatsNMartialAdept />
                 <CombatSkillSuites />
             </div>
-            {/* <CombatAdvSkills /> */}
+            <CombatAdvSkills />
         </div>
     )
 }

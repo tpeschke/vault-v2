@@ -1,5 +1,9 @@
 .combat-skills-area-shell {
     margin-left: 10px;
+    display: flex;
+}
+
+.combat-skills-area-shell>div:first-child {
     width: 225px;
     border-right: 2px solid #515151;
 }
@@ -52,4 +56,49 @@
 .combat-skill-suites-shell>span>*:first-child {
     width: 50%;
     text-align: left;
+}
+
+.combat-adv-skills-shell {
+    width: 66.666%;
+}
+
+.combat-adv-skills-shell>div {
+    display: flex;
+}
+
+.combat-adv-skills-shell>div>span {
+    width: 50%;
+    display: flex;
+}
+
+.combat-advanced-skill-shell {
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 162px;
+}
+
+.combat-advanced-skill-row {
+    width: 50%
+}
+
+.combat-advanced-skill-row:nth-child(even) {
+    background: lightgray;
+}
+
+.combat-adv-skills-shell>div>span>h3, .combat-advanced-skill-row>p {
+    width: 15%;
+    text-align: center;
+}
+
+.combat-advanced-skill-row>p {
+    padding: 0 5px;
+}
+
+.combat-adv-skills-shell>div>span>h3:first-child, .combat-advanced-skill-row>p:first-child {
+    width: 56%;
+    text-align: left;
+}
+
+.null-advanced-combat-skill-row {
+    height: 18px;
 }
