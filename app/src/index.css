@@ -159,6 +159,10 @@ input:hover {
   background: rgba(173, 216, 230) !important;
 }
 
+textarea {
+  font-family: "Source Sans 3", sans-serif;
+}
+
 textarea:hover {
   background: rgba(173, 216, 230, 0.5) !important;
 }

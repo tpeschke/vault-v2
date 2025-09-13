@@ -20,6 +20,10 @@
     margin-top: 5px;
 }
 
+.combat-skills-display-shell .right>div {
+    display: flex
+}
+
 .workspace-button {
     border-radius: 0px;
     text-align: left;
