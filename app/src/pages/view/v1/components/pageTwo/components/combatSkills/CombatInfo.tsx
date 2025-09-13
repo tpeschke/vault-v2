@@ -1,5 +1,6 @@
-import './CombatSkills.css'
+import './CombatInfo.css'
 import ArmorWorkspace from './components/armorWorkspace/ArmorWorkspace'
+import CombatSkillsArea from './components/combatSkillsArea/CombatSkillsArea'
 import ShieldWorkspace from './components/shieldWorkspace/ShieldWorkspace'
 import WeaponWorkspace from './components/weaponWorkspace/WeaponWorkspace'
 
@@ -7,7 +8,7 @@ interface Props {
 
 }
 
-export default function CombatSkillsDisplay({}: Props) {
+export default function CombatInfoDisplay({}: Props) {
     return (
         <div className='combat-skills-display-shell'>
             <div className='left'>
@@ -15,7 +16,7 @@ export default function CombatSkillsDisplay({}: Props) {
                 <ShieldWorkspace />
             </div>
             <div className='right'>
-                <CombatSkillsDisplay />
+                <CombatSkillsArea />
                 <div>
                     {/* <WeaponWorkspace />
                     <WeaponWorkspace />
