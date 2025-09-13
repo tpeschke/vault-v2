@@ -12,7 +12,7 @@ export default function CombatSkillsArea({}: Props) {
         <div className='combat-skills-area-shell'>
             <div>
                 <StatsNMartialAdept />
-                {/* <CombatSkillSuites /> */}
+                <CombatSkillSuites />
             </div>
             {/* <CombatAdvSkills /> */}
         </div>

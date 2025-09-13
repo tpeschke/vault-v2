@@ -1,4 +1,5 @@
 import { ArmorInfo } from "./armorInterfaces"
+import { CombatSkillsInfo } from "./combatSkills"
 import { GearInfo } from "./gearInterfaces"
 import { ShieldInfo } from "./shieldInterfaces"
 import { SkillInfo, SkillObject } from "./skillInterfaces"
@@ -14,5 +15,6 @@ export interface PageTwoInfo {
 
 export interface CombatWorkspaceInfo {
     armorInfo: ArmorInfo,
-    shieldInfo: ShieldInfo
+    shieldInfo: ShieldInfo,
+    combatSkillInfo: CombatSkillsInfo
 }

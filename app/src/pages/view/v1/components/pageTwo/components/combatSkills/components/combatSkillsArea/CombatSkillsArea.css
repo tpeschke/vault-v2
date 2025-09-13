@@ -1,9 +1,7 @@
 .combat-skills-area-shell {
     margin-left: 10px;
-}
-
-.stats-and-martial-adept-shell {
     width: 225px;
+    border-right: 2px solid #515151;
 }
 
 .stats-and-martial-adept-shell>div {
@@ -34,4 +32,24 @@
     display: flex;
     align-items: center;
     border-top: 1px solid #515151;
+    padding: 1px 3px;
+}
+
+.combat-skill-suites-shell>span {
+    display: flex;
+    align-items: center;
+}
+
+.combat-skill-suites-shell>span:nth-child(odd) {
+    background: lightgray;
+}
+
+.combat-skill-suites-shell>span>* {
+    text-align: center;
+    width: 20%;
+}
+
+.combat-skill-suites-shell>span>*:first-child {
+    width: 50%;
+    text-align: left;
 }

@@ -1,4 +1,4 @@
-import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/pageTwoInterfaces'
+import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces';
 import '../LeftColumn.css'
 
 interface Props {
