@@ -1,7 +1,8 @@
 export interface CombatSkillsInfo {
     combatStatModifiers: CombatStatModifiers,
     martialAdepts: number,
-    combatSkillSuites: CombatSkillObject[]
+    combatSkillSuites: CombatSkillObject[],
+    combatAdvSkills: CombatSkillObject[]
 }
 
 export interface CombatStatModifiers {
