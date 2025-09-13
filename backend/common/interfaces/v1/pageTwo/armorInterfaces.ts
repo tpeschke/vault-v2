@@ -1,11 +1,19 @@
 export interface ArmorInfo {
-    def: ArmorStatObject,
-    fat: ArmorStatObject,
-    rcv: ArmorStatObject
-    init: ArmorStatObject
+    name: string,
+    dr: string,
+    skillAdj: number,
+    bonus: string,
+    modifiers: ArmorModifiersInfo
 }
 
-export interface ArmorStatObject {
+export interface ArmorModifiersInfo {
+    def: ArmorModifiersObject,
+    fat: ArmorModifiersObject,
+    rcv: ArmorModifiersObject
+    init: ArmorModifiersObject
+}
+
+export interface ArmorModifiersObject {
     base?: number,
     skill?: number,
     misc?: number,

@@ -1,11 +1,20 @@
 export interface ShieldInfo {
-    def: ShieldStatObject,
-    fat: ShieldStatObject,
-    pry: ShieldStatObject
-    brk: ShieldStatObject
+    name: string,
+    dr: string,
+    size: string,
+    cover: string,
+    bonus: string,
+    modifiers: ShieldModifiersInfo
 }
 
-export interface ShieldStatObject {
+export interface ShieldModifiersInfo {
+    def: ShieldModifiersObject,
+    fat: ShieldModifiersObject,
+    pry: ShieldModifiersObject
+    brk: ShieldModifiersObject
+}
+
+export interface ShieldModifiersObject {
     base?: number,
     skill?: number,
     misc?: number,
