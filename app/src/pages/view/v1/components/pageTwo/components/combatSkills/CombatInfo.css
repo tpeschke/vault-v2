@@ -16,6 +16,10 @@
     width: calc(100% - 159px);
 }
 
+.combat-skills-display-shell .right>h3 {
+    margin-top: 5px;
+}
+
 .workspace-button {
     border-radius: 0px;
     text-align: left;
