@@ -19,10 +19,10 @@ export default function CombatInfoDisplay({}: Props) {
                 <CombatSkillsArea />
                 <h3>Weapon Workspaces</h3>
                 <div>
-                    {/* <WeaponWorkspace />
                     <WeaponWorkspace />
                     <WeaponWorkspace />
-                    <WeaponWorkspace /> */}
+                    <WeaponWorkspace />
+                    <WeaponWorkspace />
                 </div>
             </div>
         </div>
