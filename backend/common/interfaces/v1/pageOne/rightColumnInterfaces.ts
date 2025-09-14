@@ -1,5 +1,6 @@
 export interface RightColumnInfo {
     weapons: WeaponTable[],
+    maxRange: number,
     favorInfo: FavorInfo,
     nerveAndVitalityInfo: NerveAndVitalityInfo
 }
@@ -34,6 +35,7 @@ export interface NerveAndVitalityInfo {
     vitalityNNerveCalcInfo: VitalityNNerveCalcInfo,
     nerve: number,
     stress: number,
+    relaxation: number,
     fatigue: number,
     vitality: number,
     wounds: Wound[],
@@ -42,9 +44,9 @@ export interface NerveAndVitalityInfo {
 
 export interface VitalityNNerveCalcInfo {
     vitalityDie: string,
-    minVitality: string,
+    minVitality: number,
     nerveDie: string,
-    minNerve: string,
+    minNerve: number,
 }
 
 export interface Wound {

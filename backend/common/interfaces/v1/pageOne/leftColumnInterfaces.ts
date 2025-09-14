@@ -1,19 +1,7 @@
 export interface LeftColumnInfo {
-    generalInfo: GeneralInfo,
     statInfo: StatsInfo,
     movementInfo: MovementInfo,
     characteristicInfo: CharacteristicInfo,
-}
-
-export interface GeneralInfo {
-    name: string,
-    ancestry: string,
-    class: string,
-    subclass: String,
-    level: number,
-    crpUnspent: number,
-    crpSpent: number,
-    crpToNextLevel: number 
 }
 
 export interface StatsInfo {
@@ -39,10 +27,16 @@ export interface PairObject {
 }
 
 export interface CharacteristicInfo {
+    integrityInfo: IntegrityInfo,
     goals: string[],
     relationships: PairObject[],
     flaws: string[],
     culturalStrength: string,
     reputation: string[],
     assets: string
+}
+
+export interface IntegrityInfo {
+    integrity: number,
+    gritDie: number,
 }

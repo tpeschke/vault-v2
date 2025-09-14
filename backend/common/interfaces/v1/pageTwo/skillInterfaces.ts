@@ -1,4 +1,7 @@
 export interface SkillInfo {
+    skillSuites: SkillObject[],
+    nativeLanguage: SkillObject,
+    advancedSkills: SkillObject[],
     checkMods: CheckModsObject,
     adepts: number
 }

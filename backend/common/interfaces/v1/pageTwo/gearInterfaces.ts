@@ -2,6 +2,7 @@ export interface GearInfo {
     copper: number,
     silver: number,
     gold: number,
+    platinum: number
     carry: number,
     gear: GearObject[]
 }
