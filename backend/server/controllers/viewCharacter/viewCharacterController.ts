@@ -1,6 +1,7 @@
 import { Response, Request } from '../../interfaces/apiInterfaces'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
-import viewSQL from '../../db/queries/v1/view'
+import viewSQL from '../../db/queries/v1/view/basic'
+import socialSQL from '../../db/queries/v1/view/social'
 import query from '../../db/database'
 
 interface ViewRequest extends Request {
@@ -12,24 +13,23 @@ interface ViewRequest extends Request {
 export async function getCharacter(request: ViewRequest, response: Response) {
     const characterId = +request.params.characterId
 
-    const {
+    const [{
         userid, name, race, primarya, secondarya, crp, excurrent, str, dex, con, int, wis, cha, stressthreshold, favormax, vitality, sizemod, vitalitydice, level,
-        honor, extrahonordice, temperament, abilitiesone, abilitiestwo, removedability, maxrange, generalnotes, copper, silver, gold, platinum, contacts, crawl, walk, jog,
+        honor, extrahonordice, abilitiesone, abilitiestwo, removedability, maxrange, generalnotes, copper, silver, gold, platinum, contacts, crawl, walk, jog,
         run, sprint, currentfavor, currentstress, relaxation, skilladept, anointed, martialadept, secretgeneralnotes, stressdie, strength
-    }: any = await query(viewSQL.character, characterId)
+    }]: any[] = await query(viewSQL.character, characterId)
 
     // TODO 
-    // Characteristics
-    // Wounds
-    // Gear
-    // Skill Suites
-    // Native Language
-    // Adv Skills
-    // Armor Info
-    // Shield Info
-    // Weapon Info
-    // Combat Skill Suites
-    // Combat Adv Skills
+    //      Wounds
+    //      Gear
+    //      Skill Suites
+    //      Native Language
+    //      Adv Skills
+    //      Armor Info
+    //      Shield Info
+    //      Weapon Info
+    //      Combat Skill Suites
+    //      Combat Adv Skills
 
     let character: CharacterVersion1 = {
         version: 1,
@@ -60,11 +60,13 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                         integrity: honor,
                         gritDie: extrahonordice
                     },
-                    goals: [],
-                    relationships: [],
-                    flaws: [temperament],
+                    goals: await query(socialSQL.goals, characterId),
+                    descriptions: await query(socialSQL.descriptions, characterId),
+                    convictions: await query(socialSQL.convictions, characterId),
+                    relationships: await query(socialSQL.relationships, characterId),
+                    flaws: await query(socialSQL.flaws, characterId),
                     culturalStrength: strength,
-                    reputation: [],
+                    reputation: await query(socialSQL.reputation, characterId),
                     assets: contacts
                 }
             },

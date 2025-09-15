@@ -22,17 +22,20 @@ export interface MovementInfo {
 }
 
 export interface PairObject {
+    id?: number,
     title: string | null,
     value: string | number
 }
 
 export interface CharacteristicInfo {
     integrityInfo: IntegrityInfo,
-    goals: string[],
+    goals: PairObject[],
+    descriptions: PairObject[],
+    convictions: PairObject[],
     relationships: PairObject[],
-    flaws: string[],
+    flaws: PairObject[],
     culturalStrength: string,
-    reputation: string[],
+    reputation: PairObject[],
     assets: string
 }
 
