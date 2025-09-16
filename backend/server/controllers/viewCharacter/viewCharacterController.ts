@@ -20,7 +20,6 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     }]: any[] = await query(viewSQL.character, characterId)
 
     // TODO 
-    //      Wounds
     //      Gear
     //      Skill Suites
     //      Native Language
@@ -94,7 +93,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                     relaxation: relaxation,
                     // TODO calculate
                     fatigue: 0,
-                    wounds: [],
+                    wounds: await query(viewSQL.wounds, characterId),
                     sizeMod: sizemod
                 }
             },

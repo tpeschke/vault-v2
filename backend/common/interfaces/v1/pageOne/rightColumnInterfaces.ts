@@ -50,6 +50,7 @@ export interface VitalityNNerveCalcInfo {
 }
 
 export interface Wound {
+    id?: number,
     severity: number,
     days: number
 }
