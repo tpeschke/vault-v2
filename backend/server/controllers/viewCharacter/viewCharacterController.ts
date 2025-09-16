@@ -20,7 +20,6 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     }]: any[] = await query(viewSQL.character, characterId)
 
     // TODO 
-    //      Gear
     //      Skill Suites
     //      Native Language
     //      Adv Skills
@@ -109,7 +108,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                 copper, silver, gold, platinum,
                 // TODO calculate
                 carry: 0,
-                gear: []
+                gear: await query(viewSQL.gear, characterId)
             },
             skillInfo: {
                 skillSuites: [],
