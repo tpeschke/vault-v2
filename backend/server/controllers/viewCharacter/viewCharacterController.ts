@@ -2,6 +2,7 @@ import { Response, Request } from '../../interfaces/apiInterfaces'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
 import viewSQL from '../../db/queries/v1/view/basic'
 import socialSQL from '../../db/queries/v1/view/social'
+import skillSQL from '../../db/queries/v1/view/skills'
 import query from '../../db/database'
 
 interface ViewRequest extends Request {
@@ -19,10 +20,9 @@ export async function getCharacter(request: ViewRequest, response: Response) {
         run, sprint, currentfavor, currentstress, relaxation, skilladept, anointed, martialadept, secretgeneralnotes, stressdie, strength
     }]: any[] = await query(viewSQL.character, characterId)
 
+    const [nativeLanguage] = await query(skillSQL.nativeLanguage, characterId)
+    
     // TODO 
-    //      Skill Suites
-    //      Native Language
-    //      Adv Skills
     //      Armor Info
     //      Shield Info
     //      Weapon Info
@@ -111,14 +111,16 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                 gear: await query(viewSQL.gear, characterId)
             },
             skillInfo: {
-                skillSuites: [],
+                skillSuites: (await query(skillSQL.skillSuites, characterId)).map(skillSuite => {
+                    // TODO mod calculate
+                    return { ...skillSuite, isTrained: skillSuite.istrained }
+                }),
                 nativeLanguage: {
-                    skill: '',
-                    cost: 0,
-                    rank: 0,
+                    ...nativeLanguage,
+                    // TODO calculate
                     mod: 0
                 },
-                advancedSkills: [],
+                advancedSkills: await query(skillSQL.skills, characterId),
                 // TODO calculate
                 checkMods: {
                     str: 0,
