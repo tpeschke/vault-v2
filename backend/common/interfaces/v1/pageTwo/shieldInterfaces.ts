@@ -1,8 +1,10 @@
 export interface ShieldInfo {
+    id: number,
     name: string,
     dr: string,
     size: string,
     cover: string,
+    flanks: number,
     bonus: string,
     modifiers: ShieldModifiersInfo
 }

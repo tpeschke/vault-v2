@@ -5,6 +5,8 @@ interface Props {
 }
 
 export default function ShieldWorkspace({ }: Props) {
+    // ADD FLANKS
+    
     const shieldModifiers = {
         def: {
             base: -3,
@@ -77,7 +79,8 @@ export default function ShieldWorkspace({ }: Props) {
                         <td><strong>Base</strong></td>
                     </tr>
                     <tr>
-                        <td>{def.skill}</td>
+                        {/* Cannot modifier Def via Skill */}
+                        <td> </td>
                         <td>{fat.skill}</td>
                         <td>{pry.skill}</td>
                         <td>{brk.skill}</td>

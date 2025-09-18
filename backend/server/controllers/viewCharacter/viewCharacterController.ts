@@ -6,6 +6,8 @@ import skillSQL from '../../db/queries/v1/view/skills'
 import combatSQL from '../../db/queries/v1/view/combat'
 import query from '../../db/database'
 import { formatArmor } from './utilities/armorUtilities'
+import { formatShield } from './utilities/shieldUtilities'
+import { checkForContentTypeBeforeSending } from '../common/sendingFunctions'
 
 interface ViewRequest extends Request {
     params: {
@@ -26,12 +28,13 @@ export async function getCharacter(request: ViewRequest, response: Response) {
 
     const [rawArmorInfo] = await query(combatSQL.armor, characterId)
 
+    const [rawShieldInfo] = await query(combatSQL.shield, characterId)
+
     // TODO 
-    //      Shield Info
     //      Weapon Info
     //      Calculate Weapons
 
-    let character: CharacterVersion1 = {
+    const character: CharacterVersion1 = {
         version: 1,
         id: characterId,
         userID: userid,
@@ -136,43 +139,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
             },
             combatWorkspaceInfo: {
                 armorInfo: formatArmor(rawArmorInfo),
-                shieldInfo: {
-                    name: '',
-                    dr: '',
-                    size: '',
-                    cover: '',
-                    bonus: '',
-                    modifiers: {
-                        def: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        },
-                        fat: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        },
-                        pry: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        },
-                        brk: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        }
-                    }
-                },
+                shieldInfo: formatShield(rawShieldInfo),
                 weaponInfo: [],
                 combatSkillInfo: {
                     // TODO calculate
@@ -195,4 +162,6 @@ export async function getCharacter(request: ViewRequest, response: Response) {
             isSecret: secretgeneralnotes
         }
     }
+
+    checkForContentTypeBeforeSending(response, character)
 }

@@ -7,6 +7,8 @@ interface Props {
 export default function WeaponsTable({ weaponPosition }: Props) {
     const isRanged = weaponPosition === 4
 
+    // ADD FLANKS
+
     return (
         <div className='weapons-table-shell'>
             <p>Long Sword</p>
