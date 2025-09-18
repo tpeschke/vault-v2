@@ -1,8 +1,8 @@
-export function calculateShieldDefense(base: number, misc: number): number {
+export function calculateShieldDefense(base: number = 0, misc: number = 0): number {
     return base + misc
 }
 
-export function calculateShieldFatigue(base: number, skill: number, misc: number): number {
+export function calculateShieldFatigue(base: number = 0, skill: number = 0, misc: number = 0): number {
     const total = base - Math.floor(skill / 2) + misc
 
     if (base <= 0) {
@@ -12,10 +12,10 @@ export function calculateShieldFatigue(base: number, skill: number, misc: number
     }
 }
 
-export function calculateShieldParry(base: number, skill: number, misc: number): number {
+export function calculateShieldParry(base: number = 0, skill: number = 0, misc: number = 0): number {
     return base + skill + misc
 }
 
-export function calculateShieldBreakage(base: number, skill: number, misc: number): number {
+export function calculateShieldBreakage(base: number = 0, skill: number = 0, misc: number = 0): number {
     return base + Math.floor(skill / 2) + misc
 }

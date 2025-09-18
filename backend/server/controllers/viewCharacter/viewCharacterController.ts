@@ -8,6 +8,7 @@ import query from '../../db/database'
 import { formatArmor } from './utilities/armorUtilities'
 import { formatShield } from './utilities/shieldUtilities'
 import { checkForContentTypeBeforeSending } from '../common/sendingFunctions'
+import { formatWeapon } from './utilities/weaponUtilities'
 
 interface ViewRequest extends Request {
     params: {
@@ -30,8 +31,12 @@ export async function getCharacter(request: ViewRequest, response: Response) {
 
     const [rawShieldInfo] = await query(combatSQL.shield, characterId)
 
+    const [weapon1] = await query(combatSQL.weapon1, characterId)
+    const [weapon2] = await query(combatSQL.weapon2, characterId)
+    const [weapon3] = await query(combatSQL.weapon3, characterId)
+    const [weapon4] = await query(combatSQL.weapon4, characterId)
+
     // TODO 
-    //      Weapon Info
     //      Calculate Weapons
 
     const character: CharacterVersion1 = {
@@ -140,7 +145,12 @@ export async function getCharacter(request: ViewRequest, response: Response) {
             combatWorkspaceInfo: {
                 armorInfo: formatArmor(rawArmorInfo),
                 shieldInfo: formatShield(rawShieldInfo),
-                weaponInfo: [],
+                weaponInfo: [
+                    formatWeapon(weapon1),
+                    formatWeapon(weapon2),
+                    formatWeapon(weapon3),
+                    formatWeapon(weapon4),
+                ],
                 combatSkillInfo: {
                     // TODO calculate
                     combatStatModifiers: {

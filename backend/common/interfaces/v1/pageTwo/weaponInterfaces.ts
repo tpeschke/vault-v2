@@ -1,4 +1,5 @@
 export interface WeaponInfo {
+    id: number,
     name: string,
     damage: string,
     recovery: number,
@@ -13,7 +14,7 @@ export interface WeaponInfo {
 
 export interface WeaponModifiersInfo {
     atk: WeaponModifiersObject,
-    rcv: WeaponModifiersObject,
+    rec: WeaponModifiersObject,
     pry: WeaponModifiersObject,
     dam: WeaponModifiersObject
 }
