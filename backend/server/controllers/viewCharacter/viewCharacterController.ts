@@ -3,6 +3,7 @@ import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
 import viewSQL from '../../db/queries/v1/view/basic'
 import socialSQL from '../../db/queries/v1/view/social'
 import skillSQL from '../../db/queries/v1/view/skills'
+import combatSQL from '../../db/queries/v1/view/combat'
 import query from '../../db/database'
 
 interface ViewRequest extends Request {
@@ -21,13 +22,12 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     }]: any[] = await query(viewSQL.character, characterId)
 
     const [nativeLanguage] = await query(skillSQL.nativeLanguage, characterId)
-    
+
     // TODO 
     //      Armor Info
     //      Shield Info
     //      Weapon Info
-    //      Combat Skill Suites
-    //      Combat Adv Skills
+    //      Calculate Weapons
 
     let character: CharacterVersion1 = {
         version: 1,
@@ -216,8 +216,10 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                         rec: 0
                     },
                     martialAdepts: martialadept,
-                    combatSkillSuites: [],
-                    combatAdvSkills: []
+                    combatSkillSuites: (await query(combatSQL.skillSuites, characterId)).map(skillSuite => {
+                        return { ...skillSuite, isTrained: skillSuite.istrained }
+                    }),
+                    combatAdvSkills: await query(combatSQL.skills, characterId)
                 }
             }
         },
