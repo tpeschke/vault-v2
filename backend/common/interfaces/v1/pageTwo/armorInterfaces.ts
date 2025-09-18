@@ -1,4 +1,5 @@
 export interface ArmorInfo {
+    id: number,
     name: string,
     dr: string,
     skillAdj: number,
@@ -9,7 +10,7 @@ export interface ArmorInfo {
 export interface ArmorModifiersInfo {
     def: ArmorModifiersObject,
     fat: ArmorModifiersObject,
-    rcv: ArmorModifiersObject
+    rec: ArmorModifiersObject
     init: ArmorModifiersObject
 }
 

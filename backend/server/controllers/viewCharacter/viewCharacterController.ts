@@ -5,6 +5,7 @@ import socialSQL from '../../db/queries/v1/view/social'
 import skillSQL from '../../db/queries/v1/view/skills'
 import combatSQL from '../../db/queries/v1/view/combat'
 import query from '../../db/database'
+import { formatArmor } from './utilities/armorUtilities'
 
 interface ViewRequest extends Request {
     params: {
@@ -23,8 +24,9 @@ export async function getCharacter(request: ViewRequest, response: Response) {
 
     const [nativeLanguage] = await query(skillSQL.nativeLanguage, characterId)
 
+    const [rawArmorInfo] = await query(combatSQL.armor, characterId)
+
     // TODO 
-    //      Armor Info
     //      Shield Info
     //      Weapon Info
     //      Calculate Weapons
@@ -133,42 +135,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                 adepts: skilladept
             },
             combatWorkspaceInfo: {
-                armorInfo: {
-                    name: '',
-                    dr: '',
-                    skillAdj: 0,
-                    bonus: '',
-                    modifiers: {
-                        def: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        },
-                        fat: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        },
-                        rcv: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        },
-                        init: {
-                            base: 0,
-                            skill: 0,
-                            misc: 0,
-                            // TODO calculate
-                            total: 0
-                        }
-                    }
-                },
+                armorInfo: formatArmor(rawArmorInfo),
                 shieldInfo: {
                     name: '',
                     dr: '',
