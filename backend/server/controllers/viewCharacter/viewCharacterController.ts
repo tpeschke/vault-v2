@@ -19,6 +19,8 @@ import { formatArmor } from './utilities/armorUtilities'
 import { formatShield } from './utilities/shieldUtilities'
 import { checkForContentTypeBeforeSending } from '../common/sendingFunctions'
 import { formatWeapon } from './utilities/weaponUtilities'
+import formatWeaponTable from '@vault/common/utilities/v1/weaponTable'
+import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces'
 
 interface ViewRequest extends Request {
     params: {
@@ -43,16 +45,6 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     const [rawShieldInfo] = await query(combatSQL.shield, characterId)
     const shieldInfo = formatShield(rawShieldInfo)
 
-    const [rawWeapon1] = await query(combatSQL.weapon1, characterId)
-    const [rawWeapon2] = await query(combatSQL.weapon2, characterId)
-    const [rawWeapon3] = await query(combatSQL.weapon3, characterId)
-    const [rawWeapon4] = await query(combatSQL.weapon4, characterId)
-
-    const weapon1 = formatWeapon(rawWeapon1)
-    const weapon2 = formatWeapon(rawWeapon2)
-    const weapon3 = formatWeapon(rawWeapon3)
-    const weapon4 = formatWeapon(rawWeapon4)
-
     const strSkillMod = getSkillMod(str)
     const dexSkillMod = getSkillMod(dex)
     const conSkillMod = getSkillMod(con)
@@ -60,13 +52,72 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     const willSkillMod = getSkillMod(wis)
     const preSkillMod = getSkillMod(cha)
 
+    const skillSuites: SkillObject[] = (await query(skillSQL.skillSuites, characterId)).map(skillSuite => {
+        const { istrained } = skillSuite
+        return {
+            ...skillSuite,
+            isTrained: istrained,
+            mod: getSkillSuiteMod(skillSuite.skill, strSkillMod, dexSkillMod, conSkillMod, intSkillMod, willSkillMod, preSkillMod)
+        }
+    })
+    const advancedSkills = await query(skillSQL.skills, characterId)
+
+    const initiativeSkillMod = findInitiativeSkillMod(skillSuites[4], advancedSkills)
+    const quarterMasteringMod = findCarryFromQuarterMastering(skillSuites[4], advancedSkills)
+
     const atkCombatMod = getAttackMod(dex, int)
     const defCombatMod = getDefenseMod(dex, wis)
     const damCombatMod = getDamageMod(str)
     const recCombatMod = getRecoveryMod(str)
 
-    // TODO 
-    //      Calculate Weapons
+    const [rawWeapon1] = await query(combatSQL.weapon1, characterId)
+    const weapon1 = formatWeaponTable(
+        formatWeapon(rawWeapon1),
+        armorInfo,
+        shieldInfo,
+        initiativeSkillMod,
+        atkCombatMod,
+        defCombatMod,
+        damCombatMod,
+        recCombatMod
+    )
+
+    const [rawWeapon2] = await query(combatSQL.weapon2, characterId)
+    const weapon2 = formatWeaponTable(
+        formatWeapon(rawWeapon2),
+        armorInfo,
+        shieldInfo,
+        initiativeSkillMod,
+        atkCombatMod,
+        defCombatMod,
+        damCombatMod,
+        recCombatMod
+    )
+
+    const [rawWeapon3] = await query(combatSQL.weapon3, characterId)
+    const weapon3 = formatWeaponTable(
+        formatWeapon(rawWeapon3),
+        armorInfo,
+        shieldInfo,
+        initiativeSkillMod,
+        atkCombatMod,
+        defCombatMod,
+        damCombatMod,
+        recCombatMod
+    )
+
+
+    const [rawWeapon4] = await query(combatSQL.weapon4, characterId)
+    const weapon4 = formatWeaponTable(
+        formatWeapon(rawWeapon4),
+        armorInfo,
+        shieldInfo,
+        initiativeSkillMod,
+        atkCombatMod,
+        defCombatMod,
+        damCombatMod,
+        recCombatMod
+    )
 
     const character: CharacterVersion1 = {
         version: 1,
@@ -107,8 +158,12 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                 }
             },
             rightColumnInfo: {
-                // TODO calculate
-                weapons: [],
+                weapons: [
+                    weapon1,
+                    weapon2,
+                    weapon3,
+                    weapon4
+                ],
                 maxRange: maxrange,
                 favorInfo: {
                     favor: currentfavor,
@@ -141,23 +196,16 @@ export async function getCharacter(request: ViewRequest, response: Response) {
         pageTwoInfo: {
             gearInfo: {
                 copper, silver, gold, platinum,
-                carry: getCarry(str),
+                carry: getCarry(str) + quarterMasteringMod,
                 gear: await query(viewSQL.gear, characterId)
             },
             skillInfo: {
-                skillSuites: (await query(skillSQL.skillSuites, characterId)).map(skillSuite => {
-                    const { istrained } = skillSuite
-                    return {
-                        ...skillSuite,
-                        isTrained: istrained,
-                        mod: getSkillSuiteMod(skillSuite.skill, strSkillMod, dexSkillMod, conSkillMod, intSkillMod, willSkillMod, preSkillMod)
-                    }
-                }),
+                skillSuites,
                 nativeLanguage: {
                     ...nativeLanguage,
                     mod: intSkillMod
                 },
-                advancedSkills: await query(skillSQL.skills, characterId),
+                advancedSkills,
                 checkMods: {
                     str: strSkillMod,
                     dex: dexSkillMod,
@@ -199,4 +247,24 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     }
 
     checkForContentTypeBeforeSending(response, character)
+}
+
+function findInitiativeSkillMod(strategySuite: SkillObject, advancedSkills: SkillObject[]): number {
+    const initiativeSkill = advancedSkills.find(({skill}) => skill.toUpperCase() === 'INITIATIVE')
+
+    if (initiativeSkill) {
+        return initiativeSkill.rank + initiativeSkill.mod
+    }
+
+    return strategySuite.isTrained ? strategySuite.rank + strategySuite.mod : 0
+}
+
+function findCarryFromQuarterMastering(strategySuite: SkillObject, advancedSkills: SkillObject[]): number {
+    const quarterMasteringSkill = advancedSkills.find(({skill}) => skill.toUpperCase() === 'QUARTERMASTERING' || skill.toUpperCase() === 'QUARTER MASTERING')
+
+    if (quarterMasteringSkill) {
+        return quarterMasteringSkill.rank + quarterMasteringSkill.mod
+    }
+
+    return strategySuite.isTrained ? strategySuite.rank + strategySuite.mod : 0
 }
