@@ -9,6 +9,7 @@ import getAttackMod from '@vault/common/dictionaries/v1/combatMods/AttackMod'
 import getDefenseMod from '@vault/common/dictionaries/v1/combatMods/DefenseMod'
 import getDamageMod from '@vault/common/dictionaries/v1/combatMods/DamageMod'
 import getRecoveryMod from '@vault/common/dictionaries/v1/combatMods/RecoveryMod'
+import getSkillSuiteMod from '@vault/common/dictionaries/v1/skillSuiteMod'
 import viewSQL from '../../db/queries/v1/view/basic'
 import socialSQL from '../../db/queries/v1/view/social'
 import skillSQL from '../../db/queries/v1/view/skills'
@@ -37,8 +38,10 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     const [nativeLanguage] = await query(skillSQL.nativeLanguage, characterId)
 
     const [rawArmorInfo] = await query(combatSQL.armor, characterId)
+    const armorInfo = formatArmor(rawArmorInfo)
 
     const [rawShieldInfo] = await query(combatSQL.shield, characterId)
+    const shieldInfo = formatShield(rawShieldInfo)
 
     const [rawWeapon1] = await query(combatSQL.weapon1, characterId)
     const [rawWeapon2] = await query(combatSQL.weapon2, characterId)
@@ -123,8 +126,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                     nerve: stressthreshold,
                     stress: currentstress,
                     relaxation: relaxation,
-                    // TODO calculate
-                    fatigue: 0,
+                    fatigue: 1 + armorInfo.modifiers.fat.total,
                     wounds: await query(viewSQL.wounds, characterId),
                     sizeMod: sizemod
                 }
@@ -144,10 +146,11 @@ export async function getCharacter(request: ViewRequest, response: Response) {
             },
             skillInfo: {
                 skillSuites: (await query(skillSQL.skillSuites, characterId)).map(skillSuite => {
-                    // TODO mod calculate
+                    const { istrained } = skillSuite
                     return {
                         ...skillSuite,
-                        isTrained: skillSuite.istrained
+                        isTrained: istrained,
+                        mod: getSkillSuiteMod(skillSuite.skill, strSkillMod, dexSkillMod, conSkillMod, intSkillMod, willSkillMod, preSkillMod)
                     }
                 }),
                 nativeLanguage: {
@@ -166,8 +169,8 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                 adepts: skilladept
             },
             combatWorkspaceInfo: {
-                armorInfo: formatArmor(rawArmorInfo),
-                shieldInfo: formatShield(rawShieldInfo),
+                armorInfo,
+                shieldInfo,
                 weaponInfo: [
                     formatWeapon(weapon1),
                     formatWeapon(weapon2),
