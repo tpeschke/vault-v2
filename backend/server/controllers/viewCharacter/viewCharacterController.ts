@@ -40,10 +40,27 @@ export async function getCharacter(request: ViewRequest, response: Response) {
 
     const [rawShieldInfo] = await query(combatSQL.shield, characterId)
 
-    const [weapon1] = await query(combatSQL.weapon1, characterId)
-    const [weapon2] = await query(combatSQL.weapon2, characterId)
-    const [weapon3] = await query(combatSQL.weapon3, characterId)
-    const [weapon4] = await query(combatSQL.weapon4, characterId)
+    const [rawWeapon1] = await query(combatSQL.weapon1, characterId)
+    const [rawWeapon2] = await query(combatSQL.weapon2, characterId)
+    const [rawWeapon3] = await query(combatSQL.weapon3, characterId)
+    const [rawWeapon4] = await query(combatSQL.weapon4, characterId)
+
+    const weapon1 = formatWeapon(rawWeapon1)
+    const weapon2 = formatWeapon(rawWeapon2)
+    const weapon3 = formatWeapon(rawWeapon3)
+    const weapon4 = formatWeapon(rawWeapon4)
+
+    const strSkillMod = getSkillMod(str)
+    const dexSkillMod = getSkillMod(dex)
+    const conSkillMod = getSkillMod(con)
+    const intSkillMod = getSkillMod(int)
+    const willSkillMod = getSkillMod(wis)
+    const preSkillMod = getSkillMod(cha)
+
+    const atkCombatMod = getAttackMod(dex, int)
+    const defCombatMod = getDefenseMod(dex, wis)
+    const damCombatMod = getDamageMod(str)
+    const recCombatMod = getRecoveryMod(str)
 
     // TODO 
     //      Calculate Weapons
@@ -128,21 +145,23 @@ export async function getCharacter(request: ViewRequest, response: Response) {
             skillInfo: {
                 skillSuites: (await query(skillSQL.skillSuites, characterId)).map(skillSuite => {
                     // TODO mod calculate
-                    return { ...skillSuite, isTrained: skillSuite.istrained }
+                    return {
+                        ...skillSuite,
+                        isTrained: skillSuite.istrained
+                    }
                 }),
                 nativeLanguage: {
                     ...nativeLanguage,
-                    // TODO calculate
-                    mod: 0
+                    mod: intSkillMod
                 },
                 advancedSkills: await query(skillSQL.skills, characterId),
                 checkMods: {
-                    str: getSkillMod(str),
-                    dex: getSkillMod(dex),
-                    con: getSkillMod(con),
-                    int: getSkillMod(int),
-                    will: getSkillMod(wis),
-                    pre: getSkillMod(cha)
+                    str: strSkillMod,
+                    dex: dexSkillMod,
+                    con: conSkillMod,
+                    int: intSkillMod,
+                    will: willSkillMod,
+                    pre: preSkillMod
                 },
                 adepts: skilladept
             },
@@ -153,14 +172,14 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                     formatWeapon(weapon1),
                     formatWeapon(weapon2),
                     formatWeapon(weapon3),
-                    formatWeapon(weapon4),
+                    formatWeapon(weapon4)
                 ],
                 combatSkillInfo: {
                     combatStatModifiers: {
-                        atk: getAttackMod(dex, int),
-                        def: getDefenseMod(dex, wis),
-                        dam: getDamageMod(str),
-                        rec: getRecoveryMod(str)
+                        atk: atkCombatMod,
+                        def: defCombatMod,
+                        dam: damCombatMod,
+                        rec: recCombatMod
                     },
                     martialAdepts: martialadept,
                     combatSkillSuites: (await query(combatSQL.skillSuites, characterId)).map(skillSuite => {
