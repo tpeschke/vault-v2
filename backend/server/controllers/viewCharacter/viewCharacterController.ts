@@ -1,5 +1,14 @@
 import { Response, Request } from '../../interfaces/apiInterfaces'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
+import getCrPToNextLevel from '@vault/common/dictionaries/v1/crpToNextLevel'
+import getMinVitality from '@vault/common/dictionaries/v1/minVitality'
+import getMinNerve from '@vault/common/dictionaries/v1/minNerve'
+import getCarry from '@vault/common/dictionaries/v1/carry'
+import getSkillMod from '@vault/common/dictionaries/v1/skillMod'
+import getAttackMod from '@vault/common/dictionaries/v1/combatMods/AttackMod'
+import getDefenseMod from '@vault/common/dictionaries/v1/combatMods/DefenseMod'
+import getDamageMod from '@vault/common/dictionaries/v1/combatMods/DamageMod'
+import getRecoveryMod from '@vault/common/dictionaries/v1/combatMods/RecoveryMod'
 import viewSQL from '../../db/queries/v1/view/basic'
 import socialSQL from '../../db/queries/v1/view/social'
 import skillSQL from '../../db/queries/v1/view/skills'
@@ -51,8 +60,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                 subclass: secondarya,
                 crpUnspent: crp,
                 crpSpent: excurrent,
-                // TODO calculate
-                crpToNextLevel: 0
+                crpToNextLevel: getCrPToNextLevel(level)
             },
             leftColumnInfo: {
                 statInfo: {
@@ -91,11 +99,9 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                     vitality,
                     vitalityNNerveCalcInfo: {
                         vitalityDie: vitalitydice,
-                        // TODO calculate
-                        minVitality: 0,
+                        minVitality: getMinVitality(con),
                         nerveDie: stressdie,
-                        // TODO calculate
-                        minNerve: 0
+                        minNerve: getMinNerve(wis)
                     },
                     nerve: stressthreshold,
                     stress: currentstress,
@@ -116,8 +122,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
         pageTwoInfo: {
             gearInfo: {
                 copper, silver, gold, platinum,
-                // TODO calculate
-                carry: 0,
+                carry: getCarry(str),
                 gear: await query(viewSQL.gear, characterId)
             },
             skillInfo: {
@@ -131,14 +136,13 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                     mod: 0
                 },
                 advancedSkills: await query(skillSQL.skills, characterId),
-                // TODO calculate
                 checkMods: {
-                    str: 0,
-                    dex: 0,
-                    con: 0,
-                    int: 0,
-                    will: 0,
-                    pre: 0
+                    str: getSkillMod(str),
+                    dex: getSkillMod(dex),
+                    con: getSkillMod(con),
+                    int: getSkillMod(int),
+                    will: getSkillMod(wis),
+                    pre: getSkillMod(cha)
                 },
                 adepts: skilladept
             },
@@ -152,12 +156,11 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                     formatWeapon(weapon4),
                 ],
                 combatSkillInfo: {
-                    // TODO calculate
                     combatStatModifiers: {
-                        atk: 0,
-                        def: 0,
-                        dam: 0,
-                        rec: 0
+                        atk: getAttackMod(dex, int),
+                        def: getDefenseMod(dex, wis),
+                        dam: getDamageMod(str),
+                        rec: getRecoveryMod(str)
                     },
                     martialAdepts: martialadept,
                     combatSkillSuites: (await query(combatSQL.skillSuites, characterId)).map(skillSuite => {
