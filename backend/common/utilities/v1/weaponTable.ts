@@ -59,8 +59,10 @@ function getWeaponName(weapon: string | null, armor: string | null, shield: stri
     return name
 }
 
-function getExtraDamage(type: string = 'C', damageSkillTotal: number): string {
-    switch (type.toLowerCase()) {
+function getExtraDamage(type: string, damageSkillTotal: number): string {
+    type = type ?? 'C'
+
+    switch (type.toUpperCase()) {
         case 'C':
             return ' ' + getCrushingDamage(damageSkillTotal)
         case 'P':
@@ -110,7 +112,9 @@ function getSlashingDamage(damageSkillTotal: number): string {
     return diceSizeDictionary[leftOverDie]
 }
 
-function getRecoveryModFromSize(recoveryMod: number, size: string = 'S'): number {
+function getRecoveryModFromSize(recoveryMod: number, size: string): number {
+    size = size ?? 'S'
+    
     switch (size.toUpperCase()) {
         case 'S':
             return recoveryMod

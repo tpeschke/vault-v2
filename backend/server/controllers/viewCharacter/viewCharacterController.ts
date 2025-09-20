@@ -255,7 +255,6 @@ function findInitiativeSkillMod(strategySuite: SkillObject, advancedSkills: Skil
     if (initiativeSkill) {
         return initiativeSkill.rank + initiativeSkill.mod
     }
-
     return strategySuite.isTrained ? strategySuite.rank + strategySuite.mod : 0
 }
 
