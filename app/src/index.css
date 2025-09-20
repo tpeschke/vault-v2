@@ -166,3 +166,11 @@ textarea {
 textarea:hover {
   background: rgba(173, 216, 230, 0.5) !important;
 }
+
+.view-quick-edit input, .view-quick-edit textarea, .view-quick-edit .fake-button, .view-quick-edit button {
+  background: rgba(173, 216, 230) !important;
+}
+
+.view-quick-edit input:hover, .view-quick-edit textarea:hover, .view-quick-edit .fake-button:hover, .view-quick-edit button:hover {
+  background: rgb(145, 181, 194) !important;
+}
