@@ -1,9 +1,18 @@
-interface Props {
+import { IntegrityInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
+import { useEffect, useState } from "react"
 
+interface Props {
+    integrityInfo: IntegrityInfo
 }
 
-export default function IntegrityDisplay({}: Props) {
-    const integrity = 9
+export default function IntegrityDisplay({ integrityInfo }: Props) {
+    const { integrity, gritDie } = integrityInfo
+
+    const [leftPosition, setLeftPosition] = useState(21)
+
+    useEffect(() => {
+        setLeftPosition(getLeftPosition(integrity))
+    }, [integrity])
 
     function getLeftPosition(integrity: number): number {
         if (integrity <= 5) {
@@ -21,7 +30,6 @@ export default function IntegrityDisplay({}: Props) {
         }
     }
 
-    
     function placeholderFunction() {
 
     }
@@ -33,7 +41,7 @@ export default function IntegrityDisplay({}: Props) {
                 <strong>Integrity</strong>
             </span>
             <div>
-                <div className="circle" style={{left: `${getLeftPosition(integrity)}px`}}></div>
+                <div className="circle" style={{ left: `${leftPosition}px` }}></div>
                 <p>0-5 N/A</p>
                 <p>6-10 d4!</p>
                 <p>11-15 d6!</p>
@@ -42,7 +50,7 @@ export default function IntegrityDisplay({}: Props) {
             </div>
             <span>
                 <strong>Grit Dice</strong>
-                <input onChange={placeholderFunction} defaultValue={1} />
+                <input onChange={placeholderFunction} defaultValue={gritDie} />
             </span>
         </div>
     )

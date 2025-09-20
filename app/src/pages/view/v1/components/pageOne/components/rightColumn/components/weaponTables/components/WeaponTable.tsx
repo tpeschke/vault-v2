@@ -1,35 +1,39 @@
+import { WeaponTable } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import '../WeaponsTables.css'
 
 interface Props {
+    weapon: WeaponTable,
     weaponPosition: number
 }
 
-export default function WeaponsTable({ weaponPosition }: Props) {
-    const isRanged = weaponPosition === 4
+export default function WeaponsTable({ weapon, weaponPosition }: Props) {
+    const { name, attacks, defenses } = weapon
+    const { meas, atk, damage, type, rec, init } = attacks
+    const { def, flanks, parry, cover, parryDR, dr } = defenses
 
-    // ADD FLANKS
+    const isRanged = weaponPosition === 4
 
     return (
         <div className='weapons-table-shell'>
-            <p>Long Sword</p>
+            <p>{name}</p>
             <div>
                 <div className='weapon-table-column'>
                     <h4>Attacks</h4>
-                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', 3.75)}
-                    {WeaponTableRow('Atk', 1)}
-                    {DamageRow('3d3! +1d4! -2', isRanged)}
-                    {WeaponTableRow('Type', 'S')}
-                    {WeaponTableRow('Rec', 15)}
-                    {WeaponTableRow('Init', 5)}
+                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', meas)}
+                    {WeaponTableRow('Atk', atk)}
+                    {DamageRow(damage, isRanged)}
+                    {WeaponTableRow('Type', type)}
+                    {WeaponTableRow('Rec', rec)}
+                    {WeaponTableRow('Init', init)}
                 </div>
                 <div className='weapon-table-column'>
                     <h4>Defenses</h4>
-                    {WeaponTableRow('Def', 0)}
-                    {WeaponTableRow('Flanks', 1)}
-                    {WeaponTableRow('Parry', 8)}
-                    {DoubleWeaponRow('Cover', 0)}
-                    {DoubleWeaponRow('Parry DR', '2/d')}
-                    {DoubleWeaponRow('DR', '1/d+3')}
+                    {WeaponTableRow('Def', def)}
+                    {WeaponTableRow('Flanks', flanks)}
+                    {WeaponTableRow('Parry', parry)}
+                    {DoubleWeaponRow('Cover', cover)}
+                    {DoubleWeaponRow('Parry DR', parryDR)}
+                    {DoubleWeaponRow('DR', dr)}
                 </div>
             </div>
         </div>

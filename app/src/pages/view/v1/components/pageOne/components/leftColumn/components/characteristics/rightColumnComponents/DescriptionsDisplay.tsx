@@ -1,26 +1,11 @@
-import { PairObject } from "@vault/common/interfaces/characterInterfaces"
+import { PairObject } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import DisplayArray from "../../../../../../../../../../components/displayArray/DisplayArray"
 
 interface Props {
-
+    descriptions: PairObject[]
 }
 
-export default function DescriptionsDisplay({ }: Props) {
-    const descriptions: PairObject[] = [
-        {
-            title: 'Tall',
-            value: 4
-        },
-        {
-            title: null,
-            value: 2
-        },
-        {
-            title: 'Unattached',
-            value: 2
-        }
-    ]
-
+export default function DescriptionsDisplay({ descriptions }: Props) {
     return (
         <div className="descriptions-shell">
             <h3>Descriptions</h3>

@@ -15,7 +15,7 @@ export default function TextArea({ lines, value }: Props) {
             <div>
                 {[...Array(lines).keys()].map((_, index) => <p key={index}></p>)}
             </div>
-            <textarea onChange={placeholder} value={value} style={{height: `${(lines * 19) - 4}px`}} />
+            <textarea onChange={placeholder} value={value != '0' ? value : undefined} style={{height: `${(lines * 19) - 4}px`}} />
         </div>
     )
 }

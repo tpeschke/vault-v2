@@ -14,10 +14,10 @@ export default function PageOne({ pageOneInfo }: Props) {
 
     return (
         <div className='page-shell page card page-one'>
-            <GeneralInfo generalInfo={generalInfo}/>
+            <GeneralInfo generalInfo={generalInfo} />
             <div className='page-one-columns'>
-                <LeftColumn />
-                <RightColumn />
+                <LeftColumn leftColumnInfo={leftColumnInfo} />
+                <RightColumn rightColumnInfo={rightColumnInfo} />
             </div>
             <AbilitiesNBurdensDisplay />
         </div>

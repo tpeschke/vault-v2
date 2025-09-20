@@ -1,33 +1,37 @@
-interface Props {
+import { StatsInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 
+interface Props {
+    statInfo: StatsInfo
 }
 
-export default function StatsDisplay({ }: Props) {
+export default function StatsDisplay({ statInfo }: Props) {
+    const { str, dex, con, int, will, pre } = statInfo
+
     return (
         <div className="stats-shell false-table">
             <h2>Stats</h2>
             <span>
-                <p>1</p>
+                <p>{str}</p>
                 <strong>Str</strong>
             </span>
             <span>
-                <p>2</p>
+                <p>{dex}</p>
                 <strong>Dex</strong>
             </span>
             <span>
-                <p>3</p>
+                <p>{con}</p>
                 <strong>Con</strong>
             </span>
             <span>
-                <p>1</p>
+                <p>{int}</p>
                 <strong>Int</strong>
             </span>
             <span>
-                <p>1</p>
+                <p>{will}</p>
                 <strong>Will</strong>
             </span>
             <span>
-                <p>1</p>
+                <p>{pre}</p>
                 <strong>Pre</strong>
             </span>
         </div>

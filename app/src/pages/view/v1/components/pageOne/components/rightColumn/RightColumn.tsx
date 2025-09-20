@@ -1,3 +1,4 @@
+import { RightColumnInfo } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import FavorDisplay from './components/favorVitalityNRanges/FavorDisplay'
 import RangeDisplay from './components/favorVitalityNRanges/RangeDisplay'
 import VitalityNNerveCalcDisplay from './components/favorVitalityNRanges/VitalityNNerveCalcDisplay'
@@ -7,13 +8,15 @@ import WeaponsTables from './components/weaponTables/WeaponsTables'
 import './RightColumn.css'
 
 interface Props {
-
+    rightColumnInfo: RightColumnInfo
 }
 
-export default function RightColumn({ }: Props) {
+export default function RightColumn({ rightColumnInfo }: Props) {
+    const { weapons, maxRange, favorInfo, nerveAndVitalityInfo } = rightColumnInfo
+
     return (
         <div className='right'>
-            <WeaponsTables />
+            <WeaponsTables weapons={weapons}/>
             <div className="columns">
                 <div className='left'>
                     <FavorDisplay />

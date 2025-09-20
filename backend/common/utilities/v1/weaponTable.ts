@@ -22,12 +22,14 @@ export default function formatWeaponTable(
     const { name: shieldName, dr: shieldParryDR, cover, flanks, modifiers: shieldMods } = shieldInfo
     const { def: shieldDef, pry: shieldParry } = shieldMods
 
+    const weaponDamage = damage ?? ''
+
     return {
         name: getWeaponName(weaponName, armorName, shieldName),
         attacks: {
             meas: measure,
             atk: atkMod + atk.total,
-            damage: damage + ` +${damMod}` + getExtraDamage(type, dam.total),
+            damage: weaponDamage + ` +${damMod}` + getExtraDamage(type, dam.total),
             type,
             rec: recovery + weaponSkillRec.total + armorSkillRec.total + getRecoveryModFromSize(recMod, size),
             init: 5 + Math.floor(initSkill / 2) + init.total
@@ -36,7 +38,7 @@ export default function formatWeaponTable(
             def: defMod + armorDef.total + shieldDef.total,
             flanks: flanks ?? 1,
             parry: shieldParry.total ?? pry.total,
-            cover,
+            cover: cover ?? '0',
             parryDR: shieldParryDR ?? '2/d',
             dr: dr ?? '0'
         }
@@ -48,18 +50,24 @@ function getWeaponName(weapon: string | null, armor: string | null, shield: stri
 
     if (weapon) { name += weapon }
 
-    if (name.length > 0) { name += ', ' }
+    if (armor) {
+        if (name.length > 0) { name += ', ' }
+        name += armor
+    }
 
-    if (armor) { name += armor }
-
-    if (name.length > 0) { name += ', ' }
-
-    if (shield) { name += shield }
+    if (shield) {
+        if (name.length > 0) { name += ', ' }
+        name += shield
+    }
 
     return name
 }
 
 function getExtraDamage(type: string, damageSkillTotal: number): string {
+    if (damageSkillTotal === 0) {
+        return ''
+    }
+
     type = type ?? 'C'
 
     switch (type.toUpperCase()) {
@@ -114,7 +122,7 @@ function getSlashingDamage(damageSkillTotal: number): string {
 
 function getRecoveryModFromSize(recoveryMod: number, size: string): number {
     size = size ?? 'S'
-    
+
     switch (size.toUpperCase()) {
         case 'S':
             return recoveryMod

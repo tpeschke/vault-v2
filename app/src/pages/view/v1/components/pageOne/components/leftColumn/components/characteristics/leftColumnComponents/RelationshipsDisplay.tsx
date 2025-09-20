@@ -1,22 +1,11 @@
-import { PairObject } from "@vault/common/interfaces/characterInterfaces"
+import { PairObject } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import DisplayArray from "../../../../../../../../../../components/displayArray/DisplayArray"
 
 interface Props {
-
+    relationships: PairObject[]
 }
 
-export default function RelationshipsDisplay({ }: Props) {
-    const relationships: PairObject[] = [
-        {
-            title: 'Drive to Create',
-            value: 2
-        },
-        {
-            title: "Trusts Jeremy's Character",
-            value: 6
-        }
-    ]
-
+export default function RelationshipsDisplay({ relationships }: Props) {
     return (
         <div className="relationships-shell">
             <h3>Relationships</h3>

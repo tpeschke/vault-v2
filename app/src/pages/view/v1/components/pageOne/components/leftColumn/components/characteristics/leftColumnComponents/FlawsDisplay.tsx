@@ -1,16 +1,11 @@
+import { PairObject } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import DisplayArray from "../../../../../../../../../../components/displayArray/DisplayArray"
 
 interface Props {
-
+    flaws: PairObject[]
 }
 
-export default function FlawsDisplay({ }: Props) {
-    const flaws = [
-        'Cautious',
-        'Boundary Tester',
-        'Whiny Bitch'
-    ]
-
+export default function FlawsDisplay({ flaws }: Props) {
     return (
         <div className="flaws-shell">
             <h3>Flaws</h3>
