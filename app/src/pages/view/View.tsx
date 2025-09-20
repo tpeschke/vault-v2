@@ -22,7 +22,7 @@ export default function View({ setLoading, pathname }: Props) {
 
     return (
         <div className="home-shell">
-            <ViewVersionOne />
+            {character && <ViewVersionOne character={character} />}
         </div>
     )
 }

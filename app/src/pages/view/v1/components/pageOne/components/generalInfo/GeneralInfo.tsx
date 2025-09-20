@@ -1,11 +1,13 @@
 import './GeneralInfo.css'
 import logo from '../../../../../../../assets/images/logo-black.png'
+import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
 
 interface Props {
-
+    generalInfo: GeneralInfoDisplay
 }
 
-export default function GeneralInfo({ }: Props) {
+export default function GeneralInfo({ generalInfo }: Props) {
+    const { name, ancestry, class: primaryClass, subclass, level, crpUnspent, crpSpent, crpToNextLevel } = generalInfo
 
     function placeholderFunction() {
 
@@ -17,42 +19,42 @@ export default function GeneralInfo({ }: Props) {
                 <div>
                     <span className='name-info'>
                         <strong>Name</strong>
-                        <p>Weak Phineas</p>
+                        <p>{name}</p>
                     </span>
                     <span className='player-info'>
                         <strong>Player</strong>
-                        <p>?</p>
+                        <p> </p>
                     </span>
                 </div>
                 <div>
                     <span className='ancestry-info'>
                         <strong>Ancestry</strong>
-                        <p>Elf</p>
+                        <p>{ancestry}</p>
                     </span>
                     <span className='class-info'>
                         <strong>Class / Subclass</strong>
-                        <p>Weird-Adept</p>
+                        <p>{primaryClass}</p>
                         <strong>/</strong>
-                        <p>Weird-Adept</p>
+                        <p>{subclass}</p>
                     </span>
                     <span className='level-info'>
                         <strong>LvL</strong>
-                        <p>1</p>
+                        <p>{level}</p>
                     </span>
                 </div>
                 <div className='crp-shell'>
                     <strong>CrP</strong>
                     <span className='unspent-crp-info'>
                         <strong>Unspent</strong>
-                        <input onClick={placeholderFunction} defaultValue={0} />
+                        <input onClick={placeholderFunction} defaultValue={crpUnspent} />
                     </span>
                     <span className='spent-crp-info'>
                         <strong>Spent</strong>
-                        <input onClick={placeholderFunction} defaultValue={0} />
+                        <input onClick={placeholderFunction} defaultValue={crpSpent} />
                     </span>
                     <span className='to-next-level-info'>
                         <strong>Spent to Next LvL</strong>
-                        <p>53</p>
+                        <p>{crpToNextLevel}</p>
                     </span>
                 </div>
             </div>
