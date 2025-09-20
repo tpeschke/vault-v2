@@ -16,9 +16,9 @@ export default function View({ setLoading, pathname }: Props) {
         window.scrollTo(0, 0)
 
         if (setLoading) {
-            setLoading(true)
+            setLoading(!!character)
         }
-    }, [])
+    }, [character])
 
     return (
         <div className="home-shell">

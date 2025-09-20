@@ -13,7 +13,7 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
         axios.get(viewURL + characterID).then(({data}) => {
-            console.log(data)
+            setCharacter(data)
         })
     }, [pathname])
 
