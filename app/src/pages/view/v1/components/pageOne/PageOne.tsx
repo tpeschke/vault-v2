@@ -13,7 +13,7 @@ export default function PageOne({ pageOneInfo }: Props) {
     const { generalInfo, leftColumnInfo, rightColumnInfo, abilitiesNBurdensInfo } = pageOneInfo
 
     return (
-        <div className='page-shell page card page-one'>
+        <div className='page-shell page card page-one' id='page-one'>
             <GeneralInfo generalInfo={generalInfo} />
             <div className='page-one-columns'>
                 <LeftColumn leftColumnInfo={leftColumnInfo} />

@@ -8,7 +8,7 @@ interface Props {
 
 export default function PageThree({ generalNotes}: Props) {
     return (
-        <div className='page-shell page card page-three'>
+        <div className='page-shell page card page-three' id='page-three'>
             <GeneralInfoDisplay generalNotes={generalNotes}/>
         </div>
     )

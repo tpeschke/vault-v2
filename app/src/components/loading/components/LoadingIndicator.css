@@ -18,7 +18,7 @@
 }
 
 .loader.secondaryColor {
-    background: #795548;
+    background: white;
 }
 
 .loader::before {
@@ -35,7 +35,7 @@
 }
 
 .loader.secondaryColor::before {
-    background: #795548;
+    background: white;
 }
 
 .loader::after {
@@ -53,7 +53,7 @@
 }
 
 .loader.secondaryColor::after {
-    background: #FFF;
+    background: #06465b;
 }
 
 @keyframes rotationBack {
