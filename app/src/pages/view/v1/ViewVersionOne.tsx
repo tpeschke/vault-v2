@@ -7,10 +7,11 @@ import './ViewVersionOne.css'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
 import Loading from '../../../components/loading/Loading'
 import LoadingIndicator from '../../../components/loading/components/LoadingIndicator'
+import { DownloadCharacterFunction } from './hooks/characterHook'
 
 interface Props {
     character: CharacterVersion1,
-    downloadCharacter: () => void,
+    downloadCharacter: DownloadCharacterFunction,
     isDownloading: boolean
 }
 
@@ -21,9 +22,9 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
         setViewQuickEdit(!viewQuickEdit)
     }
 
-    function prepAndDownload() {
+    function prepAndDownload(isPregen: boolean) {
         setViewQuickEdit(false)
-        downloadCharacter()
+        downloadCharacter(isPregen)
     }
 
     const { pageOneInfo, pageTwoInfo, generalNotes, userInfo } = character

@@ -3,13 +3,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { viewURL } from "../../../../frontend-config";
 import jsPDF from "jspdf";
-import { getFileName, getPageImage, getWidthAndHeight } from "./utilities/downloadUtilities";
+import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
+import { delay } from '@vault/common/utilities/timingFunctions'
+import PageThree from "../components/pageThree/PageThree";
 
 interface CharacterHookReturn {
     character: CharacterVersion1 | null,
-    downloadCharacter: () => void,
+    downloadCharacter: DownloadCharacterFunction,
     isDownloading: boolean
 }
+
+export type DownloadCharacterFunction = (isPregen: boolean) => void
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [character, setCharacter] = useState<CharacterVersion1 | null>(null)
@@ -22,33 +26,59 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
     }, [pathname])
 
     const [isDownloading, setIsDownloading] = useState(false)
+    const [oldCharacter, setOldCharacter] = useState<CharacterVersion1 | null>(null)
 
-    async function downloadCharacter(): Promise<void> {
-        if (character) {
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-            setIsDownloading(true)
-
+    useEffect(() => {
+        if (isDownloading) {
             const pdf = new jsPDF("p", "mm", "letter");
             const widthAndHeight = getWidthAndHeight(pdf)
 
-            const pageOne = await getPageImage('page-one')
-            pdf.addImage(pageOne, 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+            if (character) {
+                let promiseArray: any[] = []
 
-            pdf.addPage(widthAndHeight);
-            const pageTwo = await getPageImage('page-two')
-            pdf.addImage(pageTwo, 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+                promiseArray.push(getPageImage('page-one'))
+                promiseArray.push(getPageImage('page-two'))
 
-            if (!character.generalNotes.isSecret || character.userInfo.ownsThisCharacter) {
-                pdf.addPage(widthAndHeight);
-                const pageThree = await getPageImage('page-three')
-                pdf.addImage(pageThree, 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+                if (!character?.generalNotes.isSecret || character.userInfo.ownsThisCharacter) {
+                    promiseArray.push(getPageImage('page-three'))
+                }
+
+                Promise.all(promiseArray).then(pages => {
+                    pdf.addImage(pages[0], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+
+                    pdf.addPage(widthAndHeight);
+                    pdf.addImage(pages[1], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+
+                    if (pages[2]) {
+                        pdf.addPage(widthAndHeight);
+                        pdf.addImage(pages[2], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+                    }
+
+                    const fileName = getFileName(character)
+
+                    pdf.save(`${fileName}.pdf`)
+
+                    if (oldCharacter) {
+                        setCharacter(oldCharacter)
+                    }
+
+                    setIsDownloading(false)
+                })
+            }
+        }
+    }, [isDownloading])
+
+    async function downloadCharacter(isPregen: boolean): Promise<void> {
+        if (character) {
+            let oldCharacter: CharacterVersion1 | null = null
+            if (isPregen) {
+                oldCharacter = { ...character }
+                setOldCharacter(oldCharacter)
+                setCharacter(getPregen(character))
             }
 
-            const fileName = getFileName(character)
-
-            pdf.save(`${fileName}.pdf`);
-            
-            setIsDownloading(false)
+            setIsDownloading(true)
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
         }
     }
 
