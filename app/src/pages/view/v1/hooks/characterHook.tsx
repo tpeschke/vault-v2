@@ -70,15 +70,15 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
 
     async function downloadCharacter(isPregen: boolean): Promise<void> {
         if (character) {
+            setIsDownloading(true)
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+
             let oldCharacter: CharacterVersion1 | null = null
             if (isPregen) {
                 oldCharacter = { ...character }
                 setOldCharacter(oldCharacter)
                 setCharacter(getPregen(character))
             }
-
-            setIsDownloading(true)
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
         }
     }
 
