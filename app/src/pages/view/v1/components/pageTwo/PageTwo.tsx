@@ -5,16 +5,17 @@ import SkillDisplay from './components/skills/SkillDisplay'
 import './PageTwo.css'
 
 interface Props {
-    pageTwoInfo: PageTwoInfo
+    pageTwoInfo: PageTwoInfo,
+    int: number
 }
 
-export default function PageTwo({ pageTwoInfo }: Props) {
+export default function PageTwo({ pageTwoInfo, int }: Props) {
     const { gearInfo, skillInfo, combatWorkspaceInfo } = pageTwoInfo
 
     return (
         <div className='page-shell page card page-two'>
             <GearDisplay gearInfo={gearInfo}/>
-            <SkillDisplay skillInfo={skillInfo}/>
+            <SkillDisplay skillInfo={skillInfo} int={int}/>
             <CombatInfoDisplay />
         </div>
     )

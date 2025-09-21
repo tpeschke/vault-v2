@@ -1,34 +1,18 @@
 import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces';
 import '../SkillDisplay.css'
+import { useEffect, useState } from 'react';
 
 interface Props {
-
+    advancedSkills: SkillObject[],
+    adepts: number
 }
 
-export default function AdvancedSkillDisplay({ }: Props) {
-    const skillAdept = 1;
-    const advancedSkills: SkillObject[] = [
-        {
-            skill: 'Investiture',
-            cost: 12,
-            rank: 8,
-            mod: 1
-        },
-        {
-            skill: 'Occultism',
-            cost: 12,
-            rank: 8,
-            mod: 1
-        },
-        {
-            skill: 'Sortilege',
-            cost: 12,
-            rank: 7,
-            mod: 1
-        }
-    ]
+export default function AdvancedSkillDisplay({ advancedSkills, adepts }: Props) {
+    const [leftOver, setLeftOver] = useState(0)
 
-    const leftOver = 26 - advancedSkills.length
+    useEffect(() => {
+        setLeftOver(28 - advancedSkills.length)
+    }, advancedSkills)
 
     return (
         <div className='advanced-skill-display'>
@@ -47,18 +31,18 @@ export default function AdvancedSkillDisplay({ }: Props) {
                 </span>
             </div>
             <div className='advanced-skill-shell'>
-                {advancedSkills.map((skill, index) => skillRow(skill, index, skillAdept))}
+                {advancedSkills.map((skill, index) => skillRow(skill, index, adepts))}
                 {[...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>
         </div>
     )
 }
 
-export function skillRow({ skill, cost, rank, mod }: SkillObject, index: number, skillAdept: number) {
+export function skillRow({ skill, cost, rank, mod }: SkillObject, index: number, adepts: number) {
     return (
         <span key={index} className='advanced-skill-row'>
             <p>{skill}</p>
-            <p>{cost + (rank * 2) - skillAdept}</p>
+            <p>{cost + (rank * 2) - adepts}</p>
             <p>{rank}</p>
             <p>{mod}</p>
         </span>

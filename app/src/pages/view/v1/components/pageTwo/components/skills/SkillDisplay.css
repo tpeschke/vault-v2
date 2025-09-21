@@ -10,10 +10,6 @@
     width: 33.3333%;
 }
 
-.skill-left-column-shell {
-    border-right: 2px solid #515151;
-}
-
 .advanced-skill-display {
     width: 66.666%;
 }
@@ -30,11 +26,12 @@
 .advanced-skill-shell {
     flex-direction: column;
     flex-wrap: wrap;
-    height: 234px;
+    height: 252px;
 }
 
 .advanced-skill-row {
-    width: 50%
+    width: 50%;
+    border-left: 2px solid #515151;
 }
 
 .advanced-skill-row:nth-child(even) {

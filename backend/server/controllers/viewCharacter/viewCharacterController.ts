@@ -53,7 +53,6 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     const preSkillMod = getSkillMod(cha)
 
     const skillSuites: SkillObject[] = (await query(skillSQL.skillSuites, characterId)).map(skillSuite => {
-        console.log(skillSuite)
         const { istrained } = skillSuite
         return {
             ...skillSuite,

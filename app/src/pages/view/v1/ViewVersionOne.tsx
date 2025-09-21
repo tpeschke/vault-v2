@@ -19,11 +19,13 @@ export default function ViewVersionOne({ character }: Props) {
 
     const { pageOneInfo, pageTwoInfo, generalNotes } = character
 
+    const int = pageOneInfo.leftColumnInfo.statInfo.int
+
     return (
         <div className='version-one-shell'>
             <div className={viewQuickEdit ? 'page-shell view-quick-edit' : 'page-shell'}>
                 <PageOne pageOneInfo={pageOneInfo} />
-                <PageTwo pageTwoInfo={pageTwoInfo} />
+                <PageTwo pageTwoInfo={pageTwoInfo} int={int}/>
                 <PageThree />
             </div>
             <Sidebar toggleViewQuickEdit={toggleViewQuickEdit} viewQuickEdit={viewQuickEdit}/>
