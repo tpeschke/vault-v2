@@ -1,40 +1,14 @@
+import { ShieldInfo } from '@vault/common/interfaces/v1/pageTwo/shieldInterfaces'
 import './ShieldWorkspace.css'
 
 interface Props {
-
+    shieldInfo: ShieldInfo
 }
 
-export default function ShieldWorkspace({ }: Props) {
-    // ADD FLANKS
-    
-    const shieldModifiers = {
-        def: {
-            base: -3,
-            skill: 4,
-            misc: 0,
-            total: 1
-        },
-        fat: {
-            base: -3,
-            skill: 4,
-            misc: 0,
-            total: 1
-        },
-        pry: {
-            base: -2,
-            skill: 4,
-            misc: undefined,
-            total: 2
-        },
-        brk: {
-            base: -2,
-            skill: 4,
-            misc: undefined,
-            total: 2
-        }
-    }
+export default function ShieldWorkspace({ shieldInfo }: Props) {
+    const {name, dr, size, cover, flanks, bonus, modifiers} = shieldInfo
 
-    const { def, fat, pry, brk } = shieldModifiers
+    const { def, fat, pry, brk } = modifiers
 
     function placeholderFunction() {
 
@@ -43,22 +17,26 @@ export default function ShieldWorkspace({ }: Props) {
     return (
         <div className='shield-workspace-shell'>
             <h3>Shield Workspace</h3>
-            <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Shield is Factored into Weapon Tables." className='workspace-button'>Hoplon</button>
+            <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Shield is Factored into Weapon Tables." className='workspace-button'>{name}</button>
             <span>
                 <strong>DR</strong>
-                <p>5 +6/d</p>
+                <p>{dr}</p>
             </span>
             <span>
                 <strong>Size</strong>
-                <p>M</p>
+                <p>{size}</p>
+            </span>
+            <span>
+                <strong>Flanks</strong>
+                <p>{flanks}</p>
             </span>
             <span>
                 <strong>Cover</strong>
-                <p>+5 (+15)</p>
+                <p>{cover}</p>
             </span>
             <span className='bonus-shell'>
                 <strong>Bonus</strong>
-                <p>This shield definitely has a bonus</p>
+                <p>{bonus}</p>
             </span>
             <table>
                 <thead>

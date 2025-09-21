@@ -1,38 +1,14 @@
+import { ArmorInfo } from '@vault/common/interfaces/v1/pageTwo/armorInterfaces'
 import './ArmorWorkspace.css'
 
 interface Props {
-
+    armorInfo: ArmorInfo
 }
 
-export default function ArmorWorkspace({ }: Props) {
-    const armorModifiers = {
-        def: {
-            base: -3,
-            skill: 4,
-            misc: 0,
-            total: 1
-        },
-        fat: {
-            base: -2,
-            skill: 4,
-            misc: undefined,
-            total: 2
-        },
-        rcv: {
-            base: 3,
-            skill: 4,
-            misc: 0,
-            total: 7
-        },
-        init: {
-            base: 2,
-            skill: 4,
-            misc: undefined,
-            total: 6
-        }
-    }
+export default function ArmorWorkspace({ armorInfo }: Props) {
+    const { name, dr, skillAdj, bonus, modifiers} = armorInfo
 
-    const { def, fat, rcv, init } = armorModifiers
+    const { def, fat, rec, init } = modifiers
     
     function placeholderFunction() {
 
@@ -41,25 +17,25 @@ export default function ArmorWorkspace({ }: Props) {
     return (
         <div className='armor-workspace-shell'>
             <h3>Armor Workspace</h3>
-            <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Armor is Factored into Weapon Tables." className='workspace-button'>Coat of Plates</button>
+            <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Armor is Factored into Weapon Tables." className='workspace-button'>{name}</button>
             <span>
                 <strong>DR</strong>
-                <p>5</p>
+                <p>{dr}</p>
             </span>
             <span>
                 <strong>Skill Adj</strong>
-                <p>-4</p>
+                <p>{skillAdj}</p>
             </span>
             <span className='bonus-shell'>
                 <strong>Bonus</strong>
-                <p>This armor definitely has a bonus</p>
+                <p>{bonus}</p>
             </span>
             <table>
                 <thead>
                     <tr>
                         <th>Def</th>
                         <th>Fat</th>
-                        <th>Rcv</th>
+                        <th>rec</th>
                         <th>Init</th>
                         <th> </th>
                     </tr>
@@ -68,14 +44,14 @@ export default function ArmorWorkspace({ }: Props) {
                     <tr>
                         <td>{def.base}</td>
                         <td>{fat.base}</td>
-                        <td>{rcv.base}</td>
+                        <td>{rec.base}</td>
                         <td>{init.base}</td>
                         <td><strong>Base</strong></td>
                     </tr>
                     <tr>
                         <td>{def.skill}</td>
                         <td>{fat.skill}</td>
-                        <td>{rcv.skill}</td>
+                        <td>{rec.skill}</td>
                         <td>{init.skill}</td>
                         <td><strong>Skill</strong></td>
                     </tr>
@@ -87,7 +63,7 @@ export default function ArmorWorkspace({ }: Props) {
                             <input onClick={placeholderFunction} defaultValue={fat.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={rcv.misc ?? undefined} />
+                            <input onClick={placeholderFunction} defaultValue={rec.misc ?? undefined} />
                         </td>
                         <td>
                             <input onClick={placeholderFunction} defaultValue={init.misc ?? undefined} />
@@ -97,7 +73,7 @@ export default function ArmorWorkspace({ }: Props) {
                     <tr className='total-row'>
                         <td>{def.total}</td>
                         <td>{fat.total}</td>
-                        <td>{rcv.total}</td>
+                        <td>{rec.total}</td>
                         <td>{init.total}</td>
                         <td><strong>Total</strong></td>
                     </tr>

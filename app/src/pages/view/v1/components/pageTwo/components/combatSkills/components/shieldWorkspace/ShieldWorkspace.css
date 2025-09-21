@@ -8,6 +8,7 @@
 .shield-workspace-shell>span {
     display: flex;
     align-items: center;
+    min-height: 20px;
 }
 
 .shield-workspace-shell>span:nth-child(even) {
@@ -26,7 +27,7 @@
 .shield-workspace-shell>span.bonus-shell {
     position: relative;
     display: unset;
-    height: 100px;
+    height: 80px;
 }
 
 .shield-workspace-shell>span.bonus-shell p {

@@ -29,6 +29,7 @@
     text-align: left;
     padding: 3px 5px;
     background: lightgray;
+    min-height: 21px;
 }
 
 .workspace-button:hover {

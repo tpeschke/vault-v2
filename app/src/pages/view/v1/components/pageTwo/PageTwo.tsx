@@ -16,7 +16,7 @@ export default function PageTwo({ pageTwoInfo, int }: Props) {
         <div className='page-shell page card page-two'>
             <GearDisplay gearInfo={gearInfo}/>
             <SkillDisplay skillInfo={skillInfo} int={int}/>
-            <CombatInfoDisplay />
+            <CombatInfoDisplay combatWorkspaceInfo={combatWorkspaceInfo}/>
         </div>
     )
 }

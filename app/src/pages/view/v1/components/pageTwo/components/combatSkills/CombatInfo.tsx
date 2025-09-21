@@ -1,3 +1,4 @@
+import { CombatWorkspaceInfo } from '@vault/common/interfaces/v1/pageTwo/pageTwoInterfaces'
 import './CombatInfo.css'
 import ArmorWorkspace from './components/armorWorkspace/ArmorWorkspace'
 import CombatSkillsArea from './components/combatSkillsArea/CombatSkillsArea'
@@ -5,15 +6,17 @@ import ShieldWorkspace from './components/shieldWorkspace/ShieldWorkspace'
 import WeaponWorkspace from './components/weaponWorkspace/WeaponWorkspace'
 
 interface Props {
-
+    combatWorkspaceInfo: CombatWorkspaceInfo
 }
 
-export default function CombatInfoDisplay({}: Props) {
+export default function CombatInfoDisplay({ combatWorkspaceInfo }: Props) {
+    const { armorInfo, shieldInfo, weaponInfo, combatSkillInfo } = combatWorkspaceInfo
+
     return (
         <div className='combat-skills-display-shell'>
             <div className='left'>
-                <ArmorWorkspace />
-                <ShieldWorkspace />
+                <ArmorWorkspace armorInfo={armorInfo}/>
+                <ShieldWorkspace shieldInfo={shieldInfo}/>
             </div>
             <div className='right'>
                 <CombatSkillsArea />
