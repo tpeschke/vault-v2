@@ -14,18 +14,20 @@ interface Props {
 export default function RightColumn({ rightColumnInfo }: Props) {
     const { weapons, maxRange, favorInfo, nerveAndVitalityInfo } = rightColumnInfo
 
+    const { vitalityNNerveCalcInfo } = nerveAndVitalityInfo
+
     return (
         <div className='right'>
             <WeaponsTables weapons={weapons}/>
             <div className="columns">
                 <div className='left'>
-                    <FavorDisplay />
-                    <VitalityNNerveCalcDisplay />
+                    <FavorDisplay favorInfo={favorInfo} />
+                    <VitalityNNerveCalcDisplay  vitalityNNerveCalcInfo={vitalityNNerveCalcInfo}/>
                 </div>
-                <RangeDisplay />
+                <RangeDisplay maxRange={maxRange} />
             </div>
-            <NerveDisplay />
-            <VitalityDisplay />
+            <NerveDisplay nerveAndVitalityInfo={nerveAndVitalityInfo}/>
+            <VitalityDisplay nerveAndVitalityInfo={nerveAndVitalityInfo}/>
         </div>
     )
 }

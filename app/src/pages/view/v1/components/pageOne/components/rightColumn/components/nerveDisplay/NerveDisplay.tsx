@@ -1,16 +1,29 @@
+import { NerveAndVitalityInfo } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import './NerveDisplay.css'
+import { useEffect, useState } from 'react'
 
 interface Props {
-
+    nerveAndVitalityInfo: NerveAndVitalityInfo
 }
 
-export default function NerveDisplay({ }: Props) {
-    const nerve = 44
-    const fatigue = 1
+export default function NerveDisplay({ nerveAndVitalityInfo }: Props) {
+    const { nerve, fatigue, stress, relaxation } = nerveAndVitalityInfo
 
-    const unsure = Math.ceil(nerve * .25)
-    const tense = Math.floor(nerve * .5)
-    const shaken = Math.ceil(nerve * .75)
+    const [unsure, setUnsure] = useState(0)
+    const [tense, setTense] = useState(0)
+    const [shaken, setShaken] = useState(0)
+
+    useEffect(() => {
+        setUnsure(Math.ceil(nerve * .25))
+        setTense(Math.floor(nerve * .5))
+        setShaken(Math.ceil(nerve * .75))
+    }, [nerve])
+
+    const [leftPosition, setLeftPosition] = useState(243)
+
+    useEffect(() => {
+        setLeftPosition(getLeftPosition(fatigue))
+    }, [fatigue])
 
     function getLeftPosition(fatigue: number): number {
         if (fatigue === 0) {
@@ -35,7 +48,7 @@ export default function NerveDisplay({ }: Props) {
             <div>
                 <h2>Nerve</h2>
                 <div className='nerve-categories-shell'>
-                    <div className='circle' style={{left: `${getLeftPosition(fatigue)}px`}}></div>
+                    <div className='circle' style={{ left: `${leftPosition}px` }}></div>
                     <span>
                         <strong>U</strong>
                         <p>1 - {unsure}</p>
@@ -56,11 +69,11 @@ export default function NerveDisplay({ }: Props) {
                 <div className='stress-n-relaxation-shell'>
                     <span>
                         <strong>Stress</strong>
-                        <input onClick={placeholderFunction} />
+                        <input onClick={placeholderFunction} value={stress} />
                     </span>
                     <span>
                         <strong>Relaxation</strong>
-                        <input onClick={placeholderFunction} />
+                        <input onClick={placeholderFunction} value={relaxation} />
                     </span>
                 </div>
             </div>

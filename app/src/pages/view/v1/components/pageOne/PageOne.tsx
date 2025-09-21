@@ -19,7 +19,7 @@ export default function PageOne({ pageOneInfo }: Props) {
                 <LeftColumn leftColumnInfo={leftColumnInfo} />
                 <RightColumn rightColumnInfo={rightColumnInfo} />
             </div>
-            <AbilitiesNBurdensDisplay />
+            <AbilitiesNBurdensDisplay abilitiesNBurdensInfo={abilitiesNBurdensInfo}/>
         </div>
     )
 }

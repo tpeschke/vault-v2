@@ -1,32 +1,42 @@
-import { Wound } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
+import { NerveAndVitalityInfo, Wound } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import './VitalityDisplay.css'
+import { useEffect, useState } from 'react'
 
 interface Props {
-
+    nerveAndVitalityInfo: NerveAndVitalityInfo
 }
 
-export default function VitalityDisplay({ }: Props) {
-    const vitality = 44
-    const fatigue = 1
-    const wounds = [
-        {
-            severity: 15,
-            days: 15
-        },
-        {
-            severity: 7,
-            days: 4
-        }
-    ]
-    const totalDamage = wounds.reduce((total, wound) => {
-        return total + wound.severity
-    }, 0)
+export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
+    const { vitality, fatigue, wounds, sizeMod } = nerveAndVitalityInfo
 
-    const hurt = Math.ceil(vitality * .25)
-    const bloodied = Math.floor(vitality * .5)
-    const wounded = Math.ceil(vitality * .75)
+    const [hurt, setHurt] = useState(0)
+    const [bloodied, setBloodied] = useState(0)
+    const [wounded, setWounded] = useState(0)
 
-    const leftOver = 9 - wounds.length
+    useEffect(() => {
+        setHurt(Math.ceil(vitality * .25))
+        setBloodied(Math.floor(vitality * .5))
+        setWounded(Math.ceil(vitality * .75))
+    }, [vitality])
+
+    const [totalDamage, setTotalDamage] = useState(0)
+    const [leftOver, setLeftOver] = useState(0)
+
+    useEffect(() => {
+        const totalDamage = wounds.reduce((total, wound) => {
+            return total + wound.severity
+        }, 0)
+
+        setTotalDamage(totalDamage)
+
+        setLeftOver(9 - wounds.length)
+    }, [wounds])
+
+    const [leftPosition, setLeftPosition] = useState(243)
+
+    useEffect(() => {
+        setLeftPosition(getLeftPosition(fatigue))
+    }, [fatigue])
 
     function getLeftPosition(fatigue: number): number {
         if (fatigue === 0) {
@@ -41,7 +51,7 @@ export default function VitalityDisplay({ }: Props) {
             return 243
         }
     }
-    
+
     function placeholderFunction() {
 
     }
@@ -51,7 +61,7 @@ export default function VitalityDisplay({ }: Props) {
             <div>
                 <h2>Vitality</h2>
                 <div className='vitality-categories-shell'>
-                    <div className='circle' style={{ left: `${getLeftPosition(fatigue)}px` }}></div>
+                    <div className='circle' style={{ left: `${leftPosition}px` }}></div>
                     <span>
                         <strong>H</strong>
                         <p>1 - {hurt}</p>
@@ -94,7 +104,7 @@ export default function VitalityDisplay({ }: Props) {
                 </div>
                 <span className='size-mod'>
                     <strong>Size Mod</strong>
-                    <p>15</p>
+                    <p>{sizeMod}</p>
                 </span>
             </div>
         </div>
@@ -102,7 +112,7 @@ export default function VitalityDisplay({ }: Props) {
 }
 
 function woundRow({ severity, days }: Wound, index: number) {
-    
+
     function placeholderFunction() {
 
     }

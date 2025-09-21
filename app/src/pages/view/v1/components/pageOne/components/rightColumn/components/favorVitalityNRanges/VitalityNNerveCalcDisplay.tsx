@@ -1,27 +1,30 @@
+import { VitalityNNerveCalcInfo } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import './FavorVitalityNRanges.css'
 
 interface Props {
-
+    vitalityNNerveCalcInfo: VitalityNNerveCalcInfo
 }
 
-export default function VitalityNNerveCalcDisplay({ }: Props) {
+export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo }: Props) {
+    const { vitalityDie, minVitality, nerveDie, minNerve } = vitalityNNerveCalcInfo
+
     return (
         <div className='v-n-n-calc-display-shell'>
             <span>
                 <strong>Vitality Die</strong>
-                <p>d4</p>
+                <p>{vitalityDie}</p>
             </span>
             <span>
                 <strong>Min Vitality</strong>
-                <p>1</p>
+                <p>{minVitality}</p>
             </span>
             <span>
                 <strong>Nerve Die</strong>
-                <p>d8</p>
+                <p>{nerveDie}</p>
             </span>
             <span>
                 <strong>Min Nerve</strong>
-                <p>2</p>
+                <p>{minNerve}</p>
             </span>
         </div>
     )

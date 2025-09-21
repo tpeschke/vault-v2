@@ -1,13 +1,18 @@
+import { useEffect, useState } from 'react'
 import './FavorVitalityNRanges.css'
 
 interface Props {
-
+    maxRange: number
 }
 
-export default function RangeDisplay({ }: Props) {
-    const maxRange = 180
-    const rangeIncrement = maxRange / 6
+export default function RangeDisplay({ maxRange }: Props) {
     const penaltyArray = [0, -2, -4, -8, -16, -32]
+
+    const [rangeIncrement, setRangeIncrement] = useState(1)
+
+    useEffect(() => {
+        setRangeIncrement(maxRange / 6)
+    }, [maxRange])
 
     return (
         <div className='right ranged-display-shell'>
