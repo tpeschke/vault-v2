@@ -13,20 +13,22 @@ interface Props {
 export default function CombatInfoDisplay({ combatWorkspaceInfo, int }: Props) {
     const { armorInfo, shieldInfo, weaponInfo, combatSkillInfo } = combatWorkspaceInfo
 
+    const [weapon1, weapon2, weapon3, weapon4] = weaponInfo
+
     return (
         <div className='combat-skills-display-shell'>
             <div className='left'>
-                <ArmorWorkspace armorInfo={armorInfo}/>
-                <ShieldWorkspace shieldInfo={shieldInfo}/>
+                <ArmorWorkspace armorInfo={armorInfo} />
+                <ShieldWorkspace shieldInfo={shieldInfo} />
             </div>
             <div className='right'>
-                <CombatSkillsArea combatSkillInfo={combatSkillInfo} int={int}/>
+                <CombatSkillsArea combatSkillInfo={combatSkillInfo} int={int} />
                 <h3>Weapon Workspaces</h3>
                 <div>
-                    <WeaponWorkspace />
-                    <WeaponWorkspace />
-                    <WeaponWorkspace />
-                    <WeaponWorkspace />
+                    <WeaponWorkspace weaponInfo={weapon1} />
+                    <WeaponWorkspace weaponInfo={weapon2} />
+                    <WeaponWorkspace weaponInfo={weapon3} />
+                    <WeaponWorkspace weaponInfo={weapon4} />
                 </div>
             </div>
         </div>

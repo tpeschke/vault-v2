@@ -35,7 +35,7 @@ export default function ArmorWorkspace({ armorInfo }: Props) {
                     <tr>
                         <th>Def</th>
                         <th>Fat</th>
-                        <th>rec</th>
+                        <th>Rec</th>
                         <th>Init</th>
                         <th> </th>
                     </tr>

@@ -14,6 +14,7 @@
 
 .weapons-table-shell>div {
     display: flex;
+    height: 158.97px;
 }
 
 .weapon-table-column {
@@ -40,6 +41,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1px 3px;
+    min-height: 15.59px;
 }
 
 .weapon-table-column span:nth-child(odd) {

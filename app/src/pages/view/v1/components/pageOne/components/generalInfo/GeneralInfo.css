@@ -57,6 +57,7 @@
     margin: 0 5px;
     padding-left: 5px;
     width: 100%;
+    min-height: 18px;
 }
 
 .general-info-shell .name-info {
@@ -81,6 +82,7 @@
 
 .general-info-shell .level-info p {
     text-align: center;
+    padding-right: 5px;
 }
 
 .general-info-shell .crp-shell {
@@ -101,7 +103,8 @@
 
 .general-info-shell .crp-shell p, .general-info-shell .crp-shell input {
     text-align: center;
-    width: 64%;
+    width: 61%;
+    padding-right: 5px;
 }
 
 .general-info-shell .to-next-level-info {

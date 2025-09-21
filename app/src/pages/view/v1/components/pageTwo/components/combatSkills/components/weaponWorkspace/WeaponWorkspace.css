@@ -10,19 +10,25 @@
 .weapon-workspace-shell>span, .weapon-workspace-shell>span>span {
     display: flex;
     align-items: center;
+    min-height: 20px;
 }
 
 .weapon-workspace-shell>p {
     padding: 1px 5px;
+    min-height: 18px;
 }
 
 .weapon-workspace-shell>span:nth-child(even) {
     background: lightgray
 }
 
-.weapon-workspace-shell>span>*, .weapon-workspace-shell>span>span>* {
+.weapon-workspace-shell>span>* {
     width: 50%;
     padding: 1px 5px;
+}
+
+.weapon-workspace-shell>span>span>* {
+    width: 50%;
 }
 
 .weapon-workspace-shell>span.bonus-shell {

@@ -220,10 +220,10 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                 armorInfo,
                 shieldInfo,
                 weaponInfo: [
-                    formatWeapon(weapon1),
-                    formatWeapon(weapon2),
-                    formatWeapon(weapon3),
-                    formatWeapon(weapon4)
+                    formatWeapon(rawWeapon1),
+                    formatWeapon(rawWeapon2),
+                    formatWeapon(rawWeapon3),
+                    formatWeapon(rawWeapon4)
                 ],
                 combatSkillInfo: {
                     combatStatModifiers: {
