@@ -1,48 +1,55 @@
-import { GearObject } from '@vault/common/interfaces/v1/pageTwo/gearInterfaces'
+import { GearInfo, GearObject } from '@vault/common/interfaces/v1/pageTwo/gearInterfaces'
 import './GearDisplay.css'
+import { useEffect, useState } from 'react'
 
 interface Props {
-
+    gearInfo: GearInfo
 }
 
-export default function GearDisplay({ }: Props) {
-    const gear: GearObject[] = [
-        {
-            id: 1,
-            item: 'Sandals*',
-        },
-        {
-            id: 2,
-            item: 'Belt, Leather*',
-        },
-        {
-            id: 3,
-            item: 'Sheathe (M)*',
-            size: ''
-        },
-        {
-            id: 4,
-            item: 'Shirt*',
-            size: 'l'
-        },
-        {
-            id: 5,
-            item: 'Breeches*',
-            size: '2S'
-        },
-        {
-            id: 6,
-            item: 'Armor*',
-            size: 'M'
-        },
-        {
-            id: 7,
-            item: 'Backpack*',
-            size: '+M'
-        }
-    ]
+export default function GearDisplay({ gearInfo }: Props) {
+    const { copper, silver, gold, platinum, carry, gear } = gearInfo
 
-    const leftOver = 26 - gear.length
+    const [leftOver, setLeftOver] = useState(0)
+
+    const [largeEncumbrance, setLargeEncumbrance] = useState(0)
+    const [mediumEncumbrance, setMediumEncumbrance] = useState(0)
+    const [smallEncumbrance, setSmallEncumbrance] = useState(0)
+
+    useEffect(() => {
+        setLeftOver(26 - gear.length)
+
+        const encumbranceValue = calculateCarry(gear)
+
+        const largeEncumbrance = Math.ceil(encumbranceValue / 9)
+        const largeEncumbranceRemainder = encumbranceValue % 9
+
+        const mediumEncumbrance = Math.ceil(largeEncumbranceRemainder / 3)
+        const mediumEncumbranceRemainder = encumbranceValue % 3
+
+        const smallEncumbrance = mediumEncumbranceRemainder
+
+        setLargeEncumbrance(largeEncumbrance)
+        setMediumEncumbrance(mediumEncumbrance)
+        setSmallEncumbrance(smallEncumbrance)
+    }, [gear])
+
+    const [largeCarry, setLargeCarry] = useState(0)
+    const [mediumCarry, setMediumCarry] = useState(0)
+    const [smallCarry, setSmallCarry] = useState(0)
+
+    useEffect(() => {
+        const largeCarry = Math.ceil(carry / 9)
+        const largeCarryRemainder = carry % 9
+
+        const mediumCarry = Math.ceil(largeCarryRemainder / 3)
+        const mediumCarryRemainder = carry % 3
+
+        const smallCarry = mediumCarryRemainder
+
+        setLargeCarry(largeCarry)
+        setMediumCarry(mediumCarry)
+        setSmallCarry(smallCarry)
+    }, [carry])
 
     function calculateCarry(gear: GearObject[]) {
         return gear.reduce((total, { size }) => {
@@ -78,15 +85,6 @@ export default function GearDisplay({ }: Props) {
         }
     }
 
-    const carryValue = calculateCarry(gear)
-
-    const largeCarry = Math.floor(carryValue / 9)
-    const largeRemainder = carryValue % 9
-    const mediumCarry = Math.floor(largeRemainder / 3)
-    const mediumRemainder = carryValue % 3
-    const smallCarry = mediumRemainder
-
-    
     function placeholderFunction() {
 
     }
@@ -98,19 +96,19 @@ export default function GearDisplay({ }: Props) {
                 <div className='coins-shell'>
                     <span>
                         <strong>CC</strong>
-                        <input onClick={placeholderFunction} defaultValue={0} />
+                        <input onClick={placeholderFunction} defaultValue={copper} />
                     </span>
                     <span>
                         <strong>SC</strong>
-                        <input onClick={placeholderFunction} defaultValue={1} />
+                        <input onClick={placeholderFunction} defaultValue={silver} />
                     </span>
                     <span>
                         <strong>GC</strong>
-                        <input onClick={placeholderFunction} defaultValue={2} />
+                        <input onClick={placeholderFunction} defaultValue={gold} />
                     </span>
                     <span>
                         <strong>PC</strong>
-                        <input onClick={placeholderFunction} defaultValue={3} />
+                        <input onClick={placeholderFunction} defaultValue={platinum} />
                     </span>
                 </div>
             </span>
@@ -140,9 +138,9 @@ export default function GearDisplay({ }: Props) {
                 </span>
                 {[...Array(leftOver).keys()].map(nullGearRow)}
                 <span className='carry-info'>
-                    <p>{smallCarry}S {mediumCarry}M {largeCarry}L</p>
+                    <p>{smallEncumbrance}S {mediumEncumbrance}M {largeEncumbrance}L</p>
                     <strong>/</strong>
-                    <strong>1S 2M 3L</strong>
+                    <strong>{smallCarry}S {mediumCarry}M {largeCarry}L</strong>
                 </span>
             </div>
         </div>
@@ -150,7 +148,7 @@ export default function GearDisplay({ }: Props) {
 }
 
 function gearRow({ item, size, id }: GearObject) {
-    
+
     function placeholderFunction() {
 
     }

@@ -1,42 +1,46 @@
+import { CheckModsObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces'
 import '../LeftColumn.css'
 
 interface Props {
-
+    checkMods: CheckModsObject,
+    adepts: number
 }
 
-export default function CheckModsDisplay({ }: Props) {
+export default function CheckModsDisplay({ checkMods, adepts }: Props) {
+    const { str, dex, con, int, will, pre} = checkMods
+
     return (
         <div className='check-mods-display-shell'>
             <h3>Check Mods & Skill Adepts</h3>
             <div>
                 <span>
                     <strong>Str</strong>
-                    <p>-2</p>
+                    <p>{str}</p>
                 </span>
                 <span>
                     <strong>Dex</strong>
-                    <p>-2</p>
+                    <p>{dex}</p>
                 </span>
                 <span>
                     <strong>Con</strong>
-                    <p>-6</p>
+                    <p>{con}</p>
                 </span>
                 <span>
                     <strong>Int</strong>
-                    <p>2</p>
+                    <p>{int}</p>
                 </span>
                 <span>
                     <strong>Will</strong>
-                    <p>1</p>
+                    <p>{will}</p>
                 </span>
                 <span>
                     <strong>Pre</strong>
-                    <p>1</p>
+                    <p>{pre}</p>
                 </span>
             </div>
             <span>
                 <strong>Skill Adept(s)</strong>
-                <p>0</p>
+                <p>{adepts}</p>
             </span>
         </div>
     )

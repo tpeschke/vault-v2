@@ -33,7 +33,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
 
     const [{
         userid, name, race, primarya, secondarya, crp, excurrent, str, dex, con, int, wis, cha, stressthreshold, favormax, vitality, sizemod, vitalitydice, level,
-        honor, extrahonordice, abilitiesone, abilitiestwo, removedability, maxrange, generalnotes, copper, silver, gold, platinum, contacts, crawl, walk, jog,
+        honor, extrahonordice, abilitiesone, abilitiestwo, removedability, maxrange, generalnotes, copper, silver, gold, platinium: platinum, contacts, crawl, walk, jog,
         run, sprint, currentfavor, currentstress, relaxation, skilladept, anointed, martialadept, secretgeneralnotes, stressdie, strength
     }]: any[] = await query(viewSQL.character, characterId)
 
@@ -53,6 +53,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     const preSkillMod = getSkillMod(cha)
 
     const skillSuites: SkillObject[] = (await query(skillSQL.skillSuites, characterId)).map(skillSuite => {
+        console.log(skillSuite)
         const { istrained } = skillSuite
         return {
             ...skillSuite,
