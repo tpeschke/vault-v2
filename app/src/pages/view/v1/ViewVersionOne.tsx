@@ -26,9 +26,12 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
         downloadCharacter()
     }
 
-    const { pageOneInfo, pageTwoInfo, generalNotes } = character
+    const { pageOneInfo, pageTwoInfo, generalNotes, userInfo } = character
+    const { ownsThisCharacter } = userInfo
 
     const { int } = pageOneInfo.leftColumnInfo.statInfo
+
+    const showNotes = !generalNotes.isSecret || ownsThisCharacter
 
     return (
         <>
@@ -43,7 +46,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
                     <PageOne pageOneInfo={pageOneInfo} />
                     <PageTwo pageTwoInfo={pageTwoInfo} int={int} />
                     {/* TODO Make sure it shows up for owning user */}
-                    {!generalNotes.isSecret && <PageThree generalNotes={generalNotes} />}
+                    {showNotes && <PageThree generalNotes={generalNotes} />}
                 </div>
                 {!isDownloading && <Sidebar toggleViewQuickEdit={toggleViewQuickEdit} viewQuickEdit={viewQuickEdit} prepAndDownload={prepAndDownload} />}
             </div>

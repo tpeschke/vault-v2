@@ -38,9 +38,11 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
             const pageTwo = await getPageImage('page-two')
             pdf.addImage(pageTwo, 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
 
-            pdf.addPage(widthAndHeight);
-            const pageThree = await getPageImage('page-three')
-            pdf.addImage(pageThree, 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+            if (!character.generalNotes.isSecret || character.userInfo.ownsThisCharacter) {
+                pdf.addPage(widthAndHeight);
+                const pageThree = await getPageImage('page-three')
+                pdf.addImage(pageThree, 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+            }
 
             let fileName;
             const { name, ancestry, class: primaryClass, subclass } = character.pageOneInfo.generalInfo

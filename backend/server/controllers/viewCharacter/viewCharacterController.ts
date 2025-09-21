@@ -122,7 +122,10 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     const character: CharacterVersion1 = {
         version: 1,
         id: characterId,
-        userID: userid,
+        userInfo: {
+            userID: userid,
+            ownsThisCharacter: userid === request.user?.id
+        },
         pageOneInfo: {
             generalInfo: {
                 name, level,

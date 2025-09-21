@@ -9,10 +9,15 @@ export interface CharacterBase {
 export interface CharacterVersion1 extends CharacterBase {
     version: 1,
     id: number,
-    userID: number,
+    userInfo: CharacterUserInfo,
     pageOneInfo: PageOneInfo,
     pageTwoInfo: PageTwoInfo,
     generalNotes: GeneralNotesInfo
+}
+
+export interface CharacterUserInfo {
+    userID: number,
+    ownsThisCharacter: boolean
 }
 
 // TODO: Update the terms used
