@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { viewURL } from "../../../../frontend-config";
 import jsPDF from "jspdf";
-import { getPageImage, getWidthAndHeight } from "./utilities/downloadUtilities";
+import { getFileName, getPageImage, getWidthAndHeight } from "./utilities/downloadUtilities";
 
 interface CharacterHookReturn {
     character: CharacterVersion1 | null,
@@ -44,13 +44,8 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                 pdf.addImage(pageThree, 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
             }
 
-            let fileName;
-            const { name, ancestry, class: primaryClass, subclass } = character.pageOneInfo.generalInfo
-            if (name) {
-                fileName = name
-            } else {
-                fileName = `${ancestry} ${primaryClass}/${subclass}`
-            }
+            const fileName = getFileName(character)
+
             pdf.save(`${fileName}.pdf`);
             
             setIsDownloading(false)
