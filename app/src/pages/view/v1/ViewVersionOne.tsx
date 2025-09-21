@@ -26,7 +26,7 @@ export default function ViewVersionOne({ character }: Props) {
             <div className={viewQuickEdit ? 'page-shell view-quick-edit' : 'page-shell'}>
                 <PageOne pageOneInfo={pageOneInfo} />
                 <PageTwo pageTwoInfo={pageTwoInfo} int={int}/>
-                <PageThree />
+                <PageThree generalNotes={generalNotes}/>
             </div>
             <Sidebar toggleViewQuickEdit={toggleViewQuickEdit} viewQuickEdit={viewQuickEdit}/>
         </div>
