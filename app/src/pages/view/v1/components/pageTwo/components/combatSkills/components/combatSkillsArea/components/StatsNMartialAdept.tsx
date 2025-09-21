@@ -1,34 +1,38 @@
+import { CombatStatModifiers } from '@vault/common/interfaces/v1/pageTwo/combatSkills'
 import '../CombatSkillsArea.css'
 
 interface Props {
-
+    combatStatModifiers: CombatStatModifiers,
+    martialAdepts: number
 }
 
-export default function StatsNMartialAdept({ }: Props) {
+export default function StatsNMartialAdept({ combatStatModifiers, martialAdepts }: Props) {
+    const { atk, def, dam, rec } = combatStatModifiers
+
     return (
         <div className='stats-and-martial-adept-shell'>
             <h3>Check Mods & Skill Adepts</h3>
             <div>
                 <span>
                     <strong>Atk</strong>
-                    <p>-2</p>
+                    <p>{atk}</p>
                 </span>
                 <span>
                     <strong>Def</strong>
-                    <p>-2</p>
+                    <p>{def}</p>
                 </span>
                 <span>
                     <strong>Dam</strong>
-                    <p>-6</p>
+                    <p>{dam}</p>
                 </span>
                 <span>
                     <strong>Rec</strong>
-                    <p>2</p>
+                    <p>{rec}</p>
                 </span>
             </div>
             <span>
                 <strong>Martial Adept(s)</strong>
-                <p>0</p>
+                <p>{martialAdepts}</p>
             </span>
         </div>
     )

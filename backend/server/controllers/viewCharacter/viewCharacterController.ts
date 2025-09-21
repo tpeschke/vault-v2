@@ -234,7 +234,7 @@ export async function getCharacter(request: ViewRequest, response: Response) {
                     },
                     martialAdepts: martialadept,
                     combatSkillSuites: (await query(combatSQL.skillSuites, characterId)).map(skillSuite => {
-                        return { ...skillSuite, isTrained: skillSuite.istrained }
+                        return { ...skillSuite, isTrained: skillSuite.istrained, cost: 40 }
                     }),
                     combatAdvSkills: await query(combatSQL.skills, characterId)
                 }

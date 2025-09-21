@@ -6,10 +6,11 @@ import ShieldWorkspace from './components/shieldWorkspace/ShieldWorkspace'
 import WeaponWorkspace from './components/weaponWorkspace/WeaponWorkspace'
 
 interface Props {
-    combatWorkspaceInfo: CombatWorkspaceInfo
+    combatWorkspaceInfo: CombatWorkspaceInfo,
+    int: number
 }
 
-export default function CombatInfoDisplay({ combatWorkspaceInfo }: Props) {
+export default function CombatInfoDisplay({ combatWorkspaceInfo, int }: Props) {
     const { armorInfo, shieldInfo, weaponInfo, combatSkillInfo } = combatWorkspaceInfo
 
     return (
@@ -19,7 +20,7 @@ export default function CombatInfoDisplay({ combatWorkspaceInfo }: Props) {
                 <ShieldWorkspace shieldInfo={shieldInfo}/>
             </div>
             <div className='right'>
-                <CombatSkillsArea />
+                <CombatSkillsArea combatSkillInfo={combatSkillInfo} int={int}/>
                 <h3>Weapon Workspaces</h3>
                 <div>
                     <WeaponWorkspace />

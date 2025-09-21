@@ -1,31 +1,18 @@
 import { CombatSkillObject } from '@vault/common/interfaces/v1/pageTwo/combatSkills';
 import '../CombatSkillsArea.css'
+import { useEffect, useState } from 'react';
 
 interface Props {
-
+    combatAdvSkills: CombatSkillObject[],
+    martialAdepts: number
 }
 
-export default function CombatAdvSkills({ }: Props) {
-    const martialAdept = 1;
-    const advancedCombatSkills: CombatSkillObject[] = [
-        {
-            skill: 'Investiture',
-            cost: 12,
-            rank: 8,
-        },
-        {
-            skill: 'Occultism',
-            cost: 12,
-            rank: 8,
-        },
-        {
-            skill: 'Sortilege',
-            cost: 12,
-            rank: 7,
-        }
-    ]
+export default function CombatAdvSkills({ combatAdvSkills, martialAdepts }: Props) {    
+    const [leftOver, setLeftOver] = useState(0)
 
-    const leftOver = 18 - advancedCombatSkills.length
+    useEffect(() => {
+        setLeftOver(18 - combatAdvSkills.length)
+    }, [combatAdvSkills])
 
     return (
         <div className='combat-adv-skills-shell'>
@@ -42,18 +29,18 @@ export default function CombatAdvSkills({ }: Props) {
                 </span>
             </div>
             <div className='combat-advanced-skill-shell'>
-                {advancedCombatSkills.map((skill, index) => skillRow(skill, index, martialAdept))}
+                {combatAdvSkills.map((skill, index) => skillRow(skill, index, martialAdepts))}
                 {[...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>
         </div>
     )
 }
 
-export function skillRow({ skill, cost, rank }: CombatSkillObject, index: number, martialAdept: number) {
+export function skillRow({ skill, cost, rank }: CombatSkillObject, index: number, martialAdepts: number) {
     return (
         <span key={index} className='combat-advanced-skill-row'>
             <p>{skill}</p>
-            <p>{cost + (rank * 2) - martialAdept}</p>
+            <p>{cost + (rank * 2) - martialAdepts}</p>
             <p>{rank}</p>
         </span>
     )
