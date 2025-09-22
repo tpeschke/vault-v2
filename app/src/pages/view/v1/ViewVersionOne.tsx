@@ -17,9 +17,15 @@ interface Props {
 
 export default function ViewVersionOne({ character, downloadCharacter, isDownloading }: Props) {
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
-
+    
     const toggleViewQuickEdit = () => {
         setViewQuickEdit(!viewQuickEdit)
+    }
+
+    const [isEditing, setIsEditing] = useState(true)
+
+    const toggleIsEditing = () => {
+        setIsEditing(!isEditing)
     }
 
     function prepAndDownload(isPregen: boolean) {
@@ -43,13 +49,19 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
                 </div>
             )}
             <div className='version-one-shell'>
-                <div className={viewQuickEdit ? 'page-shell view-quick-edit' : 'page-shell'}>
+                <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
                     <PageOne pageOneInfo={pageOneInfo} />
                     <PageTwo pageTwoInfo={pageTwoInfo} int={int} />
-                    {/* TODO Make sure it shows up for owning user */}
                     {showNotes && <PageThree generalNotes={generalNotes} />}
                 </div>
-                {!isDownloading && <Sidebar toggleViewQuickEdit={toggleViewQuickEdit} viewQuickEdit={viewQuickEdit} prepAndDownload={prepAndDownload} />}
+                {!isDownloading && 
+                    <Sidebar 
+                        toggleViewQuickEdit={toggleViewQuickEdit} 
+                        viewQuickEdit={viewQuickEdit} 
+                        prepAndDownload={prepAndDownload}
+                        isEditing={isEditing}
+                        toggleIsEditing={toggleIsEditing}
+                    />}
             </div>
         </>
     )
