@@ -37,6 +37,10 @@
     height: 100px;
 }
 
+.weapon-workspace-shell>span.ranged-bonus {
+    height: 122px;
+}
+
 .weapon-workspace-shell>span.bonus-shell p {
     position: absolute;
     top: 0;

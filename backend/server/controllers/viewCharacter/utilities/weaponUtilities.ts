@@ -6,7 +6,7 @@ export function formatWeapon(rawWeapon: any): WeaponInfo {
         weaponid, trainattack, trainparry, trainrecovery,
         traindamage, miscattack, miscparry, miscrecovery, miscdamage,
         name, basedamage, baserecovery, baseparry, basemeasure, type, bonus,
-        traits, size
+        traits, size, thrownweapon
     } = rawWeapon
 
     return {
@@ -20,6 +20,7 @@ export function formatWeapon(rawWeapon: any): WeaponInfo {
         type,
         bonus,
         traits,
+        isThrown: thrownweapon,
         modifiers: {
             atk: {
                 skill: trainattack,

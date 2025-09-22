@@ -2,11 +2,12 @@ import { WeaponInfo } from '@vault/common/interfaces/v1/pageTwo/weaponInterfaces
 import './WeaponWorkspace.css'
 
 interface Props {
-    weaponInfo: WeaponInfo
+    weaponInfo: WeaponInfo,
+    isRanged?: boolean
 }
 
-export default function WeaponWorkspace({ weaponInfo }: Props) {
-    const {name, damage, recovery, size, measure, parry, type, bonus, traits, modifiers} = weaponInfo
+export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props) {
+    const { name, damage, recovery, size, measure, parry, type, bonus, traits, modifiers } = weaponInfo
 
     const { atk, rec, pry, dam } = modifiers
 
@@ -31,21 +32,23 @@ export default function WeaponWorkspace({ weaponInfo }: Props) {
                     <p>{size}</p>
                 </span>
             </span>
-            <span>
+            {!isRanged &&
                 <span>
-                    <strong>Meas</strong>
-                    <p>{measure}</p>
+                    <span>
+                        <strong>Meas</strong>
+                        <p>{measure}</p>
+                    </span>
+                    <span>
+                        <strong>Parry</strong>
+                        <p>{parry}</p>
+                    </span>
                 </span>
-                <span>
-                    <strong>Parry</strong>
-                    <p>{parry}</p>
-                </span>
-            </span>
+            }
             <span>
                 <strong>Type</strong>
                 <p>{type}</p>
             </span>
-            <span className='bonus-shell'>
+            <span className={`bonus-shell ${isRanged ? 'ranged-bonus' : ''}`}>
                 <strong>Bonus</strong>
                 <p>{bonus}</p>
             </span>

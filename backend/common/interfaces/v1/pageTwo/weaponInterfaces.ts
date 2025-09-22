@@ -9,6 +9,7 @@ export interface WeaponInfo {
     type: string,
     bonus: string,
     traits: string,
+    isThrown?: boolean,
     modifiers: WeaponModifiersInfo
 }
 

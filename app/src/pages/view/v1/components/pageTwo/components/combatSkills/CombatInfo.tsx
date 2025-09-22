@@ -28,7 +28,7 @@ export default function CombatInfoDisplay({ combatWorkspaceInfo, int }: Props) {
                     <WeaponWorkspace weaponInfo={weapon1} />
                     <WeaponWorkspace weaponInfo={weapon2} />
                     <WeaponWorkspace weaponInfo={weapon3} />
-                    <WeaponWorkspace weaponInfo={weapon4} />
+                    <WeaponWorkspace weaponInfo={weapon4} isRanged={true}/>
                 </div>
             </div>
         </div>
