@@ -1,0 +1,26 @@
+.display-array-shell p:nth-child(even) {
+    background: lightgray;
+}
+
+.display-array-shell p {
+    min-height: 19px;
+}
+
+.display-array-shell .display-pair {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.display-array-shell .display-pair:nth-child(even) {
+    background: lightgray;
+}
+
+.display-array-shell .display-pair>p {
+    background: unset;
+}
+
+.display-array-shell.single-item input {
+    width: calc(100% - 4px);
+    height: 17px;
+}
