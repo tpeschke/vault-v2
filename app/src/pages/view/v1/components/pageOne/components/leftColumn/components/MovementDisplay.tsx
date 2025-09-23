@@ -1,6 +1,6 @@
 import { MovementInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { useContext } from "react"
-import EditingContext from "../../../../contexts/EditingContext"
+import EditingContext from "../../../../../contexts/EditingContext"
 
 interface Props {
     movementInfo: MovementInfo

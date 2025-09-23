@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import './Sidebar.css'
-import EditingContext from '../contexts/EditingContext'
+import EditingContext from '../../contexts/EditingContext'
 
 interface Props {
     toggleViewQuickEdit: () => void,

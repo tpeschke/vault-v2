@@ -7,7 +7,7 @@ import './ViewVersionOne.css'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
 import LoadingIndicator from '../../../components/loading/components/LoadingIndicator'
 import { DownloadCharacterFunction } from './hooks/characterHook'
-import EditingContext from './components/contexts/EditingContext'
+import EditingContext from './contexts/EditingContext'
 
 interface Props {
     character: CharacterVersion1,

@@ -8,8 +8,6 @@ import RelationshipsDisplay from './leftColumnComponents/RelationshipsDisplay';
 import ConvictionsDisplay from './rightColumnComponents/ConvictionsDisplay';
 import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
 import ReputationDisplay from './rightColumnComponents/ReputationDisplay';
-import { useContext } from 'react';
-import EditingContext from '../../../../../contexts/EditingContext';
 
 interface Props {
     characteristicInfo: CharacteristicInfo

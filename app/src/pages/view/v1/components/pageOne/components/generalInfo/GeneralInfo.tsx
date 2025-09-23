@@ -1,7 +1,7 @@
 import './GeneralInfo.css'
 import logo from '../../../../../../../assets/images/logo-black.png'
 import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
-import EditingContext from '../../../contexts/EditingContext'
+import EditingContext from '../../../../contexts/EditingContext'
 import { useContext } from 'react'
 
 interface Props {

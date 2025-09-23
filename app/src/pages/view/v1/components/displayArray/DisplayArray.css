@@ -20,7 +20,19 @@
     background: unset;
 }
 
+.display-array-shell input {
+    height: 17px;
+}
+
 .display-array-shell.single-item input {
     width: calc(100% - 4px);
-    height: 17px;
+}
+
+.display-array-shell.multi-item input {
+    width: calc(85% - 4px);
+}
+
+.display-array-shell.multi-item input:last-child {
+    width: 15%;
+    text-align: right;
 }
