@@ -24,8 +24,12 @@
 }
 
 .page-one-columns .ranged-display-shell>span>* {
-    width: 50%;
+    width: 75%;
     text-align: center;
     display: flex;
     justify-content: space-evenly;
+}
+
+.page-one-columns .ranged-display-shell>span>*:first-child {
+    width: 25%;
 }

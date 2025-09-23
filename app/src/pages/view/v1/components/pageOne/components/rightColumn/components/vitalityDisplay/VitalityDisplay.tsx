@@ -1,12 +1,15 @@
 import { NerveAndVitalityInfo, Wound } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import './VitalityDisplay.css'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import EditingContext from '../../../../../../contexts/EditingContext'
 
 interface Props {
     nerveAndVitalityInfo: NerveAndVitalityInfo
 }
 
 export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
+    const isEditing = useContext(EditingContext)
+
     const { vitality, fatigue, wounds, sizeMod } = nerveAndVitalityInfo
 
     const [hurt, setHurt] = useState(0)
@@ -104,7 +107,11 @@ export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
                 </div>
                 <span className='size-mod'>
                     <strong>Size Mod</strong>
-                    <p>{sizeMod}</p>
+                    {isEditing ?
+                        <input value={sizeMod} />
+                        :
+                        <p>{sizeMod}</p>
+                    }
                 </span>
             </div>
         </div>
