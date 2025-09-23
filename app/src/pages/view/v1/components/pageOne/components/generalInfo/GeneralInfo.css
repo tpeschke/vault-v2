@@ -114,3 +114,8 @@
 .general-info-shell .to-next-level-info strong {
     width: 124px;
 }
+
+.view-edit .general-info-shell input {
+    height: 17px;
+    min-height: unset;
+}

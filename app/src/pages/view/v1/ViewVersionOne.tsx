@@ -50,7 +50,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
             )}
             <div className='version-one-shell'>
                 <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
-                    <PageOne pageOneInfo={pageOneInfo} />
+                    <PageOne pageOneInfo={pageOneInfo} isEditing={isEditing}/>
                     <PageTwo pageTwoInfo={pageTwoInfo} int={int} />
                     {showNotes && <PageThree generalNotes={generalNotes} />}
                 </div>

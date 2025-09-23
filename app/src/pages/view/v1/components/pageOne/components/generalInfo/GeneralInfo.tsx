@@ -3,10 +3,11 @@ import logo from '../../../../../../../assets/images/logo-black.png'
 import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
 
 interface Props {
-    generalInfo: GeneralInfoDisplay
+    generalInfo: GeneralInfoDisplay,
+    isEditing: boolean
 }
 
-export default function GeneralInfo({ generalInfo }: Props) {
+export default function GeneralInfo({ generalInfo, isEditing }: Props) {
     const { name, ancestry, class: primaryClass, subclass, level, crpUnspent, crpSpent, crpToNextLevel } = generalInfo
 
     function placeholderFunction() {
@@ -19,7 +20,11 @@ export default function GeneralInfo({ generalInfo }: Props) {
                 <div>
                     <span className='name-info'>
                         <strong>Name</strong>
-                        <p>{name}</p>
+                        {isEditing ?
+                            <input onClick={placeholderFunction} defaultValue={name} />
+                            :
+                            <p>{name}</p>
+                        }
                     </span>
                     <span className='player-info'>
                         <strong>Player</strong>
@@ -29,17 +34,33 @@ export default function GeneralInfo({ generalInfo }: Props) {
                 <div>
                     <span className='ancestry-info'>
                         <strong>Ancestry</strong>
-                        <p>{ancestry}</p>
+                        {isEditing ?
+                            <input onClick={placeholderFunction} defaultValue={ancestry} />
+                            :
+                            <p>{ancestry}</p>
+                        }
                     </span>
                     <span className='class-info'>
                         <strong>Class / Subclass</strong>
-                        <p>{primaryClass}</p>
+                        {isEditing ?
+                            <input onClick={placeholderFunction} defaultValue={primaryClass} />
+                            :
+                            <p>{primaryClass}</p>
+                        }
                         <strong>/</strong>
-                        <p>{subclass}</p>
+                        {isEditing ?
+                            <input onClick={placeholderFunction} defaultValue={subclass} />
+                            :
+                            <p>{subclass}</p>
+                        }
                     </span>
                     <span className='level-info'>
                         <strong>LvL</strong>
-                        <p>{level}</p>
+                        {isEditing ?
+                            <input onClick={placeholderFunction} defaultValue={level} />
+                            :
+                            <p>{level}</p>
+                        }
                     </span>
                 </div>
                 <div className='crp-shell'>
@@ -54,7 +75,11 @@ export default function GeneralInfo({ generalInfo }: Props) {
                     </span>
                     <span className='to-next-level-info'>
                         <strong>Spent to Next LvL</strong>
-                        <p>{crpToNextLevel}</p>
+                        {isEditing ?
+                            <input onClick={placeholderFunction} defaultValue={crpToNextLevel} />
+                            :
+                            <p>{crpToNextLevel}</p>
+                        }
                     </span>
                 </div>
             </div>

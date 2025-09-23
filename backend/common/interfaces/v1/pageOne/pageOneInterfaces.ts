@@ -12,7 +12,7 @@ export interface GeneralInfo {
     name: string,
     ancestry: string,
     class: string,
-    subclass: String,
+    subclass: string,
     level: number,
     crpUnspent: number,
     crpSpent: number,
