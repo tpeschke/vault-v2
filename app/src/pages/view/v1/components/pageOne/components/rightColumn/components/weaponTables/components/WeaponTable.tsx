@@ -3,10 +3,11 @@ import '../WeaponsTables.css'
 
 interface Props {
     weapon: WeaponTable,
-    weaponPosition: number
+    weaponPosition: number,
+    maxRange: number
 }
 
-export default function WeaponsTable({ weapon, weaponPosition }: Props) {
+export default function WeaponsTable({ weapon, weaponPosition, maxRange }: Props) {
     const { name, attacks, defenses } = weapon
     const { meas, atk, damage, type, rec, init } = attacks
     const { def, flanks, parry, cover, parryDR, dr } = defenses
@@ -19,7 +20,7 @@ export default function WeaponsTable({ weapon, weaponPosition }: Props) {
             <div>
                 <div className='weapon-table-column'>
                     <h4>Attacks</h4>
-                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', meas)}
+                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', isRanged ? maxRange / 6 : meas)}
                     {WeaponTableRow('Atk', atk)}
                     {DamageRow(damage, isRanged)}
                     {WeaponTableRow('Type', type)}

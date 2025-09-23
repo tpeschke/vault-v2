@@ -48,13 +48,22 @@
     background: lightgray;
 }
 
+.weapon-table-column .damage-shell {
+    padding: 0;
+}
+
 .weapon-table-column .damage-shell, .weapon-table-column .double-row {
     flex-direction: column;
     align-items: start;
 }
 
+.weapon-table-column .damage-shell strong {
+    padding: 1px 3px;
+}
+
 .weapon-table-column .damage-shell p {
     height: 42px;
+    padding: 1px 3px;
 }
 
 .weapon-table-column .damage-shell p.fake-button:hover {

@@ -18,7 +18,7 @@ export default function RightColumn({ rightColumnInfo }: Props) {
 
     return (
         <div className='right'>
-            <WeaponsTables weapons={weapons}/>
+            <WeaponsTables weapons={weapons} maxRange={maxRange}/>
             <div className="columns">
                 <div className='left'>
                     <FavorDisplay favorInfo={favorInfo} />
