@@ -21,6 +21,10 @@
     text-align: center;
 }
 
+.stats-shell input {
+    height: 16px;
+}
+
 .version-one-shell .movement-shell.false-table span {
     justify-content: start;
 }
@@ -31,9 +35,13 @@
     width: 25%;
 }
 
-.movement-shell.false-table span p {
+.movement-shell.false-table span p, .movement-shell.false-table span input {
     text-align: center;
     width: 25%;
+}
+
+.movement-shell.false-table span input {
+    height: 16px;
 }
 
 .movement-shell.false-table span strong:last-child {

@@ -1,37 +1,62 @@
 import { StatsInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 
 interface Props {
-    statInfo: StatsInfo
+    statInfo: StatsInfo,
+    isEditing: boolean
 }
 
-export default function StatsDisplay({ statInfo }: Props) {
+export default function StatsDisplay({ statInfo, isEditing }: Props) {
     const { str, dex, con, int, will, pre } = statInfo
 
     return (
         <div className="stats-shell false-table">
             <h2>Stats</h2>
             <span>
-                <p>{str}</p>
+                {isEditing ?
+                    <input defaultValue={str} />
+                    :
+                    <p>{str}</p>
+                }
                 <strong>Str</strong>
             </span>
             <span>
-                <p>{dex}</p>
+                {isEditing ?
+                    <input defaultValue={dex} />
+                    :
+                    <p>{dex}</p>
+                }
                 <strong>Dex</strong>
             </span>
             <span>
-                <p>{con}</p>
+                {isEditing ?
+                    <input defaultValue={con} />
+                    :
+                    <p>{con}</p>
+                }
                 <strong>Con</strong>
             </span>
             <span>
-                <p>{int}</p>
+                {isEditing ?
+                    <input defaultValue={int} />
+                    :
+                    <p>{int}</p>
+                }
                 <strong>Int</strong>
             </span>
             <span>
-                <p>{will}</p>
+                {isEditing ?
+                    <input defaultValue={will} />
+                    :
+                    <p>{will}</p>
+                }
                 <strong>Will</strong>
             </span>
             <span>
-                <p>{pre}</p>
+                {isEditing ?
+                    <input defaultValue={pre} />
+                    :
+                    <p>{pre}</p>
+                }
                 <strong>Pre</strong>
             </span>
         </div>

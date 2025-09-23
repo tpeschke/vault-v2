@@ -10,7 +10,8 @@ import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
 import ReputationDisplay from './rightColumnComponents/ReputationDisplay';
 
 interface Props {
-    characteristicInfo: CharacteristicInfo
+    characteristicInfo: CharacteristicInfo,
+    isEditing: boolean
 }
 
 export default function CharacteristicsDisplay({ characteristicInfo }: Props) {

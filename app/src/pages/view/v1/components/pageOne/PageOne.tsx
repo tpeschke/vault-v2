@@ -17,7 +17,7 @@ export default function PageOne({ pageOneInfo, isEditing }: Props) {
         <div className='page-shell page card page-one' id='page-one'>
             <GeneralInfo generalInfo={generalInfo} isEditing={isEditing} />
             <div className='page-one-columns'>
-                <LeftColumn leftColumnInfo={leftColumnInfo} />
+                <LeftColumn leftColumnInfo={leftColumnInfo} isEditing={isEditing} />
                 <RightColumn rightColumnInfo={rightColumnInfo} />
             </div>
             <AbilitiesNBurdensDisplay abilitiesNBurdensInfo={abilitiesNBurdensInfo}/>

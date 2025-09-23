@@ -1,10 +1,11 @@
 import { MovementInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 
 interface Props {
-    movementInfo: MovementInfo
+    movementInfo: MovementInfo,
+    isEditing: boolean
 }
 
-export default function MovementDisplay({ movementInfo }: Props) {
+export default function MovementDisplay({ movementInfo, isEditing }: Props) {
     const { crawl, walk, jog, run, sprint } = movementInfo
 
     return (
@@ -12,27 +13,47 @@ export default function MovementDisplay({ movementInfo }: Props) {
             <h2>Movement</h2>
             <span>
                 <strong>Crawl</strong>
-                <p>{crawl}</p>
+                {isEditing ?
+                    <input defaultValue={crawl} />
+                    :
+                    <p>{crawl}</p>
+                }
                 <strong>∞ Seconds</strong>
             </span>
             <span>
                 <strong>Walk</strong>
-                <p>{walk}</p>
+                {isEditing ?
+                    <input defaultValue={walk} />
+                    :
+                    <p>{walk}</p>
+                }
                 <strong>∞ Seconds</strong>
             </span>
             <span>
                 <strong>Jog</strong>
-                <p>{jog}</p>
+                {isEditing ?
+                    <input defaultValue={jog} />
+                    :
+                    <p>{jog}</p>
+                }
                 <strong>∞ Seconds</strong>
             </span>
             <span>
                 <strong>Run</strong>
-                <p>{run}</p>
+                {isEditing ?
+                    <input defaultValue={run} />
+                    :
+                    <p>{run}</p>
+                }
                 <strong>10 Second Interval</strong>
             </span>
             <span>
                 <strong>Sprint</strong>
-                <p>{sprint}</p>
+                {isEditing ?
+                    <input defaultValue={sprint} />
+                    :
+                    <p>{sprint}</p>
+                }
                 <strong>5 Seconds Interval</strong>
             </span>
         </div>
