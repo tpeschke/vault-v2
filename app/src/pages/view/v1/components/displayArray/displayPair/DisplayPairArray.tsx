@@ -13,6 +13,23 @@ export default function DisplayPairArray({ max, arrayToDisplay }: Props) {
 
     const leftOver = max - arrayToDisplay.length - (isEditing ? 1 : 0)
 
+    function formatIntoRow({ title, value }: PairObject, index: number) {
+        if (isEditing) {
+            return (
+                <div key={index} className='display-pair'>
+                    <input value={title} />
+                    <input value={value} />
+                </div>
+            )
+        }
+        return (
+            <div key={index} className='display-pair'>
+                <p>- {title}</p>
+                <p>{value}</p>
+            </div>
+        )
+    }
+
     return (
         <div className="display-array-shell multi-item">
             {arrayToDisplay.map(formatIntoRow)}
@@ -21,17 +38,6 @@ export default function DisplayPairArray({ max, arrayToDisplay }: Props) {
         </div>
     )
 }
-
-function formatIntoRow(element: PairObject, index: number) {
-    const { title, value } = element
-    return (
-        <div key={index} className='display-pair'>
-            <p>- {title}</p>
-            <p>{value}</p>
-        </div>
-    )
-}
-
 function formatNewInputRow() {
     return (
         <div className='display-pair'>

@@ -23,7 +23,7 @@ export interface MovementInfo {
 
 export interface PairObject {
     id?: number,
-    title: string | null,
+    title: string | undefined,
     value: string | number
 }
 
