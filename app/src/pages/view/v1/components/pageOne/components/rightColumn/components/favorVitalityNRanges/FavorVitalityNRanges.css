@@ -33,8 +33,18 @@
     text-align: center;
 }
 
-.favor-display-shell span input {
+.favor-display-shell span:first-child input {
     border: 1px solid #990000;
+}
+
+.view-edit .favor-display-shell>span>i {
+    background: rgba(173, 216, 230);
+    padding: 0 2px;
+    cursor: pointer;
+}
+
+.view-edit .favor-display-shell>span>i:hover {
+    background: rgb(145, 181, 194)
 }
 
 .v-n-n-calc-display-shell span:nth-child(even) {
