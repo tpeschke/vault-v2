@@ -50,3 +50,7 @@
 .v-n-n-calc-display-shell span:nth-child(even) {
     background: lightgray;
 }
+
+.v-n-n-calc-display-shell input {
+    text-align: center;
+}
