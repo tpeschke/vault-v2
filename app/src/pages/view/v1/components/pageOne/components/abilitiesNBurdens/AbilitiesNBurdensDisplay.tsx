@@ -1,20 +1,20 @@
 import { AbilitiesNBurdensInfo } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
 import DisplayTextArea from '../../../../../../../components/textArea/DisplayTextArea'
 import './AbilitiesNBurdensDisplay.css'
+import { useContext } from 'react'
+import EditingContext from '../../../../contexts/EditingContext'
+import TextArea from '../../../../../../../components/textArea/TextArea'
 
 interface Props {
     abilitiesNBurdensInfo: AbilitiesNBurdensInfo
 }
 
 export default function AbilitiesNBurdensDisplay({ abilitiesNBurdensInfo }: Props) {
+    const isEditing = useContext(EditingContext)
+
     const { abilityOne, abilityTwo, burdens, removedAbility } = abilitiesNBurdensInfo
 
     const abilityLines = 9
-
-    const value = `- When resisting a spell, you, and any ally 
-    within 5 ft, gain an automatic -1 to the Order. 
-    - When Shaping a spell on yourself, or ally within 5 ft, gain an automatic +1 to the Order. 
-    - Half Stress from Weirdcraft Skills.`
 
     return (
         <div className='abilities-and-burdens-shell'>
@@ -27,10 +27,14 @@ export default function AbilitiesNBurdensDisplay({ abilitiesNBurdensInfo }: Prop
             </div>
             <div>
                 <h2>Burdens, Injuries & Drawback</h2>
-                <DisplayTextArea lines={8} value={burdens}/>
+                <DisplayTextArea lines={8} value={burdens} />
                 <span className='removed-shell'>
                     <strong>Removed Ability</strong>
-                    <p>{removedAbility}</p>
+                    {isEditing ?
+                        <input value={removedAbility} />
+                        :
+                        <p>{removedAbility}</p>
+                    }
                 </span>
             </div>
         </div>
