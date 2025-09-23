@@ -5,9 +5,9 @@ import PageTwo from './components/pageTwo/PageTwo'
 import Sidebar from './components/sidebar/Sidebar'
 import './ViewVersionOne.css'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
-import Loading from '../../../components/loading/Loading'
 import LoadingIndicator from '../../../components/loading/components/LoadingIndicator'
 import { DownloadCharacterFunction } from './hooks/characterHook'
+import EditingContext from './components/contexts/EditingContext'
 
 interface Props {
     character: CharacterVersion1,
@@ -17,7 +17,7 @@ interface Props {
 
 export default function ViewVersionOne({ character, downloadCharacter, isDownloading }: Props) {
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
-    
+
     const toggleViewQuickEdit = () => {
         setViewQuickEdit(!viewQuickEdit)
     }
@@ -48,21 +48,22 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
                     <LoadingIndicator stylings={''} secondary={true} />
                 </div>
             )}
-            <div className='version-one-shell'>
-                <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
-                    <PageOne pageOneInfo={pageOneInfo} isEditing={isEditing}/>
-                    <PageTwo pageTwoInfo={pageTwoInfo} int={int} />
-                    {showNotes && <PageThree generalNotes={generalNotes} />}
+            <EditingContext value={isEditing}>
+                <div className='version-one-shell'>
+                    <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
+                        <PageOne pageOneInfo={pageOneInfo} />
+                        <PageTwo pageTwoInfo={pageTwoInfo} int={int} />
+                        {showNotes && <PageThree generalNotes={generalNotes} />}
+                    </div>
+                    {!isDownloading &&
+                        <Sidebar
+                            toggleViewQuickEdit={toggleViewQuickEdit}
+                            viewQuickEdit={viewQuickEdit}
+                            prepAndDownload={prepAndDownload}
+                            toggleIsEditing={toggleIsEditing}
+                        />}
                 </div>
-                {!isDownloading && 
-                    <Sidebar 
-                        toggleViewQuickEdit={toggleViewQuickEdit} 
-                        viewQuickEdit={viewQuickEdit} 
-                        prepAndDownload={prepAndDownload}
-                        isEditing={isEditing}
-                        toggleIsEditing={toggleIsEditing}
-                    />}
-            </div>
+            </EditingContext>
         </>
     )
 }

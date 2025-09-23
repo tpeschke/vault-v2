@@ -8,13 +8,14 @@ import RelationshipsDisplay from './leftColumnComponents/RelationshipsDisplay';
 import ConvictionsDisplay from './rightColumnComponents/ConvictionsDisplay';
 import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
 import ReputationDisplay from './rightColumnComponents/ReputationDisplay';
+import { useContext } from 'react';
+import EditingContext from '../../../../../contexts/EditingContext';
 
 interface Props {
-    characteristicInfo: CharacteristicInfo,
-    isEditing: boolean
+    characteristicInfo: CharacteristicInfo
 }
 
-export default function CharacteristicsDisplay({ characteristicInfo }: Props) {
+export default function CharacteristicsDisplay({ characteristicInfo }: Props) {    
     const { integrityInfo, goals, descriptions, convictions, relationships, flaws, culturalStrength, reputation, assets} = characteristicInfo
 
     return (

@@ -5,19 +5,18 @@ import StatsDisplay from './components/StatsDisplay'
 import './LeftColumn.css'
 
 interface Props {
-    leftColumnInfo: LeftColumnInfo,
-    isEditing: boolean
+    leftColumnInfo: LeftColumnInfo
 }
 
-export default function LeftColumn({ leftColumnInfo, isEditing }: Props) {
+export default function LeftColumn({ leftColumnInfo }: Props) {
     const { statInfo, movementInfo, characteristicInfo } = leftColumnInfo
     return (
         <div className='left'>
             <div className='flex-pair'>
-                <StatsDisplay statInfo={statInfo} isEditing={isEditing}/>
-                <MovementDisplay movementInfo={movementInfo} isEditing={isEditing}/>
+                <StatsDisplay statInfo={statInfo}/>
+                <MovementDisplay movementInfo={movementInfo}/>
             </div>
-            <CharacteristicsDisplay characteristicInfo={characteristicInfo} isEditing={isEditing}/>
+            <CharacteristicsDisplay characteristicInfo={characteristicInfo}/>
         </div>
     )
 }

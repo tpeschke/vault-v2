@@ -1,14 +1,17 @@
+import { useContext } from 'react'
 import './Sidebar.css'
+import EditingContext from '../contexts/EditingContext'
 
 interface Props {
     toggleViewQuickEdit: () => void,
     viewQuickEdit: boolean,
     prepAndDownload: (isPregen: boolean) => void,
-    isEditing: boolean
     toggleIsEditing: () => void
 }
 
-export default function Sidebar({ toggleViewQuickEdit, viewQuickEdit, prepAndDownload, isEditing, toggleIsEditing }: Props) {
+export default function Sidebar({ toggleViewQuickEdit, viewQuickEdit, prepAndDownload, toggleIsEditing }: Props) {
+    const isEditing = useContext(EditingContext)
+    
     return (
         <div className='sidebar-shell'>
             {isEditing && <button onClick={toggleIsEditing}><i className="fa-solid fa-floppy-disk"></i> Save</button>}

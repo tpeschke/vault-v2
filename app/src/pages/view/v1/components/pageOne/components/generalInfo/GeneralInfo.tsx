@@ -1,13 +1,16 @@
 import './GeneralInfo.css'
 import logo from '../../../../../../../assets/images/logo-black.png'
 import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
+import EditingContext from '../../../contexts/EditingContext'
+import { useContext } from 'react'
 
 interface Props {
-    generalInfo: GeneralInfoDisplay,
-    isEditing: boolean
+    generalInfo: GeneralInfoDisplay
 }
 
-export default function GeneralInfo({ generalInfo, isEditing }: Props) {
+export default function GeneralInfo({ generalInfo }: Props) {
+    const isEditing = useContext(EditingContext)
+
     const { name, ancestry, class: primaryClass, subclass, level, crpUnspent, crpSpent, crpToNextLevel } = generalInfo
 
     function placeholderFunction() {

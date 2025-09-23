@@ -1,11 +1,14 @@
 import { MovementInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
+import { useContext } from "react"
+import EditingContext from "../../../../contexts/EditingContext"
 
 interface Props {
-    movementInfo: MovementInfo,
-    isEditing: boolean
+    movementInfo: MovementInfo
 }
 
-export default function MovementDisplay({ movementInfo, isEditing }: Props) {
+export default function MovementDisplay({ movementInfo }: Props) {
+    const isEditing = useContext(EditingContext)
+    
     const { crawl, walk, jog, run, sprint } = movementInfo
 
     return (

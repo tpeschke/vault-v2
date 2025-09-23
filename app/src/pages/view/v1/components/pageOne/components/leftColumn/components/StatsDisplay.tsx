@@ -1,11 +1,14 @@
 import { StatsInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
+import { useContext } from "react"
+import EditingContext from "../../../../contexts/EditingContext"
 
 interface Props {
-    statInfo: StatsInfo,
-    isEditing: boolean
+    statInfo: StatsInfo
 }
 
-export default function StatsDisplay({ statInfo, isEditing }: Props) {
+export default function StatsDisplay({ statInfo }: Props) {
+    const isEditing = useContext(EditingContext)
+    
     const { str, dex, con, int, will, pre } = statInfo
 
     return (

@@ -6,18 +6,17 @@ import RightColumn from './components/rightColumn/RightColumn'
 import './PageOne.css'
 
 interface Props {
-    pageOneInfo: PageOneInfo,
-    isEditing: boolean
+    pageOneInfo: PageOneInfo
 }
 
-export default function PageOne({ pageOneInfo, isEditing }: Props) {
+export default function PageOne({ pageOneInfo }: Props) {
     const { generalInfo, leftColumnInfo, rightColumnInfo, abilitiesNBurdensInfo } = pageOneInfo
 
     return (
         <div className='page-shell page card page-one' id='page-one'>
-            <GeneralInfo generalInfo={generalInfo} isEditing={isEditing} />
+            <GeneralInfo generalInfo={generalInfo} />
             <div className='page-one-columns'>
-                <LeftColumn leftColumnInfo={leftColumnInfo} isEditing={isEditing} />
+                <LeftColumn leftColumnInfo={leftColumnInfo} />
                 <RightColumn rightColumnInfo={rightColumnInfo} />
             </div>
             <AbilitiesNBurdensDisplay abilitiesNBurdensInfo={abilitiesNBurdensInfo}/>
