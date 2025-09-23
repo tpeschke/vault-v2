@@ -8,36 +8,44 @@ import RelationshipsDisplay from './leftColumnComponents/RelationshipsDisplay';
 import ConvictionsDisplay from './rightColumnComponents/ConvictionsDisplay';
 import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
 import ReputationDisplay from './rightColumnComponents/ReputationDisplay';
+import { useContext } from 'react';
+import EditingContext from '../../../../../../contexts/EditingContext';
 
 interface Props {
     characteristicInfo: CharacteristicInfo
 }
 
-export default function CharacteristicsDisplay({ characteristicInfo }: Props) {    
-    const { integrityInfo, goals, descriptions, convictions, relationships, flaws, culturalStrength, reputation, assets} = characteristicInfo
+export default function CharacteristicsDisplay({ characteristicInfo }: Props) {
+    const isEditing = useContext(EditingContext)
+
+    const { integrityInfo, goals, descriptions, convictions, relationships, flaws, culturalStrength, reputation, assets } = characteristicInfo
 
     return (
         <div className="characteristics-shell">
             <h2>Characteristics</h2>
-            <IntegrityDisplay integrityInfo={integrityInfo}/>
+            <IntegrityDisplay integrityInfo={integrityInfo} />
             <div className='characteristics-columns'>
                 <div className='left'>
-                    <GoalsDisplay goals={goals}/>
+                    <GoalsDisplay goals={goals} />
                     <RelationshipsDisplay relationships={relationships} />
-                    <FlawsDisplay flaws={flaws}/>
+                    <FlawsDisplay flaws={flaws} />
                 </div>
                 <div className='right'>
                     <DescriptionsDisplay descriptions={descriptions} />
-                    <ConvictionsDisplay convictions={convictions}/>
+                    <ConvictionsDisplay convictions={convictions} />
                     <div className="cultural-strength-shell">
                         <h3>Cultural Strength</h3>
-                        <p>{culturalStrength}</p>
+                        {isEditing ?
+                            <input value={culturalStrength} />
+                            :
+                            <p>{culturalStrength}</p>
+                        }
                     </div>
                 </div>
             </div>
-            <ReputationDisplay reputation={reputation}/>
+            <ReputationDisplay reputation={reputation} />
             <h3>Allies, Contacts, & Assets</h3>
-            <TextArea lines={6} value={assets}/>
+            <TextArea lines={6} value={assets} />
         </div>
     )
 }
