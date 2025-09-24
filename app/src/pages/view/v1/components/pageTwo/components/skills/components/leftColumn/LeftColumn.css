@@ -42,6 +42,11 @@
     text-align: center;
 }
 
+.check-mods-display-shell input {
+    height: 16px;
+    text-align: center;
+}
+
 .skill-suites-display-shell>span {
     display: flex;
     align-items: center;
@@ -67,4 +72,20 @@
 
 .native-lang {
     height: 19px;
+}
+
+.skill-suite-row>span {
+    background: rgba(173, 216, 230)
+}
+
+.skill-suite-row>span:hover {
+    background: rgb(145, 181, 194)
+}
+
+.skill-suite-row .fa-check {
+    color: green
+}
+
+.skill-suite-row .fa-x {
+    color: red
 }

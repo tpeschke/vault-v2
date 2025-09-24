@@ -38,16 +38,20 @@
     background: lightgray;
 }
 
-.advanced-skill-display>div>span>h3, .advanced-skill-row>p {
+.advanced-skill-display>div>span>h3, .advanced-skill-row>p, .advanced-skill-row>input {
     width: 15%;
     text-align: center;
+}
+
+.advanced-skill-row>input {
+    height: 16px;
 }
 
 .advanced-skill-row>p {
     padding: 0 5px;
 }
 
-.advanced-skill-display>div>span>h3:first-child, .advanced-skill-row>p:first-child {
+.advanced-skill-display>div>span>h3:first-child, .advanced-skill-row>p:first-child, .advanced-skill-row>input:first-child {
     width: 50%;
     text-align: left;
 }

@@ -1,6 +1,7 @@
 import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces';
 import '../SkillDisplay.css'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import EditingContext from '../../../../../contexts/EditingContext';
 
 interface Props {
     advancedSkills: SkillObject[],
@@ -8,11 +9,13 @@ interface Props {
 }
 
 export default function AdvancedSkillDisplay({ advancedSkills, adepts }: Props) {
+    const isEditing = useContext(EditingContext)
+
     const [leftOver, setLeftOver] = useState(0)
 
     useEffect(() => {
-        setLeftOver(28 - advancedSkills.length)
-    }, advancedSkills)
+        setLeftOver(28 - advancedSkills.length - (isEditing ? 1 : 0))
+    }, [advancedSkills, isEditing])
 
     return (
         <div className='advanced-skill-display'>
@@ -31,20 +34,40 @@ export default function AdvancedSkillDisplay({ advancedSkills, adepts }: Props) 
                 </span>
             </div>
             <div className='advanced-skill-shell'>
-                {advancedSkills.map((skill, index) => skillRow(skill, index, adepts))}
+                {advancedSkills.map((skill, index) => skillRow(skill, index, adepts, isEditing))}
+                {isEditing &&
+                    <span className='advanced-skill-row'>
+                        <input />
+                        <input />
+                        <input />
+                        <input />
+                    </span>}
                 {[...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>
         </div>
     )
 }
 
-export function skillRow({ skill, cost, rank, mod }: SkillObject, index: number, adepts: number) {
+export function skillRow({ skill, cost, rank, mod }: SkillObject, index: number, adepts: number, isEditing: boolean) {
+    const totalCost = cost + (rank * 2) - adepts
+    
     return (
         <span key={index} className='advanced-skill-row'>
-            <p>{skill}</p>
-            <p>{cost + (rank * 2) - adepts}</p>
-            <p>{rank}</p>
-            <p>{mod}</p>
+            {isEditing ?
+                <>
+                    <input value={skill} />
+                    <input value={cost} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${totalCost} (Cost - Adepts + Rank * 2)`}/>
+                    <input value={rank} />
+                    <input value={mod} />
+                </>
+                :
+                <>
+                    <p>{skill}</p>
+                    <p>{totalCost}</p>
+                    <p>{rank}</p>
+                    <p>{mod}</p>
+                </>
+            }
         </span>
     )
 }

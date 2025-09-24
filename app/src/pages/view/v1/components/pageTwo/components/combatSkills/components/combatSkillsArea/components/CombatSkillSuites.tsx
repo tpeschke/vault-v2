@@ -20,7 +20,7 @@ export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, in
     )
 }
 
-export function skillSuiteRow({ skill, cost, isTrained, rank }: CombatSkillObject, index: number, int: number, martialAdepts: number) {
+function skillSuiteRow({ skill, cost, isTrained, rank }: CombatSkillObject, index: number, int: number, martialAdepts: number) {
     return (
         <span className='skill-suite-row' key={index}>
             <strong>{skill}</strong>
