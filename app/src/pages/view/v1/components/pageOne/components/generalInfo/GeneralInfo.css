@@ -78,10 +78,10 @@
 
 .general-info-shell .level-info {
     width: 15%;
+    text-align: center;
 }
 
 .general-info-shell .level-info p {
-    text-align: center;
     padding-right: 5px;
 }
 

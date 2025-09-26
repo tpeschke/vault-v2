@@ -19,6 +19,11 @@
     width: 50%;
 }
 
+.armor-workspace-shell>span>strong {
+    position: inherit;
+    z-index: 1;
+}
+
 .armor-workspace-shell>span>p {
     text-align: center;
 }
@@ -29,15 +34,28 @@
     height: 66px;
 }
 
-.armor-workspace-shell>span.bonus-shell p {
+.armor-workspace-shell>span.bonus-shell p, .armor-workspace-shell>span.bonus-shell textarea {
     position: absolute;
     top: 0;
+    left: 0;
     text-indent: 40px;
     width: calc(100% - 10px);
     text-align: left;
     font-size: 13px;
+    resize: none;
+    border: none;
+    height: 100%;
 }
 
 .armor-workspace-shell tr>*>* {
     width: 13px;
+}
+
+.armor-workspace-shell>input {
+    height: 19px;
+}
+
+.armor-workspace-shell>span>input {
+    height: 18px;
+    text-align: center;
 }

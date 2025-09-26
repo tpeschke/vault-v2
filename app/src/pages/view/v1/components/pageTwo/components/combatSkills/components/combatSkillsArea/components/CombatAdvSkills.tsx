@@ -1,6 +1,7 @@
 import { CombatSkillObject } from '@vault/common/interfaces/v1/pageTwo/combatSkills';
 import '../CombatSkillsArea.css'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import EditingContext from '../../../../../../../contexts/EditingContext';
 
 interface Props {
     combatAdvSkills: CombatSkillObject[],
@@ -8,28 +9,36 @@ interface Props {
 }
 
 export default function CombatAdvSkills({ combatAdvSkills, martialAdepts }: Props) {    
+    const isEditing = useContext(EditingContext)
+    
     const [leftOver, setLeftOver] = useState(0)
 
     useEffect(() => {
-        setLeftOver(18 - combatAdvSkills.length)
+        setLeftOver(18 - combatAdvSkills.length - (isEditing ? 1 : 0))
     }, [combatAdvSkills])
 
     return (
         <div className='combat-adv-skills-shell'>
             <div>
                 <span>
-                    <h3>Skill Suites</h3>
+                    <h3>Adv Skill</h3>
                     <h3>Cost</h3>
                     <h3>Rank</h3>
                 </span>
                 <span>
-                    <h3>Skill Suites</h3>
+                    <h3>Adv Skill</h3>
                     <h3>Cost</h3>
                     <h3>Rank</h3>
                 </span>
             </div>
             <div className='combat-advanced-skill-shell'>
                 {combatAdvSkills.map((skill, index) => skillRow(skill, index, martialAdepts))}
+                {isEditing &&
+                    <span className='combat-advanced-skill-row'>
+                        <input />
+                        <input />
+                        <input />
+                    </span>}
                 {[...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>
         </div>

@@ -1,5 +1,7 @@
 import { WeaponInfo } from '@vault/common/interfaces/v1/pageTwo/weaponInterfaces'
 import './WeaponWorkspace.css'
+import { useContext } from 'react'
+import EditingContext from '../../../../../../contexts/EditingContext'
 
 interface Props {
     weaponInfo: WeaponInfo,
@@ -7,6 +9,8 @@ interface Props {
 }
 
 export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props) {
+    const isEditing = useContext(EditingContext)
+
     const { name, damage, recovery, size, measure, parry, type, bonus, traits, modifiers } = weaponInfo
 
     const { atk, rec, pry, dam } = modifiers
@@ -17,44 +21,80 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
 
     return (
         <div className='weapon-workspace-shell workspace'>
-            <p>{name}</p>
+            {isEditing ?
+                <input value={name} />
+                :
+                <p>{name}</p>
+            }
             <span>
                 <strong>Damage</strong>
-                <p>{damage}</p>
+                {isEditing ?
+                    <input value={damage} />
+                    :
+                    <p>{damage}</p>
+                }
             </span>
             <span>
                 <span>
                     <strong>Rec</strong>
-                    <p>{recovery}</p>
+                    {isEditing ?
+                        <input value={recovery} />
+                        :
+                        <p>{recovery}</p>
+                    }
                 </span>
                 <span>
                     <strong>Size</strong>
-                    <p>{size}</p>
+                    {isEditing ?
+                        <input value={size} />
+                        :
+                        <p>{size}</p>
+                    }
                 </span>
             </span>
             {!isRanged &&
                 <span>
                     <span>
                         <strong>Meas</strong>
-                        <p>{measure}</p>
+                        {isEditing ?
+                            <input value={measure} />
+                            :
+                            <p>{measure}</p>
+                        }
                     </span>
                     <span>
                         <strong>Parry</strong>
-                        <p>{parry}</p>
+                        {isEditing ?
+                            <input value={parry} />
+                            :
+                            <p>{parry}</p>
+                        }
                     </span>
                 </span>
             }
             <span>
                 <strong>Type</strong>
-                <p>{type}</p>
+                {isEditing ?
+                    <input value={type} />
+                    :
+                    <p>{type}</p>
+                }
             </span>
             <span className={`bonus-shell ${isRanged ? 'ranged-bonus' : ''}`}>
                 <strong>Bonus</strong>
-                <p>{bonus}</p>
+                {isEditing ?
+                    <textarea value={bonus} />
+                    :
+                    <p>{bonus}</p>
+                }
             </span>
             <span className='bonus-shell trait-shell'>
                 <strong>Traits</strong>
-                <p>{traits}</p>
+                {isEditing ?
+                    <textarea value={traits} />
+                    :
+                    <p>{traits}</p>
+                }
             </span>
             <table>
                 <thead>
@@ -68,10 +108,29 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{atk.skill}</td>
-                        <td>{rec.skill}</td>
-                        <td>{pry.skill}</td>
-                        <td>{dam.skill}</td>
+                        {isEditing ?
+                            <>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={atk.skill ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={rec.skill ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={pry.skill ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={dam.skill ?? undefined} />
+                                </td>
+                            </>
+                            :
+                            <>
+                                <td>{atk.skill}</td>
+                                <td>{rec.skill}</td>
+                                <td>{pry.skill}</td>
+                                <td>{dam.skill}</td>
+                            </>
+                        }
                         <td><strong>Skill</strong></td>
                     </tr>
                     <tr>

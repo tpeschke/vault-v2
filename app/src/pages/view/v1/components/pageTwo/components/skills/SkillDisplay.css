@@ -44,7 +44,8 @@
 }
 
 .advanced-skill-row>input {
-    height: 16px;
+    height: 12px;
+    padding: 3px 5px;
 }
 
 .advanced-skill-row>p {

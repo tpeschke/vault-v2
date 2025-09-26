@@ -21,13 +21,13 @@ export default function AdvancedSkillDisplay({ advancedSkills, adepts }: Props) 
         <div className='advanced-skill-display'>
             <div>
                 <span>
-                    <h3>Skill Suites</h3>
+                    <h3>Adv Skill</h3>
                     <h3>Cost</h3>
                     <h3>Rank</h3>
                     <h3>Mod</h3>
                 </span>
                 <span>
-                    <h3>Skill Suites</h3>
+                    <h3>Adv Skill</h3>
                     <h3>Cost</h3>
                     <h3>Rank</h3>
                     <h3>Mod</h3>

@@ -28,8 +28,12 @@
     padding: 1px;
 }
 
-.stats-and-martial-adept-shell p {
+.stats-and-martial-adept-shell p, .stats-and-martial-adept-shell input {
     text-align: center;
+}
+
+.stats-and-martial-adept-shell input {
+    height: 18px;
 }
 
 .stats-and-martial-adept-shell>span {
@@ -54,8 +58,12 @@
 }
 
 .combat-skill-suites-shell>span>*:first-child {
-    width: 51%;
+    width: 60%;
     text-align: left;
+}
+
+.view-edit .combat-skill-suites-shell>span>*:first-child {
+    width: 40%;
 }
 
 .combat-adv-skills-shell {
@@ -85,8 +93,8 @@
     background: lightgray;
 }
 
-.combat-adv-skills-shell>div>span>h3, .combat-advanced-skill-row>p {
-    width: 15%;
+.combat-adv-skills-shell>div>span>h3, .combat-advanced-skill-row>p, .combat-advanced-skill-row>input {
+    width: 20%;
     text-align: center;
 }
 
@@ -94,8 +102,8 @@
     padding: 0 5px;
 }
 
-.combat-adv-skills-shell>div>span>h3:first-child, .combat-advanced-skill-row>p:first-child {
-    width: 56%;
+.combat-adv-skills-shell>div>span>h3:first-child, .combat-advanced-skill-row>p:first-child, .combat-advanced-skill-row>input:first-child {
+    width: 60%;
     text-align: left;
 }
 

@@ -1,12 +1,16 @@
 import { ShieldInfo } from '@vault/common/interfaces/v1/pageTwo/shieldInterfaces'
 import './ShieldWorkspace.css'
+import { useContext } from 'react'
+import EditingContext from '../../../../../../contexts/EditingContext'
 
 interface Props {
     shieldInfo: ShieldInfo
 }
 
 export default function ShieldWorkspace({ shieldInfo }: Props) {
-    const {name, dr, size, cover, flanks, bonus, modifiers} = shieldInfo
+    const isEditing = useContext(EditingContext)
+
+    const { name, dr, size, cover, flanks, bonus, modifiers } = shieldInfo
 
     const { def, fat, pry, brk } = modifiers
 
@@ -17,26 +21,50 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
     return (
         <div className='shield-workspace-shell'>
             <h3>Shield Workspace</h3>
-            <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Shield is Factored into Weapon Tables." className='workspace-button'>{name}</button>
+            {isEditing ?
+                <input value={name} />
+                :
+                <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Shield is Factored into Weapon Tables." className='workspace-button'>{name}</button>
+            }
             <span>
                 <strong>DR</strong>
-                <p>{dr}</p>
+                {isEditing ?
+                    <input value={dr} />
+                    :
+                    <p>{dr}</p>
+                }
             </span>
             <span>
                 <strong>Size</strong>
-                <p>{size}</p>
+                {isEditing ?
+                    <input value={size} />
+                    :
+                    <p>{size}</p>
+                }
             </span>
             <span>
                 <strong>Flanks</strong>
-                <p>{flanks}</p>
+                {isEditing ?
+                    <input value={flanks} />
+                    :
+                    <p>{flanks}</p>
+                }
             </span>
             <span>
                 <strong>Cover</strong>
-                <p>{cover}</p>
+                {isEditing ?
+                    <input value={cover} />
+                    :
+                    <p>{cover}</p>
+                }
             </span>
             <span className='bonus-shell'>
                 <strong>Bonus</strong>
-                <p>{bonus}</p>
+                {isEditing ?
+                    <textarea value={bonus} />
+                    :
+                    <p>{bonus}</p>
+                }
             </span>
             <table>
                 <thead>
@@ -50,18 +78,54 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{def.base}</td>
-                        <td>{fat.base}</td>
-                        <td>{pry.base}</td>
-                        <td>{brk.base}</td>
+                        {isEditing ?
+                            <>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={def.base ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={fat.base ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={pry.base ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={brk.base ?? undefined} />
+                                </td>
+                            </>
+                            :
+                            <>
+                                <td>{def.base}</td>
+                                <td>{fat.base}</td>
+                                <td>{pry.base}</td>
+                                <td>{brk.base}</td>
+                            </>
+                        }
                         <td><strong>Base</strong></td>
                     </tr>
                     <tr>
-                        {/* Cannot modifier Def via Skill */}
-                        <td> </td>
-                        <td>{fat.skill}</td>
-                        <td>{pry.skill}</td>
-                        <td>{brk.skill}</td>
+                    {isEditing ?
+                            <>
+                                {/* Cannot modifier Def via Skill */}
+                                <td> </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={fat.skill ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={pry.skill ?? undefined} />
+                                </td>
+                                <td>
+                                    <input onClick={placeholderFunction} defaultValue={brk.skill ?? undefined} />
+                                </td>
+                            </>
+                            :
+                            <>
+                                <td> </td>
+                                <td>{fat.base}</td>
+                                <td>{pry.base}</td>
+                                <td>{brk.base}</td>
+                            </>
+                        }
                         <td><strong>Skill</strong></td>
                     </tr>
                     <tr>
