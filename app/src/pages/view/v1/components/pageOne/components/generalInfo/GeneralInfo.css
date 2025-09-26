@@ -78,11 +78,11 @@
 
 .general-info-shell .level-info {
     width: 15%;
-    text-align: center;
 }
 
-.general-info-shell .level-info p {
+.general-info-shell .level-info p, .general-info-shell .level-info input {
     padding-right: 5px;
+    text-align: center;
 }
 
 .general-info-shell .crp-shell {

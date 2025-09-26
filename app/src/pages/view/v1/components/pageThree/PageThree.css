@@ -1,0 +1,29 @@
+.general-info-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.general-info-heading>h2 {
+    width: 100%;
+}
+
+.general-info-heading>span {
+    display: flex;
+    justify-content: space-between;
+    min-width: 110px;
+    padding-left: 10px;
+}
+
+.general-info-heading>span>div {
+    margin-left: 5px;
+    padding: 1px 10px;
+}
+
+.general-info-heading .fa-eye {
+    color: green
+  }
+  
+.general-info-heading .fa-eye-slash {
+    color: red
+  }
