@@ -11,10 +11,15 @@ interface Props {
 
 export default function Sidebar({ toggleViewQuickEdit, viewQuickEdit, prepAndDownload, toggleIsEditing }: Props) {
     const isEditing = useContext(EditingContext)
-    
+
     return (
         <div className='sidebar-shell'>
-            {isEditing && <button onClick={toggleIsEditing}><i className="fa-solid fa-floppy-disk"></i> Save</button>}
+            {isEditing &&
+                <>
+                    <button onClick={toggleIsEditing}><i className="fa-solid fa-floppy-disk"></i> Save</button>
+                    <button onClick={toggleIsEditing}><i className="fa-solid fa-arrow-u-turn-up-right"></i> Revert</button>
+                </>
+            }
             {!isEditing &&
                 <>
                     <button onClick={toggleIsEditing}><i className="fa-solid fa-pen-nib"></i> Edit</button>
