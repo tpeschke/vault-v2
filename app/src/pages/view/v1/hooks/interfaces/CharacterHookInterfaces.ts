@@ -1,5 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
-import { UpdateGeneralInfoFunction } from "./PageOneInterfaces"
+import { UpdateGeneralInfoFunction, UpdateStatFunction } from "./PageOneInterfaces"
 
 export interface CharacterHookReturn {
     character: CharacterVersion1 | null,
@@ -18,4 +18,9 @@ export interface UpdateFunctions {
 
 export interface PageOneUpdates {
     updateGeneralInfo: UpdateGeneralInfoFunction
+    leftColumnUpdateFunctions: PageOneLeftColumn
+}
+
+export interface PageOneLeftColumn {
+    updateStat: UpdateStatFunction
 }

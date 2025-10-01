@@ -13,13 +13,13 @@ interface Props {
 
 export default function PageOne({ pageOneInfo, pageOneUpdateFunction }: Props) {
     const { generalInfo, leftColumnInfo, rightColumnInfo, abilitiesNBurdensInfo } = pageOneInfo
-    const { updateGeneralInfo } = pageOneUpdateFunction
+    const { updateGeneralInfo, leftColumnUpdateFunctions } = pageOneUpdateFunction
 
     return (
         <div className='page-shell page card page-one' id='page-one'>
             <GeneralInfo generalInfo={generalInfo} updateGeneralInfo={updateGeneralInfo} />
             <div className='page-one-columns'>
-                <LeftColumn leftColumnInfo={leftColumnInfo} />
+                <LeftColumn leftColumnInfo={leftColumnInfo} leftColumnUpdateFunctions={leftColumnUpdateFunctions}/>
                 <RightColumn rightColumnInfo={rightColumnInfo} />
             </div>
             <AbilitiesNBurdensDisplay abilitiesNBurdensInfo={abilitiesNBurdensInfo}/>

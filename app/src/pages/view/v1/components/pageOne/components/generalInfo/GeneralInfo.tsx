@@ -15,10 +15,6 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
 
     const { name, ancestry, class: primaryClass, subclass, level, crpUnspent, crpSpent, crpToNextLevel } = generalInfo
 
-    function placeholderFunction() {
-
-    }
-
     return (
         <div className='general-info-shell'>
             <div className='info-shell'>

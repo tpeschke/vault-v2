@@ -13,6 +13,8 @@ export interface StatsInfo {
     pre: number,
 }
 
+export type StatKeys = keyof StatsInfo
+
 export interface MovementInfo {
     crawl: number,
     walk: number,
