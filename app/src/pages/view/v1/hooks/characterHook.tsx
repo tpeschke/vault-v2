@@ -86,6 +86,8 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     }
                 }
             }
+            
+            console.log(newCharacter.pageOneInfo.generalInfo)
 
             setCharacter(newCharacter)
         }

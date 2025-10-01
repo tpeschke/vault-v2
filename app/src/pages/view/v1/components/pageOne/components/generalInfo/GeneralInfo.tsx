@@ -26,7 +26,7 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     <span className='name-info'>
                         <strong>Name</strong>
                         {isEditing ?
-                            <input onClick={placeholderFunction} defaultValue={name} />
+                            <input onChange={(event: any) => updateGeneralInfo('name', event.target.value)} defaultValue={name} />
                             :
                             <p>{name}</p>
                         }
@@ -40,7 +40,7 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     <span className='ancestry-info'>
                         <strong>Ancestry</strong>
                         {isEditing ?
-                            <input onClick={placeholderFunction} defaultValue={ancestry} />
+                            <input onChange={(event: any) => updateGeneralInfo('ancestry', event.target.value)} defaultValue={ancestry} />
                             :
                             <p>{ancestry}</p>
                         }
@@ -48,13 +48,13 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     <span className='class-info'>
                         <strong>Class / Subclass</strong>
                         {isEditing ?
-                            <input onClick={placeholderFunction} defaultValue={primaryClass} />
+                            <input onChange={(event: any) => updateGeneralInfo('class', event.target.value)} defaultValue={primaryClass} />
                             :
                             <p>{primaryClass}</p>
                         }
                         <strong>/</strong>
                         {isEditing ?
-                            <input onClick={placeholderFunction} defaultValue={subclass} />
+                            <input onChange={(event: any) => updateGeneralInfo('subclass', event.target.value)} defaultValue={subclass} />
                             :
                             <p>{subclass}</p>
                         }
@@ -62,7 +62,7 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     <span className='level-info'>
                         <strong>LvL</strong>
                         {isEditing ?
-                            <input onClick={placeholderFunction} defaultValue={level} />
+                            <input onChange={(event: any) => updateGeneralInfo('level', +event.target.value)} defaultValue={level} />
                             :
                             <p>{level}</p>
                         }
@@ -72,16 +72,16 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     <strong>CrP</strong>
                     <span className='unspent-crp-info'>
                         <strong>Unspent</strong>
-                        <input onClick={placeholderFunction} defaultValue={crpUnspent} />
+                        <input onChange={(event: any) => updateGeneralInfo('crpUnspent', +event.target.value)} defaultValue={crpUnspent} />
                     </span>
                     <span className='spent-crp-info'>
                         <strong>Spent</strong>
-                        <input onClick={placeholderFunction} defaultValue={crpSpent} />
+                        <input onChange={(event: any) => updateGeneralInfo('crpSpent', +event.target.value)} defaultValue={crpSpent} />
                     </span>
                     <span className='to-next-level-info'>
                         <strong>Spent to Next LvL</strong>
                         {isEditing ?
-                            <input onClick={placeholderFunction} defaultValue={crpToNextLevel} />
+                            <input onChange={(event: any) => updateGeneralInfo('crpToNextLevel', +event.target.value)} defaultValue={crpToNextLevel} />
                             :
                             <p>{crpToNextLevel}</p>
                         }
