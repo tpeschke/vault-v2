@@ -1,6 +1,6 @@
 import { IntegrityInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { useEffect, useState } from "react"
-import { UpdateIntegrityInfo } from "../../../../../../../hooks/interfaces/PageOneInterfaces"
+import { UpdateIntegrityInfo } from "../../../../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces"
 
 interface Props {
     integrityInfo: IntegrityInfo,

@@ -1,7 +1,7 @@
 import { StatsInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { useContext } from "react"
 import EditingContext from "../../../../../contexts/EditingContext"
-import { UpdateStatFunction } from "../../../../../hooks/interfaces/PageOneInterfaces"
+import { UpdateStatFunction } from "../../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces"
 
 interface Props {
     statInfo: StatsInfo,

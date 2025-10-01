@@ -3,7 +3,7 @@ import logo from '../../../../../../../assets/images/logo-black.png'
 import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
 import EditingContext from '../../../../contexts/EditingContext'
 import { useContext } from 'react'
-import { UpdateGeneralInfoFunction } from '../../../../hooks/interfaces/PageOneInterfaces'
+import { UpdateGeneralInfoFunction } from '../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces'
 
 interface Props {
     generalInfo: GeneralInfoDisplay,

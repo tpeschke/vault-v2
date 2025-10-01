@@ -1,5 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
-import { InsertGenericCharacteristicFunction, UpdateCharacteristicStringFunction, UpdateGeneralInfoFunction, UpdateGenericCharacteristicFunction, UpdateIntegrityInfo, UpdateMovementFunction, UpdateStatFunction } from "./PageOneInterfaces"
+import { InsertGenericCharacteristicFunction, UpdateCharacteristicStringFunction, UpdateGeneralInfoFunction, UpdateGenericCharacteristicFunction, UpdateIntegrityInfo, UpdateMovementFunction, UpdateStatFunction } from "./UpdateCharacterFunctionInterfaces"
 
 export interface CharacterHookReturn {
     character: CharacterVersion1 | null,

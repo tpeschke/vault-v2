@@ -2,7 +2,7 @@ import { PairObject } from '@vault/common/interfaces/v1/pageOne/leftColumnInterf
 import '../DisplayArray.css'
 import { useContext } from 'react'
 import EditingContext from '../../../contexts/EditingContext'
-import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from '../../../hooks/interfaces/PageOneInterfaces'
+import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from '../../../hooks/interfaces/UpdateCharacterFunctionInterfaces'
 
 interface Props {
     max: number,

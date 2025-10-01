@@ -7,7 +7,7 @@ import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utili
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
-import { alterCharacteristicArray } from "./utilities/updateUtilities";
+import { alterCharacteristicArray, insertCharacteristicUtility, updateCharacteristicStringUtility, updateCharacteristicUtility, updateGeneralInfoUtility, updateIntegrityInfoUtility, updateMovementUtility, updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -93,125 +93,38 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
 
     function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
         if (character) {
-            const newCharacter = {
-                ...character,
-                pageOneInfo: {
-                    ...character.pageOneInfo,
-                    generalInfo: {
-                        ...character.pageOneInfo.generalInfo,
-                        [key]: value
-                    }
-                }
-            }
-
-            setCharacter(newCharacter)
+            setCharacter(updateGeneralInfoUtility(character, key, value))
         }
     }
 
     function updateStat(key: StatKeys, value: number) {
         if (character) {
-            const newCharacter = {
-                ...character,
-                pageOneInfo: {
-                    ...character.pageOneInfo,
-                    leftColumnInfo: {
-                        ...character.pageOneInfo.leftColumnInfo,
-                        statInfo: {
-                            ...character.pageOneInfo.leftColumnInfo.statInfo,
-                            [key]: value
-                        }
-                    }
-                }
-            }
-
-            setCharacter(newCharacter)
+            setCharacter(updateStatUtility(character, key, value))
         }
     }
 
     function updateMovement(key: MovementKeys, value: number) {
         if (character) {
-            const newCharacter = {
-                ...character,
-                pageOneInfo: {
-                    ...character.pageOneInfo,
-                    leftColumnInfo: {
-                        ...character.pageOneInfo.leftColumnInfo,
-                        movementInfo: {
-                            ...character.pageOneInfo.leftColumnInfo.movementInfo,
-                            [key]: value
-                        }
-                    }
-                }
-            }
-
-            setCharacter(newCharacter)
+            setCharacter(updateMovementUtility(character, key, value))
         }
     }
 
     function updateIntegrityInfo(key: IntegrityKeys, value: number) {
         if (character) {
-            const newCharacter = {
-                ...character,
-                pageOneInfo: {
-                    ...character.pageOneInfo,
-                    leftColumnInfo: {
-                        ...character.pageOneInfo.leftColumnInfo,
-                        characteristicInfo: {
-                            ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
-                            integrityInfo: {
-                                ...character.pageOneInfo.leftColumnInfo.characteristicInfo.integrityInfo,
-                                [key]: value
-                            }
-                        }
-                    }
-                }
-            }
-
-            setCharacter(newCharacter)
+            setCharacter(updateIntegrityInfoUtility(character, key, value))
         }
     }
 
     function updateCharacteristicString(key: CharacteristicStringKeys, value: number) {
         if (character) {
-            const newCharacter = {
-                ...character,
-                pageOneInfo: {
-                    ...character.pageOneInfo,
-                    leftColumnInfo: {
-                        ...character.pageOneInfo.leftColumnInfo,
-                        characteristicInfo: {
-                            ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
-                            [key]: value
-                        }
-                    }
-                }
-            }
-
-            setCharacter(newCharacter)
+            setCharacter(updateCharacteristicStringUtility(character, key, value))
         }
     }
 
     function insertCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
         return (newObject: PairObject) => {
             if (character) {
-                const newCharacter = {
-                    ...character,
-                    pageOneInfo: {
-                        ...character.pageOneInfo,
-                        leftColumnInfo: {
-                            ...character.pageOneInfo.leftColumnInfo,
-                            characteristicInfo: {
-                                ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
-                                [characteristic]: [
-                                    ...character.pageOneInfo.leftColumnInfo.characteristicInfo[characteristic],
-                                    newObject
-                                ]
-                            }
-                        }
-                    }
-                }
-
-                setCharacter(newCharacter)
+                setCharacter(insertCharacteristicUtility(character, characteristic, newObject))
             }
         }
     }
@@ -219,23 +132,7 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
     function updateCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
         return (changedIndex: number, newObject: PairObject) => {
             if (character) {
-                const alteredArray = alterCharacteristicArray(character.pageOneInfo.leftColumnInfo.characteristicInfo[characteristic], changedIndex, newObject)
-
-                const newCharacter = {
-                    ...character,
-                    pageOneInfo: {
-                        ...character.pageOneInfo,
-                        leftColumnInfo: {
-                            ...character.pageOneInfo.leftColumnInfo,
-                            characteristicInfo: {
-                                ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
-                                [characteristic]: alteredArray
-                            }
-                        }
-                    }
-                }
-
-                setCharacter(newCharacter)
+                setCharacter(updateCharacteristicUtility(character, characteristic, changedIndex, newObject))
             }
         }
     }
