@@ -23,6 +23,8 @@ export interface MovementInfo {
     sprint: number
 }
 
+export type MovementKeys = keyof MovementInfo
+
 export interface PairObject {
     id?: number,
     title: string | undefined,

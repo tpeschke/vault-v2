@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
-import { StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
+import { MovementKeys, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -127,6 +127,27 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateMovement(key: MovementKeys, value: number) {
+        if (character) {
+            const newCharacter = {
+                ...character,
+                pageOneInfo: {
+                    ...character.pageOneInfo,
+                    leftColumnInfo: {
+                        ...character.pageOneInfo.leftColumnInfo,
+                        movementInfo: {
+                            ...character.pageOneInfo.leftColumnInfo.movementInfo,
+                            [key]: value
+                        }
+                    }
+                }
+            }
+
+            setCharacter(newCharacter)
+        }
+    }
+
+
     return {
         character,
         downloadCharacter,
@@ -137,7 +158,8 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
             pageOneUpdateFunction: {
                 updateGeneralInfo,
                 leftColumnUpdateFunctions: {
-                    updateStat
+                    updateStat,
+                    updateMovement
                 }
             }
         }

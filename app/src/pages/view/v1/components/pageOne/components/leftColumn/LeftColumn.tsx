@@ -12,13 +12,13 @@ interface Props {
 
 export default function LeftColumn({ leftColumnInfo, leftColumnUpdateFunctions }: Props) {
     const { statInfo, movementInfo, characteristicInfo } = leftColumnInfo
-    const { updateStat } = leftColumnUpdateFunctions
+    const { updateStat, updateMovement } = leftColumnUpdateFunctions
 
     return (
         <div className='left'>
             <div className='flex-pair'>
                 <StatsDisplay statInfo={statInfo} updateStat={updateStat}/>
-                <MovementDisplay movementInfo={movementInfo}/>
+                <MovementDisplay movementInfo={movementInfo} updateMovement={updateMovement}/>
             </div>
             <CharacteristicsDisplay characteristicInfo={characteristicInfo}/>
         </div>
