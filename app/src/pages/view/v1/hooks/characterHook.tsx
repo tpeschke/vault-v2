@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { viewURL } from "../../../../frontend-config";
 import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
-import { delay } from '@vault/common/utilities/timingFunctions'
-import PageThree from "../components/pageThree/PageThree";
 
 interface CharacterHookReturn {
     character: CharacterVersion1 | null,
