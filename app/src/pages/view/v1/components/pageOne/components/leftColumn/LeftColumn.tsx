@@ -12,7 +12,7 @@ interface Props {
 
 export default function LeftColumn({ leftColumnInfo, leftColumnUpdateFunctions }: Props) {
     const { statInfo, movementInfo, characteristicInfo } = leftColumnInfo
-    const { updateStat, updateMovement } = leftColumnUpdateFunctions
+    const { updateStat, updateMovement, characteristicUpdateFunctions } = leftColumnUpdateFunctions
 
     return (
         <div className='left'>
@@ -20,7 +20,7 @@ export default function LeftColumn({ leftColumnInfo, leftColumnUpdateFunctions }
                 <StatsDisplay statInfo={statInfo} updateStat={updateStat}/>
                 <MovementDisplay movementInfo={movementInfo} updateMovement={updateMovement}/>
             </div>
-            <CharacteristicsDisplay characteristicInfo={characteristicInfo}/>
+            <CharacteristicsDisplay characteristicInfo={characteristicInfo} characteristicUpdateFunctions={characteristicUpdateFunctions}/>
         </div>
     )
 }

@@ -47,3 +47,5 @@ export interface IntegrityInfo {
     integrity: number,
     gritDie: number,
 }
+
+export type IntegrityKeys = keyof IntegrityInfo

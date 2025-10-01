@@ -10,20 +10,23 @@ import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
 import ReputationDisplay from './rightColumnComponents/ReputationDisplay';
 import { useContext } from 'react';
 import EditingContext from '../../../../../../contexts/EditingContext';
+import { CharacteristicUpdateFunctions } from '../../../../../../hooks/interfaces/CharacterHookInterfaces';
 
 interface Props {
-    characteristicInfo: CharacteristicInfo
+    characteristicInfo: CharacteristicInfo,
+    characteristicUpdateFunctions: CharacteristicUpdateFunctions
 }
 
-export default function CharacteristicsDisplay({ characteristicInfo }: Props) {
+export default function CharacteristicsDisplay({ characteristicInfo, characteristicUpdateFunctions }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { integrityInfo, goals, descriptions, convictions, relationships, flaws, culturalStrength, reputation, assets } = characteristicInfo
+    const { updateIntegrityInfo } = characteristicUpdateFunctions
 
     return (
         <div className="characteristics-shell">
             <h2>Characteristics</h2>
-            <IntegrityDisplay integrityInfo={integrityInfo} />
+            <IntegrityDisplay integrityInfo={integrityInfo} updateIntegrityInfo={updateIntegrityInfo}/>
             <div className='characteristics-columns'>
                 <div className='left'>
                     <GoalsDisplay goals={goals} />

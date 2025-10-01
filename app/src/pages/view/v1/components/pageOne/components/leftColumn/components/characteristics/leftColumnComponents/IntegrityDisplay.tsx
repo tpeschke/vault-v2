@@ -1,11 +1,13 @@
 import { IntegrityInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { useEffect, useState } from "react"
+import { UpdateIntegrityInfo } from "../../../../../../../hooks/interfaces/PageOneInterfaces"
 
 interface Props {
-    integrityInfo: IntegrityInfo
+    integrityInfo: IntegrityInfo,
+    updateIntegrityInfo: UpdateIntegrityInfo
 }
 
-export default function IntegrityDisplay({ integrityInfo }: Props) {
+export default function IntegrityDisplay({ integrityInfo, updateIntegrityInfo }: Props) {
     const { integrity, gritDie } = integrityInfo
 
     const [leftPosition, setLeftPosition] = useState(21)
@@ -30,14 +32,10 @@ export default function IntegrityDisplay({ integrityInfo }: Props) {
         }
     }
 
-    function placeholderFunction() {
-
-    }
-
     return (
         <div className="integrity-shell">
             <span>
-                <input onChange={placeholderFunction} defaultValue={integrity} />
+                <input onChange={(event: any) => updateIntegrityInfo('integrity', +event.target.value)} defaultValue={integrity} />
                 <strong>Integrity</strong>
             </span>
             <div>
@@ -50,7 +48,7 @@ export default function IntegrityDisplay({ integrityInfo }: Props) {
             </div>
             <span>
                 <strong>Grit Dice</strong>
-                <input onChange={placeholderFunction} defaultValue={gritDie} />
+                <input onChange={(event: any) => updateIntegrityInfo('gritDie', +event.target.value)} defaultValue={gritDie} />
             </span>
         </div>
     )

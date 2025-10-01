@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
-import { MovementKeys, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
+import { IntegrityKeys, MovementKeys, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -147,6 +147,29 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateIntegrityInfo(key: IntegrityKeys, value: number) {
+        if (character) {
+            const newCharacter = {
+                ...character,
+                pageOneInfo: {
+                    ...character.pageOneInfo,
+                    leftColumnInfo: {
+                        ...character.pageOneInfo.leftColumnInfo,
+                        characteristicInfo: {
+                            ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
+                            integrityInfo: {
+                                ...character.pageOneInfo.leftColumnInfo.characteristicInfo.integrityInfo,
+                                [key]: value
+                            }
+                        }
+                    }
+                }
+            }
+
+            setCharacter(newCharacter)
+        }
+    }
+
 
     return {
         character,
@@ -159,7 +182,10 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                 updateGeneralInfo,
                 leftColumnUpdateFunctions: {
                     updateStat,
-                    updateMovement
+                    updateMovement,
+                    characteristicUpdateFunctions: {
+                        updateIntegrityInfo
+                    }
                 }
             }
         }
