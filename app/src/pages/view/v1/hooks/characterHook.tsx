@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
-import { CharacteristicPairObjectsKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
+import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 import { alterCharacteristicArray } from "./utilities/updateUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
@@ -171,6 +171,26 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateCharacteristicString(key: CharacteristicStringKeys, value: number) {
+        if (character) {
+            const newCharacter = {
+                ...character,
+                pageOneInfo: {
+                    ...character.pageOneInfo,
+                    leftColumnInfo: {
+                        ...character.pageOneInfo.leftColumnInfo,
+                        characteristicInfo: {
+                            ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
+                            [key]: value
+                        }
+                    }
+                }
+            }
+
+            setCharacter(newCharacter)
+        }
+    }
+
     function insertCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
         return (newObject: PairObject) => {
             if (character) {
@@ -235,7 +255,8 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     characteristicUpdateFunctions: {
                         updateIntegrityInfo,
                         insertCharacteristic,
-                        updateCharacteristic
+                        updateCharacteristic,
+                        updateCharacteristicString
                     }
                 }
             }

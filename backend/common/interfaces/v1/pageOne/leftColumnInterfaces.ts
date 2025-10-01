@@ -43,7 +43,9 @@ export interface CharacteristicInfo {
     assets: string
 }
 
-type CharacteristicPairObjects = Omit<CharacteristicInfo, 'integrityInfo' | 'culturalStrength' | 'assets'>
+export type CharacteristicStringKeys = 'culturalStrength' | 'assets'
+
+type CharacteristicPairObjects = Omit<CharacteristicInfo, 'integrityInfo' | CharacteristicStringKeys>
 
 export type CharacteristicPairObjectsKeys = keyof CharacteristicPairObjects
 

@@ -1,4 +1,4 @@
-import { CharacteristicPairObjectsKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
+import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 
 export type UpdateGeneralInfoFunction = (key: GeneralInfoKeys, value: string | number) => void
@@ -16,3 +16,5 @@ export type InsertCharacteristicFunction = (newObject: PairObject) => void
 export type UpdateGenericCharacteristicFunction = (characteristic: CharacteristicPairObjectsKeys) => UpdateCharacteristicFunction
 
 export type UpdateCharacteristicFunction = (changedIndex: number, newObject: PairObject) => void
+
+export type UpdateCharacteristicStringFunction = (key: CharacteristicStringKeys, value: number) => void

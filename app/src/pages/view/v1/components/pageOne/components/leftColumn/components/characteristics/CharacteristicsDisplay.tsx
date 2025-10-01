@@ -21,7 +21,7 @@ export default function CharacteristicsDisplay({ characteristicInfo, characteris
     const isEditing = useContext(EditingContext)
 
     const { integrityInfo, goals, descriptions, convictions, relationships, flaws, culturalStrength, reputation, assets } = characteristicInfo
-    const { updateIntegrityInfo, insertCharacteristic, updateCharacteristic } = characteristicUpdateFunctions
+    const { updateIntegrityInfo, updateCharacteristicString, insertCharacteristic, updateCharacteristic } = characteristicUpdateFunctions
 
     return (
         <div className="characteristics-shell">
@@ -31,24 +31,24 @@ export default function CharacteristicsDisplay({ characteristicInfo, characteris
                 <div className='left'>
                     <GoalsDisplay goals={goals} insertGoal={insertCharacteristic('goals')} updateGoal={updateCharacteristic('goals')}/>
                     <RelationshipsDisplay relationships={relationships} insertRelationship={insertCharacteristic('relationships')} updateRelationship={updateCharacteristic('relationships')}/>
-                    <FlawsDisplay flaws={flaws} />
+                    <FlawsDisplay flaws={flaws} insertFlaw={insertCharacteristic('flaws')} updateFlaw={updateCharacteristic('flaws')} />
                 </div>
                 <div className='right'>
-                    <DescriptionsDisplay descriptions={descriptions} />
-                    <ConvictionsDisplay convictions={convictions} />
+                    <DescriptionsDisplay descriptions={descriptions} insertDescription={insertCharacteristic('descriptions')} updateDescription={updateCharacteristic('descriptions')} />
+                    <ConvictionsDisplay convictions={convictions} insertConviction={insertCharacteristic('convictions')} updateConviction={updateCharacteristic('convictions')}/>
                     <div className="cultural-strength-shell">
                         <h3>Cultural Strength</h3>
                         {isEditing ?
-                            <input value={culturalStrength} />
+                            <input onChange={(event: any) => updateCharacteristicString('culturalStrength', event.target.value)} value={culturalStrength} />
                             :
                             <p>{culturalStrength}</p>
                         }
                     </div>
                 </div>
             </div>
-            <ReputationDisplay reputation={reputation} />
+            <ReputationDisplay reputation={reputation} insertReputation={insertCharacteristic('reputation')} updateReputation={updateCharacteristic('reputation')}/>
             <h3>Allies, Contacts, & Assets</h3>
-            <TextArea lines={6} value={assets} />
+            <TextArea onChange={(event: any) => updateCharacteristicString('assets', event.target.value)} lines={6} value={assets} />
         </div>
     )
 }
