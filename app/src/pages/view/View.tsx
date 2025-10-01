@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function View({ setLoading, pathname }: Props) {
-    const { character, downloadCharacter, isDownloading } = CharacterHook(pathname)
+    const { character, downloadCharacter, isDownloading, updateFunctions } = CharacterHook(pathname)
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -22,7 +22,13 @@ export default function View({ setLoading, pathname }: Props) {
 
     return (
         <div className="home-shell">
-            {character && <ViewVersionOne character={character} downloadCharacter={downloadCharacter} isDownloading={isDownloading} />}
+            {character &&
+                <ViewVersionOne
+                    character={character}
+                    downloadCharacter={downloadCharacter}
+                    isDownloading={isDownloading}
+                    updateFunctions={updateFunctions}
+                />}
         </div>
     )
 }

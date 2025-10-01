@@ -4,14 +4,8 @@ import { useEffect, useState } from "react";
 import { viewURL } from "../../../../frontend-config";
 import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
-
-interface CharacterHookReturn {
-    character: CharacterVersion1 | null,
-    downloadCharacter: DownloadCharacterFunction,
-    isDownloading: boolean
-}
-
-export type DownloadCharacterFunction = (isPregen: boolean) => void
+import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
+import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [character, setCharacter] = useState<CharacterVersion1 | null>(null)
@@ -80,9 +74,31 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
+        if (character) {
+            const newCharacter = {
+                ...character,
+                pageOneInfo: {
+                    ...character.pageOneInfo,
+                    generalInfo: {
+                        ...character.pageOneInfo.generalInfo,
+                        [key]: value
+                    }
+                }
+            }
+
+            setCharacter(newCharacter)
+        }
+    }
+
     return {
         character,
         downloadCharacter,
-        isDownloading
+        isDownloading,
+        updateFunctions: {
+            pageOneUpdateFunction: {
+                updateGeneralInfo
+            }
+        }
     }
 }

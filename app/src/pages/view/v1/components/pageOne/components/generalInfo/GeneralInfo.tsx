@@ -3,12 +3,14 @@ import logo from '../../../../../../../assets/images/logo-black.png'
 import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
 import EditingContext from '../../../../contexts/EditingContext'
 import { useContext } from 'react'
+import { UpdateGeneralInfoFunction } from '../../../../hooks/interfaces/PageOneInterfaces'
 
 interface Props {
-    generalInfo: GeneralInfoDisplay
+    generalInfo: GeneralInfoDisplay,
+    updateGeneralInfo: UpdateGeneralInfoFunction
 }
 
-export default function GeneralInfo({ generalInfo }: Props) {
+export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { name, ancestry, class: primaryClass, subclass, level, crpUnspent, crpSpent, crpToNextLevel } = generalInfo

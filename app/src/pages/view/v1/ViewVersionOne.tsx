@@ -6,16 +6,17 @@ import Sidebar from './components/sidebar/Sidebar'
 import './ViewVersionOne.css'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
 import LoadingIndicator from '../../../components/loading/components/LoadingIndicator'
-import { DownloadCharacterFunction } from './hooks/characterHook'
 import EditingContext from './contexts/EditingContext'
+import { DownloadCharacterFunction, UpdateFunctions } from './hooks/interfaces/CharacterHookInterfaces'
 
 interface Props {
     character: CharacterVersion1,
     downloadCharacter: DownloadCharacterFunction,
-    isDownloading: boolean
+    isDownloading: boolean,
+    updateFunctions: UpdateFunctions
 }
 
-export default function ViewVersionOne({ character, downloadCharacter, isDownloading }: Props) {
+export default function ViewVersionOne({ character, downloadCharacter, isDownloading, updateFunctions }: Props) {
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
 
     const toggleViewQuickEdit = () => {
@@ -36,6 +37,8 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
     const { pageOneInfo, pageTwoInfo, generalNotes, userInfo } = character
     const { ownsThisCharacter } = userInfo
 
+    const { pageOneUpdateFunction } = updateFunctions
+
     const { int } = pageOneInfo.leftColumnInfo.statInfo
 
     const showNotes = !generalNotes.isSecret || ownsThisCharacter
@@ -51,7 +54,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
             <EditingContext value={isEditing}>
                 <div className='version-one-shell'>
                     <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
-                        <PageOne pageOneInfo={pageOneInfo} />
+                        <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunction={pageOneUpdateFunction}/>
                         <PageTwo pageTwoInfo={pageTwoInfo} int={int} />
                         {showNotes && <PageThree generalNotes={generalNotes} />}
                     </div>

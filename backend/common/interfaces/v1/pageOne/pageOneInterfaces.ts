@@ -19,6 +19,8 @@ export interface GeneralInfo {
     crpToNextLevel: number 
 }
 
+export type GeneralInfoKeys = keyof GeneralInfo
+
 export interface AbilitiesNBurdensInfo {
     abilityOne: string,
     abilityTwo: string,
