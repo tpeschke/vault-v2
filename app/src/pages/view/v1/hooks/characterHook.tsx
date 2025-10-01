@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
-import { IntegrityKeys, MovementKeys, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
+import { CharacteristicPairObjectsKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -170,6 +170,59 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function insertCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
+        return (newObject: PairObject) => {
+            if (character) {
+                const newCharacter = {
+                    ...character,
+                    pageOneInfo: {
+                        ...character.pageOneInfo,
+                        leftColumnInfo: {
+                            ...character.pageOneInfo.leftColumnInfo,
+                            characteristicInfo: {
+                                ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
+                                [characteristic]: [
+                                    ...character.pageOneInfo.leftColumnInfo.characteristicInfo[characteristic],
+                                    newObject
+                                ]
+                            }
+                        }
+                    }
+                }
+
+                setCharacter(newCharacter)
+            }
+        }
+    }
+
+    function updateCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
+        return (changedIndex: number, newObject: PairObject) => {
+            if (character) {
+                const alteredArray = character.pageOneInfo.leftColumnInfo.characteristicInfo[characteristic].map((object, index) => {
+                    if (index === changedIndex)  {
+                        return newObject
+                    }
+                    return object
+                })
+
+                const newCharacter = {
+                    ...character,
+                    pageOneInfo: {
+                        ...character.pageOneInfo,
+                        leftColumnInfo: {
+                            ...character.pageOneInfo.leftColumnInfo,
+                            characteristicInfo: {
+                                ...character.pageOneInfo.leftColumnInfo.characteristicInfo,
+                                [characteristic]: alteredArray
+                            }
+                        }
+                    }
+                }
+
+                setCharacter(newCharacter)
+            }
+        }
+    }
 
     return {
         character,
@@ -184,7 +237,9 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     updateStat,
                     updateMovement,
                     characteristicUpdateFunctions: {
-                        updateIntegrityInfo
+                        updateIntegrityInfo,
+                        insertCharacteristic,
+                        updateCharacteristic
                     }
                 }
             }

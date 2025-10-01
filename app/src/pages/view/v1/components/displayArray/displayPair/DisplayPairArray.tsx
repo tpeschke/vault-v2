@@ -30,11 +30,13 @@ export default function DisplayPairArray({ max, arrayToDisplay }: Props) {
         )
     }
 
+    const showEditInputs = isEditing && leftOver > -1
+
     return (
         <div className="display-array-shell multi-item">
             {arrayToDisplay.map(formatIntoRow)}
-            {isEditing && formatNewInputRow()}
-            {[...Array(leftOver).keys()].map((_, index) => <p key={index}></p>)}
+            {showEditInputs && formatNewInputRow()}
+            {leftOver > -1 && [...Array(leftOver).keys()].map((_, index) => <p key={index}></p>)}
         </div>
     )
 }

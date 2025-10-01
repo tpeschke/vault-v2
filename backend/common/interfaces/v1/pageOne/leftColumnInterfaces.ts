@@ -43,6 +43,10 @@ export interface CharacteristicInfo {
     assets: string
 }
 
+type CharacteristicPairObjects = Omit<CharacteristicInfo, 'integrityInfo' | 'culturalStrength' | 'assets'>
+
+export type CharacteristicPairObjectsKeys = keyof CharacteristicPairObjects
+
 export interface IntegrityInfo {
     integrity: number,
     gritDie: number,

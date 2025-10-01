@@ -21,7 +21,7 @@ export default function CharacteristicsDisplay({ characteristicInfo, characteris
     const isEditing = useContext(EditingContext)
 
     const { integrityInfo, goals, descriptions, convictions, relationships, flaws, culturalStrength, reputation, assets } = characteristicInfo
-    const { updateIntegrityInfo } = characteristicUpdateFunctions
+    const { updateIntegrityInfo, insertCharacteristic, updateCharacteristic } = characteristicUpdateFunctions
 
     return (
         <div className="characteristics-shell">
@@ -29,7 +29,7 @@ export default function CharacteristicsDisplay({ characteristicInfo, characteris
             <IntegrityDisplay integrityInfo={integrityInfo} updateIntegrityInfo={updateIntegrityInfo}/>
             <div className='characteristics-columns'>
                 <div className='left'>
-                    <GoalsDisplay goals={goals} />
+                    <GoalsDisplay goals={goals} insertGoal={insertCharacteristic('goals')} updateGoal={updateCharacteristic('goals')}/>
                     <RelationshipsDisplay relationships={relationships} />
                     <FlawsDisplay flaws={flaws} />
                 </div>
