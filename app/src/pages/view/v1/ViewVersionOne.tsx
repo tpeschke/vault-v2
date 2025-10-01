@@ -61,6 +61,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
                             viewQuickEdit={viewQuickEdit}
                             prepAndDownload={prepAndDownload}
                             toggleIsEditing={toggleIsEditing}
+                            ownsThisCharacter={ownsThisCharacter}
                         />}
                 </div>
             </EditingContext>

@@ -6,10 +6,17 @@ interface Props {
     toggleViewQuickEdit: () => void,
     viewQuickEdit: boolean,
     prepAndDownload: (isPregen: boolean) => void,
-    toggleIsEditing: () => void
+    toggleIsEditing: () => void,
+    ownsThisCharacter: boolean
 }
 
-export default function Sidebar({ toggleViewQuickEdit, viewQuickEdit, prepAndDownload, toggleIsEditing }: Props) {
+export default function Sidebar({
+    toggleViewQuickEdit,
+    viewQuickEdit,
+    prepAndDownload,
+    toggleIsEditing,
+    ownsThisCharacter
+}: Props) {
     const isEditing = useContext(EditingContext)
 
     return (
@@ -22,7 +29,7 @@ export default function Sidebar({ toggleViewQuickEdit, viewQuickEdit, prepAndDow
             }
             {!isEditing &&
                 <>
-                    <button onClick={toggleIsEditing}><i className="fa-solid fa-pen-nib"></i> Edit</button>
+                    {ownsThisCharacter && <button onClick={toggleIsEditing}><i className="fa-solid fa-pen-nib"></i> Edit</button>}
                     <button onClick={_ => prepAndDownload(false)}><i className="fa-solid fa-download"></i> Download</button>
                     <button onClick={_ => prepAndDownload(true)}><i className="fa-solid fa-mask"></i> Download as Pregen</button>
                     {viewQuickEdit ?
