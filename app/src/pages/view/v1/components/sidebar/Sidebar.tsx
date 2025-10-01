@@ -6,6 +6,8 @@ interface Props {
     toggleViewQuickEdit: () => void,
     viewQuickEdit: boolean,
     prepAndDownload: (isPregen: boolean) => void,
+    saveCharacter: () => void,
+    revertCharacterToUnedited: () => void,
     toggleIsEditing: () => void,
     ownsThisCharacter: boolean
 }
@@ -14,6 +16,8 @@ export default function Sidebar({
     toggleViewQuickEdit,
     viewQuickEdit,
     prepAndDownload,
+    saveCharacter,
+    revertCharacterToUnedited,
     toggleIsEditing,
     ownsThisCharacter
 }: Props) {
@@ -23,8 +27,8 @@ export default function Sidebar({
         <div className='sidebar-shell'>
             {isEditing &&
                 <>
-                    <button onClick={toggleIsEditing}><i className="fa-solid fa-floppy-disk"></i> Save</button>
-                    <button onClick={toggleIsEditing}><i className="fa-solid fa-arrow-u-turn-up-right"></i> Revert</button>
+                    <button onClick={saveCharacter}><i className="fa-solid fa-floppy-disk"></i> Save</button>
+                    <button onClick={revertCharacterToUnedited}><i className="fa-solid fa-arrow-rotate-left"></i> Revert</button>
                 </>
             }
             {!isEditing &&

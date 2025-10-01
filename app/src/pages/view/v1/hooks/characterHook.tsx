@@ -8,12 +8,14 @@ import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInte
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
+    const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
     const [character, setCharacter] = useState<CharacterVersion1 | null>(null)
 
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
         axios.get(viewURL + characterID).then(({ data }) => {
             setCharacter(data)
+            setRevertedCharacter(data)
         })
     }, [pathname])
 
@@ -74,6 +76,18 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function revertCharacter() {
+        setCharacter(revertedCharacter)
+    }
+
+    function saveCharacterToBackend() {
+        console.log(character)
+        // send to backend
+        // set character to null to showing loading
+        // set returned character
+        // set revertedCharacter
+    }
+
     function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
         if (character) {
             const newCharacter = {
@@ -87,8 +101,6 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                 }
             }
             
-            console.log(newCharacter.pageOneInfo.generalInfo)
-
             setCharacter(newCharacter)
         }
     }
@@ -98,6 +110,8 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         downloadCharacter,
         isDownloading,
         updateFunctions: {
+            revertCharacter,
+            saveCharacterToBackend,
             pageOneUpdateFunction: {
                 updateGeneralInfo
             }

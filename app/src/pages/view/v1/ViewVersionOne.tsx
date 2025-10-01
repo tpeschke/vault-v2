@@ -23,21 +23,31 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
         setViewQuickEdit(!viewQuickEdit)
     }
 
+    function prepAndDownload(isPregen: boolean) {
+        setViewQuickEdit(false)
+        downloadCharacter(isPregen)
+    }
+
+    const { saveCharacterToBackend, revertCharacter, pageOneUpdateFunction } = updateFunctions
     const [isEditing, setIsEditing] = useState(true)
 
     const toggleIsEditing = () => {
         setIsEditing(!isEditing)
     }
 
-    function prepAndDownload(isPregen: boolean) {
-        setViewQuickEdit(false)
-        downloadCharacter(isPregen)
+    const saveCharacter = () => {
+        saveCharacterToBackend()
+        setIsEditing(false)
+
+    }
+
+    const revertCharacterToUnedited = () => {
+        revertCharacter()
+        setIsEditing(false)
     }
 
     const { pageOneInfo, pageTwoInfo, generalNotes, userInfo } = character
     const { ownsThisCharacter } = userInfo
-
-    const { pageOneUpdateFunction } = updateFunctions
 
     const { int } = pageOneInfo.leftColumnInfo.statInfo
 
@@ -54,7 +64,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
             <EditingContext value={isEditing}>
                 <div className='version-one-shell'>
                     <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
-                        <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunction={pageOneUpdateFunction}/>
+                        <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunction={pageOneUpdateFunction} />
                         <PageTwo pageTwoInfo={pageTwoInfo} int={int} />
                         {showNotes && <PageThree generalNotes={generalNotes} />}
                     </div>
@@ -64,6 +74,8 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
                             viewQuickEdit={viewQuickEdit}
                             prepAndDownload={prepAndDownload}
                             toggleIsEditing={toggleIsEditing}
+                            saveCharacter={saveCharacter}
+                            revertCharacterToUnedited={revertCharacterToUnedited}
                             ownsThisCharacter={ownsThisCharacter}
                         />}
                 </div>

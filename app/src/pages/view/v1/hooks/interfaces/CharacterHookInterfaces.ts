@@ -11,6 +11,8 @@ export interface CharacterHookReturn {
 export type DownloadCharacterFunction = (isPregen: boolean) => void
 
 export interface UpdateFunctions {
+    revertCharacter: () => void,
+    saveCharacterToBackend: () => void,
     pageOneUpdateFunction: PageOneUpdates
 }
 
