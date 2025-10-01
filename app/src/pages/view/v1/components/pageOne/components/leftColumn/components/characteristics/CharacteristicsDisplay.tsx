@@ -30,7 +30,7 @@ export default function CharacteristicsDisplay({ characteristicInfo, characteris
             <div className='characteristics-columns'>
                 <div className='left'>
                     <GoalsDisplay goals={goals} insertGoal={insertCharacteristic('goals')} updateGoal={updateCharacteristic('goals')}/>
-                    <RelationshipsDisplay relationships={relationships} />
+                    <RelationshipsDisplay relationships={relationships} insertRelationship={insertCharacteristic('relationships')} updateRelationship={updateCharacteristic('relationships')}/>
                     <FlawsDisplay flaws={flaws} />
                 </div>
                 <div className='right'>

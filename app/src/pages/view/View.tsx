@@ -1,5 +1,5 @@
 import './View.css'
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import ViewVersionOne from "./v1/ViewVersionOne"
 import CharacterHook from './v1/hooks/characterHook'
@@ -10,10 +10,15 @@ interface Props {
 }
 
 export default function View({ setLoading, pathname }: Props) {
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
+
     const { character, downloadCharacter, isDownloading, updateFunctions } = CharacterHook(pathname)
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        if (character && isInitialLoad) {
+            window.scrollTo(0, 0)
+            setIsInitialLoad(false)
+        }
 
         if (setLoading) {
             setLoading(!!character)

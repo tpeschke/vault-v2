@@ -1,24 +1,36 @@
 import { PairObject } from '@vault/common/interfaces/v1/pageOne/leftColumnInterfaces'
 import '../DisplayArray.css'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import EditingContext from '../../../contexts/EditingContext'
+import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from '../../../hooks/interfaces/PageOneInterfaces'
 
 interface Props {
     max: number,
-    arrayToDisplay: PairObject[]
+    arrayToDisplay: PairObject[],
+    insertFunction?: InsertCharacteristicFunction,
+    updateFunction?: UpdateCharacteristicFunction
 }
 
-export default function DisplayPairArray({ max, arrayToDisplay }: Props) {
+export default function DisplayPairArray({ max, arrayToDisplay, insertFunction, updateFunction }: Props) {
     const isEditing = useContext(EditingContext)
 
     const leftOver = max - arrayToDisplay.length - (isEditing ? 1 : 0)
+
+    function updateRow(index: number, object: PairObject, key: 'title' | 'value', value: string | number) {
+        if (updateFunction) {
+            updateFunction(index, {
+                ...object,
+                [key]: value
+            })
+        }
+    }
 
     function formatIntoRow({ title, value }: PairObject, index: number) {
         if (isEditing) {
             return (
                 <div key={index} className='display-pair'>
-                    <input value={title} />
-                    <input value={value} />
+                    <input value={title} onChange={(event: any) => updateRow(index, { title, value }, 'title', event.target.value)} />
+                    <input value={value} onChange={(event: any) => updateRow(index, { title, value }, 'value', event.target.value)} />
                 </div>
             )
         }
@@ -30,6 +42,36 @@ export default function DisplayPairArray({ max, arrayToDisplay }: Props) {
         )
     }
 
+    const [newObject, setNewObject] = useState<PairObject>({ title: undefined, value: '' })
+
+    function insertRow(key: 'title' | 'value', event: any) {
+        const { value } = event.target
+
+        const tempObject: PairObject = {
+            ...newObject,
+            [key]: key === 'title' ? value : +value
+        }
+
+        const isValidObject = tempObject.value !== '' || tempObject.title
+
+        if (insertFunction && isValidObject) {
+            insertFunction(tempObject)
+            event.target.value = ''
+            setNewObject({ title: undefined, value: '' })
+        } else {
+            setNewObject(tempObject)
+        }
+    }
+
+    function formatNewInputRow() {
+        return (
+            <div className='display-pair'>
+                <input onBlur={(event: any) => insertRow('title', event)} />
+                <input onBlur={(event: any) => insertRow('value', event)} />
+            </div>
+        )
+    }
+
     const showEditInputs = isEditing && leftOver > -1
 
     return (
@@ -37,14 +79,6 @@ export default function DisplayPairArray({ max, arrayToDisplay }: Props) {
             {arrayToDisplay.map(formatIntoRow)}
             {showEditInputs && formatNewInputRow()}
             {leftOver > -1 && [...Array(leftOver).keys()].map((_, index) => <p key={index}></p>)}
-        </div>
-    )
-}
-function formatNewInputRow() {
-    return (
-        <div className='display-pair'>
-            <input />
-            <input />
         </div>
     )
 }
