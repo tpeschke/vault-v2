@@ -81,6 +81,7 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
     }
 
     function saveCharacterToBackend() {
+        // TODO
         console.log(character)
         // send to backend
         // set character to null to showing loading
