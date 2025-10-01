@@ -7,6 +7,7 @@ import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utili
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
+import { alterCharacteristicArray } from "./utilities/updateUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -198,12 +199,7 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
     function updateCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
         return (changedIndex: number, newObject: PairObject) => {
             if (character) {
-                const alteredArray = character.pageOneInfo.leftColumnInfo.characteristicInfo[characteristic].map((object, index) => {
-                    if (index === changedIndex)  {
-                        return newObject
-                    }
-                    return object
-                })
+                const alteredArray = alterCharacteristicArray(character.pageOneInfo.leftColumnInfo.characteristicInfo[characteristic], changedIndex, newObject)
 
                 const newCharacter = {
                     ...character,

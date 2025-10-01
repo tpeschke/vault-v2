@@ -42,7 +42,7 @@ export default function DisplayPairArray({ max, arrayToDisplay, insertFunction, 
         )
     }
 
-    const [newObject, setNewObject] = useState<PairObject>({ title: undefined, value: '' })
+    const [newObject, setNewObject] = useState<PairObject>({ title: '', value: '' })
 
     function insertRow(key: 'title' | 'value', event: any) {
         const { value } = event.target
@@ -57,7 +57,7 @@ export default function DisplayPairArray({ max, arrayToDisplay, insertFunction, 
         if (insertFunction && isValidObject) {
             insertFunction(tempObject)
             event.target.value = ''
-            setNewObject({ title: undefined, value: '' })
+            setNewObject({ title: '', value: '' })
         } else {
             setNewObject(tempObject)
         }
