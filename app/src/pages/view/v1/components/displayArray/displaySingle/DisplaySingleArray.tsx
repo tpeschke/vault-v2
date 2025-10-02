@@ -2,7 +2,7 @@ import { PairObject } from '@vault/common/interfaces/v1/pageOne/leftColumnInterf
 import '../DisplayArray.css'
 import { useContext } from 'react'
 import EditingContext from '../../../contexts/EditingContext'
-import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from '../../../hooks/interfaces/UpdateCharacterFunctionInterfaces'
+import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from '../../../hooks/interfaces/UpdateCharacteristicInterfaces'
 
 interface Props {
     max: number,
@@ -25,9 +25,9 @@ export default function DisplaySingleArray({ max, arrayToDisplay, insertFunction
         }
     }
 
-    function formatIntoRow({ value }: PairObject, index: number) {
+    function formatIntoRow({ id, value }: PairObject, index: number) {
         if (isEditing) {
-            return <input onChange={(event: any) => updateRow(index, { title: undefined, value }, event.target.value)} key={index} value={value} />
+            return <input onChange={(event: any) => updateRow(index, { id, title: undefined, value }, event.target.value)} key={index} value={value} />
         }
         return <p key={index}>- {value}</p>
     }

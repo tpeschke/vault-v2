@@ -64,3 +64,5 @@ export interface Wound {
     severity: number,
     days: number
 }
+
+export type WoundKeys = keyof Wound

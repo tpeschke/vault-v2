@@ -2,14 +2,16 @@ import { NerveAndVitalityInfo, Wound } from '@vault/common/interfaces/v1/pageOne
 import './VitalityDisplay.css'
 import { useContext, useEffect, useState } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
-import { UpdateNerveAndVitalityInfoFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
+import { InsertWoundFunction, UpdateNerveAndVitalityInfoFunction, UpdateWoundFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     nerveAndVitalityInfo: NerveAndVitalityInfo,
-    updateNerveAndVitalityInfo: UpdateNerveAndVitalityInfoFunction
+    updateNerveAndVitalityInfo: UpdateNerveAndVitalityInfoFunction,
+    insertWound: InsertWoundFunction,
+    updateWound: UpdateWoundFunction
 }
 
-export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVitalityInfo }: Props) {
+export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVitalityInfo, insertWound, updateWound }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { vitality, fatigue, wounds, sizeMod } = nerveAndVitalityInfo
@@ -57,19 +59,30 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
         }
     }
 
-    function woundRow({ severity, days }: Wound, index: number) {
-
-        function placeholderFunction() {
-
-        }
-
+    function woundRow({ id, severity, days }: Wound, index: number) {
         return (
             <span key={index}>
                 <strong>Wound</strong>
-                <input onChange={placeholderFunction} value={severity} />
-                <input onChange={placeholderFunction} value={days} />
+                <input onChange={(event: any) => updateWound(index, { id, severity: +event.target.value, days })} value={severity} />
+                <input onChange={(event: any) => updateWound(index, { id, severity, days: +event.target.value })} value={days} />
             </span>
         )
+    }
+
+    function insertRow(event: any) {
+        const value = +event.target.value
+
+        const tempWound: Wound = {
+            severity: value,
+            days: value
+        }
+
+        const isValidObject = tempWound.severity > 0 || tempWound.days > 0
+
+        if (isValidObject) {
+            insertWound(tempWound)
+            event.target.value = null
+        }
     }
 
     return (
@@ -118,12 +131,14 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
                 </div>
                 <div className='wounds-shell'>
                     {wounds.map(woundRow)}
-                    <span>
-                        <strong>Wound</strong>
-                        <input />
-                        <input />
-                    </span>
-                    {[...Array(leftOver).keys()].map(nullWoundRow)}
+                    {leftOver > -1 &&
+                        <span>
+                            <strong>Wound</strong>
+                            <input onBlur={(event: any) => insertRow(event)} />
+                            <p> </p>
+                        </span>
+                    }
+                    {leftOver > -1 && [...Array(leftOver).keys()].map(nullWoundRow)}
                 </div>
                 <span className='size-mod'>
                     <strong>Size Mod</strong>

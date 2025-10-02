@@ -1,5 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
-import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
+import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 
 export function toggleIsThrownUtility(character: CharacterVersion1) {
     const [weaponOne, weaponTwo, weaponThree, weaponFour] = character.pageTwoInfo.combatWorkspaceInfo.weaponInfo
@@ -85,4 +85,54 @@ export function updateNerveAndVitalityInfoUtility(character: CharacterVersion1, 
             }
         }
     }
+}
+
+export function insertWoundUtility(character: CharacterVersion1, newWound: Wound) {
+    return {
+        ...character,
+        pageOneInfo: {
+            ...character.pageOneInfo,
+            rightColumnInfo: {
+                ...character.pageOneInfo.rightColumnInfo,
+                nerveAndVitalityInfo: {
+                    ...character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo,
+                    wounds: [
+                        ...character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo.wounds,
+                        newWound
+                    ]
+                }
+            }
+        }
+    }
+}
+
+export function updateWoundUtility(character: CharacterVersion1, changedIndex: number, newWound: Wound) {
+    const alteredArray = alterCharacteristicArray(character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo.wounds, changedIndex, newWound)
+
+    return {
+        ...character,
+        pageOneInfo: {
+            ...character.pageOneInfo,
+            rightColumnInfo: {
+                ...character.pageOneInfo.rightColumnInfo,
+                nerveAndVitalityInfo: {
+                    ...character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo,
+                    wounds: alteredArray
+                }
+            }
+        }
+    }
+}
+
+function alterCharacteristicArray(woundArray: Wound[], changedIndex: number, newWound: Wound) {
+    if (newWound.severity || newWound.days) {
+        return woundArray.map((object, index) => {
+            if (index === changedIndex) {
+                return newWound
+            }
+            return object
+        })
+    }
+
+    return woundArray.filter((_, index) => index !== changedIndex)
 }

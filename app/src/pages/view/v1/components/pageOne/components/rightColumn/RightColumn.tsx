@@ -16,20 +16,20 @@ interface Props {
 export default function RightColumn({ rightColumnInfo, rightColumnUpdateFunctions }: Props) {
     const { weapons, maxRange, favorInfo, nerveAndVitalityInfo } = rightColumnInfo
     const { vitalityNNerveCalcInfo } = nerveAndVitalityInfo
-    const { toggleIsThrown, updateFavorInfo, updateVitalityNNerve, updateMaxRange, updateNerveAndVitalityInfo } = rightColumnUpdateFunctions
+    const { toggleIsThrown, updateFavorInfo, updateVitalityNNerve, updateMaxRange, updateNerveAndVitalityInfo, insertWound, updateWound } = rightColumnUpdateFunctions
 
     return (
         <div className='right'>
-            <WeaponsTables weapons={weapons} maxRange={maxRange} toggleIsThrown={toggleIsThrown}/>
+            <WeaponsTables weapons={weapons} maxRange={maxRange} toggleIsThrown={toggleIsThrown} />
             <div className="columns">
                 <div className='left'>
-                    <FavorDisplay favorInfo={favorInfo} updateFavorInfo={updateFavorInfo}/>
-                    <VitalityNNerveCalcDisplay vitalityNNerveCalcInfo={vitalityNNerveCalcInfo} updateVitalityNNerve={updateVitalityNNerve}/>
+                    <FavorDisplay favorInfo={favorInfo} updateFavorInfo={updateFavorInfo} />
+                    <VitalityNNerveCalcDisplay vitalityNNerveCalcInfo={vitalityNNerveCalcInfo} updateVitalityNNerve={updateVitalityNNerve} />
                 </div>
                 <RangeDisplay maxRange={maxRange} updateMaxRange={updateMaxRange} />
             </div>
-            <NerveDisplay nerveAndVitalityInfo={nerveAndVitalityInfo} updateNerveAndVitalityInfo={updateNerveAndVitalityInfo}/>
-            <VitalityDisplay nerveAndVitalityInfo={nerveAndVitalityInfo} updateNerveAndVitalityInfo={updateNerveAndVitalityInfo}/>
+            <NerveDisplay nerveAndVitalityInfo={nerveAndVitalityInfo} updateNerveAndVitalityInfo={updateNerveAndVitalityInfo} />
+            <VitalityDisplay nerveAndVitalityInfo={nerveAndVitalityInfo} updateNerveAndVitalityInfo={updateNerveAndVitalityInfo} insertWound={insertWound} updateWound={updateWound} />
         </div>
     )
 }
