@@ -57,6 +57,10 @@
     align-items: start;
 }
 
+.damage-shell>div {
+    width: 100%;
+}
+
 .weapon-table-column .damage-shell strong {
     padding: 1px 3px;
 }

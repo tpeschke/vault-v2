@@ -6,19 +6,21 @@ import NerveDisplay from './components/nerveDisplay/NerveDisplay'
 import VitalityDisplay from './components/vitalityDisplay/VitalityDisplay'
 import WeaponsTables from './components/weaponTables/WeaponsTables'
 import './RightColumn.css'
+import { PageOneRightColumn } from '../../../../hooks/interfaces/CharacterHookInterfaces'
 
 interface Props {
-    rightColumnInfo: RightColumnInfo
+    rightColumnInfo: RightColumnInfo,
+    rightColumnUpdateFunctions: PageOneRightColumn
 }
 
-export default function RightColumn({ rightColumnInfo }: Props) {
+export default function RightColumn({ rightColumnInfo, rightColumnUpdateFunctions }: Props) {
     const { weapons, maxRange, favorInfo, nerveAndVitalityInfo } = rightColumnInfo
-
     const { vitalityNNerveCalcInfo } = nerveAndVitalityInfo
+    const { toggleIsThrown } = rightColumnUpdateFunctions
 
     return (
         <div className='right'>
-            <WeaponsTables weapons={weapons} maxRange={maxRange}/>
+            <WeaponsTables weapons={weapons} maxRange={maxRange} toggleIsThrown={toggleIsThrown}/>
             <div className="columns">
                 <div className='left'>
                     <FavorDisplay favorInfo={favorInfo} />

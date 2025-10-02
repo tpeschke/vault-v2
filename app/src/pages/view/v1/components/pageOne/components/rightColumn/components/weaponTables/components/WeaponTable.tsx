@@ -1,18 +1,39 @@
 import { WeaponTable } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import '../WeaponsTables.css'
+import { ToggleIsThrownFunction } from '../../../../../../../hooks/interfaces/UpdateWeaponInterfaces'
 
 interface Props {
     weapon: WeaponTable,
     weaponPosition: number,
-    maxRange: number
+    maxRange: number,
+    toggleIsThrown: ToggleIsThrownFunction
 }
 
-export default function WeaponsTable({ weapon, weaponPosition, maxRange }: Props) {
+export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleIsThrown }: Props) {
     const { name, attacks, defenses } = weapon
     const { meas, atk, damage, type, rec, init } = attacks
     const { def, flanks, parry, cover, parryDR, dr } = defenses
 
     const isRanged = weaponPosition === 4
+
+    function DamageRow(damageString: string, isRanged: boolean) {
+        if (isRanged) {
+            return (
+                <span className='damage-shell'>
+                    <strong>Damage</strong>
+                    <div onClick={toggleIsThrown} data-tooltip-id="my-tooltip" data-tooltip-content="Add / Remove Str Modifier">
+                        <p className='fake-button'>{damageString}</p>
+                    </div>
+                </span>
+            )
+        }
+        return (
+            <span className='damage-shell'>
+                <strong>Damage</strong>
+                <p>{damageString}</p>
+            </span>
+        )
+    }
 
     return (
         <div className='weapons-table-shell'>
@@ -46,25 +67,6 @@ function WeaponTableRow(title: string, value: string | number) {
         <span>
             <strong>{title}</strong>
             <p>{value}</p>
-        </span>
-    )
-}
-
-function DamageRow(damageString: string, isRanged: boolean) {
-    if (isRanged) {
-        return (
-            <span className='damage-shell'>
-                <strong>Damage</strong>
-                <div data-tooltip-id="my-tooltip" data-tooltip-content="Add / Remove Str Modifier">
-                    <p className='fake-button'>{damageString}</p>
-                </div>
-            </span>
-        )
-    }
-    return (
-        <span className='damage-shell'>
-            <strong>Damage</strong>
-            <p>{damageString}</p>
         </span>
     )
 }

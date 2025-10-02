@@ -7,8 +7,9 @@ import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utili
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
-import { insertCharacteristicUtility, updateCharacteristicStringUtility, updateCharacteristicUtility, updateIntegrityInfoUtility } from "./utilities/updateUtilities/pageOneUtilities/LeftColumnUtilities";
 import { updateGeneralInfoUtility, updateStatUtility, updateMovementUtility } from "./utilities/updateUtilities/pageOneUtilities/upperColumnUtilities";
+import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/LeftColumnUtilities";
+import { toggleIsThrownUtility } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -138,6 +139,12 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function toggleIsThrown() {
+        if (character) {
+            setCharacter(toggleIsThrownUtility(character))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -156,6 +163,9 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                         updateCharacteristic,
                         updateCharacteristicString
                     }
+                },
+                rightColumnUpdateFunctions: {
+                    toggleIsThrown
                 }
             }
         }

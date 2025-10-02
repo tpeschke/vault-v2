@@ -1,5 +1,5 @@
-import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
-import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
+import { StatKeys, MovementKeys, IntegrityKeys, CharacteristicPairObjectsKeys, PairObject, CharacteristicStringKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
+import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces"
 
 export interface CharacteristicUpdateFunctions {
     updateIntegrityInfo: UpdateIntegrityInfo,

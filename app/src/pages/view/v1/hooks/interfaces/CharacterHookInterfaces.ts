@@ -1,5 +1,6 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
-import { CharacteristicUpdateFunctions, InsertGenericCharacteristicFunction, UpdateCharacteristicStringFunction, UpdateGeneralInfoFunction, UpdateGenericCharacteristicFunction, UpdateIntegrityInfo, UpdateMovementFunction, UpdateStatFunction } from "./UpdateCharacterFunctionInterfaces"
+import { UpdateGeneralInfoFunction, UpdateStatFunction, UpdateMovementFunction, CharacteristicUpdateFunctions } from "./UpdateCharacteristicInterfaces"
+import { ToggleIsThrownFunction } from "./UpdateWeaponInterfaces"
 
 export interface CharacterHookReturn {
     character: CharacterVersion1 | null,
@@ -18,11 +19,16 @@ export interface UpdateFunctions {
 
 export interface PageOneUpdates {
     updateGeneralInfo: UpdateGeneralInfoFunction
-    leftColumnUpdateFunctions: PageOneLeftColumn
+    leftColumnUpdateFunctions: PageOneLeftColumn,
+    rightColumnUpdateFunctions: PageOneRightColumn
 }
 
 export interface PageOneLeftColumn {
     updateStat: UpdateStatFunction,
     updateMovement: UpdateMovementFunction,
     characteristicUpdateFunctions: CharacteristicUpdateFunctions
+}
+
+export interface PageOneRightColumn {
+    toggleIsThrown: ToggleIsThrownFunction
 }
