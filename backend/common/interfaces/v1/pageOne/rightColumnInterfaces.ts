@@ -31,6 +31,8 @@ export interface FavorInfo {
     anointed: boolean
 }
 
+export type FavorInfoKeys = keyof FavorInfo
+
 export interface NerveAndVitalityInfo {
     vitalityNNerveCalcInfo: VitalityNNerveCalcInfo,
     nerve: number,

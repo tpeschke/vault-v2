@@ -2,30 +2,27 @@ import { FavorInfo } from '@vault/common/interfaces/v1/pageOne/rightColumnInterf
 import './FavorVitalityNRanges.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { UpdateFavorInfoFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
 
 interface Props {
-    favorInfo: FavorInfo
+    favorInfo: FavorInfo,
+    updateFavorInfo: UpdateFavorInfoFunction
 }
 
-export default function FavorDisplay({ favorInfo }: Props) {
-    const isEditing = useContext(EditingContext)
-    
+export default function FavorDisplay({ favorInfo, updateFavorInfo }: Props) {
+    const isEditing = useContext(EditingContext)    
     const { favor, maxFavor, anointed } = favorInfo
-
-    function placeholderFunction() {
-
-    }
 
     return (
         <div className='favor-display-shell'>
             <span>
                 <h3>Favor</h3>
-                <input onClick={placeholderFunction} value={favor} />
+                <input onClick={(event: any) => updateFavorInfo('favor', +event.target.value)} value={favor} />
             </span>
             <span>
                 <strong>Max</strong>
                 {isEditing ?
-                    <input value={maxFavor} />
+                    <input onClick={(event: any) => updateFavorInfo('maxFavor', +event.target.value)} value={maxFavor} />
                     :
                     <p>{maxFavor}</p>
                 }
@@ -33,9 +30,9 @@ export default function FavorDisplay({ favorInfo }: Props) {
             <span>
                 <strong>Anointed?</strong>
                 {anointed ?
-                    <i className="fa-solid fa-check"></i>
+                    <i onClick={_ => updateFavorInfo('anointed', false)} className="fa-solid fa-check"></i>
                     :
-                    <i className="fa-solid fa-x"></i>
+                    <i onClick={_ => updateFavorInfo('anointed', true)} className="fa-solid fa-x"></i>
                 }
             </span>
         </div>

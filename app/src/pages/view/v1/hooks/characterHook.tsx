@@ -9,7 +9,8 @@ import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 import { updateGeneralInfoUtility, updateStatUtility, updateMovementUtility } from "./utilities/updateUtilities/pageOneUtilities/upperColumnUtilities";
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/LeftColumnUtilities";
-import { toggleIsThrownUtility } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
+import { toggleIsThrownUtility, updateFavorInfoUtility } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
+import { FavorInfoKeys } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -145,6 +146,12 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateFavorInfo(key: FavorInfoKeys, value: number | boolean) {
+        if (character) {
+            setCharacter(updateFavorInfoUtility(character, key, value))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -165,7 +172,8 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     }
                 },
                 rightColumnUpdateFunctions: {
-                    toggleIsThrown
+                    toggleIsThrown,
+                    updateFavorInfo
                 }
             }
         }
