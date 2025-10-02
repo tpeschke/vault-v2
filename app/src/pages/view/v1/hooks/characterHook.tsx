@@ -8,10 +8,10 @@ import { AbilitiesNBurdensInfoKeys, GeneralInfoKeys } from "@vault/common/interf
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 import { updateGeneralInfoUtility, updateStatUtility, updateMovementUtility } from "./utilities/updateUtilities/pageOneUtilities/upperSectionUtilities";
-import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/LeftColumnUtilities";
 import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, updateMaxRangeUtility, updateNerveAndVitalityInfoUtility, updateVitalityNNerveUtility, updateWoundUtility } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
+import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -94,6 +94,10 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         // set returned character
         // set revertedCharacter
     }
+
+    // ---------------------------------------------------- \\
+    // ----------------- Page One Updates ----------------- \\
+    // ---------------------------------------------------- \\
 
     function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
         if (character) {
@@ -188,6 +192,10 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
             setCharacter(updateAbilitiesUtility(character, key, value))
         }
     }
+
+    // ---------------------------------------------------- \\
+    // ----------------- Page Two Updates ----------------- \\
+    // ---------------------------------------------------- \\
 
     return {
         character,

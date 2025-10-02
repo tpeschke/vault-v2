@@ -1,6 +1,6 @@
 import { WeaponTable } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import '../WeaponsTables.css'
-import { ToggleIsThrownFunction } from '../../../../../../../hooks/interfaces/UpdateWeaponInterfaces'
+import { ToggleIsThrownFunction } from '../../../../../../../hooks/interfaces/pageOneInterfaces/UpdateWeaponInterfaces'
 
 interface Props {
     weapon: WeaponTable,
