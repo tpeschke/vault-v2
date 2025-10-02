@@ -1,51 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
-import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
-import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces"
-
-export function updateGeneralInfoUtility(character: CharacterVersion1, key: GeneralInfoKeys, value: string | number) {
-    return {
-        ...character,
-        pageOneInfo: {
-            ...character.pageOneInfo,
-            generalInfo: {
-                ...character.pageOneInfo.generalInfo,
-                [key]: value
-            }
-        }
-    }
-}
-
-export function updateStatUtility(character: CharacterVersion1, key: StatKeys, value: number) {
-    return {
-        ...character,
-        pageOneInfo: {
-            ...character.pageOneInfo,
-            leftColumnInfo: {
-                ...character.pageOneInfo.leftColumnInfo,
-                statInfo: {
-                    ...character.pageOneInfo.leftColumnInfo.statInfo,
-                    [key]: value
-                }
-            }
-        }
-    }
-}
-
-export function updateMovementUtility(character: CharacterVersion1, key: MovementKeys, value: number) {
-    return {
-        ...character,
-        pageOneInfo: {
-            ...character.pageOneInfo,
-            leftColumnInfo: {
-                ...character.pageOneInfo.leftColumnInfo,
-                movementInfo: {
-                    ...character.pageOneInfo.leftColumnInfo.movementInfo,
-                    [key]: value
-                }
-            }
-        }
-    }
-}
+import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, PairObject } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 
 export function updateIntegrityInfoUtility(character: CharacterVersion1, key: IntegrityKeys, value: number) {
     return {
@@ -119,7 +73,7 @@ export function updateCharacteristicUtility(character: CharacterVersion1, charac
     }
 }
 
-export function alterCharacteristicArray(characteristicArray: PairObject[], changedIndex: number, newObject: PairObject) {
+function alterCharacteristicArray(characteristicArray: PairObject[], changedIndex: number, newObject: PairObject) {
     if ((newObject.title && newObject.title !== '') || newObject.value !== '') {
         return characteristicArray.map((object, index) => {
             if (index === changedIndex) {

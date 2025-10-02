@@ -1,5 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
-import { InsertGenericCharacteristicFunction, UpdateCharacteristicStringFunction, UpdateGeneralInfoFunction, UpdateGenericCharacteristicFunction, UpdateIntegrityInfo, UpdateMovementFunction, UpdateStatFunction } from "./UpdateCharacterFunctionInterfaces"
+import { CharacteristicUpdateFunctions, InsertGenericCharacteristicFunction, UpdateCharacteristicStringFunction, UpdateGeneralInfoFunction, UpdateGenericCharacteristicFunction, UpdateIntegrityInfo, UpdateMovementFunction, UpdateStatFunction } from "./UpdateCharacterFunctionInterfaces"
 
 export interface CharacterHookReturn {
     character: CharacterVersion1 | null,
@@ -25,11 +25,4 @@ export interface PageOneLeftColumn {
     updateStat: UpdateStatFunction,
     updateMovement: UpdateMovementFunction,
     characteristicUpdateFunctions: CharacteristicUpdateFunctions
-}
-
-export interface CharacteristicUpdateFunctions {
-    updateIntegrityInfo: UpdateIntegrityInfo,
-    insertCharacteristic: InsertGenericCharacteristicFunction,
-    updateCharacteristic: UpdateGenericCharacteristicFunction,
-    updateCharacteristicString: UpdateCharacteristicStringFunction
 }
