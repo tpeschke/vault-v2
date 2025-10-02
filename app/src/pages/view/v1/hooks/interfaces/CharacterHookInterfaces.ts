@@ -1,7 +1,7 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
 import { UpdateGeneralInfoFunction, UpdateStatFunction, UpdateMovementFunction, CharacteristicUpdateFunctions } from "./UpdateCharacteristicInterfaces"
 import { ToggleIsThrownFunction } from "./UpdateWeaponInterfaces"
-import { UpdateFavorInfoFunction } from "./UpdateRightColumnInterfaces"
+import { UpdateFavorInfoFunction, UpdateMaxRangeFunction, UpdateVitalityNNerveFunction } from "./UpdateRightColumnInterfaces"
 
 export interface CharacterHookReturn {
     character: CharacterVersion1 | null,
@@ -32,5 +32,7 @@ export interface PageOneLeftColumn {
 
 export interface PageOneRightColumn {
     toggleIsThrown: ToggleIsThrownFunction,
-    updateFavorInfo: UpdateFavorInfoFunction
+    updateFavorInfo: UpdateFavorInfoFunction,
+    updateVitalityNNerve: UpdateVitalityNNerveFunction,
+    updateMaxRange: UpdateMaxRangeFunction
 }

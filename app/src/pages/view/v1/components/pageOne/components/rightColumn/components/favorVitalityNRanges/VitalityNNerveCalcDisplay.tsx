@@ -2,12 +2,14 @@ import { VitalityNNerveCalcInfo } from '@vault/common/interfaces/v1/pageOne/righ
 import './FavorVitalityNRanges.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { UpdateVitalityNNerveFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
 
 interface Props {
-    vitalityNNerveCalcInfo: VitalityNNerveCalcInfo
+    vitalityNNerveCalcInfo: VitalityNNerveCalcInfo,
+    updateVitalityNNerve: UpdateVitalityNNerveFunction
 }
 
-export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo }: Props) {
+export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo, updateVitalityNNerve }: Props) {
     const isEditing = useContext(EditingContext)
     
     const { vitalityDie, minVitality, nerveDie, minNerve } = vitalityNNerveCalcInfo
@@ -17,7 +19,7 @@ export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo }: Pr
             <span>
                 <strong>Vitality Die</strong>
                 {isEditing ?
-                    <input value={vitalityDie} />
+                    <input onChange={(event: any) => updateVitalityNNerve('vitalityDie', event.target.value)} value={vitalityDie} />
                     :
                     <p>{vitalityDie}</p>
                 }
@@ -25,7 +27,7 @@ export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo }: Pr
             <span>
                 <strong>Min Vitality</strong>
                 {isEditing ?
-                    <input value={minVitality} />
+                    <input onChange={(event: any) => updateVitalityNNerve('minVitality', +event.target.value)} value={minVitality} />
                     :
                     <p>{minVitality}</p>
                 }
@@ -33,7 +35,7 @@ export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo }: Pr
             <span>
                 <strong>Nerve Die</strong>
                 {isEditing ?
-                    <input value={nerveDie} />
+                    <input onChange={(event: any) => updateVitalityNNerve('nerveDie', event.target.value)} value={nerveDie} />
                     :
                     <p>{nerveDie}</p>
                 }
@@ -41,7 +43,7 @@ export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo }: Pr
             <span>
                 <strong>Min Nerve</strong>
                 {isEditing ?
-                    <input value={minNerve} />
+                    <input onChange={(event: any) => updateVitalityNNerve('minNerve', +event.target.value)} value={minNerve} />
                     :
                     <p>{minNerve}</p>
                 }

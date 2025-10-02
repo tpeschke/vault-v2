@@ -17,12 +17,12 @@ export default function FavorDisplay({ favorInfo, updateFavorInfo }: Props) {
         <div className='favor-display-shell'>
             <span>
                 <h3>Favor</h3>
-                <input onClick={(event: any) => updateFavorInfo('favor', +event.target.value)} value={favor} />
+                <input onChange={(event: any) => updateFavorInfo('favor', +event.target.value)} value={favor} />
             </span>
             <span>
                 <strong>Max</strong>
                 {isEditing ?
-                    <input onClick={(event: any) => updateFavorInfo('maxFavor', +event.target.value)} value={maxFavor} />
+                    <input onChange={(event: any) => updateFavorInfo('maxFavor', +event.target.value)} value={maxFavor} />
                     :
                     <p>{maxFavor}</p>
                 }

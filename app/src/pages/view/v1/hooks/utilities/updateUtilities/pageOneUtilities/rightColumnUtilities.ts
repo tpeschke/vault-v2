@@ -1,5 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
-import { FavorInfoKeys } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
+import { FavorInfoKeys, VitalityNNerveCalcInfoKeys } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 
 export function toggleIsThrownUtility(character: CharacterVersion1) {
     const [weaponOne, weaponTwo, weaponThree, weaponFour] = character.pageTwoInfo.combatWorkspaceInfo.weaponInfo
@@ -23,6 +23,7 @@ export function toggleIsThrownUtility(character: CharacterVersion1) {
 }
 
 export function updateFavorInfoUtility(character: CharacterVersion1, key: FavorInfoKeys, value: number | boolean) {
+    console.log(value, value)
     return {
         ...character,
         pageOneInfo: {
@@ -33,6 +34,38 @@ export function updateFavorInfoUtility(character: CharacterVersion1, key: FavorI
                     ...character.pageOneInfo.rightColumnInfo.favorInfo,
                     [key]: value
                 }
+            }
+        }
+    }
+}
+
+export function updateVitalityNNerveUtility(character: CharacterVersion1, key: VitalityNNerveCalcInfoKeys, value: number | string) {
+    return {
+        ...character,
+        pageOneInfo: {
+            ...character.pageOneInfo,
+            rightColumnInfo: {
+                ...character.pageOneInfo.rightColumnInfo,
+                nerveAndVitalityInfo: {
+                    ...character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo,
+                    vitalityNNerveCalcInfo: {
+                        ...character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo.vitalityNNerveCalcInfo,
+                        [key]: value
+                    }
+                }
+            }
+        }
+    }
+}
+
+export function updateMaxRangeUtility(character: CharacterVersion1, value: number) {
+    return {
+        ...character,
+        pageOneInfo: {
+            ...character.pageOneInfo,
+            rightColumnInfo: {
+                ...character.pageOneInfo.rightColumnInfo,
+                maxRange: value
             }
         }
     }

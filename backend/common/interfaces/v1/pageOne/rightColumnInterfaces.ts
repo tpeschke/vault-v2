@@ -51,6 +51,8 @@ export interface VitalityNNerveCalcInfo {
     minNerve: number,
 }
 
+export type VitalityNNerveCalcInfoKeys = keyof VitalityNNerveCalcInfo
+
 export interface Wound {
     id?: number,
     severity: number,

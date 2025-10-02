@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from 'react'
 import './FavorVitalityNRanges.css'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { UpdateMaxRangeFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
 
 interface Props {
-    maxRange: number
+    maxRange: number,
+    updateMaxRange: UpdateMaxRangeFunction
 }
 
-export default function RangeDisplay({ maxRange }: Props) {
+export default function RangeDisplay({ maxRange, updateMaxRange }: Props) {
     const isEditing = useContext(EditingContext)
 
     const penaltyArray = [0, -2, -4, -8, -16, -32]
@@ -14,7 +16,7 @@ export default function RangeDisplay({ maxRange }: Props) {
     const [rangeIncrement, setRangeIncrement] = useState(1)
 
     useEffect(() => {
-        setRangeIncrement(maxRange / 6)
+        setRangeIncrement(Math.ceil(maxRange / 6))
     }, [maxRange])
 
     function RangeRow(penalty: number, lowEndValue: number, highEndValue: number) {
@@ -25,7 +27,7 @@ export default function RangeDisplay({ maxRange }: Props) {
                     <p>{lowEndValue}</p>
                     <p>-</p>
                     {isEditing && penalty === -32 ?
-                        <input value={highEndValue} />
+                        <input onChange={(event: any) => updateMaxRange(+event.target.value)} value={highEndValue} />
                         :
                         <p>{highEndValue}</p>
                     }

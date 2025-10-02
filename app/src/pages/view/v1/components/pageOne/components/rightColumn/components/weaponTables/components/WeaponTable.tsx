@@ -41,7 +41,7 @@ export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleI
             <div>
                 <div className='weapon-table-column'>
                     <h4>Attacks</h4>
-                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', isRanged ? maxRange / 6 : meas)}
+                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', isRanged ? Math.ceil(maxRange / 6) : meas)}
                     {WeaponTableRow('Atk', atk)}
                     {DamageRow(damage, isRanged)}
                     {WeaponTableRow('Type', type)}
