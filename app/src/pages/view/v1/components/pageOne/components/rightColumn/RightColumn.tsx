@@ -16,7 +16,7 @@ interface Props {
 export default function RightColumn({ rightColumnInfo, rightColumnUpdateFunctions }: Props) {
     const { weapons, maxRange, favorInfo, nerveAndVitalityInfo } = rightColumnInfo
     const { vitalityNNerveCalcInfo } = nerveAndVitalityInfo
-    const { toggleIsThrown, updateFavorInfo, updateVitalityNNerve, updateMaxRange } = rightColumnUpdateFunctions
+    const { toggleIsThrown, updateFavorInfo, updateVitalityNNerve, updateMaxRange, updateNerveAndVitalityInfo } = rightColumnUpdateFunctions
 
     return (
         <div className='right'>
@@ -28,7 +28,7 @@ export default function RightColumn({ rightColumnInfo, rightColumnUpdateFunction
                 </div>
                 <RangeDisplay maxRange={maxRange} updateMaxRange={updateMaxRange} />
             </div>
-            <NerveDisplay nerveAndVitalityInfo={nerveAndVitalityInfo}/>
+            <NerveDisplay nerveAndVitalityInfo={nerveAndVitalityInfo} updateNerveAndVitalityInfo={updateNerveAndVitalityInfo}/>
             <VitalityDisplay nerveAndVitalityInfo={nerveAndVitalityInfo}/>
         </div>
     )

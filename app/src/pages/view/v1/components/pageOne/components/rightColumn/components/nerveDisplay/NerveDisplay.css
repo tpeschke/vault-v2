@@ -42,3 +42,12 @@
 .stress-n-relaxation-shell span>input {
     text-align: center;
 }
+
+.edit-nerve>* {
+    padding: 3px 5px;
+}
+
+.edit-nerve>input {
+    width: calc(100% - 52px);
+    text-align: center;
+}

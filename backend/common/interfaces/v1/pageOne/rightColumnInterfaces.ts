@@ -44,6 +44,12 @@ export interface NerveAndVitalityInfo {
     sizeMod: number
 }
 
+export type NerveAndVitalityInfoKeys = keyof NerveAndVitalityInfo
+
+type NerveAndVitalityObject = Omit<NerveAndVitalityInfo, 'vitalityNNerveCalcInfo' | 'wounds'>
+
+export type NerveAndVitalityObjectKeys = keyof NerveAndVitalityObject
+
 export interface VitalityNNerveCalcInfo {
     vitalityDie: string,
     minVitality: number,

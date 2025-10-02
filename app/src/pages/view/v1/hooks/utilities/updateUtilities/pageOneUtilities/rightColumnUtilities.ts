@@ -1,5 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
-import { FavorInfoKeys, VitalityNNerveCalcInfoKeys } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
+import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 
 export function toggleIsThrownUtility(character: CharacterVersion1) {
     const [weaponOne, weaponTwo, weaponThree, weaponFour] = character.pageTwoInfo.combatWorkspaceInfo.weaponInfo
@@ -66,6 +66,22 @@ export function updateMaxRangeUtility(character: CharacterVersion1, value: numbe
             rightColumnInfo: {
                 ...character.pageOneInfo.rightColumnInfo,
                 maxRange: value
+            }
+        }
+    }
+}
+
+export function updateNerveAndVitalityInfoUtility(character: CharacterVersion1, key: NerveAndVitalityObjectKeys, value: number) {
+    return {
+        ...character,
+        pageOneInfo: {
+            ...character.pageOneInfo,
+            rightColumnInfo: {
+                ...character.pageOneInfo.rightColumnInfo,
+                nerveAndVitalityInfo: {
+                    ...character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo,
+                    [key]: value
+                }
             }
         }
     }

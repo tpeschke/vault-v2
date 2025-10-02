@@ -1,12 +1,17 @@
 import { NerveAndVitalityInfo } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import './NerveDisplay.css'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { UpdateNerveAndVitalityInfoFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
+import EditingContext from '../../../../../../contexts/EditingContext'
 
 interface Props {
-    nerveAndVitalityInfo: NerveAndVitalityInfo
+    nerveAndVitalityInfo: NerveAndVitalityInfo,
+    updateNerveAndVitalityInfo: UpdateNerveAndVitalityInfoFunction
 }
 
-export default function NerveDisplay({ nerveAndVitalityInfo }: Props) {
+export default function NerveDisplay({ nerveAndVitalityInfo, updateNerveAndVitalityInfo }: Props) {
+    const isEditing = useContext(EditingContext)
+
     const { nerve, fatigue, stress, relaxation } = nerveAndVitalityInfo
 
     const [unsure, setUnsure] = useState(0)
@@ -39,10 +44,6 @@ export default function NerveDisplay({ nerveAndVitalityInfo }: Props) {
         }
     }
 
-    function placeholderFunction() {
-
-    }
-
     return (
         <div className='nerve-display-shell'>
             <div>
@@ -66,16 +67,23 @@ export default function NerveDisplay({ nerveAndVitalityInfo }: Props) {
                         <p>{shaken + 1} - {nerve}</p>
                     </span>
                 </div>
-                <div className='stress-n-relaxation-shell'>
-                    <span>
-                        <strong>Stress</strong>
-                        <input onClick={placeholderFunction} value={stress} />
+                {isEditing ?
+                    <span className='edit-nerve'>
+                        <strong>Nerve</strong>
+                        <input onChange={(event: any) => updateNerveAndVitalityInfo('nerve', +event.target.value)} value={nerve} />
                     </span>
-                    <span>
-                        <strong>Relaxation</strong>
-                        <input onClick={placeholderFunction} value={relaxation} />
-                    </span>
-                </div>
+                    :
+                    <div className='stress-n-relaxation-shell'>
+                        <span>
+                            <strong>Stress</strong>
+                            <input onChange={(event: any) => updateNerveAndVitalityInfo('stress', +event.target.value)} value={stress} />
+                        </span>
+                        <span>
+                            <strong>Relaxation</strong>
+                            <input onChange={(event: any) => updateNerveAndVitalityInfo('relaxation', +event.target.value)} value={relaxation} />
+                        </span>
+                    </div>
+                }
             </div>
         </div>
     )
