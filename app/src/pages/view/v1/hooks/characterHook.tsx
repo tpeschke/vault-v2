@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { viewURL } from "../../../../frontend-config";
 import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
-import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
+import { AbilitiesNBurdensInfoKeys, GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
-import { updateGeneralInfoUtility, updateStatUtility, updateMovementUtility } from "./utilities/updateUtilities/pageOneUtilities/upperColumnUtilities";
+import { updateGeneralInfoUtility, updateStatUtility, updateMovementUtility } from "./utilities/updateUtilities/pageOneUtilities/upperSectionUtilities";
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/LeftColumnUtilities";
 import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, updateMaxRangeUtility, updateNerveAndVitalityInfoUtility, updateVitalityNNerveUtility, updateWoundUtility } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
+import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -182,6 +183,12 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateAbilities(key: AbilitiesNBurdensInfoKeys, value: string) {
+        if (character) {
+            setCharacter(updateAbilitiesUtility(character, key, value))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -208,8 +215,9 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     updateMaxRange,
                     updateNerveAndVitalityInfo,
                     updateWound,
-                    insertWound
-                }
+                    insertWound,
+                },
+                updateAbilities
             }
         }
     }

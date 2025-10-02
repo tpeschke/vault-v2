@@ -27,3 +27,5 @@ export interface AbilitiesNBurdensInfo {
     removedAbility: string
     burdens: string,
 }
+
+export type AbilitiesNBurdensInfoKeys = keyof AbilitiesNBurdensInfo

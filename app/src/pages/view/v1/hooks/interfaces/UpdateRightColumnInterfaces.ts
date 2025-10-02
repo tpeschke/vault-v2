@@ -1,3 +1,4 @@
+import { AbilitiesNBurdensInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 
 export type UpdateFavorInfoFunction = (key: FavorInfoKeys, value: number | boolean) => void
@@ -11,3 +12,5 @@ export type UpdateNerveAndVitalityInfoFunction = (key: NerveAndVitalityObjectKey
 export type InsertWoundFunction = (newWound: Wound) => void
 
 export type UpdateWoundFunction = (changedIndex: number, newWound: Wound) => void
+
+export type UpdateAbilitiesFunction = (key: AbilitiesNBurdensInfoKeys, value: string) => void

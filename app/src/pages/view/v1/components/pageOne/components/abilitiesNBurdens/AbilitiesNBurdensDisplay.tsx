@@ -3,13 +3,14 @@ import DisplayTextArea from '../../../../../../../components/textArea/DisplayTex
 import './AbilitiesNBurdensDisplay.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
-import TextArea from '../../../../../../../components/textArea/TextArea'
+import { UpdateAbilitiesFunction } from '../../../../hooks/interfaces/UpdateRightColumnInterfaces'
 
 interface Props {
-    abilitiesNBurdensInfo: AbilitiesNBurdensInfo
+    abilitiesNBurdensInfo: AbilitiesNBurdensInfo,
+    updateAbilities: UpdateAbilitiesFunction
 }
 
-export default function AbilitiesNBurdensDisplay({ abilitiesNBurdensInfo }: Props) {
+export default function AbilitiesNBurdensDisplay({ abilitiesNBurdensInfo, updateAbilities }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { abilityOne, abilityTwo, burdens, removedAbility } = abilitiesNBurdensInfo
@@ -21,17 +22,17 @@ export default function AbilitiesNBurdensDisplay({ abilitiesNBurdensInfo }: Prop
             <div>
                 <h2>Class/Ancestral Abilities & Trainings</h2>
                 <div className='abilities-shell'>
-                    <DisplayTextArea lines={abilityLines} value={abilityOne} />
-                    <DisplayTextArea lines={abilityLines} value={abilityTwo} />
+                    <DisplayTextArea lines={abilityLines} value={abilityOne} onChange={(event: any) => updateAbilities('abilityOne', event.target.value)} />
+                    <DisplayTextArea lines={abilityLines} value={abilityTwo} onChange={(event: any) => updateAbilities('abilityTwo', event.target.value)} />
                 </div>
             </div>
             <div>
                 <h2>Burdens, Injuries & Drawback</h2>
-                <DisplayTextArea lines={8} value={burdens} />
+                <DisplayTextArea lines={8} value={burdens} onChange={(event: any) => updateAbilities('burdens', event.target.value)} />
                 <span className='removed-shell'>
                     <strong>Removed Ability</strong>
                     {isEditing ?
-                        <input value={removedAbility} />
+                        <input value={removedAbility} onChange={(event: any) => updateAbilities('removedAbility', event.target.value)} />
                         :
                         <p>{removedAbility}</p>
                     }
