@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 105px;
+    height: 126px;
     border-bottom: 1px solid #515151;
 }
 
@@ -64,6 +64,11 @@
 
 .wounds-headings-shell>* {
     width: 33%;
+}
+
+.wounds-headings-shell>span>input {
+    width: calc(100% - 4px);
+    text-align: center;
 }
 
 .wounds-headings-shell>strong {

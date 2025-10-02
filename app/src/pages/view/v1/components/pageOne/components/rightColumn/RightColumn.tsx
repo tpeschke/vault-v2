@@ -29,7 +29,7 @@ export default function RightColumn({ rightColumnInfo, rightColumnUpdateFunction
                 <RangeDisplay maxRange={maxRange} updateMaxRange={updateMaxRange} />
             </div>
             <NerveDisplay nerveAndVitalityInfo={nerveAndVitalityInfo} updateNerveAndVitalityInfo={updateNerveAndVitalityInfo}/>
-            <VitalityDisplay nerveAndVitalityInfo={nerveAndVitalityInfo}/>
+            <VitalityDisplay nerveAndVitalityInfo={nerveAndVitalityInfo} updateNerveAndVitalityInfo={updateNerveAndVitalityInfo}/>
         </div>
     )
 }

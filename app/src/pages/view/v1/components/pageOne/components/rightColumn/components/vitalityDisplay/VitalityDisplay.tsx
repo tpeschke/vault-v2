@@ -2,12 +2,14 @@ import { NerveAndVitalityInfo, Wound } from '@vault/common/interfaces/v1/pageOne
 import './VitalityDisplay.css'
 import { useContext, useEffect, useState } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { UpdateNerveAndVitalityInfoFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
 
 interface Props {
-    nerveAndVitalityInfo: NerveAndVitalityInfo
+    nerveAndVitalityInfo: NerveAndVitalityInfo,
+    updateNerveAndVitalityInfo: UpdateNerveAndVitalityInfoFunction
 }
 
-export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
+export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVitalityInfo }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { vitality, fatigue, wounds, sizeMod } = nerveAndVitalityInfo
@@ -32,7 +34,7 @@ export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
 
         setTotalDamage(totalDamage)
 
-        setLeftOver(9 - wounds.length)
+        setLeftOver(11 - wounds.length)
     }, [wounds])
 
     const [leftPosition, setLeftPosition] = useState(243)
@@ -55,8 +57,19 @@ export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
         }
     }
 
-    function placeholderFunction() {
+    function woundRow({ severity, days }: Wound, index: number) {
 
+        function placeholderFunction() {
+
+        }
+
+        return (
+            <span key={index}>
+                <strong>Wound</strong>
+                <input onChange={placeholderFunction} value={severity} />
+                <input onChange={placeholderFunction} value={days} />
+            </span>
+        )
     }
 
     return (
@@ -83,10 +96,17 @@ export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
                     </span>
                 </div>
                 <div className='wounds-headings-shell'>
-                    <span>
-                        <strong>Total</strong>
-                        <p>{totalDamage}</p>
-                    </span>
+                    {isEditing ?
+                        <span>
+                            <strong>Vitality</strong>
+                            <input onChange={(event: any) => updateNerveAndVitalityInfo('vitality', +event.target.value)} value={vitality} />
+                        </span>
+                        :
+                        <span>
+                            <strong>Total</strong>
+                            <p>{totalDamage}</p>
+                        </span>
+                    }
                     <strong>Severity</strong>
                     <strong>Days to Heal</strong>
                     <span>
@@ -100,36 +120,21 @@ export default function VitalityDisplay({ nerveAndVitalityInfo }: Props) {
                     {wounds.map(woundRow)}
                     <span>
                         <strong>Wound</strong>
-                        <input onClick={placeholderFunction} />
-                        <input onClick={placeholderFunction} />
+                        <input />
+                        <input />
                     </span>
                     {[...Array(leftOver).keys()].map(nullWoundRow)}
                 </div>
                 <span className='size-mod'>
                     <strong>Size Mod</strong>
                     {isEditing ?
-                        <input value={sizeMod} />
+                        <input onChange={(event: any) => updateNerveAndVitalityInfo('sizeMod', +event.target.value)} value={sizeMod} />
                         :
                         <p>{sizeMod}</p>
                     }
                 </span>
             </div>
         </div>
-    )
-}
-
-function woundRow({ severity, days }: Wound, index: number) {
-
-    function placeholderFunction() {
-
-    }
-
-    return (
-        <span key={index}>
-            <strong>Wound</strong>
-            <input onClick={placeholderFunction} defaultValue={severity} />
-            <input onClick={placeholderFunction} defaultValue={days} />
-        </span>
     )
 }
 
