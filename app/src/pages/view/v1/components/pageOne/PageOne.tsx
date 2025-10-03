@@ -4,16 +4,16 @@ import GeneralInfo from './components/generalInfo/GeneralInfo'
 import LeftColumn from './components/leftColumn/LeftColumn'
 import RightColumn from './components/rightColumn/RightColumn'
 import './PageOne.css'
-import { PageOneUpdates } from '../../hooks/interfaces/CharacterHookInterfaces'
+import { PageOneUpdates } from '../../hooks/interfaces/pageOneInterfaces/UpdateExportInterfaces'
 
 interface Props {
     pageOneInfo: PageOneInfo,
-    pageOneUpdateFunction: PageOneUpdates
+    pageOneUpdateFunctions: PageOneUpdates
 }
 
-export default function PageOne({ pageOneInfo, pageOneUpdateFunction }: Props) {
+export default function PageOne({ pageOneInfo, pageOneUpdateFunctions }: Props) {
     const { generalInfo, leftColumnInfo, rightColumnInfo, abilitiesNBurdensInfo } = pageOneInfo
-    const { updateGeneralInfo, leftColumnUpdateFunctions, rightColumnUpdateFunctions, updateAbilities } = pageOneUpdateFunction
+    const { updateGeneralInfo, leftColumnUpdateFunctions, rightColumnUpdateFunctions, updateAbilities } = pageOneUpdateFunctions
 
     return (
         <div className='page-shell page card page-one' id='page-one'>

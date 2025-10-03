@@ -1,12 +1,14 @@
 import { GearInfo, GearObject } from '@vault/common/interfaces/v1/pageTwo/gearInterfaces'
 import './GearDisplay.css'
 import { useEffect, useState } from 'react'
+import { UpdateCashFunction } from '../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces'
 
 interface Props {
-    gearInfo: GearInfo
+    gearInfo: GearInfo,
+    updateCash: UpdateCashFunction
 }
 
-export default function GearDisplay({ gearInfo }: Props) {
+export default function GearDisplay({ gearInfo, updateCash }: Props) {
     const { copper, silver, gold, platinum, carry, gear } = gearInfo
 
     const [leftOver, setLeftOver] = useState(0)
@@ -96,19 +98,19 @@ export default function GearDisplay({ gearInfo }: Props) {
                 <div className='coins-shell'>
                     <span>
                         <strong>CC</strong>
-                        <input onClick={placeholderFunction} defaultValue={copper} />
+                        <input onChange={(event: any) => updateCash('copper', +event.target.value)} defaultValue={copper} />
                     </span>
                     <span>
                         <strong>SC</strong>
-                        <input onClick={placeholderFunction} defaultValue={silver} />
+                        <input onChange={(event: any) => updateCash('silver', +event.target.value)} defaultValue={silver} />
                     </span>
                     <span>
                         <strong>GC</strong>
-                        <input onClick={placeholderFunction} defaultValue={gold} />
+                        <input onChange={(event: any) => updateCash('gold', +event.target.value)} defaultValue={gold} />
                     </span>
                     <span>
                         <strong>PC</strong>
-                        <input onClick={placeholderFunction} defaultValue={platinum} />
+                        <input onChange={(event: any) => updateCash('platinum', +event.target.value)} defaultValue={platinum} />
                     </span>
                 </div>
             </span>

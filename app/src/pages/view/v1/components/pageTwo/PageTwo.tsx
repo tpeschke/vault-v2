@@ -3,18 +3,21 @@ import CombatInfoDisplay from './components/combatSkills/CombatInfo'
 import GearDisplay from './components/gearDisplay/GearDisplay'
 import SkillDisplay from './components/skills/SkillDisplay'
 import './PageTwo.css'
+import { PageTwoUpdates } from '../../hooks/interfaces/pageTwoInterfaces/UpdateExportInterfaces'
 
 interface Props {
     pageTwoInfo: PageTwoInfo,
-    int: number
+    int: number,
+    pageTwoUpdateFunctions: PageTwoUpdates
 }
 
-export default function PageTwo({ pageTwoInfo, int }: Props) {
+export default function PageTwo({ pageTwoInfo, int, pageTwoUpdateFunctions }: Props) {
     const { gearInfo, skillInfo, combatWorkspaceInfo } = pageTwoInfo
+    const { updateCash } = pageTwoUpdateFunctions
 
     return (
         <div className='page-shell page card page-two' id='page-two'>
-            <GearDisplay gearInfo={gearInfo}/>
+            <GearDisplay gearInfo={gearInfo} updateCash={updateCash}/>
             <SkillDisplay skillInfo={skillInfo} int={int}/>
             <CombatInfoDisplay combatWorkspaceInfo={combatWorkspaceInfo} int={int}/>
         </div>

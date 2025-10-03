@@ -12,6 +12,8 @@ import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, upda
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
+import { GearInfoObjectsKeys } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
+import { updateCashUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -197,6 +199,12 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
     // ----------------- Page Two Updates ----------------- \\
     // ---------------------------------------------------- \\
 
+    function updateCash(key: GearInfoObjectsKeys, value: number) {
+        if (character) {
+            setCharacter(updateCashUtility(character, key, value))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -204,7 +212,7 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         updateFunctions: {
             revertCharacter,
             saveCharacterToBackend,
-            pageOneUpdateFunction: {
+            pageOneUpdateFunctions: {
                 updateGeneralInfo,
                 leftColumnUpdateFunctions: {
                     updateStat,
@@ -226,6 +234,9 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     insertWound,
                 },
                 updateAbilities
+            },
+            pageTwoUpdateFunctions: {
+                updateCash
             }
         }
     }

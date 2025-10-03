@@ -23,7 +23,6 @@ export function toggleIsThrownUtility(character: CharacterVersion1) {
 }
 
 export function updateFavorInfoUtility(character: CharacterVersion1, key: FavorInfoKeys, value: number | boolean) {
-    console.log(value, value)
     return {
         ...character,
         pageOneInfo: {
