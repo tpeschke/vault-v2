@@ -44,3 +44,47 @@ export function updateNativeLanguageUtility(character: CharacterVersion1, native
         }
     }
 }
+
+export function insertSkillUtility(character: CharacterVersion1, newSkill: SkillObject) {
+    return {
+        ...character,
+        pageTwoInfo: {
+            ...character.pageTwoInfo,
+            skillInfo: {
+                ...character.pageTwoInfo.skillInfo,
+                advancedSkills: [
+                    ...character.pageTwoInfo.skillInfo.advancedSkills,
+                    newSkill
+                ]
+            }
+        }
+    }
+}
+
+export function updateSkillUtility(character: CharacterVersion1, changedIndex: number, newSkill: SkillObject) {
+    const alteredArray = alterSkillArray(character.pageTwoInfo.skillInfo.advancedSkills, changedIndex, newSkill)
+
+    return {
+        ...character,
+        pageTwoInfo: {
+            ...character.pageTwoInfo,
+            skillInfo: {
+                ...character.pageTwoInfo.skillInfo,
+                advancedSkills: alteredArray
+            }
+        }
+    }
+}
+
+function alterSkillArray(skillArray: SkillObject[], changedIndex: number, newSkill: SkillObject) {
+    if (newSkill.skill || newSkill.cost || newSkill.rank || newSkill.mod) {
+        return skillArray.map((object, index) => {
+            if (index === changedIndex) {
+                return newSkill
+            }
+            return object
+        })
+    }
+
+    return skillArray.filter((_, index) => index !== changedIndex)
+}

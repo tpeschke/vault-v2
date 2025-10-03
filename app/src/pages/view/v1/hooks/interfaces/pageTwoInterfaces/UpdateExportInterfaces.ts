@@ -1,4 +1,5 @@
-import { InsertGearFunction, SkillUpdates, UpdateCashFunction, UpdateGearFunction } from "./UpdateGearInterfaces";
+import { InsertGearFunction, UpdateCashFunction, UpdateGearFunction } from "./UpdateGearInterfaces";
+import { SkillUpdates } from "./UpdateSkillInterfaces";
 
 export interface PageTwoUpdates {
     updateCash: UpdateCashFunction,

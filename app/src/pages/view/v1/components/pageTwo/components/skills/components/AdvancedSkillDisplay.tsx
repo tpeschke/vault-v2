@@ -1,14 +1,17 @@
-import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces';
+import { SkillObject, SkillObjectKeys } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces';
 import '../SkillDisplay.css'
 import { useContext, useEffect, useState } from 'react';
 import EditingContext from '../../../../../contexts/EditingContext';
+import { InsertSkillFunction, UpdateSkillFunction } from '../../../../../hooks/interfaces/pageTwoInterfaces/UpdateSkillInterfaces';
 
 interface Props {
     advancedSkills: SkillObject[],
-    adepts: number
+    adepts: number,
+    insertSkill: InsertSkillFunction,
+    updateSkill: UpdateSkillFunction
 }
 
-export default function AdvancedSkillDisplay({ advancedSkills, adepts }: Props) {
+export default function AdvancedSkillDisplay({ advancedSkills, adepts, insertSkill, updateSkill }: Props) {
     const isEditing = useContext(EditingContext)
 
     const [leftOver, setLeftOver] = useState(0)
@@ -16,6 +19,51 @@ export default function AdvancedSkillDisplay({ advancedSkills, adepts }: Props) 
     useEffect(() => {
         setLeftOver(28 - advancedSkills.length - (isEditing ? 1 : 0))
     }, [advancedSkills, isEditing])
+
+    function skillRow({ id, skill, cost, rank, mod }: SkillObject, index: number, adepts: number, isEditing: boolean) {
+        const totalCost = cost + (rank * 2) - adepts
+
+        return (
+            <span key={index} className='advanced-skill-row'>
+                {isEditing ?
+                    <>
+                        <input onChange={(event: any) => updateSkill(index, { id, skill: event.target.value, cost, rank, mod })} value={skill} />
+                        <input onChange={(event: any) => updateSkill(index, { id, skill, cost: +event.target.value, rank, mod })} value={cost} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${totalCost} (Cost - Adepts + Rank * 2)`} />
+                        <input onChange={(event: any) => updateSkill(index, { id, skill, cost, rank: +event.target.value, mod })} value={rank} />
+                        <input onChange={(event: any) => updateSkill(index, { id, skill, cost, rank, mod: +event.target.value })} value={mod} />
+                    </>
+                    :
+                    <>
+                        <p>{skill}</p>
+                        <p>{totalCost}</p>
+                        <p>{rank}</p>
+                        <p>{mod}</p>
+                    </>
+                }
+            </span>
+        )
+    }
+
+    function insertRow(key: SkillObjectKeys, event: any) {
+        const { value } = event.target
+
+        const tempSkill: SkillObject = {
+            skill: '',
+            cost: 0,
+            rank: 0,
+            mod: 0,
+            [key]: key === 'skill' ? value : +value
+        }
+
+        const isValidObject = tempSkill.skill !== '' || tempSkill.cost !== 0 || tempSkill.rank !== 0 || tempSkill.mod !== 0
+
+        if (isValidObject) {
+            insertSkill(tempSkill)
+            event.target.value = null
+        }
+    }
+
+    const showEditInputs = isEditing && leftOver > -1
 
     return (
         <div className='advanced-skill-display'>
@@ -35,40 +83,16 @@ export default function AdvancedSkillDisplay({ advancedSkills, adepts }: Props) 
             </div>
             <div className='advanced-skill-shell'>
                 {advancedSkills.map((skill, index) => skillRow(skill, index, adepts, isEditing))}
-                {isEditing &&
+                {showEditInputs &&
                     <span className='advanced-skill-row'>
-                        <input />
-                        <input />
-                        <input />
-                        <input />
+                        <input onChange={(event: any) => insertRow('skill', event)} />
+                        <input onChange={(event: any) => insertRow('cost', event)} />
+                        <input onChange={(event: any) => insertRow('rank', event)} />
+                        <input onChange={(event: any) => insertRow('mod', event)} />
                     </span>}
-                {[...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
+                {leftOver > -1 && [...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>
         </div>
-    )
-}
-
-export function skillRow({ skill, cost, rank, mod }: SkillObject, index: number, adepts: number, isEditing: boolean) {
-    const totalCost = cost + (rank * 2) - adepts
-    
-    return (
-        <span key={index} className='advanced-skill-row'>
-            {isEditing ?
-                <>
-                    <input value={skill} />
-                    <input value={cost} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${totalCost} (Cost - Adepts + Rank * 2)`}/>
-                    <input value={rank} />
-                    <input value={mod} />
-                </>
-                :
-                <>
-                    <p>{skill}</p>
-                    <p>{totalCost}</p>
-                    <p>{rank}</p>
-                    <p>{mod}</p>
-                </>
-            }
-        </span>
     )
 }
 
