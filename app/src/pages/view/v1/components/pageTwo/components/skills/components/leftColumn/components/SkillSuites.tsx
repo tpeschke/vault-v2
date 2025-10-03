@@ -1,22 +1,22 @@
-import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces';
+import { SkillObject, SkillObjectKeys } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces';
 import '../LeftColumn.css'
 import { useContext } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
+import { UpdateNativeLanguageFunction, UpdateSkillSuiteFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces';
 
 interface Props {
     skillSuites: SkillObject[],
     nativeLanguage: SkillObject,
     adepts: number,
-    int: number
+    int: number,
+    updateSkillSuite: UpdateSkillSuiteFunction,
+    updateNativeLanguage: UpdateNativeLanguageFunction
 }
 
-export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts, int }: Props) {
+export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts, int, updateSkillSuite, updateNativeLanguage }: Props) {
     const isEditing = useContext(EditingContext)
 
-    const { skill, cost, rank, mod } = nativeLanguage
-    const nativeLanguageRank = rank ?? int
-
-    function skillSuiteRow({ skill, cost, isTrained, rank, mod }: SkillObject, index: number, int: number, adepts: number) {
+    function skillSuiteRow({ id, skill, cost, isTrained, rank, mod }: SkillObject, index: number, int: number, adepts: number) {
         return (
             <span className='skill-suite-row' key={index}>
                 <strong>{skill}</strong>
@@ -24,7 +24,7 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
                 {isTrained ?
                     <>
                         {isEditing ?
-                            <input value={rank} />
+                            <input onChange={(event: any) => updateSkillSuite(index, { id, skill, cost, isTrained, rank: +event.target.value, mod })} value={rank} />
                             :
                             <p>{rank}</p>
                         }
@@ -35,9 +35,9 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
                 {isEditing ?
                     <span>
                         {isTrained ?
-                            <i className="fa-solid fa-check"></i>
+                            <i onClick={_ => updateSkillSuite(index, { id, skill, cost, isTrained: false, rank, mod })} className="fa-solid fa-check"></i>
                             :
-                            <i className="fa-solid fa-x"></i>
+                            <i onClick={_ => updateSkillSuite(index, { id, skill, cost, isTrained: true, rank, mod })} className="fa-solid fa-x"></i>
                         }
                     </span>
                     :
@@ -47,7 +47,21 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
         )
     }
 
+    const { skill, cost, rank, mod } = nativeLanguage
+    const nativeLanguageRank = rank ?? int
     const nativeLanguageTotalCost = cost + (nativeLanguageRank * 2) - adepts
+
+    function updateNativeLanguageOnChange(event: any, key: SkillObjectKeys) {
+        const {value} = event.target
+
+        updateNativeLanguage({
+            skill,
+            cost,
+            rank,
+            mod,
+            [key]: key=== 'skill' ? value : +value
+        })
+    }
 
     return (
         <div className='skill-suites-display-shell'>
@@ -67,10 +81,10 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
             <span className='skill-suite-row native-lang'>
                 {isEditing ?
                     <>
-                        <input value={skill} />
-                        <input data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${nativeLanguageTotalCost} (Cost - Adepts + Rank * 2)`} value={cost} />
-                        <input value={nativeLanguageRank} />
-                        <input value={mod} />
+                        <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'skill')} value={skill} />
+                        <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'cost')} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${nativeLanguageTotalCost} (Cost - Adepts + Rank * 2)`} value={cost} />
+                        <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'rank')} value={nativeLanguageRank} />
+                        <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'mod')} value={mod} />
                     </>
                     :
                     <>

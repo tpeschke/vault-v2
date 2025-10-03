@@ -2,13 +2,15 @@ import { CheckModsObject } from '@vault/common/interfaces/v1/pageTwo/skillInterf
 import '../LeftColumn.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../../contexts/EditingContext'
+import { UpdateSkillAdept } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces'
 
 interface Props {
     checkMods: CheckModsObject,
-    adepts: number
+    adepts: number,
+    updateSkillAdept: UpdateSkillAdept
 }
 
-export default function CheckModsDisplay({ checkMods, adepts }: Props) {
+export default function CheckModsDisplay({ checkMods, adepts, updateSkillAdept }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { str, dex, con, int, will, pre } = checkMods
@@ -45,7 +47,7 @@ export default function CheckModsDisplay({ checkMods, adepts }: Props) {
             <span>
                 <strong>Skill Adept(s)</strong>
                 {isEditing ?
-                    <input value={adepts} />
+                    <input onChange={(event: any) => updateSkillAdept(+event.target.value)} value={adepts} />
                     :
                     <p>{adepts}</p>
                 }

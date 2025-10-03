@@ -14,6 +14,8 @@ import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtili
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
 import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
 import { insertGearUtility, updateCashUtility, updateGearUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
+import { updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
+import { SkillObject } from "@vault/common/interfaces/v1/pageTwo/skillInterfaces";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -217,6 +219,24 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateSkillAdept(value: number) {
+        if (character) {
+            setCharacter(updateSkillAdeptUtility(character, value))
+        }
+    }
+
+    function updateSkillSuite(changedIndex: number, newSkillSuite: SkillObject) {
+        if (character) {
+            setCharacter(updateSkillSuiteUtility(character, changedIndex, newSkillSuite))
+        }
+    }
+
+    function updateNativeLanguage(nativeLanguage: SkillObject) {
+        if (character) {
+            setCharacter(updateNativeLanguageUtility(character, nativeLanguage))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -250,7 +270,14 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
             pageTwoUpdateFunctions: {
                 updateCash,
                 updateGear,
-                insertGear
+                insertGear,
+                updateSkillInfo: {
+                    leftColumnUpdates: {
+                        updateSkillAdept,
+                        updateSkillSuite,
+                        updateNativeLanguage
+                    }
+                }
             }
         }
     }

@@ -23,3 +23,5 @@ export interface SkillObject {
     rank: number,
     mod: number
 }
+
+export type SkillObjectKeys = keyof SkillObject
