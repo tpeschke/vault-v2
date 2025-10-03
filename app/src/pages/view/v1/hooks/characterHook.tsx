@@ -12,8 +12,8 @@ import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, upda
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
-import { GearInfoObjectsKeys } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
-import { updateCashUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
+import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
+import { insertGearUtility, updateCashUtility, updateGearUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -205,6 +205,18 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateGear(changedIndex: number, newGear: GearObject) {
+        if (character) {
+            setCharacter(updateGearUtility(character, changedIndex, newGear))
+        }
+    }
+
+    function insertGear(newGear: GearObject) {
+        if (character) {
+            setCharacter(insertGearUtility(character, newGear))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -236,7 +248,9 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                 updateAbilities
             },
             pageTwoUpdateFunctions: {
-                updateCash
+                updateCash,
+                updateGear,
+                insertGear
             }
         }
     }

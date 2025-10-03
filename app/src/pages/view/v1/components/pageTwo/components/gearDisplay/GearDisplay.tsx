@@ -1,14 +1,16 @@
 import { GearInfo, GearObject } from '@vault/common/interfaces/v1/pageTwo/gearInterfaces'
 import './GearDisplay.css'
 import { useEffect, useState } from 'react'
-import { UpdateCashFunction } from '../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces'
+import { InsertGearFunction, UpdateCashFunction, UpdateGearFunction } from '../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces'
 
 interface Props {
     gearInfo: GearInfo,
-    updateCash: UpdateCashFunction
+    updateCash: UpdateCashFunction,
+    updateGear: UpdateGearFunction,
+    insertGear: InsertGearFunction
 }
 
-export default function GearDisplay({ gearInfo, updateCash }: Props) {
+export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGear }: Props) {
     const { copper, silver, gold, platinum, carry, gear } = gearInfo
 
     const [leftOver, setLeftOver] = useState(0)
@@ -87,8 +89,26 @@ export default function GearDisplay({ gearInfo, updateCash }: Props) {
         }
     }
 
-    function placeholderFunction() {
+    function insertRow(key: 'item' | 'size', event: any) {
+        const tempGear: GearObject = {
+            [key]: event.target.value
+        }
 
+        const isValidObject = tempGear.item !== '' || tempGear.size !== ''
+
+        if (isValidObject) {
+            insertGear(tempGear)
+            event.target.value = null
+        }
+    }
+
+    function gearRow({ item, size, id }: GearObject, index: number) {
+        return (
+            <span key={index}>
+                <input onChange={(event: any) => updateGear(index, {id, item: event.target.value, size})} defaultValue={item} />
+                <input onChange={(event: any) => updateGear(index, {id, item, size: event.target.value})} defaultValue={size} />
+            </span>
+        )
     }
 
     return (
@@ -133,12 +153,14 @@ export default function GearDisplay({ gearInfo, updateCash }: Props) {
                 </span>
             </div>
             <div className='gear-rows-shell'>
-                {gear.map(gearRow)}
-                <span>
-                    <input onClick={placeholderFunction} />
-                    <input onClick={placeholderFunction} />
-                </span>
-                {[...Array(leftOver).keys()].map(nullGearRow)}
+                {gear.map((gear, index) => gearRow(gear, index))}
+                {leftOver > -1 &&
+                    <span>
+                        <input onChange={(event: any) => insertRow('item', event)} />
+                        <input onChange={(event: any) => insertRow('size', event)} />
+                    </span>
+                }
+                {leftOver > -1 && [...Array(leftOver).keys()].map(nullGearRow)}
                 <span className='carry-info'>
                     <p>{smallEncumbrance}S {mediumEncumbrance}M {largeEncumbrance}L</p>
                     <strong>/</strong>
@@ -146,20 +168,6 @@ export default function GearDisplay({ gearInfo, updateCash }: Props) {
                 </span>
             </div>
         </div>
-    )
-}
-
-function gearRow({ item, size, id }: GearObject) {
-
-    function placeholderFunction() {
-
-    }
-
-    return (
-        <span key={id}>
-            <input onClick={placeholderFunction} defaultValue={item} />
-            <input onClick={placeholderFunction} defaultValue={size} />
-        </span>
     )
 }
 

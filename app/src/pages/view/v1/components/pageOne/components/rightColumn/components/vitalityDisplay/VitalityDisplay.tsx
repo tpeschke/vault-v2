@@ -2,7 +2,7 @@ import { NerveAndVitalityInfo, Wound } from '@vault/common/interfaces/v1/pageOne
 import './VitalityDisplay.css'
 import { useContext, useEffect, useState } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
-import { InsertWoundFunction, UpdateNerveAndVitalityInfoFunction, UpdateWoundFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
+import { UpdateNerveAndVitalityInfoFunction, InsertWoundFunction, UpdateWoundFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     nerveAndVitalityInfo: NerveAndVitalityInfo,
