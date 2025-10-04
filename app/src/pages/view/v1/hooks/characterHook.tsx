@@ -16,6 +16,8 @@ import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pag
 import { insertGearUtility, updateCashUtility, updateGearUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 import { insertSkillUtility, updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility, updateSkillUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
 import { SkillObject } from "@vault/common/interfaces/v1/pageTwo/skillInterfaces";
+import { updateCombatSkillSuiteUtility, updateMartialAdeptUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities";
+import { CombatSkillObject } from "@vault/common/interfaces/v1/pageTwo/combatSkills";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -249,6 +251,18 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateMartialAdept(value: number) {
+        if (character) {
+            setCharacter(updateMartialAdeptUtility(character, value))
+        }
+    }
+
+    function updateCombatSkillSuite(changedIndex: number, alteredCombatSuite: CombatSkillObject) {
+        if (character) {
+            setCharacter(updateCombatSkillSuiteUtility(character, changedIndex, alteredCombatSuite))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -291,6 +305,12 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     },
                     insertSkill,
                     updateSkill
+                },
+                updateCombatInfo: {
+                    combatSkillUpdates: {
+                        updateMartialAdept,
+                        updateCombatSkillSuite
+                    }
                 }
             }
         }

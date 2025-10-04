@@ -13,13 +13,13 @@ interface Props {
 
 export default function PageTwo({ pageTwoInfo, int, pageTwoUpdateFunctions }: Props) {
     const { gearInfo, skillInfo, combatWorkspaceInfo } = pageTwoInfo
-    const { updateCash, updateGear, insertGear, updateSkillInfo } = pageTwoUpdateFunctions
+    const { updateCash, updateGear, insertGear, updateSkillInfo, updateCombatInfo } = pageTwoUpdateFunctions
 
     return (
         <div className='page-shell page card page-two' id='page-two'>
             <GearDisplay gearInfo={gearInfo} updateCash={updateCash} updateGear={updateGear} insertGear={insertGear}/>
             <SkillDisplay skillInfo={skillInfo} int={int} updateSkillInfo={updateSkillInfo}/>
-            <CombatInfoDisplay combatWorkspaceInfo={combatWorkspaceInfo} int={int}/>
+            <CombatInfoDisplay combatWorkspaceInfo={combatWorkspaceInfo} int={int} updateCombatInfo={updateCombatInfo}/>
         </div>
     )
 }

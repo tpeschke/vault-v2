@@ -2,17 +2,19 @@ import { CombatSkillObject } from '@vault/common/interfaces/v1/pageTwo/combatSki
 import '../CombatSkillsArea.css'
 import { useContext } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
+import { UpdateCombatSkillSuite } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces';
 
 interface Props {
     combatSkillSuites: CombatSkillObject[],
     martialAdepts: number,
-    int: number
+    int: number,
+    updateCombatSkillSuite: UpdateCombatSkillSuite
 }
 
-export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, int }: Props) {
+export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, int, updateCombatSkillSuite }: Props) {
     const isEditing = useContext(EditingContext)
 
-    function skillSuiteRow({ skill, cost, isTrained, rank }: CombatSkillObject, index: number, int: number, martialAdepts: number) {
+    function skillSuiteRow({ id, skill, cost, isTrained, rank }: CombatSkillObject, index: number, int: number, martialAdepts: number) {
         return (
             <span className='skill-suite-row' key={index}>
                 <strong>{skill}</strong>
@@ -20,7 +22,7 @@ export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, in
                 {isTrained ?
                     <>
                         {isEditing ?
-                            <input value={rank} />
+                            <input onChange={(event: any) => updateCombatSkillSuite(index, { id, skill, cost, isTrained, rank: +event.target.value })} value={rank} />
                             :
                             <p>{rank}</p>
                         }
@@ -30,9 +32,9 @@ export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, in
                 }
                 {isEditing && <span>
                     {isTrained ?
-                        <i className="fa-solid fa-check"></i>
+                        <i onClick={(event: any) => updateCombatSkillSuite(index, { id, skill, cost, isTrained: false, rank })} className="fa-solid fa-check"></i>
                         :
-                        <i className="fa-solid fa-x"></i>
+                        <i onClick={(event: any) => updateCombatSkillSuite(index, { id, skill, cost, isTrained: true, rank })} className="fa-solid fa-x"></i>
                     }
                 </span>}
             </span>

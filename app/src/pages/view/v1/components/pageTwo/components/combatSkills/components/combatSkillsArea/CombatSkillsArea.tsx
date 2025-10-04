@@ -3,20 +3,23 @@ import './CombatSkillsArea.css'
 import CombatAdvSkills from './components/CombatAdvSkills'
 import CombatSkillSuites from './components/CombatSkillSuites'
 import StatsNMartialAdept from './components/StatsNMartialAdept'
+import { CombatSkillUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
 
 interface Props {
     combatSkillInfo: CombatSkillsInfo,
-    int: number
+    int: number,
+    combatSkillUpdates: CombatSkillUpdates
 }
 
-export default function CombatSkillsArea({ combatSkillInfo, int }: Props) {
+export default function CombatSkillsArea({ combatSkillInfo, int, combatSkillUpdates }: Props) {
     const { combatStatModifiers, martialAdepts, combatSkillSuites, combatAdvSkills} = combatSkillInfo
+    const { updateMartialAdept, updateCombatSkillSuite } = combatSkillUpdates
 
     return (
         <div className='combat-skills-area-shell'>
             <div>
-                <StatsNMartialAdept combatStatModifiers={combatStatModifiers} martialAdepts={martialAdepts}/>
-                <CombatSkillSuites combatSkillSuites={combatSkillSuites} martialAdepts={martialAdepts} int={int}/>
+                <StatsNMartialAdept combatStatModifiers={combatStatModifiers} martialAdepts={martialAdepts} updateMartialAdept={updateMartialAdept}/>
+                <CombatSkillSuites combatSkillSuites={combatSkillSuites} martialAdepts={martialAdepts} int={int} updateCombatSkillSuite={updateCombatSkillSuite}/>
             </div>
             <CombatAdvSkills combatAdvSkills={combatAdvSkills} martialAdepts={martialAdepts}/>
         </div>

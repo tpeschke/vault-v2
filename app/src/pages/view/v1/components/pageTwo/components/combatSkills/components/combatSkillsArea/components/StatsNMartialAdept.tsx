@@ -2,13 +2,15 @@ import { CombatStatModifiers } from '@vault/common/interfaces/v1/pageTwo/combatS
 import '../CombatSkillsArea.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../../contexts/EditingContext'
+import { UpdateMartialAdeptFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
 
 interface Props {
     combatStatModifiers: CombatStatModifiers,
-    martialAdepts: number
+    martialAdepts: number,
+    updateMartialAdept: UpdateMartialAdeptFunction
 }
 
-export default function StatsNMartialAdept({ combatStatModifiers, martialAdepts }: Props) {
+export default function StatsNMartialAdept({ combatStatModifiers, martialAdepts, updateMartialAdept }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { atk, def, dam, rec } = combatStatModifiers
@@ -37,7 +39,7 @@ export default function StatsNMartialAdept({ combatStatModifiers, martialAdepts 
             <span>
                 <strong>Martial Adept(s)</strong>
                 {isEditing ?
-                    <input value={martialAdepts} />
+                    <input onChange={(event: any) => updateMartialAdept(+event.target.value)} value={martialAdepts} />
                     :
                     <p>{martialAdepts}</p>
                 }

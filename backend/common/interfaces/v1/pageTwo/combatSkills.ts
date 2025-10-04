@@ -13,9 +13,11 @@ export interface CombatStatModifiers {
 }
 
 export interface CombatSkillObject {
+    id?: number,
     skill: string,
     cost: number,
     isTrained?: boolean,
-    rank: number,
+    rank: number
 }
 
+export type CombatSkillObjectKeys = keyof CombatSkillObject
