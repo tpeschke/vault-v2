@@ -2,34 +2,33 @@ import { WeaponInfo } from '@vault/common/interfaces/v1/pageTwo/weaponInterfaces
 import './WeaponWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { WeaponUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
 
 interface Props {
     weaponInfo: WeaponInfo,
-    isRanged?: boolean
+    index: number,
+    isRanged?: boolean,
+    weaponUpdates: WeaponUpdates
 }
 
-export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props) {
+export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, weaponUpdates }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { name, damage, recovery, size, measure, parry, type, bonus, traits, modifiers } = weaponInfo
-
     const { atk, rec, pry, dam } = modifiers
-
-    function placeholderFunction() {
-
-    }
+    const { updateBasicWeaponInfo, updateWeaponModifier } = weaponUpdates
 
     return (
         <div className='weapon-workspace-shell workspace'>
             {isEditing ?
-                <input value={name} />
+                <input onChange={(event: any) => updateBasicWeaponInfo(index, 'name', event.target.value)} value={name} />
                 :
                 <p>{name}</p>
             }
             <span>
                 <strong>Damage</strong>
                 {isEditing ?
-                    <input value={damage} />
+                    <input onChange={(event: any) => updateBasicWeaponInfo(index, 'damage', event.target.value)} value={damage} />
                     :
                     <p>{damage}</p>
                 }
@@ -38,7 +37,7 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
                 <span>
                     <strong>Rec</strong>
                     {isEditing ?
-                        <input value={recovery} />
+                        <input onChange={(event: any) => updateBasicWeaponInfo(index, 'recovery', +event.target.value)} value={recovery} />
                         :
                         <p>{recovery}</p>
                     }
@@ -46,7 +45,7 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
                 <span>
                     <strong>Size</strong>
                     {isEditing ?
-                        <input value={size} />
+                        <input onChange={(event: any) => updateBasicWeaponInfo(index, 'size', event.target.value)} value={size} />
                         :
                         <p>{size}</p>
                     }
@@ -57,7 +56,7 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
                     <span>
                         <strong>Meas</strong>
                         {isEditing ?
-                            <input value={measure} />
+                            <input onChange={(event: any) => updateBasicWeaponInfo(index, 'measure', +event.target.value)} value={measure} />
                             :
                             <p>{measure}</p>
                         }
@@ -65,7 +64,7 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
                     <span>
                         <strong>Parry</strong>
                         {isEditing ?
-                            <input value={parry} />
+                            <input onChange={(event: any) => updateBasicWeaponInfo(index, 'parry', +event.target.value)} value={parry} />
                             :
                             <p>{parry}</p>
                         }
@@ -75,7 +74,7 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
             <span>
                 <strong>Type</strong>
                 {isEditing ?
-                    <input value={type} />
+                    <input onChange={(event: any) => updateBasicWeaponInfo(index, 'type', event.target.value)} value={type} />
                     :
                     <p>{type}</p>
                 }
@@ -83,7 +82,7 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
             <span className={`bonus-shell ${isRanged ? 'ranged-bonus' : ''}`}>
                 <strong>Bonus</strong>
                 {isEditing ?
-                    <textarea value={bonus} />
+                    <textarea onChange={(event: any) => updateBasicWeaponInfo(index, 'bonus', event.target.value)} value={bonus} />
                     :
                     <p>{bonus}</p>
                 }
@@ -91,7 +90,7 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
             <span className='bonus-shell trait-shell'>
                 <strong>Traits</strong>
                 {isEditing ?
-                    <textarea value={traits} />
+                    <textarea onChange={(event: any) => updateBasicWeaponInfo(index, 'traits', event.target.value)} value={traits} />
                     :
                     <p>{traits}</p>
                 }
@@ -111,16 +110,16 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={atk.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateWeaponModifier(index, 'atk', 'skill', +event.target.value)} defaultValue={atk.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={rec.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateWeaponModifier(index, 'rec', 'skill', +event.target.value)} defaultValue={rec.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={pry.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateWeaponModifier(index, 'pry', 'skill', +event.target.value)} defaultValue={pry.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={dam.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateWeaponModifier(index, 'dam', 'skill', +event.target.value)} defaultValue={dam.skill ?? undefined} />
                                 </td>
                             </>
                             :
@@ -135,16 +134,16 @@ export default function WeaponWorkspace({ weaponInfo, isRanged = false }: Props)
                     </tr>
                     <tr>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={atk.misc ?? undefined} />
+                            <input onChange={(event: any) => updateWeaponModifier(index, 'atk', 'misc', +event.target.value)} defaultValue={atk.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={rec.misc ?? undefined} />
+                            <input onChange={(event: any) => updateWeaponModifier(index, 'rec', 'misc', +event.target.value)} defaultValue={rec.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={pry.misc ?? undefined} />
+                            <input onChange={(event: any) => updateWeaponModifier(index, 'pry', 'misc', +event.target.value)} defaultValue={pry.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={dam.misc ?? undefined} />
+                            <input onChange={(event: any) => updateWeaponModifier(index, 'dam', 'misc', +event.target.value)} defaultValue={dam.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>

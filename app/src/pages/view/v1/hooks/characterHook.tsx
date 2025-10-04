@@ -22,6 +22,8 @@ import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys }
 import { updateArmorModifierUtility, updateBasicArmorInfoUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/armorUtilities";
 import { ShieldInfoObjectKeys, ShieldModifiersInfoKeys, ShieldModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/shieldInterfaces";
 import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/shieldUtilities";
+import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
+import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -303,6 +305,18 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateBasicWeaponInfo(changedIndex: number, key: WeaponInfoObjectKeys, value: string | number) {
+        if (character) {
+            setCharacter(updateBasicWeaponInfoUtility(character, changedIndex, key, value))
+        }
+    }
+
+    function updateWeaponModifier(changedIndex: number, modifier: WeaponModifiersInfoKeys, key: WeaponModifiersObjectKeys, value: number) {
+        if (character) {
+            setCharacter(updateWeaponModifierUtility(character, changedIndex, modifier, key, value))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -360,6 +374,10 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     shieldUpdates: {
                         updateBasicShieldInfo,
                         updateShieldModifier
+                    },
+                    weaponUpdates: {
+                        updateBasicWeaponInfo,
+                        updateWeaponModifier
                     }
                 }
             }

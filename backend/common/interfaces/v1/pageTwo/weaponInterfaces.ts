@@ -13,6 +13,10 @@ export interface WeaponInfo {
     modifiers: WeaponModifiersInfo
 }
 
+type WeaponInfoObject = Omit<WeaponInfo, 'modifiers'>
+
+export type WeaponInfoObjectKeys = keyof WeaponInfoObject
+
 export interface WeaponModifiersInfo {
     atk: WeaponModifiersObject,
     rec: WeaponModifiersObject,
@@ -20,8 +24,12 @@ export interface WeaponModifiersInfo {
     dam: WeaponModifiersObject
 }
 
+export type WeaponModifiersInfoKeys = keyof WeaponModifiersInfo
+
 export interface WeaponModifiersObject {
     skill: number,
     misc?: number,
     total: number
 }
+
+export type WeaponModifiersObjectKeys = keyof WeaponModifiersObject
