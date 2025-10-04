@@ -25,7 +25,7 @@ import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./uti
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
-import { updateNotesUtility } from "./utilities/updateUtilities/NoteUtilities";
+import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
