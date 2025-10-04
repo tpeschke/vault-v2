@@ -8,6 +8,7 @@
 .armor-workspace-shell>span {
     display: flex;
     align-items: center;
+    height: 20px;
 }
 
 .armor-workspace-shell>span:nth-child(even) {
