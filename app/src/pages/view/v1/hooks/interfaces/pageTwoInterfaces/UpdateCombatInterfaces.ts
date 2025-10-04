@@ -1,7 +1,9 @@
+import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/armorInterfaces"
 import { CombatSkillObject, CombatSkillObjectKeys } from "@vault/common/interfaces/v1/pageTwo/combatSkills"
 
 export interface CombatUpdates {
-    combatSkillUpdates: CombatSkillUpdates
+    combatSkillUpdates: CombatSkillUpdates,
+    armorUpdates: ArmorUpdates
 }
 
 export interface CombatSkillUpdates {
@@ -18,3 +20,12 @@ export type UpdateCombatSkillSuite = (changedIndex: number, alteredCombatSuite: 
 export type InsertCombatSkillFunction = (newCombatSkill: CombatSkillObject) => void
 
 export type UpdateCombatSkillFunction = (changedIndex: number, newCombatSkill: CombatSkillObject) => void
+
+export interface ArmorUpdates {
+    updateBasicArmorInfo: UpdateBasicArmorInfoFunction,
+    updateArmorModifier: UpdateArmorModifierFunction
+}
+
+export type UpdateBasicArmorInfoFunction = (key: ArmorInfoObjectKeys, value: string | number) => void
+
+export type UpdateArmorModifierFunction = (modifier: ArmorModifiersInfoKeys, key: ArmorModifiersObjectKeys, value: number) => void

@@ -16,8 +16,10 @@ import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pag
 import { insertGearUtility, updateCashUtility, updateGearUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 import { insertSkillUtility, updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility, updateSkillUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
 import { SkillObject } from "@vault/common/interfaces/v1/pageTwo/skillInterfaces";
-import { insertCombatSkillUtility, updateCombatSkillSuiteUtility, updateCombatSkillUtility, updateMartialAdeptUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities";
+import { insertCombatSkillUtility, updateCombatSkillSuiteUtility, updateCombatSkillUtility, updateMartialAdeptUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/combatSkillUtilities";
 import { CombatSkillObject } from "@vault/common/interfaces/v1/pageTwo/combatSkills";
+import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/armorInterfaces";
+import { updateArmorModifierUtility, updateBasicArmorInfoUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/armorUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -275,6 +277,18 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateBasicArmorInfo(key: ArmorInfoObjectKeys, value: string | number) {
+        if (character) {
+            setCharacter(updateBasicArmorInfoUtility(character, key, value))
+        }
+    }
+
+    function updateArmorModifier(modifier: ArmorModifiersInfoKeys, key: ArmorModifiersObjectKeys, value: number) {
+        if (character) {
+            setCharacter(updateArmorModifierUtility(character, modifier, key, value))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -324,6 +338,10 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                         updateCombatSkillSuite,
                         insertCombatSkill,
                         updateCombatSkill
+                    },
+                    armorUpdates: {
+                        updateBasicArmorInfo,
+                        updateArmorModifier
                     }
                 }
             }

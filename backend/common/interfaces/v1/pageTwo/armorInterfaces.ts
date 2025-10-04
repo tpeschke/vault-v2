@@ -7,6 +7,10 @@ export interface ArmorInfo {
     modifiers: ArmorModifiersInfo
 }
 
+type ArmorInfoObject = Omit<ArmorInfo, 'modifiers'>
+
+export type ArmorInfoObjectKeys = keyof ArmorInfoObject
+
 export interface ArmorModifiersInfo {
     def: ArmorModifiersObject,
     fat: ArmorModifiersObject,
@@ -14,9 +18,13 @@ export interface ArmorModifiersInfo {
     init: ArmorModifiersObject
 }
 
+export type ArmorModifiersInfoKeys = keyof ArmorModifiersInfo
+
 export interface ArmorModifiersObject {
     base?: number,
     skill?: number,
     misc?: number,
     total: number
 }
+
+export type ArmorModifiersObjectKeys = keyof ArmorModifiersObject

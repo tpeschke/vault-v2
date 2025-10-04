@@ -2,34 +2,33 @@ import { ArmorInfo } from '@vault/common/interfaces/v1/pageTwo/armorInterfaces'
 import './ArmorWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { ArmorUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
 
 interface Props {
-    armorInfo: ArmorInfo
+    armorInfo: ArmorInfo,
+    armorUpdates: ArmorUpdates
 }
 
-export default function ArmorWorkspace({ armorInfo }: Props) {
+export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { name, dr, skillAdj, bonus, modifiers } = armorInfo
-
     const { def, fat, rec, init } = modifiers
 
-    function placeholderFunction() {
-
-    }
+    const { updateBasicArmorInfo, updateArmorModifier } = armorUpdates
 
     return (
         <div className='armor-workspace-shell'>
             <h3>Armor Workspace</h3>
             {isEditing ?
-                <input value={name} />
+                <input onChange={(event: any) => updateBasicArmorInfo('name', event.target.value)} value={name} />
                 :
                 <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Armor is Factored into Weapon Tables." className='workspace-button'>{name}</button>
             }
             <span>
                 <strong>DR</strong>
                 {isEditing ?
-                    <input value={dr} />
+                    <input onChange={(event: any) => updateBasicArmorInfo('dr', event.target.value)} value={dr} />
                     :
                     <p>{dr}</p>
                 }
@@ -37,7 +36,7 @@ export default function ArmorWorkspace({ armorInfo }: Props) {
             <span>
                 <strong>Skill Adj</strong>
                 {isEditing ?
-                    <input value={skillAdj} />
+                    <input onChange={(event: any) => updateBasicArmorInfo('skillAdj', +event.target.value)} value={skillAdj} />
                     :
                     <p>{skillAdj}</p>
                 }
@@ -45,7 +44,7 @@ export default function ArmorWorkspace({ armorInfo }: Props) {
             <span className='bonus-shell'>
                 <strong>Bonus</strong>
                 {isEditing ?
-                    <textarea value={bonus} />
+                    <textarea onChange={(event: any) => updateBasicArmorInfo('bonus', event.target.value)} value={bonus} />
                     :
                     <p>{bonus}</p>
                 }
@@ -65,16 +64,16 @@ export default function ArmorWorkspace({ armorInfo }: Props) {
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={def.base ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('def', 'base', +event.target.value)} defaultValue={def.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={fat.base ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('fat', 'base', +event.target.value)} defaultValue={fat.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={rec.base ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('rec', 'base', +event.target.value)} defaultValue={rec.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={init.base ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('init', 'base', +event.target.value)} defaultValue={init.base ?? undefined} />
                                 </td>
                             </>
                             :
@@ -91,16 +90,16 @@ export default function ArmorWorkspace({ armorInfo }: Props) {
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={def.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('def', 'skill', +event.target.value)} defaultValue={def.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={fat.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('fat', 'skill', +event.target.value)} defaultValue={fat.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={rec.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('rec', 'skill', +event.target.value)} defaultValue={rec.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={init.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateArmorModifier('init', 'skill', +event.target.value)} defaultValue={init.skill ?? undefined} />
                                 </td>
                             </>
                             :
@@ -115,16 +114,16 @@ export default function ArmorWorkspace({ armorInfo }: Props) {
                     </tr>
                     <tr>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={def.misc ?? undefined} />
+                            <input onChange={(event: any) => updateArmorModifier('def', 'misc', +event.target.value)} defaultValue={def.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={fat.misc ?? undefined} />
+                            <input onChange={(event: any) => updateArmorModifier('fat', 'misc', +event.target.value)} defaultValue={fat.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={rec.misc ?? undefined} />
+                            <input onChange={(event: any) => updateArmorModifier('rec', 'misc', +event.target.value)} defaultValue={rec.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={init.misc ?? undefined} />
+                            <input onChange={(event: any) => updateArmorModifier('init', 'misc', +event.target.value)} defaultValue={init.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>
