@@ -16,7 +16,7 @@ import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pag
 import { insertGearUtility, updateCashUtility, updateGearUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 import { insertSkillUtility, updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility, updateSkillUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
 import { SkillObject } from "@vault/common/interfaces/v1/pageTwo/skillInterfaces";
-import { updateCombatSkillSuiteUtility, updateMartialAdeptUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities";
+import { insertCombatSkillUtility, updateCombatSkillSuiteUtility, updateCombatSkillUtility, updateMartialAdeptUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities";
 import { CombatSkillObject } from "@vault/common/interfaces/v1/pageTwo/combatSkills";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
@@ -263,6 +263,18 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function insertCombatSkill(newCombatSkill: CombatSkillObject) {
+        if (character) {
+            setCharacter(insertCombatSkillUtility(character, newCombatSkill))
+        }
+    }
+
+    function updateCombatSkill(changedIndex: number, newCombatSkill: CombatSkillObject) {
+        if (character) {
+            setCharacter(updateCombatSkillUtility(character, changedIndex, newCombatSkill))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -309,7 +321,9 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                 updateCombatInfo: {
                     combatSkillUpdates: {
                         updateMartialAdept,
-                        updateCombatSkillSuite
+                        updateCombatSkillSuite,
+                        insertCombatSkill,
+                        updateCombatSkill
                     }
                 }
             }

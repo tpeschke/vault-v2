@@ -13,7 +13,7 @@ interface Props {
 
 export default function CombatSkillsArea({ combatSkillInfo, int, combatSkillUpdates }: Props) {
     const { combatStatModifiers, martialAdepts, combatSkillSuites, combatAdvSkills} = combatSkillInfo
-    const { updateMartialAdept, updateCombatSkillSuite } = combatSkillUpdates
+    const { updateMartialAdept, updateCombatSkillSuite, insertCombatSkill, updateCombatSkill } = combatSkillUpdates
 
     return (
         <div className='combat-skills-area-shell'>
@@ -21,7 +21,7 @@ export default function CombatSkillsArea({ combatSkillInfo, int, combatSkillUpda
                 <StatsNMartialAdept combatStatModifiers={combatStatModifiers} martialAdepts={martialAdepts} updateMartialAdept={updateMartialAdept}/>
                 <CombatSkillSuites combatSkillSuites={combatSkillSuites} martialAdepts={martialAdepts} int={int} updateCombatSkillSuite={updateCombatSkillSuite}/>
             </div>
-            <CombatAdvSkills combatAdvSkills={combatAdvSkills} martialAdepts={martialAdepts}/>
+            <CombatAdvSkills combatAdvSkills={combatAdvSkills} martialAdepts={martialAdepts} insertCombatSkill={insertCombatSkill} updateCombatSkill={updateCombatSkill}/>
         </div>
     )
 }
