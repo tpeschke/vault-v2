@@ -1,7 +1,7 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { viewURL } from "../../../../frontend-config";
+import { editURL, viewURL } from "../../../../frontend-config";
 import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
 import { AbilitiesNBurdensInfoKeys, GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
@@ -100,13 +100,14 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         setCharacter(revertedCharacter)
     }
 
-    function saveCharacterToBackend() {
-        // TODO
-        console.log(character)
-        // send to backend
-        // set character to null to showing loading
-        // set returned character
-        // set revertedCharacter
+    async function saveCharacterToBackend() {
+        if (character) {
+            const characterToSend = { ...character }
+            setCharacter(null)
+            const { data } = await axios.post(editURL + characterToSend.id, characterToSend)
+            setCharacter(data)
+            setRevertedCharacter(data)
+        }
     }
 
     // ---------------------------------------------------- \\
