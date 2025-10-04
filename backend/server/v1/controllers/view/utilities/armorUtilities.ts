@@ -1,4 +1,4 @@
-import { ArmorInfo } from "@vault/common/interfaces/v1/pageTwo/armorInterfaces";
+import { ArmorInfo } from "@vault/common/interfaces/v1/pageTwo/combatInterfaces/armorInterfaces";
 import { calculateArmorDefenseTotal, calculateArmorFatigueTotal, calculateArmorRecoveryOrInitiativeTotal } from "@vault/common/utilities/v1/armorUtilities";
 
 export function formatArmor(rawArmor: any): ArmorInfo {
