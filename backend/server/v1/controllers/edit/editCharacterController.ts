@@ -1,6 +1,10 @@
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
 import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { getCharacter } from '../view/viewCharacterController'
+import query from '../../../db/database'
+import userSQL from '../../queries/user'
+import { checkForContentTypeBeforeSending } from '../../../controllers/common/sendingFunctions'
+import { savePageOneInfo } from './utilities/pageOne/pageOneMainUtility'
 
 interface EditRequest extends Request {
     params: {
@@ -10,11 +14,20 @@ interface EditRequest extends Request {
 }
 
 export async function editCharacter(request: EditRequest, response: Response) {
-    const { body: characterToSave } = request
-    console.log(characterToSave)
+    const { id: characterID, userInfo, pageOneInfo } = request.body
 
-    // TODO
-    // Check if owner via db
+    const [{ userid: userIDFromDB }] = await query(userSQL.getCharacterUserID, characterID)
 
-    getCharacter(request, response)
+    if (userIDFromDB === userInfo.userID) {
+        let promiseArray: Promise<any>[] = []
+
+        promiseArray.push(savePageOneInfo(characterID, pageOneInfo))
+        // pageTwoInfo
+        // generalNotes
+
+        await Promise.all(promiseArray)
+        getCharacter(request, response)
+    } else {
+        checkForContentTypeBeforeSending(response, { message: "You don't own this character"})
+    }
 }

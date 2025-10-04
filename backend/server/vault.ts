@@ -18,7 +18,7 @@ import { callbackURL, clientID, clientSecret, domain, fakeAuth, secret, server }
 import { Profile } from './interfaces/apiInterfaces'
 import authRoutesWithoutPassword from './routes/authentication'
 import query from './db/database'
-import userSQL from './db/queries/user'
+import userSQL from './v1/queries/user'
 import userRoutes from './controllers/user/userRoutes'
 import homeRoutes from './v1/controllers/home/HomeRoutes'
 import characterRoutes from './v1/controllers/view/viewCharacterRoutes'
