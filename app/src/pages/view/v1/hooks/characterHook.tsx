@@ -17,9 +17,11 @@ import { insertGearUtility, updateCashUtility, updateGearUtility } from "./utili
 import { insertSkillUtility, updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility, updateSkillUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
 import { SkillObject } from "@vault/common/interfaces/v1/pageTwo/skillInterfaces";
 import { insertCombatSkillUtility, updateCombatSkillSuiteUtility, updateCombatSkillUtility, updateMartialAdeptUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/combatSkillUtilities";
-import { CombatSkillObject } from "@vault/common/interfaces/v1/pageTwo/combatSkills";
-import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/armorInterfaces";
+import { CombatSkillObject } from "@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills";
+import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/combatInterfaces/armorInterfaces";
 import { updateArmorModifierUtility, updateBasicArmorInfoUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/armorUtilities";
+import { ShieldInfoObjectKeys, ShieldModifiersInfoKeys, ShieldModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/shieldInterfaces";
+import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/shieldUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -289,6 +291,18 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    function updateBasicShieldInfo(key: ShieldInfoObjectKeys, value: string | number) {
+        if (character) {
+            setCharacter(updateBasicShieldInfoUtility(character, key, value))
+        }
+    }
+
+    function updateShieldModifier(modifier: ShieldModifiersInfoKeys, key: ShieldModifiersObjectKeys, value: number) {
+        if (character) {
+            setCharacter(updateShieldModifierUtility(character, modifier, key, value))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -342,6 +356,10 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                     armorUpdates: {
                         updateBasicArmorInfo,
                         updateArmorModifier
+                    },
+                    shieldUpdates: {
+                        updateBasicShieldInfo,
+                        updateShieldModifier
                     }
                 }
             }

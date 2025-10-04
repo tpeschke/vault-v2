@@ -1,4 +1,4 @@
-import { ArmorInfo } from '@vault/common/interfaces/v1/pageTwo/armorInterfaces'
+import { ArmorInfo } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/armorInterfaces'
 import './ArmorWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'

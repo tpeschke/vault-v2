@@ -14,7 +14,7 @@ interface Props {
 
 export default function CombatInfoDisplay({ combatWorkspaceInfo, int, updateCombatInfo }: Props) {
     const { armorInfo, shieldInfo, weaponInfo, combatSkillInfo } = combatWorkspaceInfo
-    const { combatSkillUpdates, armorUpdates } = updateCombatInfo
+    const { combatSkillUpdates, armorUpdates, shieldUpdates } = updateCombatInfo
     
     const [weapon1, weapon2, weapon3, weapon4] = weaponInfo
 
@@ -22,7 +22,7 @@ export default function CombatInfoDisplay({ combatWorkspaceInfo, int, updateComb
         <div className='combat-skills-display-shell'>
             <div className='left'>
                 <ArmorWorkspace armorInfo={armorInfo} armorUpdates={armorUpdates}/>
-                <ShieldWorkspace shieldInfo={shieldInfo} />
+                <ShieldWorkspace shieldInfo={shieldInfo} shieldUpdates={shieldUpdates} />
             </div>
             <div className='right'>
                 <CombatSkillsArea combatSkillInfo={combatSkillInfo} int={int} combatSkillUpdates={combatSkillUpdates} />

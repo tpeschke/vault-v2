@@ -1,5 +1,5 @@
-import { ArmorInfo } from "./armorInterfaces"
-import { CombatSkillsInfo } from "./combatSkills"
+import { ArmorInfo } from "./combatInterfaces/armorInterfaces"
+import { CombatSkillsInfo } from "./combatInterfaces/combatSkills"
 import { GearInfo } from "./gearInterfaces"
 import { ShieldInfo } from "./shieldInterfaces"
 import { SkillInfo } from "./skillInterfaces"

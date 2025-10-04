@@ -2,7 +2,7 @@ import { VitalityNNerveCalcInfo } from '@vault/common/interfaces/v1/pageOne/righ
 import './FavorVitalityNRanges.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
-import { UpdateVitalityNNerveFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
+import { UpdateVitalityNNerveFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     vitalityNNerveCalcInfo: VitalityNNerveCalcInfo,
@@ -35,7 +35,7 @@ export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo, upda
             <span>
                 <strong>Nerve Die</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateVitalityNNerve('nerveDie', event.target.value)} value={nerveDie} />
+                    <input onChange={(event: any) => updateVitalityNNerve('nerveDie', event.target.value)} value={nerveDie ? nerveDie : ''} />
                     :
                     <p>{nerveDie}</p>
                 }

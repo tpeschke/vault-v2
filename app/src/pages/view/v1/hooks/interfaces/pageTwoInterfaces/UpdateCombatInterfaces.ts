@@ -1,9 +1,11 @@
-import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/armorInterfaces"
-import { CombatSkillObject, CombatSkillObjectKeys } from "@vault/common/interfaces/v1/pageTwo/combatSkills"
+import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/combatInterfaces/armorInterfaces"
+import { CombatSkillObject, CombatSkillObjectKeys } from "@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills"
+import { ShieldInfoObjectKeys, ShieldModifiersInfoKeys, ShieldModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/shieldInterfaces"
 
 export interface CombatUpdates {
     combatSkillUpdates: CombatSkillUpdates,
-    armorUpdates: ArmorUpdates
+    armorUpdates: ArmorUpdates,
+    shieldUpdates: ShieldUpdates
 }
 
 export interface CombatSkillUpdates {
@@ -29,3 +31,12 @@ export interface ArmorUpdates {
 export type UpdateBasicArmorInfoFunction = (key: ArmorInfoObjectKeys, value: string | number) => void
 
 export type UpdateArmorModifierFunction = (modifier: ArmorModifiersInfoKeys, key: ArmorModifiersObjectKeys, value: number) => void
+
+export interface ShieldUpdates {
+    updateBasicShieldInfo: UpdateBasicShieldInfoFunction,
+    updateShieldModifier: UpdateShieldModifierFunction
+}
+
+export type UpdateBasicShieldInfoFunction = (key: ShieldInfoObjectKeys, value: string | number) => void
+
+export type UpdateShieldModifierFunction = (modifier: ShieldModifiersInfoKeys, key: ShieldModifiersObjectKeys, value: number) => void

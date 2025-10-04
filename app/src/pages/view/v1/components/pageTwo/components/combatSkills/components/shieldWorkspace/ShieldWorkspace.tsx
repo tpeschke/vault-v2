@@ -2,34 +2,32 @@ import { ShieldInfo } from '@vault/common/interfaces/v1/pageTwo/shieldInterfaces
 import './ShieldWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { ShieldUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
 
 interface Props {
-    shieldInfo: ShieldInfo
+    shieldInfo: ShieldInfo,
+    shieldUpdates: ShieldUpdates
 }
 
-export default function ShieldWorkspace({ shieldInfo }: Props) {
+export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { name, dr, size, cover, flanks, bonus, modifiers } = shieldInfo
-
     const { def, fat, pry, brk } = modifiers
-
-    function placeholderFunction() {
-
-    }
+    const { updateBasicShieldInfo, updateShieldModifier } = shieldUpdates
 
     return (
         <div className='shield-workspace-shell'>
             <h3>Shield Workspace</h3>
             {isEditing ?
-                <input value={name} />
+                <input onChange={(event: any) => updateBasicShieldInfo('name', event.target.value)} value={name} />
                 :
                 <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Shield is Factored into Weapon Tables." className='workspace-button'>{name}</button>
             }
             <span>
                 <strong>DR</strong>
                 {isEditing ?
-                    <input value={dr} />
+                    <input onChange={(event: any) => updateBasicShieldInfo('dr', event.target.value)} value={dr} />
                     :
                     <p>{dr}</p>
                 }
@@ -37,7 +35,7 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
             <span>
                 <strong>Size</strong>
                 {isEditing ?
-                    <input value={size} />
+                    <input onChange={(event: any) => updateBasicShieldInfo('size', event.target.value)} value={size} />
                     :
                     <p>{size}</p>
                 }
@@ -45,7 +43,7 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
             <span>
                 <strong>Flanks</strong>
                 {isEditing ?
-                    <input value={flanks} />
+                    <input onChange={(event: any) => updateBasicShieldInfo('flanks', +event.target.value)} value={flanks} />
                     :
                     <p>{flanks}</p>
                 }
@@ -53,7 +51,7 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
             <span>
                 <strong>Cover</strong>
                 {isEditing ?
-                    <input value={cover} />
+                    <input onChange={(event: any) => updateBasicShieldInfo('cover', event.target.value)} value={cover} />
                     :
                     <p>{cover}</p>
                 }
@@ -61,7 +59,7 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
             <span className='bonus-shell'>
                 <strong>Bonus</strong>
                 {isEditing ?
-                    <textarea value={bonus} />
+                    <textarea onChange={(event: any) => updateBasicShieldInfo('bonus', event.target.value)} value={bonus} />
                     :
                     <p>{bonus}</p>
                 }
@@ -81,16 +79,16 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={def.base ?? undefined} />
+                                    <input onChange={(event: any) => updateShieldModifier('def', 'base', +event.target.value)} defaultValue={def.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={fat.base ?? undefined} />
+                                    <input onChange={(event: any) => updateShieldModifier('fat', 'base', +event.target.value)} defaultValue={fat.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={pry.base ?? undefined} />
+                                    <input onChange={(event: any) => updateShieldModifier('pry', 'base', +event.target.value)} defaultValue={pry.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={brk.base ?? undefined} />
+                                    <input onChange={(event: any) => updateShieldModifier('brk', 'base', +event.target.value)} defaultValue={brk.base ?? undefined} />
                                 </td>
                             </>
                             :
@@ -104,42 +102,42 @@ export default function ShieldWorkspace({ shieldInfo }: Props) {
                         <td><strong>Base</strong></td>
                     </tr>
                     <tr>
-                    {isEditing ?
+                        {isEditing ?
                             <>
                                 {/* Cannot modifier Def via Skill */}
                                 <td> </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={fat.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateShieldModifier('fat', 'skill', +event.target.value)} defaultValue={fat.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={pry.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateShieldModifier('pry', 'skill', +event.target.value)} defaultValue={pry.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onClick={placeholderFunction} defaultValue={brk.skill ?? undefined} />
+                                    <input onChange={(event: any) => updateShieldModifier('brk', 'skill', +event.target.value)} defaultValue={brk.skill ?? undefined} />
                                 </td>
                             </>
                             :
                             <>
                                 <td> </td>
-                                <td>{fat.base}</td>
-                                <td>{pry.base}</td>
-                                <td>{brk.base}</td>
+                                <td>{fat.skill}</td>
+                                <td>{pry.skill}</td>
+                                <td>{brk.skill}</td>
                             </>
                         }
                         <td><strong>Skill</strong></td>
                     </tr>
                     <tr>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={def.misc ?? undefined} />
+                            <input onChange={(event: any) => updateShieldModifier('def', 'misc', +event.target.value)} defaultValue={def.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={fat.misc ?? undefined} />
+                            <input onChange={(event: any) => updateShieldModifier('fat', 'misc', +event.target.value)} defaultValue={fat.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={pry.misc ?? undefined} />
+                            <input onChange={(event: any) => updateShieldModifier('pry', 'misc', +event.target.value)} defaultValue={pry.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onClick={placeholderFunction} defaultValue={brk.misc ?? undefined} />
+                            <input onChange={(event: any) => updateShieldModifier('brk', 'misc', +event.target.value)} defaultValue={brk.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>

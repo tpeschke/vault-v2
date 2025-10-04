@@ -1,5 +1,5 @@
 import { WeaponTable } from "../../interfaces/v1/pageOne/rightColumnInterfaces";
-import { ArmorInfo } from "../../interfaces/v1/pageTwo/armorInterfaces";
+import { ArmorInfo } from "../../interfaces/v1/pageTwo/combatInterfaces/armorInterfaces";
 import { ShieldInfo } from "../../interfaces/v1/pageTwo/shieldInterfaces";
 import { WeaponInfo } from "../../interfaces/v1/pageTwo/weaponInterfaces";
 

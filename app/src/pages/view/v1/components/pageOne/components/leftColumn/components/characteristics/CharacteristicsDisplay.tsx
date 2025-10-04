@@ -10,7 +10,7 @@ import DescriptionsDisplay from './rightColumnComponents/DescriptionsDisplay';
 import ReputationDisplay from './rightColumnComponents/ReputationDisplay';
 import { useContext } from 'react';
 import EditingContext from '../../../../../../contexts/EditingContext';
-import { CharacteristicUpdateFunctions } from '../../../../../../hooks/interfaces/CharacterHookInterfaces';
+import { CharacteristicUpdateFunctions } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces';
 
 interface Props {
     characteristicInfo: CharacteristicInfo,
@@ -39,7 +39,7 @@ export default function CharacteristicsDisplay({ characteristicInfo, characteris
                     <div className="cultural-strength-shell">
                         <h3>Cultural Strength</h3>
                         {isEditing ?
-                            <input onChange={(event: any) => updateCharacteristicString('culturalStrength', event.target.value)} value={culturalStrength} />
+                            <input onChange={(event: any) => updateCharacteristicString('culturalStrength', event.target.value)} value={culturalStrength ? culturalStrength : ''} />
                             :
                             <p>{culturalStrength}</p>
                         }

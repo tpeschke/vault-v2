@@ -29,7 +29,7 @@ export default function DisplayPairArray({ max, arrayToDisplay, insertFunction, 
         if (isEditing) {
             return (
                 <div key={index} className='display-pair'>
-                    <input value={title} onChange={(event: any) => updateRow(index, { id, title, value }, 'title', event.target.value)} />
+                    <input value={title ? title : ''} onChange={(event: any) => updateRow(index, { id, title, value }, 'title', event.target.value)} />
                     <input value={value} onChange={(event: any) => updateRow(index, { id, title, value }, 'value', event.target.value)} />
                 </div>
             )

@@ -9,6 +9,10 @@ export interface ShieldInfo {
     modifiers: ShieldModifiersInfo
 }
 
+type ShieldInfoObject = Omit<ShieldInfo, 'modifiers'>
+
+export type ShieldInfoObjectKeys = keyof ShieldInfoObject
+
 export interface ShieldModifiersInfo {
     def: ShieldModifiersObject,
     fat: ShieldModifiersObject,
@@ -16,9 +20,13 @@ export interface ShieldModifiersInfo {
     brk: ShieldModifiersObject
 }
 
+export type ShieldModifiersInfoKeys = keyof ShieldModifiersInfo
+
 export interface ShieldModifiersObject {
     base?: number,
     skill?: number,
     misc?: number,
     total: number
 }
+
+export type ShieldModifiersObjectKeys = keyof ShieldModifiersObject
