@@ -1,6 +1,7 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
 import { PageOneUpdates } from "./pageOneInterfaces/UpdateExportInterfaces"
 import { PageTwoUpdates } from "./pageTwoInterfaces/UpdateExportInterfaces"
+import { UpdateNotes } from "./pageThreeInterfaces/generalNotesInterfaces"
 
 export interface CharacterHookReturn {
     character: CharacterVersion1 | null,
@@ -15,5 +16,6 @@ export interface UpdateFunctions {
     revertCharacter: () => void,
     saveCharacterToBackend: () => void,
     pageOneUpdateFunctions: PageOneUpdates,
-    pageTwoUpdateFunctions: PageTwoUpdates
+    pageTwoUpdateFunctions: PageTwoUpdates,
+    updateNotes: UpdateNotes
 }

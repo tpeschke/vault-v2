@@ -1,8 +1,8 @@
-import { CombatSkillObject, CombatSkillObjectKeys } from '@vault/common/interfaces/v1/pageTwo/combatSkills';
 import '../CombatSkillsArea.css'
 import { useContext, useEffect, useState } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
 import { InsertCombatSkillFunction, UpdateCombatSkillFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces';
+import { CombatSkillObject, CombatSkillObjectKeys } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills';
 
 interface Props {
     combatAdvSkills: CombatSkillObject[],
@@ -17,7 +17,7 @@ export default function CombatAdvSkills({ combatAdvSkills, martialAdepts, insert
     const [leftOver, setLeftOver] = useState(0)
 
     useEffect(() => {
-        setLeftOver(18 - combatAdvSkills.length - (isEditing ? 1 : 0))
+        setLeftOver(18 - combatAdvSkills.length)
     }, [combatAdvSkills])
 
     const showEditInputs = isEditing && leftOver > - 1

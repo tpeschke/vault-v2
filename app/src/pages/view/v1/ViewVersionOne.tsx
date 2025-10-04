@@ -28,7 +28,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
         downloadCharacter(isPregen)
     }
 
-    const { saveCharacterToBackend, revertCharacter, pageOneUpdateFunctions, pageTwoUpdateFunctions } = updateFunctions
+    const { saveCharacterToBackend, revertCharacter, pageOneUpdateFunctions, pageTwoUpdateFunctions, updateNotes } = updateFunctions
     const [isEditing, setIsEditing] = useState(true)
 
     const toggleIsEditing = () => {
@@ -66,7 +66,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
                     <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
                         <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunctions={pageOneUpdateFunctions} />
                         <PageTwo pageTwoInfo={pageTwoInfo} int={int} pageTwoUpdateFunctions={pageTwoUpdateFunctions} />
-                        {showNotes && <PageThree generalNotes={generalNotes} />}
+                        {showNotes && <PageThree generalNotes={generalNotes} updateNotes={updateNotes}/>}
                     </div>
                     {!isDownloading &&
                         <Sidebar

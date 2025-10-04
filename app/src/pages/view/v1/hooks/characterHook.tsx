@@ -24,6 +24,8 @@ import { ShieldInfoObjectKeys, ShieldModifiersInfoKeys, ShieldModifiersObjectKey
 import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/shieldUtilities";
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
+import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
+import { updateNotesUtility } from "./utilities/updateUtilities/NoteUtilities";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -317,6 +319,16 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    // ---------------------------------------------------- \\
+    // ---------------- Page Three Updates ---------------- \\
+    // ---------------------------------------------------- \\
+
+    function updateNotes(key: GeneralNotesInfoKeys, value: string | boolean) {
+        if (character) {
+            setCharacter(updateNotesUtility(character, key, value))
+        }
+    }
+
     return {
         character,
         downloadCharacter,
@@ -380,7 +392,8 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
                         updateWeaponModifier
                     }
                 }
-            }
+            },
+            updateNotes
         }
     }
 }

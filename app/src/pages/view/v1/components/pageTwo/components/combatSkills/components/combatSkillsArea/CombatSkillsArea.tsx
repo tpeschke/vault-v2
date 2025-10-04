@@ -1,9 +1,9 @@
-import { CombatSkillsInfo } from '@vault/common/interfaces/v1/pageTwo/combatSkills'
 import './CombatSkillsArea.css'
 import CombatAdvSkills from './components/CombatAdvSkills'
 import CombatSkillSuites from './components/CombatSkillSuites'
 import StatsNMartialAdept from './components/StatsNMartialAdept'
 import { CombatSkillUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
+import { CombatSkillsInfo } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills'
 
 interface Props {
     combatSkillInfo: CombatSkillsInfo,
