@@ -11,7 +11,7 @@ interface Props {
 
 export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo, updateVitalityNNerve }: Props) {
     const isEditing = useContext(EditingContext)
-    
+
     const { vitalityDie, minVitality, nerveDie, minNerve } = vitalityNNerveCalcInfo
 
     return (
@@ -26,11 +26,7 @@ export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo, upda
             </span>
             <span>
                 <strong>Min Vitality</strong>
-                {isEditing ?
-                    <input onChange={(event: any) => updateVitalityNNerve('minVitality', +event.target.value)} value={minVitality} />
-                    :
-                    <p>{minVitality}</p>
-                }
+                <p>{minVitality}</p>
             </span>
             <span>
                 <strong>Nerve Die</strong>
@@ -42,11 +38,7 @@ export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo, upda
             </span>
             <span>
                 <strong>Min Nerve</strong>
-                {isEditing ?
-                    <input onChange={(event: any) => updateVitalityNNerve('minNerve', +event.target.value)} value={minNerve} />
-                    :
-                    <p>{minNerve}</p>
-                }
+                <p>{minNerve}</p>
             </span>
         </div>
     )
