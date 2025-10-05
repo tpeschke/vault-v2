@@ -1,6 +1,6 @@
 import { PairObject } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import DisplaySingleArray from "../../../../../../displayArray/displaySingle/DisplaySingleArray"
-import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from "../../../../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces"
+import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from "../../../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces"
 
 interface Props {
     flaws: PairObject[],
