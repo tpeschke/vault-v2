@@ -6,15 +6,16 @@ import { saveConvictions } from "./convictionInfo"
 import { saveRelationships } from "./relationshipInfo"
 import { saveFlaws } from "./flawsInfo"
 import { saveReputations } from "./reputationInfo"
+import { saveCulturalNContactsInfo } from "./cultureNAssets"
 
 export async function saveCharacteristics(characterID: number, characteristicInfo: CharacteristicInfo) {
-    const { integrityInfo, goals, descriptions, convictions, relationships, flaws, reputation } = characteristicInfo
+    const { integrityInfo, goals, descriptions, convictions, relationships, flaws, reputation, culturalStrength, assets } = characteristicInfo
 
     let promiseArray: Promise<any>[] = []
 
     promiseArray.push(saveIntegrityInfo(characterID, integrityInfo))
-    // culturalStrength
-    // assets
+
+    promiseArray.push(saveCulturalNContactsInfo(characterID, culturalStrength, assets))
 
     promiseArray.push(saveGoals(characterID, goals))
     promiseArray.push(saveFlaws(characterID, flaws))

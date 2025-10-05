@@ -1,7 +1,7 @@
 .abilities-and-burdens-shell {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .abilities-and-burdens-shell>div:first-child {
