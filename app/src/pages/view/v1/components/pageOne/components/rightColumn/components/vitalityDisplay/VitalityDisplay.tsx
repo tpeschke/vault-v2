@@ -69,6 +69,16 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
         )
     }
 
+    function nullWoundRow(_: any, index: number) {
+        return (
+            <span key={index} className='null-wound-row'>
+                <strong>Wound</strong>
+                <p></p>
+                <p></p>
+            </span>
+        )
+    }
+
     function insertRow(event: any) {
         const value = +event.target.value
 
@@ -150,15 +160,5 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
                 </span>
             </div>
         </div>
-    )
-}
-
-function nullWoundRow(_: any, index: number) {
-    return (
-        <span key={index} className='null-wound-row'>
-            <strong>Wound</strong>
-            <p></p>
-            <p></p>
-        </span>
     )
 }

@@ -67,23 +67,29 @@
     width: calc(100% - 4px);
 }
 
-.reputation-shell span {
+.reputation-item-shell {
     display: flex;
-    height: 19px;
 }
 
-.reputation-shell strong, .reputation-shell p {
-    padding-top: 2px;
+.reputation-title-shell {
+    display: flex;
+    flex-direction: column;
 }
 
-.reputation-shell span strong {
+.reputation-title-shell strong {
     padding-right: 5px;
+    height: 19px;
+    width: 75px;
 }
 
-.reputation-shell span:nth-child(odd) {
+.reputation-shell .reputation-title-shell strong:nth-child(even) {
     background: lightgray;
 }
 
-.reputation-shell input {
-    width: calc(100% - 83px);
+.reputation-shell .display-array-shell {
+    width: calc(100% - 75px);
+}
+
+.reputation-shell>.display-array-shell p {
+    min-height: 17px;
 }
