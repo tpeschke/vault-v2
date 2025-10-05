@@ -6,7 +6,7 @@ import { Error } from '../interfaces/apiInterfaces'
 
 const pool = new Pool(databaseCredentials)
 
-type Params = string | number | null | undefined | (string | number | undefined)[]
+type Params = string | number | boolean | null | undefined | (string | number | boolean | undefined)[]
 
 export default async function query(text: string, params?: Params[] | Params): Promise<any[]> {
     let result = []

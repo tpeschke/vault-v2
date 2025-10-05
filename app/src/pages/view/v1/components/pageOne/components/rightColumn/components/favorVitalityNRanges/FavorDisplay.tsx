@@ -2,7 +2,7 @@ import { FavorInfo } from '@vault/common/interfaces/v1/pageOne/rightColumnInterf
 import './FavorVitalityNRanges.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
-import { UpdateFavorInfoFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
+import { UpdateFavorInfoFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     favorInfo: FavorInfo,
@@ -30,9 +30,9 @@ export default function FavorDisplay({ favorInfo, updateFavorInfo }: Props) {
             <span>
                 <strong>Anointed?</strong>
                 {anointed ?
-                    <i onClick={_ => updateFavorInfo('anointed', false)} className="fa-solid fa-check"></i>
+                    <i onClick={_ => updateFavorInfo('anointed', 0)} className="fa-solid fa-check"></i>
                     :
-                    <i onClick={_ => updateFavorInfo('anointed', true)} className="fa-solid fa-x"></i>
+                    <i onClick={_ => updateFavorInfo('anointed', 1)} className="fa-solid fa-x"></i>
                 }
             </span>
         </div>

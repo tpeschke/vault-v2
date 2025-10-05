@@ -28,7 +28,7 @@ export interface WeaponTable {
 export interface FavorInfo {
     favor: number,
     maxFavor: number,
-    anointed: boolean
+    anointed: 0 | 1
 }
 
 export type FavorInfoKeys = keyof FavorInfo
