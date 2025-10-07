@@ -12,6 +12,7 @@ type GearInfoObjects = Omit<GearInfo, 'gear' | 'carry'>
 export type GearInfoObjectsKeys = keyof GearInfoObjects
 
 export interface GearObject {
+    key?: string,
     id?: number,
     item?: string,
     size?: string

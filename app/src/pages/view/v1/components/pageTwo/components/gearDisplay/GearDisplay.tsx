@@ -2,6 +2,7 @@ import { GearInfo, GearObject } from '@vault/common/interfaces/v1/pageTwo/gearIn
 import './GearDisplay.css'
 import { useEffect, useState } from 'react'
 import { InsertGearFunction, UpdateCashFunction, UpdateGearFunction } from '../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces'
+import makeTempID from '../../../../../../../utilities/makeTempId'
 
 interface Props {
     gearInfo: GearInfo,
@@ -91,6 +92,7 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
 
     function insertRow(key: 'item' | 'size', event: any) {
         const tempGear: GearObject = {
+            key: makeTempID(),
             [key]: event.target.value
         }
 
@@ -102,9 +104,9 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
         }
     }
 
-    function gearRow({ item, size, id }: GearObject, index: number) {
+    function gearRow({ item, size, id, key }: GearObject, index: number) {
         return (
-            <span key={index}>
+            <span key={id ?? key}>
                 <input onChange={(event: any) => updateGear(index, {id, item: event.target.value, size})} defaultValue={item} />
                 <input onChange={(event: any) => updateGear(index, {id, item, size: event.target.value})} defaultValue={size} />
             </span>
