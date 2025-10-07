@@ -2,7 +2,7 @@ import { SkillInfo } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces'
 import './LeftColumn.css'
 import CheckModsDisplay from './components/CheckMods'
 import SkillSuitesDisplay from './components/SkillSuites'
-import { SkillLeftColumnUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces'
+import { SkillLeftColumnUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateSkillInterfaces'
 
 interface Props {
     skillInfo: SkillInfo,

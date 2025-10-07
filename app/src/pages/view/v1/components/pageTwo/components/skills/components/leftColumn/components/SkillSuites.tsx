@@ -2,7 +2,7 @@ import { SkillObject, SkillObjectKeys } from '@vault/common/interfaces/v1/pageTw
 import '../LeftColumn.css'
 import { useContext } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
-import { UpdateNativeLanguageFunction, UpdateSkillSuiteFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces';
+import { UpdateNativeLanguageFunction, UpdateSkillSuiteFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateSkillInterfaces';
 
 interface Props {
     skillSuites: SkillObject[],
@@ -33,11 +33,11 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
                     <p>U</p>
                 }
                 {isEditing ?
-                    <span>
+                    <span onClick={_ => updateSkillSuite(index, { id, skill, cost, isTrained: !isTrained, rank, mod })}>
                         {isTrained ?
-                            <i onClick={_ => updateSkillSuite(index, { id, skill, cost, isTrained: false, rank, mod })} className="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                             :
-                            <i onClick={_ => updateSkillSuite(index, { id, skill, cost, isTrained: true, rank, mod })} className="fa-solid fa-x"></i>
+                            <i className="fa-solid fa-x"></i>
                         }
                     </span>
                     :
