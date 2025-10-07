@@ -47,7 +47,7 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
         )
     }
 
-    const { skill, cost, rank, mod } = nativeLanguage
+    const { id, skill, cost, rank, mod } = nativeLanguage
     const nativeLanguageRank = rank ?? int
     const nativeLanguageTotalCost = cost + (nativeLanguageRank * 2) - adepts
 
@@ -55,6 +55,7 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
         const {value} = event.target
 
         updateNativeLanguage({
+            id,
             skill,
             cost,
             rank,
@@ -84,7 +85,7 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
                         <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'skill')} value={skill} />
                         <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'cost')} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${nativeLanguageTotalCost} (Cost - Adepts + Rank * 2)`} value={cost} />
                         <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'rank')} value={nativeLanguageRank} />
-                        <input onChange={(event: any) => updateNativeLanguageOnChange(event, 'mod')} value={mod} />
+                        <p>{mod}</p>
                     </>
                     :
                     <>
