@@ -26,6 +26,7 @@ export interface MovementInfo {
 export type MovementKeys = keyof MovementInfo
 
 export interface PairObject {
+    key?: string,
     id?: number,
     title: string | undefined,
     value: string | number

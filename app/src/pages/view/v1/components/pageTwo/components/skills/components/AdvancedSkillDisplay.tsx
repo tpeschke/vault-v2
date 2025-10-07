@@ -3,6 +3,7 @@ import '../SkillDisplay.css'
 import { useContext, useEffect, useState } from 'react';
 import EditingContext from '../../../../../contexts/EditingContext';
 import { InsertSkillFunction, UpdateSkillFunction } from '../../../../../hooks/interfaces/pageTwoInterfaces/UpdateSkillInterfaces';
+import makeTempID from '../../../../../../../../utilities/makeTempId';
 
 interface Props {
     advancedSkills: SkillObject[],
@@ -20,11 +21,11 @@ export default function AdvancedSkillDisplay({ advancedSkills, adepts, insertSki
         setLeftOver(28 - advancedSkills.length - (isEditing ? 1 : 0))
     }, [advancedSkills, isEditing])
 
-    function skillRow({ id, skill, cost, rank, mod }: SkillObject, index: number, adepts: number, isEditing: boolean) {
+    function skillRow({ id, skill, cost, rank, mod, key }: SkillObject, index: number, adepts: number, isEditing: boolean) {
         const totalCost = cost + (rank * 2) - adepts
 
         return (
-            <span key={index} className='advanced-skill-row'>
+            <span key={id ?? key} className='advanced-skill-row'>
                 {isEditing ?
                     <>
                         <input onChange={(event: any) => updateSkill(index, { id, skill: event.target.value, cost, rank, mod })} value={skill} />
@@ -48,6 +49,7 @@ export default function AdvancedSkillDisplay({ advancedSkills, adepts, insertSki
         const { value } = event.target
 
         const tempSkill: SkillObject = {
+            key: makeTempID(),
             skill: '',
             cost: 0,
             rank: 0,

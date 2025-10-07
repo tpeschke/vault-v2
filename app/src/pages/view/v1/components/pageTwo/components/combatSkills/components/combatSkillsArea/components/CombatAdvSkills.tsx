@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
 import { InsertCombatSkillFunction, UpdateCombatSkillFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces';
 import { CombatSkillObject, CombatSkillObjectKeys } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills';
+import makeTempID from '../../../../../../../../../../utilities/makeTempId';
 
 interface Props {
     combatAdvSkills: CombatSkillObject[],
@@ -48,6 +49,7 @@ export default function CombatAdvSkills({ combatAdvSkills, martialAdepts, insert
         const { value } = event.target
 
         const tempSkill: CombatSkillObject = {
+            key: makeTempID(),
             skill: '',
             cost: 0,
             rank: 0,

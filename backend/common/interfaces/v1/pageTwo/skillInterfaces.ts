@@ -16,6 +16,7 @@ export interface CheckModsObject {
 }
 
 export interface SkillObject {
+    key?: string,
     id?: number,
     skill: string,
     cost: number,

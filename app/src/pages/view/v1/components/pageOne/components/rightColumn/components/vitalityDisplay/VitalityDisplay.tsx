@@ -3,6 +3,7 @@ import './VitalityDisplay.css'
 import { useContext, useEffect, useState } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateNerveAndVitalityInfoFunction, InsertWoundFunction, UpdateWoundFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
+import makeTempID from '../../../../../../../../../utilities/makeTempId'
 
 interface Props {
     nerveAndVitalityInfo: NerveAndVitalityInfo,
@@ -59,9 +60,9 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
         }
     }
 
-    function woundRow({ id, severity, days }: Wound, index: number) {
+    function woundRow({ id, severity, days, key }: Wound, index: number) {
         return (
-            <span key={index}>
+            <span key={id ?? key}>
                 <strong>Wound</strong>
                 <input onChange={(event: any) => updateWound(index, { id, severity: +event.target.value, days })} value={severity} />
                 <input onChange={(event: any) => updateWound(index, { id, severity, days: +event.target.value })} value={days} />
@@ -83,6 +84,7 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
         const value = +event.target.value
 
         const tempWound: Wound = {
+            key: makeTempID(),
             severity: value,
             days: value
         }

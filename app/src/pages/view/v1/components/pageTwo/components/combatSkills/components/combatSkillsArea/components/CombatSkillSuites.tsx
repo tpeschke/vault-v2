@@ -1,8 +1,8 @@
-import { CombatSkillObject } from '@vault/common/interfaces/v1/pageTwo/combatSkills';
 import '../CombatSkillsArea.css'
 import { useContext } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
 import { UpdateCombatSkillSuite } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces';
+import { CombatSkillObject } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills';
 
 interface Props {
     combatSkillSuites: CombatSkillObject[],

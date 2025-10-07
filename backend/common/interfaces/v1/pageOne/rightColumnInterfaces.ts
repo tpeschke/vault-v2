@@ -60,6 +60,7 @@ export interface VitalityNNerveCalcInfo {
 export type VitalityNNerveCalcInfoKeys = keyof VitalityNNerveCalcInfo
 
 export interface Wound {
+    key?: string,
     id?: number,
     severity: number,
     days: number

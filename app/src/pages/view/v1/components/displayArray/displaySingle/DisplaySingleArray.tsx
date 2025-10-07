@@ -3,6 +3,7 @@ import '../DisplayArray.css'
 import { useContext } from 'react'
 import EditingContext from '../../../contexts/EditingContext'
 import { InsertCharacteristicFunction, UpdateCharacteristicFunction } from '../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces'
+import makeTempID from '../../../../../../utilities/makeTempId'
 
 interface Props {
     max: number,
@@ -25,17 +26,17 @@ export default function DisplaySingleArray({ max, arrayToDisplay, insertFunction
         }
     }
 
-    function formatIntoRow({ id, value }: PairObject, index: number) {
+    function formatIntoRow({ id, value, key }: PairObject, index: number) {
         if (isEditing) {
-            return <input onChange={(event: any) => updateRow(index, { id, title: undefined, value }, event.target.value)} key={index} value={value} />
+            return <input onChange={(event: any) => updateRow(index, { id, title: undefined, value }, event.target.value)} key={id ?? key} value={value} />
         }
-        return <p key={index}>- {value}</p>
+        return <p key={id ?? key}>- {value}</p>
     }
 
     function insertPairObject(event: any) {
         const { value } = event.target
         if (insertFunction && value !== '') {
-            insertFunction({ title: undefined, value })
+            insertFunction({ key: makeTempID(), title: undefined, value })
             event.target.value = ''
         }
     }

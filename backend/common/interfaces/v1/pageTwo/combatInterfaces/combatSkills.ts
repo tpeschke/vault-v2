@@ -13,6 +13,7 @@ export interface CombatStatModifiers {
 }
 
 export interface CombatSkillObject {
+    key?: string,
     id?: number,
     skill: string,
     cost: number,
