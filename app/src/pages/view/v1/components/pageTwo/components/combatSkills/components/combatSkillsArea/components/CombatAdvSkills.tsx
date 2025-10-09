@@ -23,15 +23,15 @@ export default function CombatAdvSkills({ combatAdvSkills, martialAdepts, insert
 
     const showEditInputs = isEditing && leftOver > - 1
 
-    function skillRow({ skill, cost, rank }: CombatSkillObject, index: number, martialAdepts: number) {
+    function skillRow({ id, skill, cost, rank }: CombatSkillObject, index: number, martialAdepts: number) {
         const totalCost = cost + (rank * 2) - martialAdepts
 
         if (isEditing) {
             return (
                 <span key={index} className='combat-advanced-skill-row'>
-                    <input onChange={(event: any) => updateCombatSkill(index, {skill: event.target.value, cost, rank})} value={skill} />
-                    <input onChange={(event: any) => updateCombatSkill(index, {skill, cost: +event.target.value, rank})} value={cost} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${totalCost} (Cost - Martial Adepts + Rank * 2)`} />
-                    <input onChange={(event: any) => updateCombatSkill(index, {skill, cost, rank: +event.target.value})} value={rank} />
+                    <input onChange={(event: any) => updateCombatSkill(index, {id, skill: event.target.value, cost, rank})} value={skill} />
+                    <input onChange={(event: any) => updateCombatSkill(index, {id, skill, cost: +event.target.value, rank})} value={cost} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${totalCost} (Cost - Martial Adepts + Rank * 2)`} />
+                    <input onChange={(event: any) => updateCombatSkill(index, {id, skill, cost, rank: +event.target.value})} value={rank} />
                 </span>
             )
         }
