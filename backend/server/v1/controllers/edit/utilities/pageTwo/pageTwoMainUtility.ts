@@ -10,7 +10,7 @@ export async function savePageTwoInfo(characterID: number, pageTwoInfo: PageTwoI
 
     promiseArray.push(saveGearInfo(characterID, gearInfo))
     promiseArray.push(saveSkillInfo(characterID, skillInfo))
-    promiseArray.push(saveCombatWorkspaceMain(combatWorkspaceInfo))
+    promiseArray.push(saveCombatWorkspaceMain(characterID, combatWorkspaceInfo))
 
     return Promise.all(promiseArray)
 }

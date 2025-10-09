@@ -18,7 +18,7 @@ export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, in
         return (
             <span className='skill-suite-row' key={index}>
                 <strong>{skill}</strong>
-                <p>{(cost - int + (rank * 10)) * (1 - (martialAdepts * .10))}</p>
+                <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (martialAdepts * .10)))}</p>
                 {isTrained ?
                     <>
                         {isEditing ?

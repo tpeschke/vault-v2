@@ -22,7 +22,7 @@ export function formatArmor(rawArmor: any): ArmorInfo {
                 total: calculateArmorDefenseTotal(armorbasedef, armortrainingdef, armormiscdef)
             },
             fat: {
-                base: armorbasefatigue,
+                base: convertFatigueToNumber(armorbasefatigue),
                 skill: armortrainfatigue,
                 misc: armormiscfatigue,
                 total: calculateArmorFatigueTotal(armorbasefatigue, armortrainfatigue, armormiscfatigue)
@@ -40,5 +40,18 @@ export function formatArmor(rawArmor: any): ArmorInfo {
                 total: calculateArmorRecoveryOrInitiativeTotal(armorbaseinit, armortraininit, armormiscinit)
             }
         }
+    }
+}
+
+function convertFatigueToNumber(fatigue: string) {
+    switch (fatigue) {
+        case 'W':
+            return -2
+        case 'B':
+            return -3
+        case 'H':
+            return -4
+        default:
+            return +fatigue
     }
 }
