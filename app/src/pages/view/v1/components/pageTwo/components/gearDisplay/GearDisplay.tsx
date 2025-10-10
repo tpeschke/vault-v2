@@ -132,19 +132,19 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
                 <div className='coins-shell'>
                     <span>
                         <strong>CC</strong>
-                        <input onChange={(event: any) => updateCash('copper', +event.target.value)} defaultValue={copper} />
+                        <input type='number' onChange={(event: any) => updateCash('copper', +event.target.value)} defaultValue={copper} />
                     </span>
                     <span>
                         <strong>SC</strong>
-                        <input onChange={(event: any) => updateCash('silver', +event.target.value)} defaultValue={silver} />
+                        <input type='number' onChange={(event: any) => updateCash('silver', +event.target.value)} defaultValue={silver} />
                     </span>
                     <span>
                         <strong>GC</strong>
-                        <input onChange={(event: any) => updateCash('gold', +event.target.value)} defaultValue={gold} />
+                        <input type='number' onChange={(event: any) => updateCash('gold', +event.target.value)} defaultValue={gold} />
                     </span>
                     <span>
                         <strong>PC</strong>
-                        <input onChange={(event: any) => updateCash('platinum', +event.target.value)} defaultValue={platinum} />
+                        <input type='number' onChange={(event: any) => updateCash('platinum', +event.target.value)} defaultValue={platinum} />
                     </span>
                 </div>
             </span>

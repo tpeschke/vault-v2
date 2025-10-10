@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import './FavorVitalityNRanges.css'
 import EditingContext from '../../../../../../contexts/EditingContext'
-import { UpdateMaxRangeFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
+import { UpdateMaxRangeFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     maxRange: number,
@@ -27,7 +27,7 @@ export default function RangeDisplay({ maxRange, updateMaxRange }: Props) {
                     <p>{lowEndValue}</p>
                     <p>-</p>
                     {isEditing && penalty === -32 ?
-                        <input onChange={(event: any) => updateMaxRange(+event.target.value)} value={highEndValue} />
+                        <input type='number' onChange={(event: any) => updateMaxRange(+event.target.value)} value={highEndValue} />
                         :
                         <p>{highEndValue}</p>
                     }

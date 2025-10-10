@@ -159,6 +159,16 @@ input:hover {
   background: rgba(173, 216, 230) !important;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
 textarea {
   font-family: "Source Sans 3", sans-serif;
 }

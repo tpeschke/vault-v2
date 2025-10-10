@@ -6,7 +6,7 @@ import NerveDisplay from './components/nerveDisplay/NerveDisplay'
 import VitalityDisplay from './components/vitalityDisplay/VitalityDisplay'
 import WeaponsTables from './components/weaponTables/WeaponsTables'
 import './RightColumn.css'
-import { PageOneRightColumn } from '../../../../hooks/interfaces/CharacterHookInterfaces'
+import { PageOneRightColumn } from '../../../../hooks/interfaces/pageOneInterfaces/UpdateExportInterfaces'
 
 interface Props {
     rightColumnInfo: RightColumnInfo,

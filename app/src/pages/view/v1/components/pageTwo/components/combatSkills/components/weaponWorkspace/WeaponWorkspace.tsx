@@ -37,7 +37,7 @@ export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, w
                 <span>
                     <strong>Rec</strong>
                     {isEditing ?
-                        <input onChange={(event: any) => updateBasicWeaponInfo(index, 'recovery', +event.target.value)} value={recovery} />
+                        <input type='number' onChange={(event: any) => updateBasicWeaponInfo(index, 'recovery', +event.target.value)} value={recovery} />
                         :
                         <p>{recovery}</p>
                     }
@@ -56,7 +56,7 @@ export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, w
                     <span>
                         <strong>Meas</strong>
                         {isEditing ?
-                            <input onChange={(event: any) => updateBasicWeaponInfo(index, 'measure', +event.target.value)} value={measure} />
+                            <input type='number' onChange={(event: any) => updateBasicWeaponInfo(index, 'measure', +event.target.value)} value={measure} />
                             :
                             <p>{measure}</p>
                         }
@@ -64,7 +64,7 @@ export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, w
                     <span>
                         <strong>Parry</strong>
                         {isEditing ?
-                            <input onChange={(event: any) => updateBasicWeaponInfo(index, 'parry', +event.target.value)} value={parry} />
+                            <input type='number' onChange={(event: any) => updateBasicWeaponInfo(index, 'parry', +event.target.value)} value={parry} />
                             :
                             <p>{parry}</p>
                         }
@@ -110,16 +110,16 @@ export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, w
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onChange={(event: any) => updateWeaponModifier(index, 'atk', 'skill', +event.target.value)} defaultValue={atk.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'atk', 'skill', +event.target.value)} defaultValue={atk.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateWeaponModifier(index, 'rec', 'skill', +event.target.value)} defaultValue={rec.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'rec', 'skill', +event.target.value)} defaultValue={rec.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateWeaponModifier(index, 'pry', 'skill', +event.target.value)} defaultValue={pry.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'pry', 'skill', +event.target.value)} defaultValue={pry.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateWeaponModifier(index, 'dam', 'skill', +event.target.value)} defaultValue={dam.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'dam', 'skill', +event.target.value)} defaultValue={dam.skill ?? undefined} />
                                 </td>
                             </>
                             :
@@ -134,16 +134,16 @@ export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, w
                     </tr>
                     <tr>
                         <td>
-                            <input onChange={(event: any) => updateWeaponModifier(index, 'atk', 'misc', +event.target.value)} defaultValue={atk.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'atk', 'misc', +event.target.value)} defaultValue={atk.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateWeaponModifier(index, 'rec', 'misc', +event.target.value)} defaultValue={rec.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'rec', 'misc', +event.target.value)} defaultValue={rec.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateWeaponModifier(index, 'pry', 'misc', +event.target.value)} defaultValue={pry.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'pry', 'misc', +event.target.value)} defaultValue={pry.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateWeaponModifier(index, 'dam', 'misc', +event.target.value)} defaultValue={dam.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateWeaponModifier(index, 'dam', 'misc', +event.target.value)} defaultValue={dam.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>

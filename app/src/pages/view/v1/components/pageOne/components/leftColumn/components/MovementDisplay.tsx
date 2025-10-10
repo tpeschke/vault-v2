@@ -1,7 +1,7 @@
 import { MovementInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { useContext } from "react"
 import EditingContext from "../../../../../contexts/EditingContext"
-import { UpdateMovementFunction } from "../../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces"
+import { UpdateMovementFunction } from "../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces"
 
 interface Props {
     movementInfo: MovementInfo,
@@ -19,7 +19,7 @@ export default function MovementDisplay({ movementInfo, updateMovement }: Props)
             <span>
                 <strong>Crawl</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateMovement('crawl', +event.target.value)} defaultValue={crawl} />
+                    <input type="number" onChange={(event: any) => updateMovement('crawl', +event.target.value)} defaultValue={crawl} />
                     :
                     <p>{crawl}</p>
                 }
@@ -28,7 +28,7 @@ export default function MovementDisplay({ movementInfo, updateMovement }: Props)
             <span>
                 <strong>Walk</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateMovement('walk', +event.target.value)} defaultValue={walk} />
+                    <input type="number" onChange={(event: any) => updateMovement('walk', +event.target.value)} defaultValue={walk} />
                     :
                     <p>{walk}</p>
                 }
@@ -37,7 +37,7 @@ export default function MovementDisplay({ movementInfo, updateMovement }: Props)
             <span>
                 <strong>Jog</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateMovement('jog', +event.target.value)} defaultValue={jog} />
+                    <input type="number" onChange={(event: any) => updateMovement('jog', +event.target.value)} defaultValue={jog} />
                     :
                     <p>{jog}</p>
                 }
@@ -46,7 +46,7 @@ export default function MovementDisplay({ movementInfo, updateMovement }: Props)
             <span>
                 <strong>Run</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateMovement('run', +event.target.value)} defaultValue={run} />
+                    <input type="number" onChange={(event: any) => updateMovement('run', +event.target.value)} defaultValue={run} />
                     :
                     <p>{run}</p>
                 }
@@ -55,7 +55,7 @@ export default function MovementDisplay({ movementInfo, updateMovement }: Props)
             <span>
                 <strong>Sprint</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateMovement('sprint', +event.target.value)} defaultValue={sprint} />
+                    <input type="number" onChange={(event: any) => updateMovement('sprint', +event.target.value)} defaultValue={sprint} />
                     :
                     <p>{sprint}</p>
                 }

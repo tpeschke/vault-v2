@@ -58,7 +58,7 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     <span className='level-info'>
                         <strong>LvL</strong>
                         {isEditing ?
-                            <input onChange={(event: any) => updateGeneralInfo('level', +event.target.value)} defaultValue={level} />
+                            <input type='number' onChange={(event: any) => updateGeneralInfo('level', +event.target.value)} defaultValue={level} />
                             :
                             <p>{level}</p>
                         }
@@ -68,11 +68,11 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     <strong>CrP</strong>
                     <span className='unspent-crp-info'>
                         <strong>Unspent</strong>
-                        <input onChange={(event: any) => updateGeneralInfo('crpUnspent', +event.target.value)} defaultValue={crpUnspent} />
+                        <input type='number' onChange={(event: any) => updateGeneralInfo('crpUnspent', +event.target.value)} defaultValue={crpUnspent} />
                     </span>
                     <span className='spent-crp-info'>
                         <strong>Spent</strong>
-                        <input onChange={(event: any) => updateGeneralInfo('crpSpent', +event.target.value)} defaultValue={crpSpent} />
+                        <input type='number' onChange={(event: any) => updateGeneralInfo('crpSpent', +event.target.value)} defaultValue={crpSpent} />
                     </span>
                     <span className='to-next-level-info'>
                         <strong>Spent to Next LvL</strong>

@@ -1,8 +1,8 @@
 import { NerveAndVitalityInfo } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import './NerveDisplay.css'
 import { useContext, useEffect, useState } from 'react'
-import { UpdateNerveAndVitalityInfoFunction } from '../../../../../../hooks/interfaces/UpdateRightColumnInterfaces'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import { UpdateNerveAndVitalityInfoFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     nerveAndVitalityInfo: NerveAndVitalityInfo,
@@ -70,17 +70,17 @@ export default function NerveDisplay({ nerveAndVitalityInfo, updateNerveAndVital
                 {isEditing ?
                     <span className='edit-nerve'>
                         <strong>Nerve</strong>
-                        <input onChange={(event: any) => updateNerveAndVitalityInfo('nerve', +event.target.value)} value={nerve} />
+                        <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('nerve', +event.target.value)} value={nerve} />
                     </span>
                     :
                     <div className='stress-n-relaxation-shell'>
                         <span>
                             <strong>Stress</strong>
-                            <input onChange={(event: any) => updateNerveAndVitalityInfo('stress', +event.target.value)} value={stress} />
+                            <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('stress', +event.target.value)} value={stress} />
                         </span>
                         <span>
                             <strong>Relaxation</strong>
-                            <input onChange={(event: any) => updateNerveAndVitalityInfo('relaxation', +event.target.value)} value={relaxation} />
+                            <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('relaxation', +event.target.value)} value={relaxation} />
                         </span>
                     </div>
                 }

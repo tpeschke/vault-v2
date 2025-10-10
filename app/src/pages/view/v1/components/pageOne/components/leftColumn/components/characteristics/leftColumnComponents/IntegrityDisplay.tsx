@@ -1,6 +1,6 @@
 import { IntegrityInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { useEffect, useState } from "react"
-import { UpdateIntegrityInfo } from "../../../../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces"
+import { UpdateIntegrityInfo } from "../../../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces"
 
 interface Props {
     integrityInfo: IntegrityInfo,
@@ -35,7 +35,7 @@ export default function IntegrityDisplay({ integrityInfo, updateIntegrityInfo }:
     return (
         <div className="integrity-shell">
             <span>
-                <input onChange={(event: any) => updateIntegrityInfo('integrity', +event.target.value)} defaultValue={integrity} />
+                <input type="number" onChange={(event: any) => updateIntegrityInfo('integrity', +event.target.value)} defaultValue={integrity} />
                 <strong>Integrity</strong>
             </span>
             <div>
@@ -48,7 +48,7 @@ export default function IntegrityDisplay({ integrityInfo, updateIntegrityInfo }:
             </div>
             <span>
                 <strong>Grit Dice</strong>
-                <input onChange={(event: any) => updateIntegrityInfo('gritDie', +event.target.value)} defaultValue={gritDie} />
+                <input type="number" onChange={(event: any) => updateIntegrityInfo('gritDie', +event.target.value)} defaultValue={gritDie} />
             </span>
         </div>
     )

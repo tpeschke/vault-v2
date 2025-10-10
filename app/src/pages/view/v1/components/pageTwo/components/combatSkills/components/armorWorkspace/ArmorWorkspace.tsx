@@ -36,7 +36,7 @@ export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
             <span>
                 <strong>Skill Adj</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateBasicArmorInfo('skillAdj', +event.target.value)} value={skillAdj} />
+                    <input type='number' onChange={(event: any) => updateBasicArmorInfo('skillAdj', +event.target.value)} value={skillAdj} />
                     :
                     <p>{skillAdj}</p>
                 }
@@ -64,16 +64,16 @@ export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('def', 'base', +event.target.value)} defaultValue={def.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('def', 'base', +event.target.value)} defaultValue={def.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('fat', 'base', +event.target.value)} defaultValue={fat.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('fat', 'base', +event.target.value)} defaultValue={fat.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('rec', 'base', +event.target.value)} defaultValue={rec.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('rec', 'base', +event.target.value)} defaultValue={rec.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('init', 'base', +event.target.value)} defaultValue={init.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('init', 'base', +event.target.value)} defaultValue={init.base ?? undefined} />
                                 </td>
                             </>
                             :
@@ -90,16 +90,16 @@ export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('def', 'skill', +event.target.value)} defaultValue={def.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('def', 'skill', +event.target.value)} defaultValue={def.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('fat', 'skill', +event.target.value)} defaultValue={fat.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('fat', 'skill', +event.target.value)} defaultValue={fat.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('rec', 'skill', +event.target.value)} defaultValue={rec.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('rec', 'skill', +event.target.value)} defaultValue={rec.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateArmorModifier('init', 'skill', +event.target.value)} defaultValue={init.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateArmorModifier('init', 'skill', +event.target.value)} defaultValue={init.skill ?? undefined} />
                                 </td>
                             </>
                             :
@@ -114,16 +114,16 @@ export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
                     </tr>
                     <tr>
                         <td>
-                            <input onChange={(event: any) => updateArmorModifier('def', 'misc', +event.target.value)} defaultValue={def.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateArmorModifier('def', 'misc', +event.target.value)} defaultValue={def.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateArmorModifier('fat', 'misc', +event.target.value)} defaultValue={fat.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateArmorModifier('fat', 'misc', +event.target.value)} defaultValue={fat.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateArmorModifier('rec', 'misc', +event.target.value)} defaultValue={rec.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateArmorModifier('rec', 'misc', +event.target.value)} defaultValue={rec.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateArmorModifier('init', 'misc', +event.target.value)} defaultValue={init.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateArmorModifier('init', 'misc', +event.target.value)} defaultValue={init.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>

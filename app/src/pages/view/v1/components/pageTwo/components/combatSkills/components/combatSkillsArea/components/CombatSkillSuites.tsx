@@ -22,7 +22,7 @@ export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, in
                 {isTrained ?
                     <>
                         {isEditing ?
-                            <input onChange={(event: any) => updateCombatSkillSuite(index, { id, skill, cost, isTrained, rank: +event.target.value })} value={rank} />
+                            <input type='number' onChange={(event: any) => updateCombatSkillSuite(index, { id, skill, cost, isTrained, rank: +event.target.value })} value={rank} />
                             :
                             <p>{rank}</p>
                         }

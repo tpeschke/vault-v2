@@ -30,8 +30,8 @@ export default function CombatAdvSkills({ combatAdvSkills, martialAdepts, insert
             return (
                 <span key={index} className='combat-advanced-skill-row'>
                     <input onChange={(event: any) => updateCombatSkill(index, {id, skill: event.target.value, cost, rank})} value={skill} />
-                    <input onChange={(event: any) => updateCombatSkill(index, {id, skill, cost: +event.target.value, rank})} value={cost} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${totalCost} (Cost - Martial Adepts + Rank * 2)`} />
-                    <input onChange={(event: any) => updateCombatSkill(index, {id, skill, cost, rank: +event.target.value})} value={rank} />
+                    <input type='number' onChange={(event: any) => updateCombatSkill(index, {id, skill, cost: +event.target.value, rank})} value={cost} data-tooltip-id="my-tooltip" data-tooltip-content={`Current Total Cost: ${totalCost} (Cost - Martial Adepts + Rank * 2)`} />
+                    <input type='number' onChange={(event: any) => updateCombatSkill(index, {id, skill, cost, rank: +event.target.value})} value={rank} />
                 </span>
             )
         }
@@ -83,8 +83,8 @@ export default function CombatAdvSkills({ combatAdvSkills, martialAdepts, insert
                 {showEditInputs &&
                     <span className='combat-advanced-skill-row'>
                         <input onBlur={(event: any) => insertRow('skill', event)} />
-                        <input onBlur={(event: any) => insertRow('cost', event)} />
-                        <input onBlur={(event: any) => insertRow('rank', event)} />
+                        <input type='number' onBlur={(event: any) => insertRow('cost', event)} />
+                        <input type='number' onBlur={(event: any) => insertRow('rank', event)} />
                     </span>}
                 {leftOver > -1 && [...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>

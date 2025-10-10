@@ -43,7 +43,7 @@ export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
             <span>
                 <strong>Flanks</strong>
                 {isEditing ?
-                    <input onChange={(event: any) => updateBasicShieldInfo('flanks', +event.target.value)} value={flanks} />
+                    <input type='number' onChange={(event: any) => updateBasicShieldInfo('flanks', +event.target.value)} value={flanks} />
                     :
                     <p>{flanks}</p>
                 }
@@ -79,16 +79,16 @@ export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
                         {isEditing ?
                             <>
                                 <td>
-                                    <input onChange={(event: any) => updateShieldModifier('def', 'base', +event.target.value)} defaultValue={def.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateShieldModifier('def', 'base', +event.target.value)} defaultValue={def.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateShieldModifier('fat', 'base', +event.target.value)} defaultValue={fat.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateShieldModifier('fat', 'base', +event.target.value)} defaultValue={fat.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateShieldModifier('pry', 'base', +event.target.value)} defaultValue={pry.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateShieldModifier('pry', 'base', +event.target.value)} defaultValue={pry.base ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateShieldModifier('brk', 'base', +event.target.value)} defaultValue={brk.base ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateShieldModifier('brk', 'base', +event.target.value)} defaultValue={brk.base ?? undefined} />
                                 </td>
                             </>
                             :
@@ -107,13 +107,13 @@ export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
                                 {/* Cannot modifier Def via Skill */}
                                 <td> </td>
                                 <td>
-                                    <input onChange={(event: any) => updateShieldModifier('fat', 'skill', +event.target.value)} defaultValue={fat.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateShieldModifier('fat', 'skill', +event.target.value)} defaultValue={fat.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateShieldModifier('pry', 'skill', +event.target.value)} defaultValue={pry.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateShieldModifier('pry', 'skill', +event.target.value)} defaultValue={pry.skill ?? undefined} />
                                 </td>
                                 <td>
-                                    <input onChange={(event: any) => updateShieldModifier('brk', 'skill', +event.target.value)} defaultValue={brk.skill ?? undefined} />
+                                    <input type='number' onChange={(event: any) => updateShieldModifier('brk', 'skill', +event.target.value)} defaultValue={brk.skill ?? undefined} />
                                 </td>
                             </>
                             :
@@ -128,16 +128,16 @@ export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
                     </tr>
                     <tr>
                         <td>
-                            <input onChange={(event: any) => updateShieldModifier('def', 'misc', +event.target.value)} defaultValue={def.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateShieldModifier('def', 'misc', +event.target.value)} defaultValue={def.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateShieldModifier('fat', 'misc', +event.target.value)} defaultValue={fat.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateShieldModifier('fat', 'misc', +event.target.value)} defaultValue={fat.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateShieldModifier('pry', 'misc', +event.target.value)} defaultValue={pry.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateShieldModifier('pry', 'misc', +event.target.value)} defaultValue={pry.misc ?? undefined} />
                         </td>
                         <td>
-                            <input onChange={(event: any) => updateShieldModifier('brk', 'misc', +event.target.value)} defaultValue={brk.misc ?? undefined} />
+                            <input type='number' onChange={(event: any) => updateShieldModifier('brk', 'misc', +event.target.value)} defaultValue={brk.misc ?? undefined} />
                         </td>
                         <td><strong>Misc</strong></td>
                     </tr>

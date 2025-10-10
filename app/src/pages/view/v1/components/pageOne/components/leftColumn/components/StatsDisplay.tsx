@@ -1,7 +1,7 @@
 import { StatsInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { useContext } from "react"
 import EditingContext from "../../../../../contexts/EditingContext"
-import { UpdateStatFunction } from "../../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces"
+import { UpdateStatFunction } from "../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces"
 
 interface Props {
     statInfo: StatsInfo,
@@ -18,7 +18,7 @@ export default function StatsDisplay({ statInfo, updateStat }: Props) {
             <h2>Stats</h2>
             <span>
                 {isEditing ?
-                    <input onChange={(event: any) => updateStat('str', +event.target.value)} defaultValue={str} />
+                    <input type='number' onChange={(event: any) => updateStat('str', +event.target.value)} defaultValue={str} />
                     :
                     <p>{str}</p>
                 }
@@ -26,7 +26,7 @@ export default function StatsDisplay({ statInfo, updateStat }: Props) {
             </span>
             <span>
                 {isEditing ?
-                    <input onChange={(event: any) => updateStat('dex', +event.target.value)} defaultValue={dex} />
+                    <input type='number' onChange={(event: any) => updateStat('dex', +event.target.value)} defaultValue={dex} />
                     :
                     <p>{dex}</p>
                 }
@@ -34,7 +34,7 @@ export default function StatsDisplay({ statInfo, updateStat }: Props) {
             </span>
             <span>
                 {isEditing ?
-                    <input onChange={(event: any) => updateStat('con', +event.target.value)} defaultValue={con} />
+                    <input type='number' onChange={(event: any) => updateStat('con', +event.target.value)} defaultValue={con} />
                     :
                     <p>{con}</p>
                 }
@@ -42,7 +42,7 @@ export default function StatsDisplay({ statInfo, updateStat }: Props) {
             </span>
             <span>
                 {isEditing ?
-                    <input onChange={(event: any) => updateStat('int', +event.target.value)} defaultValue={int} />
+                    <input type='number' onChange={(event: any) => updateStat('int', +event.target.value)} defaultValue={int} />
                     :
                     <p>{int}</p>
                 }
@@ -50,7 +50,7 @@ export default function StatsDisplay({ statInfo, updateStat }: Props) {
             </span>
             <span>
                 {isEditing ?
-                    <input onChange={(event: any) => updateStat('will', +event.target.value)} defaultValue={will} />
+                    <input type='number' onChange={(event: any) => updateStat('will', +event.target.value)} defaultValue={will} />
                     :
                     <p>{will}</p>
                 }
@@ -58,7 +58,7 @@ export default function StatsDisplay({ statInfo, updateStat }: Props) {
             </span>
             <span>
                 {isEditing ?
-                    <input onChange={(event: any) => updateStat('pre', +event.target.value)} defaultValue={pre} />
+                    <input type='number' onChange={(event: any) => updateStat('pre', +event.target.value)} defaultValue={pre} />
                     :
                     <p>{pre}</p>
                 }

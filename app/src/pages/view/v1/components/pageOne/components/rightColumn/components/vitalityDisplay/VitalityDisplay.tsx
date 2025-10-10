@@ -64,8 +64,8 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
         return (
             <span key={id ?? key}>
                 <strong>Wound</strong>
-                <input onChange={(event: any) => updateWound(index, { id, severity: +event.target.value, days })} value={severity} />
-                <input onChange={(event: any) => updateWound(index, { id, severity, days: +event.target.value })} value={days} />
+                <input type='number' onChange={(event: any) => updateWound(index, { id, severity: +event.target.value, days })} value={severity} />
+                <input type='number' onChange={(event: any) => updateWound(index, { id, severity, days: +event.target.value })} value={days} />
             </span>
         )
     }
@@ -124,7 +124,7 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
                     {isEditing ?
                         <span>
                             <strong>Vitality</strong>
-                            <input onChange={(event: any) => updateNerveAndVitalityInfo('vitality', +event.target.value)} value={vitality} />
+                            <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('vitality', +event.target.value)} value={vitality} />
                         </span>
                         :
                         <span>
@@ -146,7 +146,7 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
                     {leftOver > -1 &&
                         <span>
                             <strong>Wound</strong>
-                            <input onBlur={(event: any) => insertRow(event)} />
+                            <input type='number' onBlur={(event: any) => insertRow(event)} />
                             <p> </p>
                         </span>
                     }
@@ -155,7 +155,7 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
                 <span className='size-mod'>
                     <strong>Size Mod</strong>
                     {isEditing ?
-                        <input onChange={(event: any) => updateNerveAndVitalityInfo('sizeMod', +event.target.value)} value={sizeMod} />
+                        <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('sizeMod', +event.target.value)} value={sizeMod} />
                         :
                         <p>{sizeMod}</p>
                     }
