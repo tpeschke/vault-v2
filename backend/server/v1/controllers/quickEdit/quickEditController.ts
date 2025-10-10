@@ -8,6 +8,8 @@ import { saveUnspentCrp } from './utilities/numberUpdates/crpUnspent'
 import { saveFavor } from './utilities/numberUpdates/favor'
 import { saveGritDice } from './utilities/numberUpdates/gritDice'
 import { saveIntegrity } from './utilities/numberUpdates/integrity'
+import { saveStress } from './utilities/numberUpdates/stress'
+import { saveRelaxation } from './utilities/numberUpdates/relaxation'
 
 interface EditRequest extends Request {
     params: {
@@ -41,8 +43,10 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
                 sendSuccess = await saveFavor(characterID, value)
                 break
             case 'stress':
+                sendSuccess = await saveStress(characterID, value)
                 break
             case 'relaxation':
+                sendSuccess = await saveRelaxation(characterID, value)
                 break
             case 'copper':
                 break

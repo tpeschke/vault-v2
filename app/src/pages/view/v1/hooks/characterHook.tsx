@@ -202,6 +202,10 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateFavorInfo(key: FavorInfoKeys, value: number | boolean) {
         if (character) {
             setCharacter(updateFavorInfoUtility(character, key, value))
+
+            if (typeof value === 'number') {
+                quickBasicQuickSaving(['favor'], character.id, key, value)
+            }
         }
     }
 
@@ -220,6 +224,8 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateNerveAndVitalityInfo(key: NerveAndVitalityObjectKeys, value: number) {
         if (character) {
             setCharacter(updateNerveAndVitalityInfoUtility(character, key, value))
+
+            quickBasicQuickSaving(['stress', 'relaxation'], character.id, key, value)
         }
     }
 
