@@ -73,6 +73,10 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
     }
 
     function getSizeValue(size: string): number {
+        if (!isNaN(+size)) {
+            return +size
+        }
+
         const sizeValueDictionary: { [key: string]: number } = {
             S: 1,
             M: 3,
@@ -86,7 +90,11 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
             return +sizeArray[0] * sizeValueDictionary[upperCaseSize]
         } else {
             const upperCaseSize = sizeArray[0].toUpperCase()
-            return sizeValueDictionary[upperCaseSize]
+            const sizeAsNumber = sizeValueDictionary[upperCaseSize]
+            if (sizeAsNumber) {
+                return sizeValueDictionary[upperCaseSize]
+            }
+            return 0
         }
     }
 
