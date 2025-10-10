@@ -2,11 +2,7 @@ import getCarry from "@vault/common/dictionaries/v1/carry";
 import { findCarryFromQuarterMastering, findInitiativeSkillMod } from "@vault/common/dictionaries/v1/findSkills";
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { SkillObject } from "@vault/common/interfaces/v1/pageTwo/skillInterfaces";
-import { updateWeaponTables } from "../pageOneUtilities/updateWeaponTables";
-import getAttackMod from "@vault/common/dictionaries/v1/combatMods/AttackMod";
-import getDamageMod from "@vault/common/dictionaries/v1/combatMods/DamageMod";
-import getDefenseMod from "@vault/common/dictionaries/v1/combatMods/DefenseMod";
-import getRecoveryMod from "@vault/common/dictionaries/v1/combatMods/RecoveryMod";
+import { updateWeaponTablesWithoutMods } from "../pageOneUtilities/updateWeaponTables";
 
 export function updateSkillAdeptUtility(character: CharacterVersion1, value: number) {
     return {
@@ -101,19 +97,13 @@ function updateQuarterMasterAndInitiative(character: CharacterVersion1, alteredA
         }
     }
 
-    const { dex, int, will, str, } = newCharacter.pageOneInfo.leftColumnInfo.statInfo
-    const atkCombatMod = getAttackMod(dex, int);
-    const defCombatMod = getDefenseMod(dex, will);
-    const damCombatMod = getDamageMod(str);
-    const recCombatMod = getRecoveryMod(str);
-
     return {
         ...newCharacter,
         pageOneInfo: {
             ...newCharacter.pageOneInfo,
             rightColumnInfo: {
                 ...newCharacter.pageOneInfo.rightColumnInfo,
-                weapons: updateWeaponTables(newCharacter, atkCombatMod, defCombatMod, damCombatMod, recCombatMod),
+                weapons: updateWeaponTablesWithoutMods(newCharacter),
             }
         }
     }

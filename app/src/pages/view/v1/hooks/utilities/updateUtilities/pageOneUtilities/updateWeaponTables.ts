@@ -1,7 +1,22 @@
+import getAttackMod from "@vault/common/dictionaries/v1/combatMods/AttackMod";
+import getDamageMod from "@vault/common/dictionaries/v1/combatMods/DamageMod";
+import getDefenseMod from "@vault/common/dictionaries/v1/combatMods/DefenseMod";
+import getRecoveryMod from "@vault/common/dictionaries/v1/combatMods/RecoveryMod";
 import { findInitiativeSkillMod } from "@vault/common/dictionaries/v1/findSkills";
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { WeaponTable } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 import formatWeaponTable from "@vault/common/utilities/v1/weaponTable";
+
+export function updateWeaponTablesWithoutMods(character: CharacterVersion1): WeaponTable[] {
+    const { str, dex, int, will } = character.pageOneInfo.leftColumnInfo.statInfo;
+
+    const atkCombatMod = getAttackMod(dex, int);
+    const defCombatMod = getDefenseMod(dex, will);
+    const damCombatMod = getDamageMod(str);
+    const recCombatMod = getRecoveryMod(str);
+
+    return updateWeaponTables(character, atkCombatMod, defCombatMod, damCombatMod, recCombatMod)
+}
 
 export function updateWeaponTables(character: CharacterVersion1, atkCombatMod: number, defCombatMod: number, damCombatMod: number, recCombatMod: number): WeaponTable[] {
     const { skillSuites, advancedSkills } = character.pageTwoInfo.skillInfo;

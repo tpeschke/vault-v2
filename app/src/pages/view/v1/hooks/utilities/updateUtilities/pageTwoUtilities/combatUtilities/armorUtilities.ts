@@ -1,9 +1,10 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { ArmorInfoObjectKeys, ArmorModifiersInfoKeys, ArmorModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/combatInterfaces/armorInterfaces";
 import { calculateArmorDefenseTotal, calculateArmorFatigueTotal, calculateArmorRecoveryOrInitiativeTotal } from "@vault/common/utilities/v1/armorUtilities";
+import { updateWeaponTablesWithoutMods } from "../../pageOneUtilities/updateWeaponTables";
 
 export function updateBasicArmorInfoUtility(character: CharacterVersion1, key: ArmorInfoObjectKeys, value: string | number) {
-    return {
+    const newCharacter = {
         ...character,
         pageTwoInfo: {
             ...character.pageTwoInfo,
@@ -13,6 +14,17 @@ export function updateBasicArmorInfoUtility(character: CharacterVersion1, key: A
                     ...character.pageTwoInfo.combatWorkspaceInfo.armorInfo,
                     [key]: value
                 }
+            }
+        }
+    }
+
+    return {
+        ...newCharacter,
+        pageOneInfo: {
+            ...newCharacter.pageOneInfo,
+            rightColumnInfo: {
+                ...newCharacter.pageOneInfo.rightColumnInfo,
+                weapons: updateWeaponTablesWithoutMods(newCharacter)
             }
         }
     }
@@ -46,7 +58,7 @@ export function updateArmorModifierUtility(character: CharacterVersion1, modifie
         }
     }
 
-    return {
+    const newCharacter = {
         ...character,
         pageTwoInfo: {
             ...character.pageTwoInfo,
@@ -56,6 +68,17 @@ export function updateArmorModifierUtility(character: CharacterVersion1, modifie
                     ...character.pageTwoInfo.combatWorkspaceInfo.armorInfo,
                     modifiers: newModifiers
                 }
+            }
+        }
+    }
+
+    return {
+        ...newCharacter,
+        pageOneInfo: {
+            ...newCharacter.pageOneInfo,
+            rightColumnInfo: {
+                ...newCharacter.pageOneInfo.rightColumnInfo,
+                weapons: updateWeaponTablesWithoutMods(newCharacter)
             }
         }
     }
