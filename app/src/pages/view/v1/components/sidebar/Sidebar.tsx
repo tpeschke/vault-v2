@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import './Sidebar.css'
 import EditingContext from '../../contexts/EditingContext'
+import LoadingIndicator from '../../../../../components/loading/components/LoadingIndicator'
 
 interface Props {
     toggleViewQuickEdit: () => void,
@@ -28,7 +29,7 @@ export default function Sidebar({
     if (isQuickSaving) {
         return (
             <div className='sidebar-shell'>
-                <i className="fa-solid fa-spinner-third"></i>
+                <LoadingIndicator stylings='' secondary={true} />
             </div>
         )
     }

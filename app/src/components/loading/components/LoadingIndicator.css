@@ -53,7 +53,7 @@
 }
 
 .loader.secondaryColor::after {
-    background: #06465b;
+    background: #b45f06;
 }
 
 @keyframes rotationBack {
