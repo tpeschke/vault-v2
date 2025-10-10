@@ -1,9 +1,10 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { calculateWeaponAttack, calculateWeaponRecovery, calculateWeaponParry, calculateWeaponDamage } from '@vault/common/utilities/v1/weaponUtilities'
+import { updateWeaponTablesWithoutMods } from "../../pageOneUtilities/updateWeaponTables";
 
 export function updateBasicWeaponInfoUtility(character: CharacterVersion1, changedIndex: number, key: WeaponInfoObjectKeys, value: string | number) {
-    return {
+    const newCharacter = {
         ...character,
         pageTwoInfo: {
             ...character.pageTwoInfo,
@@ -18,6 +19,17 @@ export function updateBasicWeaponInfoUtility(character: CharacterVersion1, chang
                     }
                     return info
                 })
+            }
+        }
+    }
+
+    return {
+        ...newCharacter,
+        pageOneInfo: {
+            ...newCharacter.pageOneInfo,
+            rightColumnInfo: {
+                ...newCharacter.pageOneInfo.rightColumnInfo,
+                weapons: updateWeaponTablesWithoutMods(newCharacter)
             }
         }
     }
@@ -75,6 +87,13 @@ export function updateWeaponModifierUtility(character: CharacterVersion1, change
 
     return {
         ...newCharacter,
+        pageOneInfo: {
+            ...newCharacter.pageOneInfo,
+            rightColumnInfo: {
+                ...newCharacter.pageOneInfo.rightColumnInfo,
+                weapons: updateWeaponTablesWithoutMods(newCharacter)
+            }
+        },
         pageTwoInfo: {
             ...newCharacter.pageTwoInfo,
             combatWorkspaceInfo: {
