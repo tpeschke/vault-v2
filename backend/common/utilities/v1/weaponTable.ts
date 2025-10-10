@@ -32,7 +32,7 @@ export default function formatWeaponTable(
             damage: weaponDamage + ` +${damMod}` + getExtraDamage(type, dam.total),
             type,
             rec: recovery + weaponSkillRec.total + armorSkillRec.total + getRecoveryModFromSize(recMod, size),
-            init: 5 + Math.floor(initSkill / 2) + init.total
+            init: 5 - Math.floor(initSkill / 2) + init.total
         },
         defenses: {
             def: defMod + armorDef.total + shieldDef.total,
