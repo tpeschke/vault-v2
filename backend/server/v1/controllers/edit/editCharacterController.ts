@@ -6,6 +6,7 @@ import userSQL from '../../queries/user'
 import { checkForContentTypeBeforeSending } from '../../../controllers/common/sendingFunctions'
 import { savePageOneInfo } from './utilities/pageOne/pageOneMainUtility'
 import { savePageTwoInfo } from './utilities/pageTwo/pageTwoMainUtility'
+import { saveGeneralNotes } from './utilities/pageThree/generalNotes'
 
 interface EditRequest extends Request {
     params: {
@@ -15,7 +16,7 @@ interface EditRequest extends Request {
 }
 
 export async function editCharacter(request: EditRequest, response: Response) {
-    const { id: characterID, userInfo, pageOneInfo, pageTwoInfo } = request.body
+    const { id: characterID, userInfo, pageOneInfo, pageTwoInfo, generalNotes } = request.body
 
     const [{ userid: userIDFromDB }] = await query(userSQL.getCharacterUserID, characterID)
 
@@ -24,7 +25,7 @@ export async function editCharacter(request: EditRequest, response: Response) {
 
         promiseArray.push(savePageOneInfo(characterID, pageOneInfo))
         promiseArray.push(savePageTwoInfo(characterID, pageTwoInfo))
-        // generalNotes
+        promiseArray.push(saveGeneralNotes(characterID, generalNotes))
 
         await Promise.all(promiseArray)
         getCharacter(request, response)
