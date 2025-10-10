@@ -27,11 +27,15 @@ import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./uti
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
 import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
+import { useDispatch } from "react-redux";
+import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 
 export default function CharacterHook(pathname: string): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
     const [character, setCharacter] = useState<CharacterVersion1 | null>(null)
 
+    const dispatch = useDispatch()
+    
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
         axios.get(viewURL + characterID).then(({ data }) => {
@@ -117,7 +121,13 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
 
     function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
         if (character) {
-            setCharacter(updateGeneralInfoUtility(character, key, value))
+            const newCharacter = updateGeneralInfoUtility(character, key, value)
+            setCharacter(newCharacter)
+
+            const { id, pageOneInfo } = newCharacter
+            const { generalInfo } = pageOneInfo
+            const { name, ancestry, class: primaryClass, subclass, level } = generalInfo
+            dispatch(updateCatalogInfo({id, name, ancestry, class: primaryClass, subclass, level }))
         }
     }
 

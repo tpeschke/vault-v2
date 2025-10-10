@@ -20,12 +20,11 @@ export interface CharacterUserInfo {
     ownsThisCharacter: boolean
 }
 
-// TODO: Update the terms used
 export interface CharacterHomeInfo {
     id: number,
     name: string,
     level: number,
-    race: string,
-    primarya: string,
-    secondarya: string
+    ancestry: string,
+    class: string,
+    subclass: string
 }

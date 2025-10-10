@@ -17,10 +17,21 @@ export const usersCharactersSlice = createSlice({
         cacheCharacters: (state: State, action: PayloadAction<CharacterHomeInfo[] | null>) => {
             const { payload } = action
             state.usersCharactersCache = payload
+        },
+        updateCatalogInfo: (state: State, action: PayloadAction<CharacterHomeInfo>) => {
+            const { payload } = action
+            if (state.usersCharactersCache) {
+                state.usersCharactersCache = state.usersCharactersCache.map(character => {
+                    if (character.id === payload.id) {
+                        return payload
+                    }
+                    return character
+                })
+            }
         }
-    },
+    }
 })
 
-export const { cacheCharacters } = usersCharactersSlice.actions
+export const { cacheCharacters, updateCatalogInfo } = usersCharactersSlice.actions
 
 export default usersCharactersSlice.reducer

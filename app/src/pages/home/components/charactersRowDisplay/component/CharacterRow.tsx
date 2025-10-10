@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function CharacterRow({ character, deleteCharacter }: Props) {
-    const { id, name, race, primarya, secondarya, level } = character
+    const { id, name, ancestry, class: primaryClass, subclass, level } = character
 
     const [confirmDelete, setConfirmDelete] = useState(false)
 
@@ -33,8 +33,8 @@ export default function CharacterRow({ character, deleteCharacter }: Props) {
     return (
         <div onClick={_ => goToCharacter(id)}>
             <strong>{name ?? '?'}</strong>
-            <p>{race ?? '?'}</p>
-            <p>{primarya ?? '?'} / {secondarya ?? '?'}</p>
+            <p>{ancestry ?? '?'}</p>
+            <p>{primaryClass ?? '?'} / {subclass ?? '?'}</p>
             <p>lvl {level ?? '?'}</p>
             {!confirmDelete && <button className='transparent-warn' onClick={toggleCheckDelete} data-tooltip-id="my-tooltip" data-tooltip-content={`Delete ${name ?? '?'}`}><i className="fa-solid fa-trash"></i></button>}
             {!!confirmDelete && (
