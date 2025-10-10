@@ -29,8 +29,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
     }
 
     const { saveCharacterToBackend, revertCharacter, pageOneUpdateFunctions, pageTwoUpdateFunctions, updateNotes } = updateFunctions
-    // TODO Make false
-    const [isEditing, setIsEditing] = useState(true)
+    const [isEditing, setIsEditing] = useState(false)
 
     const toggleIsEditing = () => {
         setIsEditing(!isEditing)
