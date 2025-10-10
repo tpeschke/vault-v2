@@ -116,15 +116,21 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     }
 
     const [isQuickSaving, setIsQuickSaving] = useState(false)
+    const [_, setTimeOutID] = useState<any | null>(null)
 
-    async function quickBasicQuickSaving(characterID: number, attribute: string, value: string | number) {
-        setIsQuickSaving(true)
-        await axios.post(quickEditURL, {
-            characterID,
-            attribute,
-            value
-        })
-        setIsQuickSaving(false)
+    async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number) {
+        if (!isEditing && quickEdit.includes(attribute)) {
+            setTimeOutID(null)
+            setTimeOutID(setTimeout(async () => {
+                setIsQuickSaving(true)
+                await axios.post(quickEditURL, {
+                    characterID,
+                    attribute,
+                    value
+                })
+                setIsQuickSaving(false)
+            }, 500))
+        }
     }
 
     // ---------------------------------------------------- \\
@@ -136,16 +142,14 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
             const newCharacter = updateGeneralInfoUtility(character, key, value)
             setCharacter(newCharacter)
 
-            const quickEdit = ['crpUnspent', 'crpSpent']
-            if (!isEditing && quickEdit.includes(key)) {
-                quickBasicQuickSaving(character.id, key, value)
-            }
+            quickBasicQuickSaving(['crpUnspent', 'crpSpent'], character.id, key, value)
 
             const { id, pageOneInfo } = newCharacter
             const { name, ancestry, class: primaryClass, subclass, level } = pageOneInfo.generalInfo
             dispatch(updateCatalogInfo({ id, name, ancestry, class: primaryClass, subclass, level }))
         }
     }
+
 
     function updateStat(key: StatKeys, value: number) {
         if (character) {
