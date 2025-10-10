@@ -3,7 +3,7 @@ import logo from '../../../../../../../assets/images/logo-black.png'
 import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/pageOne/pageOneInterfaces'
 import EditingContext from '../../../../contexts/EditingContext'
 import { useContext } from 'react'
-import { UpdateGeneralInfoFunction } from '../../../../hooks/interfaces/UpdateCharacterFunctionInterfaces'
+import { UpdateGeneralInfoFunction } from '../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces'
 
 interface Props {
     generalInfo: GeneralInfoDisplay,
@@ -76,11 +76,7 @@ export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
                     </span>
                     <span className='to-next-level-info'>
                         <strong>Spent to Next LvL</strong>
-                        {isEditing ?
-                            <input onChange={(event: any) => updateGeneralInfo('crpToNextLevel', +event.target.value)} defaultValue={crpToNextLevel} />
-                            :
-                            <p>{crpToNextLevel}</p>
-                        }
+                        <p>{crpToNextLevel}</p>
                     </span>
                 </div>
             </div>

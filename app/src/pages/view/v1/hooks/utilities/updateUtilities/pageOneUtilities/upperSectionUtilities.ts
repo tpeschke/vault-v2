@@ -1,9 +1,10 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
-import { StatKeys, MovementKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
+import { MovementKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
 import { GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces"
+import getCrPToNextLevel from "@vault/common/dictionaries/v1/crpToNextLevel"
 
 export function updateGeneralInfoUtility(character: CharacterVersion1, key: GeneralInfoKeys, value: string | number) {
-    return {
+    const newCharacter = {
         ...character,
         pageOneInfo: {
             ...character.pageOneInfo,
@@ -13,19 +14,14 @@ export function updateGeneralInfoUtility(character: CharacterVersion1, key: Gene
             }
         }
     }
-}
 
-export function updateStatUtility(character: CharacterVersion1, key: StatKeys, value: number) {
     return {
-        ...character,
+        ...newCharacter,
         pageOneInfo: {
-            ...character.pageOneInfo,
-            leftColumnInfo: {
-                ...character.pageOneInfo.leftColumnInfo,
-                statInfo: {
-                    ...character.pageOneInfo.leftColumnInfo.statInfo,
-                    [key]: value
-                }
+            ...newCharacter.pageOneInfo,
+            generalInfo: {
+                ...newCharacter.pageOneInfo.generalInfo,
+                crpToNextLevel: getCrPToNextLevel(newCharacter.pageOneInfo.generalInfo.level)
             }
         }
     }

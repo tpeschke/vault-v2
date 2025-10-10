@@ -21,6 +21,7 @@ import { formatWeapon } from './utilities/weaponUtilities'
 import formatWeaponTable from '@vault/common/utilities/v1/weaponTable'
 import { SkillObject } from '@vault/common/interfaces/v1/pageTwo/skillInterfaces'
 import { checkForContentTypeBeforeSending } from '../../../controllers/common/sendingFunctions'
+import { findCarryFromQuarterMastering, findInitiativeSkillMod } from "@vault/common/dictionaries/v1/findSkills" 
 
 interface ViewRequest extends Request {
     params: {
@@ -250,23 +251,4 @@ export async function getCharacter(request: ViewRequest, response: Response) {
     }
 
     checkForContentTypeBeforeSending(response, character)
-}
-
-function findInitiativeSkillMod(strategySuite: SkillObject, advancedSkills: SkillObject[]): number {
-    const initiativeSkill = advancedSkills.find(({skill}) => skill.toUpperCase() === 'INITIATIVE')
-
-    if (initiativeSkill) {
-        return initiativeSkill.rank + initiativeSkill.mod
-    }
-    return strategySuite.isTrained ? strategySuite.rank + strategySuite.mod : 0
-}
-
-function findCarryFromQuarterMastering(strategySuite: SkillObject, advancedSkills: SkillObject[]): number {
-    const quarterMasteringSkill = advancedSkills.find(({skill}) => skill.toUpperCase() === 'QUARTERMASTERING' || skill.toUpperCase() === 'QUARTER MASTERING')
-
-    if (quarterMasteringSkill) {
-        return quarterMasteringSkill.rank + quarterMasteringSkill.mod
-    }
-
-    return strategySuite.isTrained ? strategySuite.rank + strategySuite.mod : 0
 }
