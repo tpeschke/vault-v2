@@ -1,6 +1,8 @@
 import { WeaponTable } from '@vault/common/interfaces/v1/pageOne/rightColumnInterfaces'
 import '../WeaponsTables.css'
 import { ToggleIsThrownFunction } from '../../../../../../../hooks/interfaces/pageOneInterfaces/UpdateWeaponInterfaces'
+import { useContext } from 'react'
+import EditingContext from '../../../../../../../contexts/EditingContext'
 
 interface Props {
     weapon: WeaponTable,
@@ -10,6 +12,8 @@ interface Props {
 }
 
 export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleIsThrown }: Props) {
+    const isEditing = useContext(EditingContext)
+
     const { name, attacks, defenses } = weapon
     const { meas, atk, damage, type, rec, init } = attacks
     const { def, flanks, parry, cover, parryDR, dr } = defenses
@@ -17,7 +21,7 @@ export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleI
     const isRanged = weaponPosition === 4
 
     function DamageRow(damageString: string, isRanged: boolean) {
-        if (isRanged) {
+        if (isRanged && isEditing) {
             return (
                 <span className='damage-shell'>
                     <strong>Damage</strong>

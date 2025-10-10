@@ -1,7 +1,7 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { editURL, viewURL } from "../../../../frontend-config";
+import { editURL, quickEditURL, viewURL } from "../../../../frontend-config";
 import jsPDF from "jspdf";
 import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
 import { AbilitiesNBurdensInfoKeys, GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
@@ -30,12 +30,12 @@ import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/
 import { useDispatch } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 
-export default function CharacterHook(pathname: string): CharacterHookReturn {
+export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
     const [character, setCharacter] = useState<CharacterVersion1 | null>(null)
 
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
         axios.get(viewURL + characterID).then(({ data }) => {
@@ -115,19 +115,35 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         }
     }
 
+    const [isQuickSaving, setIsQuickSaving] = useState(false)
+
+    async function quickBasicQuickSaving(characterID: number, attribute: string, value: string | number) {
+        setIsQuickSaving(true)
+        await axios.post(quickEditURL, {
+            characterID,
+            attribute,
+            value
+        })
+        setIsQuickSaving(false)
+    }
+
     // ---------------------------------------------------- \\
     // ----------------- Page One Updates ----------------- \\
     // ---------------------------------------------------- \\
 
-    function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
+    async function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
         if (character) {
             const newCharacter = updateGeneralInfoUtility(character, key, value)
             setCharacter(newCharacter)
 
+            const quickEdit = ['crpUnspent', 'crpSpent']
+            if (!isEditing && quickEdit.includes(key)) {
+                quickBasicQuickSaving(character.id, key, value)
+            }
+
             const { id, pageOneInfo } = newCharacter
-            const { generalInfo } = pageOneInfo
-            const { name, ancestry, class: primaryClass, subclass, level } = generalInfo
-            dispatch(updateCatalogInfo({id, name, ancestry, class: primaryClass, subclass, level }))
+            const { name, ancestry, class: primaryClass, subclass, level } = pageOneInfo.generalInfo
+            dispatch(updateCatalogInfo({ id, name, ancestry, class: primaryClass, subclass, level }))
         }
     }
 
@@ -345,6 +361,7 @@ export default function CharacterHook(pathname: string): CharacterHookReturn {
         character,
         downloadCharacter,
         isDownloading,
+        isQuickSaving,
         updateFunctions: {
             revertCharacter,
             saveCharacterToBackend,

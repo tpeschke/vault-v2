@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import PageOne from './components/pageOne/PageOne'
 import PageThree from './components/pageThree/PageThree'
 import PageTwo from './components/pageTwo/PageTwo'
@@ -6,18 +6,33 @@ import Sidebar from './components/sidebar/Sidebar'
 import './ViewVersionOne.css'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
 import LoadingIndicator from '../../../components/loading/components/LoadingIndicator'
-import EditingContext from './contexts/EditingContext'
 import { DownloadCharacterFunction, UpdateFunctions } from './hooks/interfaces/CharacterHookInterfaces'
+import EditingContext from './contexts/EditingContext'
 
 interface Props {
     character: CharacterVersion1,
     downloadCharacter: DownloadCharacterFunction,
     isDownloading: boolean,
-    updateFunctions: UpdateFunctions
+    updateFunctions: UpdateFunctions,
+    toggleIsEditing: () => void,
+    saveCharacter: () => void,
+    revertCharacterToUnedited: () => void,
+    isQuickSaving: boolean
 }
 
-export default function ViewVersionOne({ character, downloadCharacter, isDownloading, updateFunctions }: Props) {
-    const [viewQuickEdit, setViewQuickEdit] = useState(false)
+export default function ViewVersionOne({
+    character,
+    downloadCharacter,
+    isDownloading,
+    updateFunctions,
+    toggleIsEditing,
+    saveCharacter,
+    revertCharacterToUnedited,
+    isQuickSaving
+}: Props) {
+    const isEditing = useContext(EditingContext)
+    // TODO change to false
+    const [viewQuickEdit, setViewQuickEdit] = useState(true)
 
     const toggleViewQuickEdit = () => {
         setViewQuickEdit(!viewQuickEdit)
@@ -28,23 +43,7 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
         downloadCharacter(isPregen)
     }
 
-    const { saveCharacterToBackend, revertCharacter, pageOneUpdateFunctions, pageTwoUpdateFunctions, updateNotes } = updateFunctions
-    const [isEditing, setIsEditing] = useState(false)
-
-    const toggleIsEditing = () => {
-        setIsEditing(!isEditing)
-    }
-
-    const saveCharacter = () => {
-        saveCharacterToBackend()
-        setIsEditing(false)
-
-    }
-
-    const revertCharacterToUnedited = () => {
-        revertCharacter()
-        setIsEditing(false)
-    }
+    const { pageOneUpdateFunctions, pageTwoUpdateFunctions, updateNotes } = updateFunctions
 
     const { pageOneInfo, pageTwoInfo, generalNotes, userInfo } = character
     const { ownsThisCharacter } = userInfo
@@ -61,25 +60,24 @@ export default function ViewVersionOne({ character, downloadCharacter, isDownloa
                     <LoadingIndicator stylings={''} secondary={true} />
                 </div>
             )}
-            <EditingContext value={isEditing}>
-                <div className='version-one-shell'>
-                    <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
-                        <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunctions={pageOneUpdateFunctions} />
-                        <PageTwo pageTwoInfo={pageTwoInfo} int={int} pageTwoUpdateFunctions={pageTwoUpdateFunctions} />
-                        {showNotes && <PageThree generalNotes={generalNotes} updateNotes={updateNotes}/>}
-                    </div>
-                    {!isDownloading &&
-                        <Sidebar
-                            toggleViewQuickEdit={toggleViewQuickEdit}
-                            viewQuickEdit={viewQuickEdit}
-                            prepAndDownload={prepAndDownload}
-                            toggleIsEditing={toggleIsEditing}
-                            saveCharacter={saveCharacter}
-                            revertCharacterToUnedited={revertCharacterToUnedited}
-                            ownsThisCharacter={ownsThisCharacter}
-                        />}
+            <div className='version-one-shell'>
+                <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
+                    <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunctions={pageOneUpdateFunctions} />
+                    <PageTwo pageTwoInfo={pageTwoInfo} int={int} pageTwoUpdateFunctions={pageTwoUpdateFunctions} />
+                    {showNotes && <PageThree generalNotes={generalNotes} updateNotes={updateNotes} />}
                 </div>
-            </EditingContext>
+                {!isDownloading &&
+                    <Sidebar
+                        toggleViewQuickEdit={toggleViewQuickEdit}
+                        viewQuickEdit={viewQuickEdit}
+                        prepAndDownload={prepAndDownload}
+                        toggleIsEditing={toggleIsEditing}
+                        saveCharacter={saveCharacter}
+                        revertCharacterToUnedited={revertCharacterToUnedited}
+                        ownsThisCharacter={ownsThisCharacter}
+                        isQuickSaving={isQuickSaving}
+                    />}
+            </div>
         </>
     )
 }

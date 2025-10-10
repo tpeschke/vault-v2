@@ -13,3 +13,31 @@
     margin-bottom: 15px;
     box-shadow: 0px 2px 6px 3px rgba(0, 0, 0, 0.2), 0px 2px 6px 3px rgba(0, 0, 0, 0.14), 0px 2px 6px 3px rgba(0, 0, 0, 0.12);
 }
+
+.fa-spinner-third {
+    font-size: 50px;
+    margin: 0 auto;
+    color: white;
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}

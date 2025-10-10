@@ -9,7 +9,8 @@ interface Props {
     saveCharacter: () => void,
     revertCharacterToUnedited: () => void,
     toggleIsEditing: () => void,
-    ownsThisCharacter: boolean
+    ownsThisCharacter: boolean,
+    isQuickSaving: boolean
 }
 
 export default function Sidebar({
@@ -19,9 +20,18 @@ export default function Sidebar({
     saveCharacter,
     revertCharacterToUnedited,
     toggleIsEditing,
-    ownsThisCharacter
+    ownsThisCharacter,
+    isQuickSaving
 }: Props) {
     const isEditing = useContext(EditingContext)
+
+    if (isQuickSaving) {
+        return (
+            <div className='sidebar-shell'>
+                <i className="fa-solid fa-spinner-third"></i>
+            </div>
+        )
+    }
 
     return (
         <div className='sidebar-shell'>

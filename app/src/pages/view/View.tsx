@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import ViewVersionOne from "./v1/ViewVersionOne"
 import CharacterHook from './v1/hooks/characterHook'
+import EditingContext from './v1/contexts/EditingContext'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -10,9 +11,13 @@ interface Props {
 }
 
 export default function View({ setLoading, pathname }: Props) {
+    const [isEditing, setIsEditing] = useState(false)
+
+    const { character, downloadCharacter, isDownloading, isQuickSaving, updateFunctions } = CharacterHook(pathname, isEditing)
+    const { saveCharacterToBackend, revertCharacter } = updateFunctions
+
     const [isInitialLoad, setIsInitialLoad] = useState(true)
 
-    const { character, downloadCharacter, isDownloading, updateFunctions } = CharacterHook(pathname)
 
     useEffect(() => {
         if (character && isInitialLoad) {
@@ -25,15 +30,35 @@ export default function View({ setLoading, pathname }: Props) {
         }
     }, [character])
 
+    const toggleIsEditing = () => {
+        setIsEditing(!isEditing)
+    }
+
+    const saveCharacter = () => {
+        saveCharacterToBackend()
+        setIsEditing(false)
+    }
+
+    const revertCharacterToUnedited = () => {
+        revertCharacter()
+        setIsEditing(false)
+    }
+
     return (
         <div className="home-shell">
-            {character &&
-                <ViewVersionOne
-                    character={character}
-                    downloadCharacter={downloadCharacter}
-                    isDownloading={isDownloading}
-                    updateFunctions={updateFunctions}
-                />}
+            <EditingContext value={isEditing}>
+                {character &&
+                    <ViewVersionOne
+                        character={character}
+                        downloadCharacter={downloadCharacter}
+                        isDownloading={isDownloading}
+                        updateFunctions={updateFunctions}
+                        toggleIsEditing={toggleIsEditing}
+                        saveCharacter={saveCharacter}
+                        revertCharacterToUnedited={revertCharacterToUnedited}
+                        isQuickSaving={isQuickSaving}
+                    />}
+            </EditingContext>
         </div>
     )
 }

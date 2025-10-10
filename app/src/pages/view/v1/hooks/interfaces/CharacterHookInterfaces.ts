@@ -7,6 +7,7 @@ export interface CharacterHookReturn {
     character: CharacterVersion1 | null,
     downloadCharacter: DownloadCharacterFunction,
     isDownloading: boolean,
+    isQuickSaving: boolean,
     updateFunctions: UpdateFunctions
 }
 

@@ -23,6 +23,7 @@ import userRoutes from './controllers/user/userRoutes'
 import homeRoutes from './v1/controllers/home/HomeRoutes'
 import characterRoutes from './v1/controllers/view/viewCharacterRoutes'
 import editCharacterRoutes from './v1/controllers/edit/editCharacterRouter'
+import quickEditRoutes from './v1/controllers/quickEdit/quickEditRoutes'
 
 const app = express()
 app.use(bodyParser.json({ limit: '10mb' }))
@@ -68,6 +69,7 @@ app.use('/user', userRoutes)
 app.use('/home', homeRoutes)
 app.use('/view', characterRoutes)
 app.use('/edit', editCharacterRoutes)
+app.use('/quickEdit', quickEditRoutes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
 // app.get('/*', (request: Request, response: Response) => {
