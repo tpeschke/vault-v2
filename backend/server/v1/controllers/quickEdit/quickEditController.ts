@@ -10,6 +10,10 @@ import { saveGritDice } from './utilities/numberUpdates/gritDice'
 import { saveIntegrity } from './utilities/numberUpdates/integrity'
 import { saveStress } from './utilities/numberUpdates/stress'
 import { saveRelaxation } from './utilities/numberUpdates/relaxation'
+import { saveCopper } from './utilities/numberUpdates/copper'
+import { saveSilver } from './utilities/numberUpdates/silver'
+import { saveGold } from './utilities/numberUpdates/gold'
+import { savePlatinum } from './utilities/numberUpdates/platinum'
 
 interface EditRequest extends Request {
     params: {
@@ -49,12 +53,16 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
                 sendSuccess = await saveRelaxation(characterID, value)
                 break
             case 'copper':
+                sendSuccess = await saveCopper(characterID, value)
                 break
             case 'silver':
+                sendSuccess = await saveSilver(characterID, value)
                 break
             case 'gold':
+                sendSuccess = await saveGold(characterID, value)
                 break
             case 'platinum':
+                sendSuccess = await savePlatinum(characterID, value)
                 break
             case 'assets':
                 break

@@ -254,6 +254,8 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateCash(key: GearInfoObjectsKeys, value: number) {
         if (character) {
             setCharacter(updateCashUtility(character, key, value))
+
+            quickBasicQuickSaving(['copper', 'silver', 'gold', 'platinum'], character.id, key, value)
         }
     }
 
