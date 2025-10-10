@@ -1,9 +1,10 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { ShieldInfoObjectKeys, ShieldModifiersInfoKeys, ShieldModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/shieldInterfaces";
 import { calculateShieldDefense, calculateShieldFatigue, calculateShieldParry, calculateShieldBreakage } from '@vault/common/utilities/v1/shieldUtilities'
+import { updateWeaponTablesWithoutMods } from "../../pageOneUtilities/updateWeaponTables";
 
 export function updateBasicShieldInfoUtility(character: CharacterVersion1, key: ShieldInfoObjectKeys, value: string | number) {
-    return {
+    const newCharacter = {
         ...character,
         pageTwoInfo: {
             ...character.pageTwoInfo,
@@ -13,6 +14,17 @@ export function updateBasicShieldInfoUtility(character: CharacterVersion1, key: 
                     ...character.pageTwoInfo.combatWorkspaceInfo.shieldInfo,
                     [key]: value
                 }
+            }
+        }
+    }
+
+    return {
+        ...newCharacter,
+        pageOneInfo: {
+            ...newCharacter.pageOneInfo,
+            rightColumnInfo: {
+                ...newCharacter.pageOneInfo.rightColumnInfo,
+                weapons: updateWeaponTablesWithoutMods(newCharacter)
             }
         }
     }
@@ -46,7 +58,7 @@ export function updateShieldModifierUtility(character: CharacterVersion1, modifi
         }
     }
 
-    return {
+    const newCharacter = {
         ...character,
         pageTwoInfo: {
             ...character.pageTwoInfo,
@@ -56,6 +68,17 @@ export function updateShieldModifierUtility(character: CharacterVersion1, modifi
                     ...character.pageTwoInfo.combatWorkspaceInfo.shieldInfo,
                     modifiers: newModifiers
                 }
+            }
+        }
+    }
+
+    return {
+        ...newCharacter,
+        pageOneInfo: {
+            ...newCharacter.pageOneInfo,
+            rightColumnInfo: {
+                ...newCharacter.pageOneInfo.rightColumnInfo,
+                weapons: updateWeaponTablesWithoutMods(newCharacter)
             }
         }
     }
