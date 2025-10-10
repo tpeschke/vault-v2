@@ -1,4 +1,4 @@
-import query from "../../../../db/database"
+import query from "../../../../../db/database"
 
 const saveUnspentCrpSQL = 'update cvcharactermain set crp = $1 where id = $2'
 

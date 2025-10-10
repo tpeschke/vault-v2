@@ -1,4 +1,4 @@
-import query from "../../../../db/database"
+import query from "../../../../../db/database"
 
 const saveGritDiceSQL = 'update cvcharactermain set extrahonordice = $1 where id = $2'
 

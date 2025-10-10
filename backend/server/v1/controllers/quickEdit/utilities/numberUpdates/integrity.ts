@@ -1,4 +1,4 @@
-import query from "../../../../db/database"
+import query from "../../../../../db/database"
 
 const saveIntegritySQL = 'update cvcharactermain set honor = $1 where id = $2'
 
