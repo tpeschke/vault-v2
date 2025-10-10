@@ -87,7 +87,11 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
 
         if (sizeArray.length > 1) {
             const upperCaseSize = sizeArray[1].toUpperCase()
-            return +sizeArray[0] * sizeValueDictionary[upperCaseSize]
+            const sizeAsNumber = sizeValueDictionary[upperCaseSize]
+            if (sizeAsNumber) {
+                return +sizeArray[0] * sizeValueDictionary[upperCaseSize]
+            }
+            return 0
         } else {
             const upperCaseSize = sizeArray[0].toUpperCase()
             const sizeAsNumber = sizeValueDictionary[upperCaseSize]
