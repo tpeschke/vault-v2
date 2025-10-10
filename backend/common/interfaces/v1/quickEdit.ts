@@ -5,7 +5,7 @@ export type QuickEditBody = {
     characterID: number
 } & (QuickEditNumberBody | QuickEditStringBody | QuickEditWoundBody | QuickEditEquipmentBody)
 
-export type QuickEditNumberAttributes = 'crpUnspent' | 'crpSpent' | 'favor' | 'stress' | 'relaxation' | 'copper' | 'silver' | 'gold' | 'platinum'
+export type QuickEditNumberAttributes = 'crpUnspent' | 'crpSpent' | 'integrity' | 'gritDice' | 'favor' | 'stress' | 'relaxation' | 'copper' | 'silver' | 'gold' | 'platinum'
 
 export interface QuickEditNumberBody {
     attribute: QuickEditNumberAttributes,

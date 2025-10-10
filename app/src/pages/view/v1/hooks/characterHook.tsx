@@ -166,6 +166,8 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateIntegrityInfo(key: IntegrityKeys, value: number) {
         if (character) {
             setCharacter(updateIntegrityInfoUtility(character, key, value))
+
+            quickBasicQuickSaving(['integrity', 'gritDice'], character.id, key, value)
         }
     }
 

@@ -3,6 +3,8 @@ import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { QuickEditBody } from '@vault/common/interfaces/v1/quickEdit'
 import { saveUnspentCrp } from './utilities/crpUnspent'
 import { saveCrpSpent } from './utilities/crpSpent'
+import { saveIntegrity } from './utilities/integrity'
+import { saveGritDice } from './utilities/gritDice'
 
 interface EditRequest extends Request {
     params: {
@@ -13,7 +15,7 @@ interface EditRequest extends Request {
 
 export async function quickEditCharacter(request: EditRequest, response: Response) {
     const { characterID, attribute, value } = request.body
-
+// TODO check character ownership
     let sendSuccess = false
 
     switch (attribute) {
@@ -22,6 +24,12 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
             break
         case 'crpSpent':
             sendSuccess = await saveCrpSpent(characterID, value)
+            break
+        case 'integrity':
+            sendSuccess = await saveIntegrity(characterID, value)
+            break
+        case 'gritDice':
+            sendSuccess = await saveGritDice(characterID, value)
             break
         case 'favor':
             break
