@@ -67,7 +67,8 @@ export function updateWeaponTables(character: CharacterVersion1, atkCombatMod: n
         atkCombatMod,
         defCombatMod,
         damCombatMod,
-        recCombatMod
+        recCombatMod,
+        true
     );
 
     return [weapon1, weapon2, weapon3, weapon4];

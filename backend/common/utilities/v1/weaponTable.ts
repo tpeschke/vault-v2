@@ -11,9 +11,10 @@ export default function formatWeaponTable(
     atkMod: number,
     defMod: number,
     damMod: number,
-    recMod: number
+    recMod: number,
+    isRanged?: boolean
 ): WeaponTable {
-    const { name: weaponName, measure, damage, type, recovery, modifiers: weaponMods, size } = weaponInfo
+    const { name: weaponName, measure, damage, type, recovery, modifiers: weaponMods, size, isThrown } = weaponInfo
     const { atk, rec: weaponSkillRec, pry, dam } = weaponMods
 
     const { name: armorName, dr, modifiers: armorMods } = armorInfo
@@ -24,12 +25,16 @@ export default function formatWeaponTable(
 
     const weaponDamage = damage ?? ''
 
+    const addDamage = (isRanged && isThrown) || !isRanged
+
+    const strDamage = `${addDamage && damMod >= 0 ? ' +' : ' '}${addDamage && damMod ? damMod : ''}`
+
     return {
         name: getWeaponName(weaponName, armorName, shieldName),
         attacks: {
             meas: measure,
             atk: atkMod + atk.total,
-            damage: weaponDamage + ` +${damMod}` + getExtraDamage(type, dam.total),
+            damage: weaponDamage + strDamage + getExtraDamage(type, dam.total),
             type,
             rec: recovery + weaponSkillRec.total + armorSkillRec.total + getRecoveryModFromSize(recMod, size),
             init: 5 - Math.floor(initSkill / 2) + init.total

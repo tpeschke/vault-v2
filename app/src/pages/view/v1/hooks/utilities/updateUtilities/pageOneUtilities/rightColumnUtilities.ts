@@ -1,10 +1,11 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
+import { updateWeaponTablesWithoutMods } from "./updateWeaponTables";
 
 export function toggleIsThrownUtility(character: CharacterVersion1) {
     const [weaponOne, weaponTwo, weaponThree, weaponFour] = character.pageTwoInfo.combatWorkspaceInfo.weaponInfo
 
-    return {
+    const newCharacter = {
         ...character,
         pageTwoInfo: {
             ...character.pageTwoInfo,
@@ -17,6 +18,17 @@ export function toggleIsThrownUtility(character: CharacterVersion1) {
                         isThrown: !weaponFour.isThrown
                     }
                 ]
+            }
+        }
+    }
+
+    return {
+        ...newCharacter,
+        pageOneInfo: {
+            ...newCharacter.pageOneInfo,
+            rightColumnInfo: {
+                ...newCharacter.pageOneInfo.rightColumnInfo,
+                weapons: updateWeaponTablesWithoutMods(newCharacter)
             }
         }
     }
