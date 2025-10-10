@@ -24,4 +24,4 @@ export type UpdateGenericCharacteristicFunction = (characteristic: Characteristi
 
 export type UpdateCharacteristicFunction = (changedIndex: number, newObject: PairObject) => void
 
-export type UpdateCharacteristicStringFunction = (key: CharacteristicStringKeys, value: number) => void
+export type UpdateCharacteristicStringFunction = (key: CharacteristicStringKeys, value: string) => void

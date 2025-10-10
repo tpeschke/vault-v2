@@ -20,7 +20,7 @@ export function updateIntegrityInfoUtility(character: CharacterVersion1, key: In
     }
 }
 
-export function updateCharacteristicStringUtility(character: CharacterVersion1, key: CharacteristicStringKeys, value: number) {
+export function updateCharacteristicStringUtility(character: CharacterVersion1, key: CharacteristicStringKeys, value: string) {
     return {
         ...character,
         pageOneInfo: {

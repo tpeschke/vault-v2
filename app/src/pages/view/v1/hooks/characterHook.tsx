@@ -116,20 +116,21 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     }
 
     const [isQuickSaving, setIsQuickSaving] = useState(false)
-    const [_, setTimeOutID] = useState<any | null>(null)
+    const [timeOutID, setTimeOutID] = useState<any | null>(null)
 
     async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number) {
         if (!isEditing && quickEdit.includes(attribute)) {
-            setTimeOutID(null)
-            setTimeOutID(setTimeout(async () => {
+            clearTimeout(timeOutID)
+            setTimeOutID(setTimeout(() => {
                 setIsQuickSaving(true)
-                await axios.post(quickEditURL, {
+                axios.post(quickEditURL, {
                     characterID,
                     attribute,
                     value
+                }).then(_ => {
+                    setIsQuickSaving(false)
                 })
-                setIsQuickSaving(false)
-            }, 500))
+            }, 1000))
         }
     }
 
@@ -171,9 +172,11 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
         }
     }
 
-    function updateCharacteristicString(key: CharacteristicStringKeys, value: number) {
+    function updateCharacteristicString(key: CharacteristicStringKeys, value: string) {
         if (character) {
             setCharacter(updateCharacteristicStringUtility(character, key, value))
+
+            quickBasicQuickSaving(['assets'], character.id, key, value)
         }
     }
 
@@ -368,6 +371,10 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateNotes(key: GeneralNotesInfoKeys, value: string | boolean) {
         if (character) {
             setCharacter(updateNotesUtility(character, key, value))
+
+            if (typeof value === 'string') {
+                quickBasicQuickSaving(['notes'], character.id, key, value)
+            }
         }
     }
 

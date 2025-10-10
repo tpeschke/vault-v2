@@ -14,6 +14,8 @@ import { saveCopper } from './utilities/numberUpdates/copper'
 import { saveSilver } from './utilities/numberUpdates/silver'
 import { saveGold } from './utilities/numberUpdates/gold'
 import { savePlatinum } from './utilities/numberUpdates/platinum'
+import { saveAssets } from './utilities/stringUpdates/assets'
+import { saveNotes } from './utilities/stringUpdates/notes'
 
 interface EditRequest extends Request {
     params: {
@@ -65,19 +67,21 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
                 sendSuccess = await savePlatinum(characterID, value)
                 break
             case 'assets':
+                sendSuccess = await saveAssets(characterID, value)
                 break
             case 'notes':
+                sendSuccess = await saveNotes(characterID, value)
                 break
             default:
                 checkForContentTypeBeforeSending(response, { success: false })
         }
 
-        // wounds
-        // equipment
-
         // armor misc modifiers
         // shield misc modifiers
         // weapon misc modifiers
+
+        // wounds
+        // equipment
 
         if (sendSuccess) {
             checkForContentTypeBeforeSending(response, { success: true })
