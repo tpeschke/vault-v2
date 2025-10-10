@@ -1,12 +1,13 @@
 import { checkForContentTypeBeforeSending } from '../../../controllers/common/sendingFunctions'
 import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { QuickEditBody } from '@vault/common/interfaces/v1/quickEdit'
-import { saveUnspentCrp } from './utilities/crpUnspent'
-import { saveCrpSpent } from './utilities/crpSpent'
-import { saveIntegrity } from './utilities/integrity'
-import { saveGritDice } from './utilities/gritDice'
+import { saveCrpSpent } from './utilities/numberUpdates/crpSpent'
 import query from '../../../db/database'
 import userSQL from '../../queries/user'
+import { saveUnspentCrp } from './utilities/numberUpdates/crpUnspent'
+import { saveFavor } from './utilities/numberUpdates/favor'
+import { saveGritDice } from './utilities/numberUpdates/gritDice'
+import { saveIntegrity } from './utilities/numberUpdates/integrity'
 
 interface EditRequest extends Request {
     params: {
@@ -19,7 +20,7 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
     const { characterID, attribute, value } = request.body
 
     const [{ userid: userIDFromDB }] = await query(userSQL.getCharacterUserID, characterID)
-    
+
     if (userIDFromDB === request.user?.id) {
         let sendSuccess = false
 
@@ -37,6 +38,7 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
                 sendSuccess = await saveGritDice(characterID, value)
                 break
             case 'favor':
+                sendSuccess = await saveFavor(characterID, value)
                 break
             case 'stress':
                 break
