@@ -158,8 +158,8 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
                 {gear.map((gear, index) => gearRow(gear, index))}
                 {leftOver > -1 &&
                     <span>
-                        <input onChange={(event: any) => insertRow('item', event)} />
-                        <input onChange={(event: any) => insertRow('size', event)} />
+                        <input onBlur={(event: any) => insertRow('item', event)} />
+                        <input onBlur={(event: any) => insertRow('size', event)} />
                     </span>
                 }
                 {leftOver > -1 && [...Array(leftOver).keys()].map(nullGearRow)}

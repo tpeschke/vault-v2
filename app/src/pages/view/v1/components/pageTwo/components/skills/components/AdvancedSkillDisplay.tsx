@@ -87,10 +87,10 @@ export default function AdvancedSkillDisplay({ advancedSkills, adepts, insertSki
                 {advancedSkills.map((skill, index) => skillRow(skill, index, adepts, isEditing))}
                 {showEditInputs &&
                     <span className='advanced-skill-row'>
-                        <input onChange={(event: any) => insertRow('skill', event)} />
-                        <input onChange={(event: any) => insertRow('cost', event)} />
-                        <input onChange={(event: any) => insertRow('rank', event)} />
-                        <input onChange={(event: any) => insertRow('mod', event)} />
+                        <input onBlur={(event: any) => insertRow('skill', event)} />
+                        <input onBlur={(event: any) => insertRow('cost', event)} />
+                        <input onBlur={(event: any) => insertRow('rank', event)} />
+                        <input onBlur={(event: any) => insertRow('mod', event)} />
                     </span>}
                 {leftOver > -1 && [...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>

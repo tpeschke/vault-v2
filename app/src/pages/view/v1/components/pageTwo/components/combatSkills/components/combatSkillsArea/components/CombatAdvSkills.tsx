@@ -82,9 +82,9 @@ export default function CombatAdvSkills({ combatAdvSkills, martialAdepts, insert
                 {combatAdvSkills.map((skill, index) => skillRow(skill, index, martialAdepts))}
                 {showEditInputs &&
                     <span className='combat-advanced-skill-row'>
-                        <input onChange={(event: any) => insertRow('skill', event)} />
-                        <input onChange={(event: any) => insertRow('cost', event)} />
-                        <input onChange={(event: any) => insertRow('rank', event)} />
+                        <input onBlur={(event: any) => insertRow('skill', event)} />
+                        <input onBlur={(event: any) => insertRow('cost', event)} />
+                        <input onBlur={(event: any) => insertRow('rank', event)} />
                     </span>}
                 {leftOver > -1 && [...Array(leftOver).keys()].map((_, index) => nullSkillRow(index))}
             </div>
