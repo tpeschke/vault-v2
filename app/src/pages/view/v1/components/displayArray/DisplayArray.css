@@ -3,7 +3,8 @@
 }
 
 .display-array-shell p {
-    min-height: 19px;
+    height: 19px;
+    overflow: hidden;
 }
 
 .display-array-shell .display-pair {

@@ -21,6 +21,7 @@
 .advanced-skill-display>div>span {
     width: 50%;
     display: flex;
+    height: 18px;
 }
 
 .advanced-skill-shell {
