@@ -25,7 +25,7 @@ import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./uti
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
-import { ArmorQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
+import { ArmorQuickEditModifiers, ShieldQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
 import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
 import { useDispatch } from "react-redux";
@@ -119,7 +119,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     const [isQuickSaving, setIsQuickSaving] = useState(false)
     const [timeOutID, setTimeOutID] = useState<any | null>(null)
 
-    async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number | ArmorQuickEditModifiers) {
+    async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number | ArmorQuickEditModifiers | ShieldQuickEditModifiers) {
         if (!isEditing && quickEdit.includes(attribute)) {
             clearTimeout(timeOutID)
             setTimeOutID(setTimeout(() => {
@@ -362,7 +362,20 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateShieldModifier(modifier: ShieldModifiersInfoKeys, key: ShieldModifiersObjectKeys, value: number) {
         if (character) {
-            setCharacter(updateShieldModifierUtility(character, modifier, key, value))
+            const newCharacter = updateShieldModifierUtility(character, modifier, key, value)
+            setCharacter(newCharacter)
+
+            if (key === 'misc') {
+                const { def, fat, pry, brk } = newCharacter.pageTwoInfo.combatWorkspaceInfo.shieldInfo.modifiers
+                quickBasicQuickSaving(['shield'], character.id, 'shield', {
+                    shieldID: newCharacter.pageTwoInfo.combatWorkspaceInfo.shieldInfo.id,
+                    def: def.misc, 
+                    fat: fat.misc, 
+                    pry: pry.misc, 
+                    brk: brk.misc,
+                    [modifier]: value
+                })
+            }
         }
     }
 
