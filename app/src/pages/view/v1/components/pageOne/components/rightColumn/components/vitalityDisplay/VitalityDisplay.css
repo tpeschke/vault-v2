@@ -9,7 +9,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 3px 5px
+    padding: 3px 5px;
+    min-height: 18px;
 }
 
 .vitality-categories-shell span:nth-child(even) {
@@ -80,6 +81,10 @@
     flex-direction: column;
     justify-content: space-between;
     border: 1px solid #515151
+}
+
+.wounds-headings-shell>span>p {
+    min-height: 18px;
 }
 
 .null-wound-row {

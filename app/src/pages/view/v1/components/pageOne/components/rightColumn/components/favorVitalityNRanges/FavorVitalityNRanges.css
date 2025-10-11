@@ -33,7 +33,7 @@
     text-align: center;
 }
 
-.favor-display-shell span:first-child input {
+.favor-display-shell span:first-child input, .favor-display-shell span:first-child p {
     border: 1px solid #990000;
 }
 

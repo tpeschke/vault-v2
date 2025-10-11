@@ -3,16 +3,22 @@ import './TextArea.css'
 interface Props {
     lines: number,
     value?: string,
-    onChange: any
+    onChange: any,
+    isBlank?: boolean
 }
 
-export default function TextArea({ lines, value, onChange }: Props) {
+export default function TextArea({ lines, value, onChange, isBlank }: Props) {
+    console.log(isBlank)
     return (
         <div className="text-area-shell">
             <div>
                 {[...Array(lines).keys()].map((_, index) => <p key={index}></p>)}
             </div>
-            <textarea onChange={onChange} value={value != '0' ? value : ''} style={{height: `${(lines * 19) - 4}px`}} />
+            {isBlank ? (
+                <p style={{ height: `${(lines * 19) - 4}px` }}> </p>
+            ) : (
+                <textarea onChange={onChange} value={value != '0' ? value : ''} style={{ height: `${(lines * 19) - 4}px` }} />
+            )}
         </div>
     )
 }

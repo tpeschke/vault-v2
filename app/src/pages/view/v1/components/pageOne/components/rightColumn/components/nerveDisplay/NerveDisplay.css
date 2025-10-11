@@ -9,7 +9,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 3px 5px
+    padding: 3px 5px;
+    min-height: 18px;
 }
 
 .nerve-categories-shell span:nth-child(even) {
@@ -32,6 +33,8 @@
 .stress-n-relaxation-shell span {
     display: flex;
     align-items: center;
+    min-height: 21px;
+    width: 50%;
 }
 
 .stress-n-relaxation-shell span>* {

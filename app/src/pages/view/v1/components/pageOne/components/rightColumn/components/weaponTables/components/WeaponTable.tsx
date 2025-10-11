@@ -7,16 +7,12 @@ import EditingContext from '../../../../../../../contexts/EditingContext'
 interface Props {
     weapon: WeaponTable,
     weaponPosition: number,
-    maxRange: number,
+    maxRange?: number,
     toggleIsThrown: ToggleIsThrownFunction
 }
 
 export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleIsThrown }: Props) {
     const isEditing = useContext(EditingContext)
-
-    const { name, attacks, defenses } = weapon
-    const { meas, atk, damage, type, rec, init } = attacks
-    const { def, flanks, parry, cover, parryDR, dr } = defenses
 
     const isRanged = weaponPosition === 4
 
@@ -39,27 +35,60 @@ export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleI
         )
     }
 
+    if (weapon.attacks && weapon.defenses) {
+
+        const { name, attacks, defenses } = weapon
+        const { meas, atk, damage, type, rec, init } = attacks
+        const { def, flanks, parry, cover, parryDR, dr } = defenses
+
+        return (
+            <div className='weapons-table-shell'>
+                <p>{name}</p>
+                <div>
+                    <div className='weapon-table-column'>
+                        <h4>Attacks</h4>
+                        {WeaponTableRow(isRanged ? 'RI' : 'Meas', isRanged && maxRange ? Math.ceil(maxRange / 6) : meas)}
+                        {WeaponTableRow('Atk', atk)}
+                        {DamageRow(damage, isRanged)}
+                        {WeaponTableRow('Type', type)}
+                        {WeaponTableRow('Rec', rec)}
+                        {WeaponTableRow('Init', init)}
+                    </div>
+                    <div className='weapon-table-column'>
+                        <h4>Defenses</h4>
+                        {WeaponTableRow('Def', def)}
+                        {WeaponTableRow('Flanks', flanks)}
+                        {WeaponTableRow('Parry', parry)}
+                        {DoubleWeaponRow('Cover', cover)}
+                        {DoubleWeaponRow('Parry DR', parryDR)}
+                        {DoubleWeaponRow('DR', dr)}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className='weapons-table-shell'>
-            <p>{name}</p>
+            <p> </p>
             <div>
                 <div className='weapon-table-column'>
                     <h4>Attacks</h4>
-                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', isRanged ? Math.ceil(maxRange / 6) : meas)}
-                    {WeaponTableRow('Atk', atk)}
-                    {DamageRow(damage, isRanged)}
-                    {WeaponTableRow('Type', type)}
-                    {WeaponTableRow('Rec', rec)}
-                    {WeaponTableRow('Init', init)}
+                    {WeaponTableRow(isRanged ? 'RI' : 'Meas', ' ')}
+                    {WeaponTableRow('Atk', ' ')}
+                    {DamageRow(' ', isRanged)}
+                    {WeaponTableRow('Type', ' ')}
+                    {WeaponTableRow('Rec', ' ')}
+                    {WeaponTableRow('Init', ' ')}
                 </div>
                 <div className='weapon-table-column'>
                     <h4>Defenses</h4>
-                    {WeaponTableRow('Def', def)}
-                    {WeaponTableRow('Flanks', flanks)}
-                    {WeaponTableRow('Parry', parry)}
-                    {DoubleWeaponRow('Cover', cover)}
-                    {DoubleWeaponRow('Parry DR', parryDR)}
-                    {DoubleWeaponRow('DR', dr)}
+                    {WeaponTableRow('Def', ' ')}
+                    {WeaponTableRow('Flanks', ' ')}
+                    {WeaponTableRow('Parry', ' ')}
+                    {DoubleWeaponRow('Cover', ' ')}
+                    {DoubleWeaponRow('Parry DR', ' ')}
+                    {DoubleWeaponRow('DR', ' ')}
                 </div>
             </div>
         </div>

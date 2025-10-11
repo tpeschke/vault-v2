@@ -2,7 +2,7 @@ import { LeftColumnInfo } from "./leftColumnInterfaces"
 import { RightColumnInfo } from "./rightColumnInterfaces"
 
 export interface PageOneInfo {
-    generalInfo: GeneralInfo
+    generalInfo?: GeneralInfo
     leftColumnInfo: LeftColumnInfo,
     rightColumnInfo: RightColumnInfo,
     abilitiesNBurdensInfo: AbilitiesNBurdensInfo

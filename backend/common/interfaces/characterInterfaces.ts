@@ -8,15 +8,15 @@ export interface CharacterBase {
 
 export interface CharacterVersion1 extends CharacterBase {
     version: 1,
-    id: number,
+    id: number | null,
     userInfo: CharacterUserInfo,
     pageOneInfo: PageOneInfo,
-    pageTwoInfo: PageTwoInfo,
+    pageTwoInfo?: PageTwoInfo,
     generalNotes: GeneralNotesInfo
 }
 
 export interface CharacterUserInfo {
-    userID: number,
+    userID: number | null,
     ownsThisCharacter: boolean
 }
 

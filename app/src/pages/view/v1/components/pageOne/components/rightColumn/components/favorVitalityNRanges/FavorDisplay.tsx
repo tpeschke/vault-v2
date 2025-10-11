@@ -5,35 +5,55 @@ import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateFavorInfoFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
-    favorInfo: FavorInfo,
+    favorInfo?: FavorInfo,
     updateFavorInfo: UpdateFavorInfoFunction
 }
 
 export default function FavorDisplay({ favorInfo, updateFavorInfo }: Props) {
-    const isEditing = useContext(EditingContext)    
-    const { favor, maxFavor, anointed } = favorInfo
+    const isEditing = useContext(EditingContext)
+
+    if (favorInfo) {
+        const { favor, maxFavor, anointed } = favorInfo
+
+        return (
+            <div className='favor-display-shell'>
+                <span>
+                    <h3>Favor</h3>
+                    <input type='number' onChange={(event: any) => updateFavorInfo('favor', +event.target.value)} value={favor} />
+                </span>
+                <span>
+                    <strong>Max</strong>
+                    {isEditing ?
+                        <input type='number' onChange={(event: any) => updateFavorInfo('maxFavor', +event.target.value)} value={maxFavor} />
+                        :
+                        <p>{maxFavor}</p>
+                    }
+                </span>
+                <span>
+                    <strong>Anointed?</strong>
+                    {anointed ?
+                        <i onClick={_ => updateFavorInfo('anointed', 0)} className="fa-solid fa-check"></i>
+                        :
+                        <i onClick={_ => updateFavorInfo('anointed', 1)} className="fa-solid fa-x"></i>
+                    }
+                </span>
+            </div>
+        )
+    }
 
     return (
         <div className='favor-display-shell'>
             <span>
                 <h3>Favor</h3>
-                <input type='number' onChange={(event: any) => updateFavorInfo('favor', +event.target.value)} value={favor} />
+                <p> </p>
             </span>
             <span>
                 <strong>Max</strong>
-                {isEditing ?
-                    <input type='number' onChange={(event: any) => updateFavorInfo('maxFavor', +event.target.value)} value={maxFavor} />
-                    :
-                    <p>{maxFavor}</p>
-                }
+                <p> </p>
             </span>
             <span>
                 <strong>Anointed?</strong>
-                {anointed ?
-                    <i onClick={_ => updateFavorInfo('anointed', 0)} className="fa-solid fa-check"></i>
-                    :
-                    <i onClick={_ => updateFavorInfo('anointed', 1)} className="fa-solid fa-x"></i>
-                }
+                <p> </p>
             </span>
         </div>
     )

@@ -3,7 +3,7 @@ import CharacteristicsDisplay from './components/characteristics/Characteristics
 import MovementDisplay from './components/MovementDisplay'
 import StatsDisplay from './components/StatsDisplay'
 import './LeftColumn.css'
-import { PageOneLeftColumn } from '../../../../hooks/interfaces/CharacterHookInterfaces'
+import { PageOneLeftColumn } from '../../../../hooks/interfaces/pageOneInterfaces/UpdateExportInterfaces'
 
 interface Props {
     leftColumnInfo: LeftColumnInfo,

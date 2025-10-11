@@ -28,6 +28,7 @@
 .abilities-and-burdens-shell .removed-shell>* {
     width: 50%;
     text-align: center;
+    min-height: 15px;
 }
 
 .abilities-and-burdens-shell .removed-shell strong {

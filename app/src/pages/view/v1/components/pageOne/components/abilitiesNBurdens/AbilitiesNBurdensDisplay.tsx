@@ -3,7 +3,7 @@ import DisplayTextArea from '../../../../../../../components/textArea/DisplayTex
 import './AbilitiesNBurdensDisplay.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
-import { UpdateAbilitiesFunction } from '../../../../hooks/interfaces/UpdateRightColumnInterfaces'
+import { UpdateAbilitiesFunction } from '../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     abilitiesNBurdensInfo: AbilitiesNBurdensInfo,

@@ -4,7 +4,7 @@ import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateMaxRangeFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
-    maxRange: number,
+    maxRange?: number,
     updateMaxRange: UpdateMaxRangeFunction
 }
 
@@ -16,7 +16,9 @@ export default function RangeDisplay({ maxRange, updateMaxRange }: Props) {
     const [rangeIncrement, setRangeIncrement] = useState(1)
 
     useEffect(() => {
-        setRangeIncrement(Math.ceil(maxRange / 6))
+        if (maxRange) {
+            setRangeIncrement(Math.ceil(maxRange / 6))
+        }
     }, [maxRange])
 
     function RangeRow(penalty: number, lowEndValue: number, highEndValue: number) {

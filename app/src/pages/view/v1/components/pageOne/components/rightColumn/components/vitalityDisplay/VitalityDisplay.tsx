@@ -6,95 +6,154 @@ import { UpdateNerveAndVitalityInfoFunction, InsertWoundFunction, UpdateWoundFun
 import makeTempID from '../../../../../../../../../utilities/makeTempId'
 
 interface Props {
-    nerveAndVitalityInfo: NerveAndVitalityInfo,
+    nerveAndVitalityInfo?: NerveAndVitalityInfo,
     updateNerveAndVitalityInfo: UpdateNerveAndVitalityInfoFunction,
     insertWound: InsertWoundFunction,
     updateWound: UpdateWoundFunction
 }
 
 export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVitalityInfo, insertWound, updateWound }: Props) {
-    const isEditing = useContext(EditingContext)
+    if (nerveAndVitalityInfo) {
+        const isEditing = useContext(EditingContext)
 
-    const { vitality, fatigue, wounds, sizeMod } = nerveAndVitalityInfo
+        const { vitality, fatigue, wounds, sizeMod } = nerveAndVitalityInfo
 
-    const [hurt, setHurt] = useState(0)
-    const [bloodied, setBloodied] = useState(0)
-    const [wounded, setWounded] = useState(0)
+        const [hurt, setHurt] = useState(0)
+        const [bloodied, setBloodied] = useState(0)
+        const [wounded, setWounded] = useState(0)
 
-    useEffect(() => {
-        setHurt(Math.ceil(vitality * .25))
-        setBloodied(Math.floor(vitality * .5))
-        setWounded(Math.ceil(vitality * .75))
-    }, [vitality])
+        useEffect(() => {
+            setHurt(Math.ceil(vitality * .25))
+            setBloodied(Math.floor(vitality * .5))
+            setWounded(Math.ceil(vitality * .75))
+        }, [vitality])
 
-    const [totalDamage, setTotalDamage] = useState(0)
-    const [leftOver, setLeftOver] = useState(0)
+        const [totalDamage, setTotalDamage] = useState(0)
+        const [leftOver, setLeftOver] = useState(0)
 
-    useEffect(() => {
-        const totalDamage = wounds.reduce((total, wound) => {
-            return total + wound.severity
-        }, 0)
+        useEffect(() => {
+            const totalDamage = wounds.reduce((total, wound) => {
+                return total + wound.severity
+            }, 0)
 
-        setTotalDamage(totalDamage)
+            setTotalDamage(totalDamage)
 
-        setLeftOver(11 - wounds.length)
-    }, [wounds])
+            setLeftOver(11 - wounds.length)
+        }, [wounds])
 
-    const [leftPosition, setLeftPosition] = useState(243)
+        const [leftPosition, setLeftPosition] = useState(243)
 
-    useEffect(() => {
-        setLeftPosition(getLeftPosition(fatigue))
-    }, [fatigue])
+        useEffect(() => {
+            setLeftPosition(getLeftPosition(fatigue))
+        }, [fatigue])
 
-    function getLeftPosition(fatigue: number): number {
-        if (fatigue === 0) {
-            return 243
-        } else if (fatigue === 1) {
-            return 158
-        } else if (fatigue === 2) {
-            return 78
-        } else if (fatigue === 3) {
-            return -2
-        } else {
-            return 243
+        function getLeftPosition(fatigue: number): number {
+            if (fatigue === 0) {
+                return 243
+            } else if (fatigue === 1) {
+                return 158
+            } else if (fatigue === 2) {
+                return 78
+            } else if (fatigue === 3) {
+                return -2
+            } else {
+                return 243
+            }
         }
-    }
 
-    function woundRow({ id, severity, days, key }: Wound, index: number) {
+        function woundRow({ id, severity, days, key }: Wound, index: number) {
+            return (
+                <span key={id ?? key}>
+                    <strong>Wound</strong>
+                    <input type='number' onChange={(event: any) => updateWound(index, { id, severity: +event.target.value, days })} value={severity} />
+                    <input type='number' onChange={(event: any) => updateWound(index, { id, severity, days: +event.target.value })} value={days} />
+                </span>
+            )
+        }
+
+        function insertRow(event: any) {
+            const value = +event.target.value
+
+            const tempWound: Wound = {
+                key: makeTempID(),
+                severity: value,
+                days: value
+            }
+
+            const isValidObject = tempWound.severity > 0 || tempWound.days > 0
+
+            if (isValidObject) {
+                insertWound(tempWound)
+                event.target.value = null
+            }
+        }
+
         return (
-            <span key={id ?? key}>
-                <strong>Wound</strong>
-                <input type='number' onChange={(event: any) => updateWound(index, { id, severity: +event.target.value, days })} value={severity} />
-                <input type='number' onChange={(event: any) => updateWound(index, { id, severity, days: +event.target.value })} value={days} />
-            </span>
+            <div className='vitality-display-shell'>
+                <div>
+                    <h2>Vitality</h2>
+                    <div className='vitality-categories-shell'>
+                        <div className='circle' style={{ left: `${leftPosition}px` }}></div>
+                        <span>
+                            <strong>H</strong>
+                            <p>1 - {hurt}</p>
+                        </span>
+                        <span>
+                            <strong>B</strong>
+                            <p>{hurt + 1} - {bloodied}</p>
+                        </span>
+                        <span>
+                            <strong>W</strong>
+                            <p>{bloodied + 1} - {wounded}</p>
+                        </span>
+                        <span>
+                            <strong>C</strong>
+                            <p>{wounded + 1} - {vitality}</p>
+                        </span>
+                    </div>
+                    <div className='wounds-headings-shell'>
+                        {isEditing ?
+                            <span>
+                                <strong>Vitality</strong>
+                                <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('vitality', +event.target.value)} value={vitality} />
+                            </span>
+                            :
+                            <span>
+                                <strong>Total</strong>
+                                <p>{totalDamage}</p>
+                            </span>
+                        }
+                        <strong>Severity</strong>
+                        <strong>Days to Heal</strong>
+                        <span>
+                            <strong>Trauma</strong>
+                            <p>{hurt + 1}</p>
+                        </span>
+                        <strong>Severity</strong>
+                        <strong>Days to Heal</strong>
+                    </div>
+                    <div className='wounds-shell'>
+                        {wounds.map(woundRow)}
+                        {leftOver > -1 &&
+                            <span>
+                                <strong>Wound</strong>
+                                <input type='number' onBlur={(event: any) => insertRow(event)} />
+                                <p> </p>
+                            </span>
+                        }
+                        {leftOver > -1 && [...Array(leftOver).keys()].map(nullWoundRow)}
+                    </div>
+                    <span className='size-mod'>
+                        <strong>Size Mod</strong>
+                        {isEditing ?
+                            <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('sizeMod', +event.target.value)} value={sizeMod} />
+                            :
+                            <p>{sizeMod}</p>
+                        }
+                    </span>
+                </div>
+            </div>
         )
-    }
-
-    function nullWoundRow(_: any, index: number) {
-        return (
-            <span key={index} className='null-wound-row'>
-                <strong>Wound</strong>
-                <p></p>
-                <p></p>
-            </span>
-        )
-    }
-
-    function insertRow(event: any) {
-        const value = +event.target.value
-
-        const tempWound: Wound = {
-            key: makeTempID(),
-            severity: value,
-            days: value
-        }
-
-        const isValidObject = tempWound.severity > 0 || tempWound.days > 0
-
-        if (isValidObject) {
-            insertWound(tempWound)
-            event.target.value = null
-        }
     }
 
     return (
@@ -102,65 +161,55 @@ export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVi
             <div>
                 <h2>Vitality</h2>
                 <div className='vitality-categories-shell'>
-                    <div className='circle' style={{ left: `${leftPosition}px` }}></div>
                     <span>
                         <strong>H</strong>
-                        <p>1 - {hurt}</p>
+                        <p> </p>
                     </span>
                     <span>
                         <strong>B</strong>
-                        <p>{hurt + 1} - {bloodied}</p>
+                        <p> </p>
                     </span>
                     <span>
                         <strong>W</strong>
-                        <p>{bloodied + 1} - {wounded}</p>
+                        <p> </p>
                     </span>
                     <span>
                         <strong>C</strong>
-                        <p>{wounded + 1} - {vitality}</p>
+                        <p> </p>
                     </span>
                 </div>
                 <div className='wounds-headings-shell'>
-                    {isEditing ?
-                        <span>
-                            <strong>Vitality</strong>
-                            <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('vitality', +event.target.value)} value={vitality} />
-                        </span>
-                        :
-                        <span>
-                            <strong>Total</strong>
-                            <p>{totalDamage}</p>
-                        </span>
-                    }
+                    <span>
+                        <strong>Total</strong>
+                        <p> </p>
+                    </span>
                     <strong>Severity</strong>
                     <strong>Days to Heal</strong>
                     <span>
                         <strong>Trauma</strong>
-                        <p>{hurt + 1}</p>
+                        <p> </p>
                     </span>
                     <strong>Severity</strong>
                     <strong>Days to Heal</strong>
                 </div>
                 <div className='wounds-shell'>
-                    {wounds.map(woundRow)}
-                    {leftOver > -1 &&
-                        <span>
-                            <strong>Wound</strong>
-                            <input type='number' onBlur={(event: any) => insertRow(event)} />
-                            <p> </p>
-                        </span>
-                    }
-                    {leftOver > -1 && [...Array(leftOver).keys()].map(nullWoundRow)}
+                    {[...Array(12).keys()].map(nullWoundRow)}
                 </div>
                 <span className='size-mod'>
                     <strong>Size Mod</strong>
-                    {isEditing ?
-                        <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('sizeMod', +event.target.value)} value={sizeMod} />
-                        :
-                        <p>{sizeMod}</p>
-                    }
+                    <p> </p>
                 </span>
             </div>
         </div>
+    )
+}
+
+function nullWoundRow(_: any, index: number) {
+    return (
+        <span key={index} className='null-wound-row'>
+            <strong>Wound</strong>
+            <p></p>
+            <p></p>
+        </span>
     )
 }

@@ -81,4 +81,5 @@
 
 .weapon-table-column span p, .weapon-table-column span strong {
     font-size: 13px;
+    min-height: 18px;
 }

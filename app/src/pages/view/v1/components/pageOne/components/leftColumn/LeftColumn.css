@@ -19,6 +19,7 @@
 .stats-shell.false-table span>* {
     width: 45%;
     text-align: center;
+    min-height: 18px;
 }
 
 .stats-shell input {
