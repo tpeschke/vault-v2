@@ -1,5 +1,6 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
+import { ResolvedAction } from "@vault/common/interfaces/v1/quickEdit";
 
 export function updateCashUtility(character: CharacterVersion1, key: GearInfoObjectsKeys, value: number) {
     return {
@@ -56,4 +57,28 @@ function alterGearArray(gearArray: GearObject[], changedIndex: number, newGear: 
     }
 
     return gearArray.filter((_, index) => index !== changedIndex)
+}
+
+export function updateGearWithID(character: CharacterVersion1, { id, key }: ResolvedAction): CharacterVersion1 {
+    return {
+        ...character,
+        pageTwoInfo: {
+            ...character.pageTwoInfo,
+            gearInfo: {
+                ...character.pageTwoInfo.gearInfo,
+                gear: character.pageTwoInfo.gearInfo.gear.map((object, index) => {
+                    if (object.key === key) {
+                        let modifiedWound = {
+                            ...object,
+                            id
+                        }
+
+                        delete modifiedWound.key
+                        return modifiedWound
+                    }
+                    return object
+                })
+            }
+        }
+    }
 }

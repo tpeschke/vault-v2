@@ -13,7 +13,7 @@ import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, 
 import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
 import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
-import { insertGearUtility, updateCashUtility, updateGearUtility } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
+import { insertGearUtility, updateCashUtility, updateGearUtility, updateGearWithID } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 import { insertSkillUtility, updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility, updateSkillUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
 import { SkillObject } from "@vault/common/interfaces/v1/pageTwo/skillInterfaces";
 import { insertCombatSkillUtility, updateCombatSkillSuiteUtility, updateCombatSkillUtility, updateMartialAdeptUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/combatSkillUtilities";
@@ -135,7 +135,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
         }
     }
 
-    async function quickQuickSavingWithAction(quickEdit: string[], characterID: number, attribute: string, value: Wound, action: QuickEditActions): Promise<any> {
+    async function quickQuickSavingWithAction(quickEdit: string[], characterID: number, attribute: string, value: Wound | GearObject, action: QuickEditActions): Promise<any> {
         if (!isEditing && quickEdit.includes(attribute)) {
             clearTimeout(timeOutID)
 
@@ -294,12 +294,19 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateGear(changedIndex: number, newGear: GearObject) {
         if (character) {
             setCharacter(updateGearUtility(character, changedIndex, newGear))
+
+            const action: QuickEditActions = newGear.item || newGear.size ? 'update' : 'delete'
+            quickQuickSavingWithAction(['equipment'], character.id, 'equipment', newGear, action)
         }
     }
 
-    function insertGear(newGear: GearObject) {
+    async function insertGear(newGear: GearObject) {
         if (character) {
-            setCharacter(insertGearUtility(character, newGear))
+            const newCharacter = insertGearUtility(character, newGear)
+            setCharacter(newCharacter)
+
+            const { data } = await quickQuickSavingWithAction(['equipment'], newCharacter.id, 'equipment', newGear, 'add')
+            setCharacter(updateGearWithID(newCharacter, data))
         }
     }
 

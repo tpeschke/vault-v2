@@ -20,6 +20,7 @@ import { saveMiscArmorMods } from './utilities/complexUpdates/armor'
 import { saveMiscShieldMods } from './utilities/complexUpdates/shield'
 import { saveWeapon } from './utilities/complexUpdates/weapon'
 import { saveWounds } from './utilities/complexUpdates/wound'
+import { saveGear } from './utilities/complexUpdates/equipment'
 
 interface EditRequest extends Request {
     params: {
@@ -86,19 +87,30 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
                 sendSuccess = await saveWeapon(value)
                 break
             case 'wound':
-                const { action } = request.body
-                const resolvedAction = await saveWounds(characterID, value, action)
-                if (typeof resolvedAction === 'boolean') {
-                    sendSuccess = true
-                } else {
-                    checkForContentTypeBeforeSending(response, resolvedAction)
+                {
+                    const { action } = request.body
+                    const resolvedAction = await saveWounds(characterID, value, action)
+                    if (typeof resolvedAction === 'boolean') {
+                        sendSuccess = true
+                    } else {
+                        checkForContentTypeBeforeSending(response, resolvedAction)
+                    }
+                }
+                break
+            case 'equipment':
+                {
+                    const { action } = request.body
+                    const resolvedAction = await saveGear(characterID, value, action)
+                    if (typeof resolvedAction === 'boolean') {
+                        sendSuccess = true
+                    } else {
+                        checkForContentTypeBeforeSending(response, resolvedAction)
+                    }
                 }
                 break
             default:
                 checkForContentTypeBeforeSending(response, { success: false })
         }
-
-        // equipment
 
         if (sendSuccess) {
             checkForContentTypeBeforeSending(response, { success: true })
