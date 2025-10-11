@@ -30,18 +30,24 @@ import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
 import { useDispatch } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
     const [character, setCharacter] = useState<CharacterVersion1 | null>(null)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
         axios.get(viewURL + characterID).then(({ data }) => {
-            setCharacter(data)
-            setRevertedCharacter(data)
+            if (data.message) {
+                navigate('/')
+            } else {
+                setCharacter(data)
+                setRevertedCharacter(data)
+            }
         })
     }, [pathname])
 
