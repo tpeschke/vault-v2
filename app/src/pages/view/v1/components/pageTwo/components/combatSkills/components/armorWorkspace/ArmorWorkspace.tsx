@@ -23,7 +23,7 @@ export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
             {isEditing ?
                 <input onChange={(event: any) => updateBasicArmorInfo('name', event.target.value)} value={name} />
                 :
-                <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Armor is Factored into Weapon Tables." className='workspace-button'>{name}</button>
+                <p className='workspace-heading '>{name}</p>
             }
             <span>
                 <strong>DR</strong>

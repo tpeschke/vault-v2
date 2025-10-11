@@ -22,7 +22,7 @@ export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
             {isEditing ?
                 <input onChange={(event: any) => updateBasicShieldInfo('name', event.target.value)} value={name} />
                 :
-                <button data-tooltip-id="my-tooltip" data-tooltip-content="Click to Toggle Whether Shield is Factored into Weapon Tables." className='workspace-button'>{name}</button>
+                <p className='workspace-heading '>{name}</p>
             }
             <span>
                 <strong>DR</strong>

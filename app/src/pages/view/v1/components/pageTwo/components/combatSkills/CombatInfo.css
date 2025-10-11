@@ -24,17 +24,10 @@
     display: flex
 }
 
-.workspace-button {
-    border-radius: 0px;
-    text-align: left;
-    padding: 3px 5px;
+.workspace-heading {    
+    padding: 1px 5px;
     background: lightgray;
-    min-height: 21px;
-}
-
-.workspace-button:hover {
-    background: rgba(173, 216, 230);
-    color: black;
+    min-height: 19px;
 }
 
 .combat-skills-display-shell table {
