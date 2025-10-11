@@ -10,8 +10,12 @@ import { isOwner } from "../../../controllers/user/ownerFunctions"
 
 export async function viewUsersCharacters(request: Request, response: Response) {
     const userID = request.user?.id
-    const data = await query(homeSQL.allUsersCharacters, userID)
-    checkForContentTypeBeforeSending(response, data)
+    if (!userID) {
+        checkForContentTypeBeforeSending(response, { message: 'User Not Logged In' })
+    } else {
+        const data = await query(homeSQL.allUsersCharacters, userID)
+        checkForContentTypeBeforeSending(response, data)
+    }
 }
 
 interface DeleteCharacterRequest extends Request {
@@ -65,7 +69,7 @@ export async function addCharacter(request: Request, response: Response) {
 
     if (patreon) {
         const limit = (patreon * 20) + 10
-        const [{count: currentCharacterCount}] = await query(homeSQL.characterCount, userID)
+        const [{ count: currentCharacterCount }] = await query(homeSQL.characterCount, userID)
 
         if (isOwner(userID) || currentCharacterCount < limit) {
             const [{ id: newCharacterID }] = await query(homeSQL.insertCharacter, userID)

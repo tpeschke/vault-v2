@@ -39,3 +39,11 @@
 .user-characters-shell>div button.primary {
     margin-left: 15px;
 }
+
+.no-characters-shell {
+    padding-top: 16px;
+}
+
+.no-characters-shell>h2 {
+    margin-bottom: 10px;
+}
