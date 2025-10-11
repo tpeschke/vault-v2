@@ -3,7 +3,7 @@ import { GearObject } from "./pageTwo/gearInterfaces"
 
 export type QuickEditBody = {
     characterID: number
-} & (QuickEditNumberBody | QuickEditStringBody | QuickEditWoundBody | QuickEditEquipmentBody | QuickEditArmorModifierBody | QuickEditShieldModifierBody)
+} & (QuickEditNumberBody | QuickEditStringBody | QuickEditWoundBody | QuickEditEquipmentBody | QuickEditArmorModifierBody | QuickEditShieldModifierBody | QuickEditWeaponModifierBody)
 
 export type QuickEditNumberAttributes = 'crpUnspent' | 'crpSpent' | 'integrity' | 'gritDice' | 'favor' | 'stress' | 'relaxation' | 'copper' | 'silver' | 'gold' | 'platinum'
 
@@ -43,6 +43,20 @@ export interface ShieldQuickEditModifiers {
 export interface QuickEditShieldModifierBody {
     attribute: 'shield',
     value: ShieldQuickEditModifiers
+}
+
+export interface WeaponQuickEditModifiers {
+    weaponID: number,
+    position: number,
+    atk: number | undefined,
+    rec: number | undefined,
+    pry: number | undefined,
+    dam: number | undefined
+}
+
+export interface QuickEditWeaponModifierBody {
+    attribute: 'weapon',
+    value: WeaponQuickEditModifiers
 }
 
 export type QuickEditActions = 'add' | 'update' | 'delete'

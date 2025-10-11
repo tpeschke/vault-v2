@@ -25,7 +25,7 @@ import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./uti
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
-import { ArmorQuickEditModifiers, ShieldQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
+import { ArmorQuickEditModifiers, ShieldQuickEditModifiers, WeaponQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
 import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
 import { useDispatch } from "react-redux";
@@ -119,7 +119,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     const [isQuickSaving, setIsQuickSaving] = useState(false)
     const [timeOutID, setTimeOutID] = useState<any | null>(null)
 
-    async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number | ArmorQuickEditModifiers | ShieldQuickEditModifiers) {
+    async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number | ArmorQuickEditModifiers | ShieldQuickEditModifiers | WeaponQuickEditModifiers) {
         if (!isEditing && quickEdit.includes(attribute)) {
             clearTimeout(timeOutID)
             setTimeOutID(setTimeout(() => {
@@ -387,7 +387,21 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateWeaponModifier(changedIndex: number, modifier: WeaponModifiersInfoKeys, key: WeaponModifiersObjectKeys, value: number) {
         if (character) {
-            setCharacter(updateWeaponModifierUtility(character, changedIndex, modifier, key, value))
+            const newCharacter = updateWeaponModifierUtility(character, changedIndex, modifier, key, value)
+            setCharacter(newCharacter)
+
+            if (key === 'misc') {
+                const { atk, rec, pry, dam } = newCharacter.pageTwoInfo.combatWorkspaceInfo.weaponInfo[changedIndex].modifiers
+                quickBasicQuickSaving(['weapon'], character.id, 'weapon', {
+                    weaponID: newCharacter.pageTwoInfo.combatWorkspaceInfo.weaponInfo[changedIndex].id,
+                    position: changedIndex,
+                    atk: atk.misc, 
+                    rec: rec.misc, 
+                    pry: pry.misc, 
+                    dam: dam.misc,
+                    [modifier]: value
+                })
+            }
         }
     }
 
