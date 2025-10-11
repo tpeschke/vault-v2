@@ -48,7 +48,8 @@ export async function assembleBlankCharacter(response: Response) {
                 ],
                 advancedSkills: [],
                 nativeLanguage: {
-                    skill: ''
+                    skill: '',
+                    cost: 0
                 }
             },
             combatWorkspaceInfo: {

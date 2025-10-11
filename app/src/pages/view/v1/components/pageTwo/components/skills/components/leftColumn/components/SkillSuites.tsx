@@ -93,7 +93,7 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
                     :
                     <>
                         <p>{skill}</p>
-                        <p>{nativeLanguageTotalCost}</p>
+                        <p>{int ? nativeLanguageTotalCost : ''}</p>
                         <p>{nativeLanguageRank}</p>
                         <p>{mod}</p>
                     </>
