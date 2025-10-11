@@ -13,7 +13,7 @@ export interface ViewRequest extends Request {
 
 export async function getCharacter(request: ViewRequest, response: Response) {
     const characterId = +request.params.characterId
-    
+
     if (isNaN(characterId)) {
         if (request.params.characterId.toUpperCase() === 'BLANK') {
             assembleBlankCharacter(response)

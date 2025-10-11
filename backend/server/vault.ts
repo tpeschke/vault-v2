@@ -77,7 +77,10 @@ app.use(express.static(__dirname + `/../../app/dist`));
 // })
 
 // ================================== \\
-
-app.listen(server, () => {
-    console.log(`Weep a thousand tears and you won't drown the desert ${server}`)
-})
+try {
+    app.listen(server, () => {
+        console.log(`Weep a thousand tears and you won't drown the desert ${server}`)
+    })
+} catch (error) {
+    console.log(error)
+}
