@@ -13,6 +13,8 @@ interface Props {
 }
 
 export default function Home({ setLoading, pathname }: Props) {
+    document.title = "Bonfire Character Vault"
+    
     const userIsLoggedIn = useSelector(isUserLoggedOn)
 
     const { usersCharacters, deleteCharacter } = UsersCharactersHook(pathname)
