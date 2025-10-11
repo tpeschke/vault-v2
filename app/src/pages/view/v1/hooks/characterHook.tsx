@@ -25,6 +25,7 @@ import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./uti
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
+import { ArmorQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
 import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
 import { useDispatch } from "react-redux";
@@ -118,7 +119,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     const [isQuickSaving, setIsQuickSaving] = useState(false)
     const [timeOutID, setTimeOutID] = useState<any | null>(null)
 
-    async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number) {
+    async function quickBasicQuickSaving(quickEdit: string[], characterID: number, attribute: string, value: string | number | ArmorQuickEditModifiers) {
         if (!isEditing && quickEdit.includes(attribute)) {
             clearTimeout(timeOutID)
             setTimeOutID(setTimeout(() => {
@@ -336,7 +337,20 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateArmorModifier(modifier: ArmorModifiersInfoKeys, key: ArmorModifiersObjectKeys, value: number) {
         if (character) {
-            setCharacter(updateArmorModifierUtility(character, modifier, key, value))
+            const newCharacter = updateArmorModifierUtility(character, modifier, key, value)
+            setCharacter(newCharacter)
+
+            if (key === 'misc') {
+                const { def, fat, rec, init } = newCharacter.pageTwoInfo.combatWorkspaceInfo.armorInfo.modifiers
+                quickBasicQuickSaving(['armor'], character.id, 'armor', {
+                    armorID: newCharacter.pageTwoInfo.combatWorkspaceInfo.armorInfo.id,
+                    def: def.misc, 
+                    fat: fat.misc, 
+                    rec: rec.misc, 
+                    init: init.misc,
+                    [modifier]: value
+                })
+            }
         }
     }
 

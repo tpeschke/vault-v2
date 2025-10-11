@@ -16,6 +16,7 @@ import { saveGold } from './utilities/numberUpdates/gold'
 import { savePlatinum } from './utilities/numberUpdates/platinum'
 import { saveAssets } from './utilities/stringUpdates/assets'
 import { saveNotes } from './utilities/stringUpdates/notes'
+import { saveMiscArmorMods } from './utilities/complexUpdates/armor'
 
 interface EditRequest extends Request {
     params: {
@@ -72,11 +73,13 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
             case 'notes':
                 sendSuccess = await saveNotes(characterID, value)
                 break
+            case 'armor':
+                sendSuccess = await saveMiscArmorMods(value)
+                break
             default:
                 checkForContentTypeBeforeSending(response, { success: false })
         }
 
-        // armor misc modifiers
         // shield misc modifiers
         // weapon misc modifiers
 
