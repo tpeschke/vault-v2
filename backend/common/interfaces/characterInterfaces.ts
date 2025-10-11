@@ -11,7 +11,7 @@ export interface CharacterVersion1 extends CharacterBase {
     id: number | null,
     userInfo: CharacterUserInfo,
     pageOneInfo: PageOneInfo,
-    pageTwoInfo?: PageTwoInfo,
+    pageTwoInfo: PageTwoInfo,
     generalNotes: GeneralNotesInfo
 }
 

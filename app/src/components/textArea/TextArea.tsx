@@ -8,7 +8,6 @@ interface Props {
 }
 
 export default function TextArea({ lines, value, onChange, isBlank }: Props) {
-    console.log(isBlank)
     return (
         <div className="text-area-shell">
             <div>

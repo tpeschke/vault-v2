@@ -7,20 +7,20 @@ import { UpdateNativeLanguageFunction, UpdateSkillSuiteFunction } from '../../..
 interface Props {
     skillSuites: SkillObject[],
     nativeLanguage: SkillObject,
-    adepts: number,
-    int: number,
+    adepts?: number,
+    int?: number,
     updateSkillSuite: UpdateSkillSuiteFunction,
     updateNativeLanguage: UpdateNativeLanguageFunction
 }
 
-export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts, int, updateSkillSuite, updateNativeLanguage }: Props) {
+export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts = 0, int, updateSkillSuite, updateNativeLanguage }: Props) {
     const isEditing = useContext(EditingContext)
 
-    function skillSuiteRow({ id, skill, cost, isTrained, rank, mod }: SkillObject, index: number, int: number, adepts: number) {
+    function skillSuiteRow({ id, skill, cost, isTrained, rank, mod }: SkillObject, index: number, int: number = 0, adepts: number) {
         return (
             <span className='skill-suite-row' key={index}>
                 <strong>{skill}</strong>
-                <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (adepts * .10)))}</p>
+                {rank ? <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (adepts * .10)))}</p> : <p>{cost}</p>}
                 {isTrained ?
                     <>
                         {isEditing ?
@@ -49,7 +49,10 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
 
     const { id, skill, cost, rank, mod } = nativeLanguage
     const nativeLanguageRank = rank ?? int
-    const nativeLanguageTotalCost = cost + (nativeLanguageRank * 2) - adepts
+    let nativeLanguageTotalCost;
+    if (cost && nativeLanguageRank) {
+        nativeLanguageTotalCost = cost + (nativeLanguageRank * 2) - adepts
+    }
 
     function updateNativeLanguageOnChange(event: any, key: SkillObjectKeys) {
         const {value} = event.target

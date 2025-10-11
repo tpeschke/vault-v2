@@ -7,7 +7,7 @@ import { CombatSkillsInfo } from '@vault/common/interfaces/v1/pageTwo/combatInte
 
 interface Props {
     combatSkillInfo: CombatSkillsInfo,
-    int: number,
+    int?: number,
     combatSkillUpdates: CombatSkillUpdates
 }
 

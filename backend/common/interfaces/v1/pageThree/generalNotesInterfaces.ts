@@ -1,5 +1,5 @@
 export interface GeneralNotesInfo {
-    notes: string,
+    notes?: string,
     isSecret: boolean
 }
 

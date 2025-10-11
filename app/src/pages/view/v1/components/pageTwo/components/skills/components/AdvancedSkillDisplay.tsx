@@ -7,12 +7,12 @@ import makeTempID from '../../../../../../../../utilities/makeTempId';
 
 interface Props {
     advancedSkills: SkillObject[],
-    adepts: number,
+    adepts?: number,
     insertSkill: InsertSkillFunction,
     updateSkill: UpdateSkillFunction
 }
 
-export default function AdvancedSkillDisplay({ advancedSkills, adepts, insertSkill, updateSkill }: Props) {
+export default function AdvancedSkillDisplay({ advancedSkills, adepts = 0, insertSkill, updateSkill }: Props) {
     const isEditing = useContext(EditingContext)
 
     const [leftOver, setLeftOver] = useState(0)

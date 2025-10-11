@@ -7,7 +7,7 @@ import { PageTwoUpdates } from '../../hooks/interfaces/pageTwoInterfaces/UpdateE
 
 interface Props {
     pageTwoInfo: PageTwoInfo,
-    int: number,
+    int: number | undefined,
     pageTwoUpdateFunctions: PageTwoUpdates
 }
 

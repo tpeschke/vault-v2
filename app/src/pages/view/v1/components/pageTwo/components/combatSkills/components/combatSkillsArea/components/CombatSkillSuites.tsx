@@ -6,19 +6,19 @@ import { CombatSkillObject } from '@vault/common/interfaces/v1/pageTwo/combatInt
 
 interface Props {
     combatSkillSuites: CombatSkillObject[],
-    martialAdepts: number,
-    int: number,
+    martialAdepts?: number,
+    int?: number,
     updateCombatSkillSuite: UpdateCombatSkillSuite
 }
 
-export default function CombatSkillSuites({ combatSkillSuites, martialAdepts, int, updateCombatSkillSuite }: Props) {
+export default function CombatSkillSuites({ combatSkillSuites, martialAdepts = 0, int, updateCombatSkillSuite }: Props) {
     const isEditing = useContext(EditingContext)
 
-    function skillSuiteRow({ id, skill, cost, isTrained, rank }: CombatSkillObject, index: number, int: number, martialAdepts: number) {
+    function skillSuiteRow({ id, skill, cost, isTrained, rank }: CombatSkillObject, index: number, int: number = 0, martialAdepts: number) {
         return (
             <span className='skill-suite-row' key={index}>
                 <strong>{skill}</strong>
-                <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (martialAdepts * .10)))}</p>
+                {rank ? <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (martialAdepts * .10)))}</p> : <p>{cost}</p>}
                 {isTrained ?
                     <>
                         {isEditing ?

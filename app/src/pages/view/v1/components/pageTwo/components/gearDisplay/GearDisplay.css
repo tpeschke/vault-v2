@@ -71,6 +71,7 @@
     align-items: center;
     border: 1px solid;
     width: calc(25% - 2px);
+    min-height: 18px;
 }
 
 .gear-null-row {

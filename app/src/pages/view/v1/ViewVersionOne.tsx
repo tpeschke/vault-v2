@@ -62,8 +62,8 @@ export default function ViewVersionOne({
             <div className='version-one-shell'>
                 <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
                     <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunctions={pageOneUpdateFunctions} />
-                    {/* <PageTwo pageTwoInfo={pageTwoInfo} int={int} pageTwoUpdateFunctions={pageTwoUpdateFunctions} /> */}
-                    {showNotes && <PageThree generalNotes={generalNotes} updateNotes={updateNotes} />}
+                    <PageTwo pageTwoInfo={pageTwoInfo} int={int} pageTwoUpdateFunctions={pageTwoUpdateFunctions} />
+                    {showNotes && <PageThree generalNotes={generalNotes} updateNotes={updateNotes} isBlank={generalNotes.notes === undefined} />}
                 </div>
                 {!isDownloading &&
                     <Sidebar

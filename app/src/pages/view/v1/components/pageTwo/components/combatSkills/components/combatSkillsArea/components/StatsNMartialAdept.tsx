@@ -5,15 +5,49 @@ import { UpdateMartialAdeptFunction } from '../../../../../../../hooks/interface
 import { CombatStatModifiers } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills'
 
 interface Props {
-    combatStatModifiers: CombatStatModifiers,
-    martialAdepts: number,
+    combatStatModifiers?: CombatStatModifiers,
+    martialAdepts?: number,
     updateMartialAdept: UpdateMartialAdeptFunction
 }
 
 export default function StatsNMartialAdept({ combatStatModifiers, martialAdepts, updateMartialAdept }: Props) {
     const isEditing = useContext(EditingContext)
 
-    const { atk, def, dam, rec } = combatStatModifiers
+    if (combatStatModifiers) {
+        const { atk, def, dam, rec } = combatStatModifiers
+
+        return (
+            <div className='stats-and-martial-adept-shell'>
+                <h3>Check Mods & Skill Adepts</h3>
+                <div>
+                    <span>
+                        <strong>Atk</strong>
+                        <p>{atk}</p>
+                    </span>
+                    <span>
+                        <strong>Def</strong>
+                        <p>{def}</p>
+                    </span>
+                    <span>
+                        <strong>Dam</strong>
+                        <p>{dam}</p>
+                    </span>
+                    <span>
+                        <strong>Rec</strong>
+                        <p>{rec}</p>
+                    </span>
+                </div>
+                <span>
+                    <strong>Martial Adept(s)</strong>
+                    {isEditing ?
+                        <input type='number' onChange={(event: any) => updateMartialAdept(+event.target.value)} value={martialAdepts} />
+                        :
+                        <p>{martialAdepts}</p>
+                    }
+                </span>
+            </div>
+        )
+    }
 
     return (
         <div className='stats-and-martial-adept-shell'>
@@ -21,28 +55,24 @@ export default function StatsNMartialAdept({ combatStatModifiers, martialAdepts,
             <div>
                 <span>
                     <strong>Atk</strong>
-                    <p>{atk}</p>
+                    <p> </p>
                 </span>
                 <span>
                     <strong>Def</strong>
-                    <p>{def}</p>
+                    <p> </p>
                 </span>
                 <span>
                     <strong>Dam</strong>
-                    <p>{dam}</p>
+                    <p> </p>
                 </span>
                 <span>
                     <strong>Rec</strong>
-                    <p>{rec}</p>
+                    <p> </p>
                 </span>
             </div>
             <span>
                 <strong>Martial Adept(s)</strong>
-                {isEditing ?
-                    <input type='number' onChange={(event: any) => updateMartialAdept(+event.target.value)} value={martialAdepts} />
-                    :
-                    <p>{martialAdepts}</p>
-                }
+                <p> </p>
             </span>
         </div>
     )

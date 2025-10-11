@@ -7,7 +7,7 @@ import makeTempID from '../../../../../../../../../../utilities/makeTempId';
 
 interface Props {
     combatAdvSkills: CombatSkillObject[],
-    martialAdepts: number,
+    martialAdepts?: number,
     insertCombatSkill: InsertCombatSkillFunction,
     updateCombatSkill: UpdateCombatSkillFunction
 }
@@ -23,7 +23,7 @@ export default function CombatAdvSkills({ combatAdvSkills, martialAdepts, insert
 
     const showEditInputs = isEditing && leftOver > - 1
 
-    function skillRow({ id, skill, cost, rank }: CombatSkillObject, index: number, martialAdepts: number) {
+    function skillRow({ id, skill, cost = 0, rank = 0 }: CombatSkillObject, index: number, martialAdepts: number = 0) {
         const totalCost = cost + (rank * 2) - martialAdepts
 
         if (isEditing) {

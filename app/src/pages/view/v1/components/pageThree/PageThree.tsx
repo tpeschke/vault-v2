@@ -5,13 +5,14 @@ import { UpdateNotes } from '../../hooks/interfaces/pageThreeInterfaces/generalN
 
 interface Props {
     generalNotes: GeneralNotesInfo,
-    updateNotes: UpdateNotes
+    updateNotes: UpdateNotes,
+    isBlank?: boolean
 }
 
-export default function PageThree({ generalNotes, updateNotes }: Props) {
+export default function PageThree({ generalNotes, updateNotes, isBlank }: Props) {
     return (
         <div className='page-shell page card page-three' id='page-three'>
-            <GeneralInfoDisplay generalNotes={generalNotes} updateNotes={updateNotes}/>
+            <GeneralInfoDisplay generalNotes={generalNotes} updateNotes={updateNotes} isBlank={isBlank}/>
         </div>
     )
 }
