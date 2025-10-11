@@ -31,8 +31,7 @@ export default function ViewVersionOne({
     isQuickSaving
 }: Props) {
     const isEditing = useContext(EditingContext)
-    // TODO change to false
-    const [viewQuickEdit, setViewQuickEdit] = useState(true)
+    const [viewQuickEdit, setViewQuickEdit] = useState(false)
 
     const toggleViewQuickEdit = () => {
         setViewQuickEdit(!viewQuickEdit)
