@@ -59,7 +59,14 @@ export interface QuickEditWeaponModifierBody {
     value: WeaponQuickEditModifiers
 }
 
+export type QuickEditComplexAttributes = 'wounds'
+
 export type QuickEditActions = 'add' | 'update' | 'delete'
+
+export interface ResolvedAction {
+    key: string,
+    id: number
+}
 
 export interface QuickEditWoundBody {
     attribute: 'wound',

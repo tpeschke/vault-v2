@@ -8,7 +8,7 @@ import { AbilitiesNBurdensInfoKeys, GeneralInfoKeys } from "@vault/common/interf
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
 import { updateGeneralInfoUtility, updateMovementUtility } from "./utilities/updateUtilities/pageOneUtilities/upperSectionUtilities";
-import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, updateMaxRangeUtility, updateNerveAndVitalityInfoUtility, updateVitalityNNerveUtility, updateWoundUtility } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
+import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, updateMaxRangeUtility, updateNerveAndVitalityInfoUtility, updateVitalityNNerveUtility, updateWoundUtility, updateWoundWithID } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
@@ -25,7 +25,7 @@ import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./uti
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
-import { ArmorQuickEditModifiers, ShieldQuickEditModifiers, WeaponQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
+import { ArmorQuickEditModifiers, QuickEditActions, ResolvedAction, ShieldQuickEditModifiers, WeaponQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
 import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
 import { useDispatch } from "react-redux";
@@ -131,7 +131,28 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
                 }).then(_ => {
                     setIsQuickSaving(false)
                 })
-            }, 1000))
+            }, 500))
+        }
+    }
+
+    async function quickQuickSavingWithAction(quickEdit: string[], characterID: number, attribute: string, value: Wound, action: QuickEditActions): Promise<any> {
+        if (!isEditing && quickEdit.includes(attribute)) {
+            clearTimeout(timeOutID)
+
+            return new Promise((resolve) => {
+                setTimeOutID(setTimeout(() => {
+                    setIsQuickSaving(true)
+                    axios.post(quickEditURL, {
+                        characterID,
+                        attribute,
+                        value,
+                        action
+                    }).then(result => {
+                        resolve(result)
+                        setIsQuickSaving(false)
+                    })
+                }, 500))
+            })
         }
     }
 
@@ -236,12 +257,19 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateWound(changedIndex: number, newWound: Wound) {
         if (character) {
             setCharacter(updateWoundUtility(character, changedIndex, newWound))
+
+            const action: QuickEditActions = newWound.severity || newWound.days ? 'update' : 'delete'
+            quickQuickSavingWithAction(['wound'], character.id, 'wound', newWound, action)
         }
     }
 
-    function insertWound(newWound: Wound) {
+    async function insertWound(newWound: Wound) {
         if (character) {
-            setCharacter(insertWoundUtility(character, newWound))
+            const newCharacter = insertWoundUtility(character, newWound)
+            setCharacter(newCharacter)
+
+            const { data } = await quickQuickSavingWithAction(['wound'], newCharacter.id, 'wound', newWound, 'add')
+            setCharacter(updateWoundWithID(newCharacter, data))
         }
     }
 

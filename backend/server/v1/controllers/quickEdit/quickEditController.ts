@@ -19,6 +19,7 @@ import { saveNotes } from './utilities/stringUpdates/notes'
 import { saveMiscArmorMods } from './utilities/complexUpdates/armor'
 import { saveMiscShieldMods } from './utilities/complexUpdates/shield'
 import { saveWeapon } from './utilities/complexUpdates/weapon'
+import { saveWounds } from './utilities/complexUpdates/wound'
 
 interface EditRequest extends Request {
     params: {
@@ -84,11 +85,19 @@ export async function quickEditCharacter(request: EditRequest, response: Respons
             case 'weapon':
                 sendSuccess = await saveWeapon(value)
                 break
+            case 'wound':
+                const { action } = request.body
+                const resolvedAction = await saveWounds(characterID, value, action)
+                if (typeof resolvedAction === 'boolean') {
+                    sendSuccess = true
+                } else {
+                    checkForContentTypeBeforeSending(response, resolvedAction)
+                }
+                break
             default:
                 checkForContentTypeBeforeSending(response, { success: false })
         }
 
-        // wounds
         // equipment
 
         if (sendSuccess) {

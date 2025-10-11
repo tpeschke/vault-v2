@@ -1,6 +1,7 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 import { updateWeaponTablesWithoutMods } from "./updateWeaponTables";
+import { ResolvedAction } from "@vault/common/interfaces/v1/quickEdit";
 
 export function toggleIsThrownUtility(character: CharacterVersion1) {
     const [weaponOne, weaponTwo, weaponThree, weaponFour] = character.pageTwoInfo.combatWorkspaceInfo.weaponInfo
@@ -146,4 +147,31 @@ function alterCharacteristicArray(woundArray: Wound[], changedIndex: number, new
     }
 
     return woundArray.filter((_, index) => index !== changedIndex)
+}
+
+export function updateWoundWithID(character: CharacterVersion1, { id, key }: ResolvedAction): CharacterVersion1 {
+    return {
+        ...character,
+        pageOneInfo: {
+            ...character.pageOneInfo,
+            rightColumnInfo: {
+                ...character.pageOneInfo.rightColumnInfo,
+                nerveAndVitalityInfo: {
+                    ...character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo,
+                    wounds: character.pageOneInfo.rightColumnInfo.nerveAndVitalityInfo.wounds.map((object, index) => {
+                        if (object.key === key) {
+                            let modifiedWound = {
+                                ...object,
+                                id
+                            }
+                            
+                            delete modifiedWound.key
+                            return modifiedWound
+                        }
+                        return object
+                    })
+                }
+            }
+        }
+    }
 }
