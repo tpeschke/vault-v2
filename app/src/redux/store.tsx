@@ -9,6 +9,13 @@ export const store = configureStore({
     usersCharacters: usersCharactersReducer,
     charactersCache: charactersCacheSliceReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['chapter/cacheCharacter'],
+        ignoredPaths: ['charactersCache.characterCache']
+      },
+    })
 })
 
 export type RootState = ReturnType<typeof store.getState>

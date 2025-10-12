@@ -31,8 +31,7 @@ import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/
 import { useDispatch, useSelector } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 import { useNavigate } from "react-router-dom";
-import { cacheCharacter, CharacterPending } from "../../../../redux/slices/characterCacheSlice";
-import { delay } from '@vault/common/utilities/timingFunctions'
+import { cacheCharacter, CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -41,14 +40,16 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const charactersCache: { [key: number]: CharacterVersion1 } = useSelector((state: any) => state.charactersCache.characterCache)
+    const charactersCache: { [key: number]: CharacterCacheInfo } = useSelector((state: any) => state.charactersCache.characterCache)
 
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
 
         if (charactersCache[+characterID]) {
-            setCharacter(charactersCache[+characterID])
-            setRevertedCharacter(charactersCache[+characterID])
+            charactersCache[+characterID].characterInfo.then(data => {
+                setCharacter(data)
+                setRevertedCharacter(data)
+            })
         } else {
             axios.get(viewURL + characterID).then(({ data }) => {
                 if (data.message) {

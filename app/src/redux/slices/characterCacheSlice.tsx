@@ -3,8 +3,13 @@ import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
 
 interface State {
     characterCache: {
-        [key: number]: CharacterVersion1
+        [key: number]: CharacterCacheInfo
     }
+}
+
+export interface CharacterCacheInfo {
+    id: number
+    characterInfo: Promise<CharacterVersion1>
 }
 
 const initialState: State = {
@@ -15,7 +20,7 @@ export const charactersCacheSlice = createSlice({
     name: 'chapter',
     initialState,
     reducers: {
-        cacheCharacter: (state: State, action: PayloadAction<CharacterVersion1>) => {
+        cacheCharacter: (state: State, action: PayloadAction<CharacterCacheInfo>) => {
             const { payload } = action
             if (payload.id) {
                 state.characterCache[payload.id] = payload

@@ -42,9 +42,10 @@ export default function CharacterRow({ character, deleteCharacter }: Props) {
         clearTimeout(timeOutID)
         setTimeOutID(setTimeout(() => {
             if (!charactersCache[characterID]) {
-                axios.get(viewURL + characterID).then(({ data }) => {
-                    dispatch(cacheCharacter(data))
-                })
+                dispatch(cacheCharacter({
+                    id: characterID,
+                    characterInfo: axios.get(viewURL + characterID).then(({ data }) => data)
+                }))
             }
         }, 100))
     }
