@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import EditingContext from '../../pages/view/v1/contexts/EditingContext'
 import './TextArea.css'
 import TextArea from './TextArea'
-import { UpdateAbilitiesFunction } from '../../pages/view/v1/hooks/interfaces/UpdateRightColumnInterfaces'
+import { UpdateAbilitiesFunction } from '../../pages/view/v1/hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     lines: number,

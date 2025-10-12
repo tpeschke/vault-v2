@@ -1,5 +1,5 @@
 import { AbilitiesNBurdensInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
-import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
+import { FavorInfoKeys, VitalityNNerveCalcInfoKeys, NerveAndVitalityObjectKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 
 export type UpdateFavorInfoFunction = (key: FavorInfoKeys, value: number | boolean) => void
 

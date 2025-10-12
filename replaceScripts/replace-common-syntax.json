@@ -1,0 +1,9 @@
+{
+    "files": [
+        "app/dist/**/*.js",
+        "backend/common/dist/**/*.js",
+        "backend/server/dist/**/*.js"
+    ],
+    "from": "/vault/common/g",
+    "to": "vault/common/dist"
+}

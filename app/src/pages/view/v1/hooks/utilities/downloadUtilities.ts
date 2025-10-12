@@ -47,7 +47,7 @@ export function getPregen(character: CharacterVersion1): CharacterVersion1 {
                     convictions: convictions.map(cleansePairObject),
                     relationships: relationships.map(cleansePairObject),
                     flaws: flaws.map(cleansePairObject),
-                    reputation: reputation.map(_ => cleansePairObject({ title: null, value: '' })),
+                    reputation: reputation.map(_ => cleansePairObject({ title: undefined, value: '' })),
                 }
             }
         },
@@ -60,6 +60,6 @@ export function getPregen(character: CharacterVersion1): CharacterVersion1 {
     }
 }
 
-function cleansePairObject({ id, value }: PairObject) {
-    return { id, title: null, value }
+function cleansePairObject({ id, value }: PairObject): PairObject {
+    return { id, title: undefined, value }
 }

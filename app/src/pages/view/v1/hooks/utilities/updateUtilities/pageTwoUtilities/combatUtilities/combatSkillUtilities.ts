@@ -1,5 +1,5 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces";
-import { CombatSkillObject } from "@vault/common/interfaces/v1/pageTwo/combatSkills";
+import { CombatSkillObject } from "@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills";
 
 export function updateMartialAdeptUtility(character: CharacterVersion1, value: number) {
     return {
