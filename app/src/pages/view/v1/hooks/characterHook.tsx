@@ -11,7 +11,6 @@ import { updateGeneralInfoUtility, updateMovementUtility } from "./utilities/upd
 import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, updateMaxRangeUtility, updateNerveAndVitalityInfoUtility, updateVitalityNNerveUtility, updateWoundUtility, updateWoundWithID } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
 import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
-import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
 import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
 import { insertGearUtility, updateCashUtility, updateGearUtility, updateGearWithID } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 import { insertSkillUtility, updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility, updateSkillUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
@@ -32,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 import { useNavigate } from "react-router-dom";
 import { cacheCharacter, CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
+import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
