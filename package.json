@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite app",
     "build": "lerna run build && npm run replace",
-    "replace": "npm run replace-server",
-    "replace-server": "replace-in-file --configFile=replaceScripts/replace-common-syntax.json --verbose",
+    "replace": "npm run replace-common && npm run replace-server",
+    "replace-common": "replace-in-file --configFile=replaceScripts/replace-common-syntax.json --verbose",
+    "replace-server": "replace-in-file --configFile=replaceScripts/replace-server.json --verbose",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "npx tsx backend/server/vault.ts"
