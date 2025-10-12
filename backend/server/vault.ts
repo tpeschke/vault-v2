@@ -16,6 +16,7 @@ import path from 'path'
 import { callbackURL, clientID, clientSecret, domain, fakeAuth, secret, server } from './server-config'
 
 import { Profile } from './interfaces/apiInterfaces'
+import { Response, Request } from './interfaces/apiInterfaces'
 import authRoutesWithoutPassword from './routes/authentication'
 import query from './db/database'
 import userSQL from './v1/queries/user'
@@ -67,14 +68,14 @@ app.use(fakeAuth)
 app.use('/auth', authRoutesWithoutPassword(passport))
 app.use('/user', userRoutes)
 app.use('/home', homeRoutes)
-app.use('/view', characterRoutes)
+app.use('/getView', characterRoutes)
 app.use('/edit', editCharacterRoutes)
 app.use('/quickEdit', quickEditRoutes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
-// app.get('/*', (request: Request, response: Response) => {
-//     response.sendFile(path.join(__dirname + '/../../app/dist/index.html'))
-// })
+app.all('/{*any}', (_: Request, response: Response) => {
+    response.sendFile(path.join(__dirname + '/../../app/dist/index.html'))
+})
 
 // ================================== \\
 try {
