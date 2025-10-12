@@ -1,9 +1,9 @@
 export interface GearInfo {
-    copper?: number,
-    silver?: number,
-    gold?: number,
-    platinum?: number
-    carry?: number,
+    copper: number,
+    silver: number,
+    gold: number,
+    platinum: number,
+    carry: number,
     gear: GearObject[]
 }
 
@@ -14,8 +14,8 @@ export type GearInfoObjectsKeys = keyof GearInfoObjects
 export interface GearObject {
     key?: string,
     id?: number,
-    item?: string,
-    size?: string
+    item: string,
+    size: string
 }
 
 export type GearObjectKeys = keyof GearObject

@@ -3,30 +3,32 @@ import '../LeftColumn.css'
 import { useContext } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
 import { UpdateNativeLanguageFunction, UpdateSkillSuiteFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateSkillInterfaces';
+import IsBlankContext from '../../../../../../../contexts/IsBlankContext';
 
 interface Props {
     skillSuites: SkillObject[],
     nativeLanguage: SkillObject,
-    adepts?: number,
-    int?: number,
+    adepts: number,
+    int: number,
     updateSkillSuite: UpdateSkillSuiteFunction,
     updateNativeLanguage: UpdateNativeLanguageFunction
 }
 
 export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts = 0, int, updateSkillSuite, updateNativeLanguage }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
     function skillSuiteRow({ id, skill, cost, isTrained, rank, mod }: SkillObject, index: number, int: number = 0, adepts: number) {
         return (
             <span className='skill-suite-row' key={index}>
                 <strong>{skill}</strong>
-                {rank ? <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (adepts * .10)))}</p> : <p>{cost}</p>}
+                {!isBlank ? <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (adepts * .10)))}</p> : <p>{cost}</p>}
                 {isTrained ?
                     <>
                         {isEditing ?
                             <input type='number' onChange={(event: any) => updateSkillSuite(index, { id, skill, cost, isTrained, rank: +event.target.value, mod })} value={rank} />
                             :
-                            <p>{rank}</p>
+                            <p>{!isBlank ? rank : ''}</p>
                         }
                     </>
                     :
@@ -41,7 +43,7 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
                         }
                     </span>
                     :
-                    <p>{mod}</p>
+                    <p>{!isBlank ? mod : ''}</p>
                 }
             </span>
         )
@@ -93,9 +95,9 @@ export default function SkillSuitesDisplay({ skillSuites, nativeLanguage, adepts
                     :
                     <>
                         <p>{skill}</p>
-                        <p>{int ? nativeLanguageTotalCost : ''}</p>
-                        <p>{nativeLanguageRank}</p>
-                        <p>{mod}</p>
+                        <p>{!isBlank ? nativeLanguageTotalCost : ''}</p>
+                        <p>{!isBlank ? nativeLanguageRank : ''}</p>
+                        <p>{!isBlank ? mod : ''}</p>
                     </>
                 }
             </span>

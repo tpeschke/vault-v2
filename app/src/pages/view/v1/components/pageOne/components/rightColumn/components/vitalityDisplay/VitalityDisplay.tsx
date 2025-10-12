@@ -4,16 +4,19 @@ import { useContext, useEffect, useState } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateNerveAndVitalityInfoFunction, InsertWoundFunction, UpdateWoundFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 import makeTempID from '../../../../../../../../../utilities/makeTempId'
+import IsBlankContext from '../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    nerveAndVitalityInfo?: NerveAndVitalityInfo,
+    nerveAndVitalityInfo: NerveAndVitalityInfo,
     updateNerveAndVitalityInfo: UpdateNerveAndVitalityInfoFunction,
     insertWound: InsertWoundFunction,
     updateWound: UpdateWoundFunction
 }
 
 export default function VitalityDisplay({ nerveAndVitalityInfo, updateNerveAndVitalityInfo, insertWound, updateWound }: Props) {
-    if (nerveAndVitalityInfo) {
+    const isBlank = useContext(IsBlankContext)
+
+    if (!isBlank) {
         const isEditing = useContext(EditingContext)
 
         const { vitality, fatigue, wounds, sizeMod } = nerveAndVitalityInfo

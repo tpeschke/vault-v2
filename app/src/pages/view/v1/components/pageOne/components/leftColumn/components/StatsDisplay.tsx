@@ -2,16 +2,18 @@ import { StatsInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfa
 import { useContext } from "react"
 import EditingContext from "../../../../../contexts/EditingContext"
 import { UpdateStatFunction } from "../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces"
+import IsBlankContext from "../../../../../contexts/IsBlankContext"
 
 interface Props {
-    statInfo?: StatsInfo,
+    statInfo: StatsInfo,
     updateStat: UpdateStatFunction
 }
 
 export default function StatsDisplay({ statInfo, updateStat }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
-    if (statInfo) {
+    if (!isBlank) {
         const { str, dex, con, int, will, pre } = statInfo
 
         return (

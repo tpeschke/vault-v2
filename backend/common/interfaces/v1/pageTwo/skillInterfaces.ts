@@ -2,8 +2,8 @@ export interface SkillInfo {
     skillSuites: SkillObject[],
     nativeLanguage: SkillObject,
     advancedSkills: SkillObject[],
-    checkMods?: CheckModsObject,
-    adepts?: number
+    checkMods: CheckModsObject,
+    adepts: number
 }
 
 export interface CheckModsObject {
@@ -21,8 +21,8 @@ export interface SkillObject {
     skill: string,
     cost: number,
     isTrained?: boolean,
-    rank?: number,
-    mod?: number
+    rank: number,
+    mod: number
 }
 
 export type SkillObjectKeys = keyof SkillObject

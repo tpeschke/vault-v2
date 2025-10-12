@@ -3,28 +3,30 @@ import { useContext } from 'react';
 import EditingContext from '../../../../../../../contexts/EditingContext';
 import { UpdateCombatSkillSuite } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces';
 import { CombatSkillObject } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills';
+import IsBlankContext from '../../../../../../../contexts/IsBlankContext';
 
 interface Props {
     combatSkillSuites: CombatSkillObject[],
-    martialAdepts?: number,
-    int?: number,
+    martialAdepts: number,
+    int: number,
     updateCombatSkillSuite: UpdateCombatSkillSuite
 }
 
 export default function CombatSkillSuites({ combatSkillSuites, martialAdepts = 0, int, updateCombatSkillSuite }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
     function skillSuiteRow({ id, skill, cost, isTrained, rank }: CombatSkillObject, index: number, int: number = 0, martialAdepts: number) {
         return (
             <span className='skill-suite-row' key={index}>
                 <strong>{skill}</strong>
-                {rank ? <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (martialAdepts * .10)))}</p> : <p>{cost}</p>}
+                {!isBlank ? <p>{Math.ceil((cost - int + (rank * 10)) * (1 - (martialAdepts * .10)))}</p> : <p>{cost}</p>}
                 {isTrained ?
                     <>
                         {isEditing ?
                             <input type='number' onChange={(event: any) => updateCombatSkillSuite(index, { id, skill, cost, isTrained, rank: +event.target.value })} value={rank} />
                             :
-                            <p>{rank}</p>
+                            <p>{!isBlank ? rank : ''}</p>
                         }
                     </>
                     :

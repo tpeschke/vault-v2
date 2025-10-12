@@ -6,7 +6,7 @@ import { SkillLeftColumnUpdates } from '../../../../../../hooks/interfaces/pageT
 
 interface Props {
     skillInfo: SkillInfo,
-    int?: number,
+    int: number,
     leftColumnUpdates: SkillLeftColumnUpdates
 }
 

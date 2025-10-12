@@ -4,6 +4,7 @@ import { SetLoadingFunction } from "../../components/loading/Loading"
 import ViewVersionOne from "./v1/ViewVersionOne"
 import CharacterHook from './v1/hooks/characterHook'
 import EditingContext from './v1/contexts/EditingContext'
+import IsBlankContext from './v1/contexts/IsBlankContext'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -46,19 +47,21 @@ export default function View({ setLoading, pathname }: Props) {
 
     return (
         <div className="home-shell">
-            <EditingContext value={isEditing}>
-                {character &&
-                    <ViewVersionOne
-                        character={character}
-                        downloadCharacter={downloadCharacter}
-                        isDownloading={isDownloading}
-                        updateFunctions={updateFunctions}
-                        toggleIsEditing={toggleIsEditing}
-                        saveCharacter={saveCharacter}
-                        revertCharacterToUnedited={revertCharacterToUnedited}
-                        isQuickSaving={isQuickSaving}
-                    />}
-            </EditingContext>
+            <IsBlankContext value={!!character?.isBlank}>
+                <EditingContext value={isEditing}>
+                    {character &&
+                        <ViewVersionOne
+                            character={character}
+                            downloadCharacter={downloadCharacter}
+                            isDownloading={isDownloading}
+                            updateFunctions={updateFunctions}
+                            toggleIsEditing={toggleIsEditing}
+                            saveCharacter={saveCharacter}
+                            revertCharacterToUnedited={revertCharacterToUnedited}
+                            isQuickSaving={isQuickSaving}
+                        />}
+                </EditingContext>
+            </IsBlankContext>
         </div>
     )
 }

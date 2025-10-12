@@ -3,16 +3,18 @@ import './ShieldWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { ShieldUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
+import IsBlankContext from '../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    shieldInfo?: ShieldInfo,
+    shieldInfo: ShieldInfo,
     shieldUpdates: ShieldUpdates
 }
 
 export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
-    if (shieldInfo) {
+    if (!isBlank) {
         const { name, dr, size, cover, flanks, bonus, modifiers } = shieldInfo
         const { def, fat, pry, brk } = modifiers
         const { updateBasicShieldInfo, updateShieldModifier } = shieldUpdates

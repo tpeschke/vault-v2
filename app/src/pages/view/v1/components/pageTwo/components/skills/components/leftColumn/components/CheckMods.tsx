@@ -3,17 +3,19 @@ import '../LeftColumn.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../../contexts/EditingContext'
 import { UpdateSkillAdept } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateSkillInterfaces'
+import IsBlankContext from '../../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    checkMods?: CheckModsObject,
-    adepts?: number,
+    checkMods: CheckModsObject,
+    adepts: number,
     updateSkillAdept: UpdateSkillAdept,
 }
 
 export default function CheckModsDisplay({ checkMods, adepts, updateSkillAdept }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
     
-    if (checkMods && adepts) {
+    if (!isBlank) {
         const { str, dex, con, int, will, pre } = checkMods
         return (
             <div className='check-mods-display-shell'>

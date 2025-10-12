@@ -3,16 +3,18 @@ import './ArmorWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { ArmorUpdates } from '../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
+import IsBlankContext from '../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    armorInfo?: ArmorInfo,
+    armorInfo: ArmorInfo,
     armorUpdates: ArmorUpdates
 }
 
 export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
-    if (armorInfo) {
+    if (!isBlank) {
         const { name, dr, skillAdj, bonus, modifiers } = armorInfo
         const { def, fat, rec, init } = modifiers
 

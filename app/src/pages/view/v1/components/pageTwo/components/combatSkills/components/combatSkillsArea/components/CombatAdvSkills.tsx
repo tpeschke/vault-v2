@@ -7,7 +7,7 @@ import makeTempID from '../../../../../../../../../../utilities/makeTempId';
 
 interface Props {
     combatAdvSkills: CombatSkillObject[],
-    martialAdepts?: number,
+    martialAdepts: number,
     insertCombatSkill: InsertCombatSkillFunction,
     updateCombatSkill: UpdateCombatSkillFunction
 }

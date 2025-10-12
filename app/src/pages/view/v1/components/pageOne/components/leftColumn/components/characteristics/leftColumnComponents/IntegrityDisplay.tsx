@@ -1,14 +1,17 @@
 import { IntegrityInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { UpdateIntegrityInfo } from "../../../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces"
+import IsBlankContext from "../../../../../../../contexts/IsBlankContext"
 
 interface Props {
-    integrityInfo?: IntegrityInfo,
+    integrityInfo: IntegrityInfo,
     updateIntegrityInfo: UpdateIntegrityInfo
 }
 
 export default function IntegrityDisplay({ integrityInfo, updateIntegrityInfo }: Props) {
-    if (integrityInfo) {
+    const isBlank = useContext(IsBlankContext)
+
+    if (!isBlank) {
         const { integrity, gritDie } = integrityInfo
 
         const [leftPosition, setLeftPosition] = useState(21)

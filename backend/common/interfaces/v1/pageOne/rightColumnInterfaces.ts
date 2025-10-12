@@ -1,13 +1,13 @@
 export interface RightColumnInfo {
     weapons: WeaponTable[],
-    maxRange?: number,
-    favorInfo?: FavorInfo,
-    nerveAndVitalityInfo?: NerveAndVitalityInfo
+    maxRange: number,
+    favorInfo: FavorInfo,
+    nerveAndVitalityInfo: NerveAndVitalityInfo
 }
 
 export interface WeaponTable {
-    name?: string,
-    attacks?: {
+    name: string,
+    attacks: {
         meas: number,
         atk: number,
         damage: string,
@@ -15,7 +15,7 @@ export interface WeaponTable {
         rec: number,
         init: number
     },
-    defenses?: {
+    defenses: {
         def: number,
         flanks: number,
         parry: number,

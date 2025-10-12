@@ -3,16 +3,18 @@ import './FavorVitalityNRanges.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateFavorInfoFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
+import IsBlankContext from '../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    favorInfo?: FavorInfo,
+    favorInfo: FavorInfo,
     updateFavorInfo: UpdateFavorInfoFunction
 }
 
 export default function FavorDisplay({ favorInfo, updateFavorInfo }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
-    if (favorInfo) {
+    if (!isBlank) {
         const { favor, maxFavor, anointed } = favorInfo
 
         return (

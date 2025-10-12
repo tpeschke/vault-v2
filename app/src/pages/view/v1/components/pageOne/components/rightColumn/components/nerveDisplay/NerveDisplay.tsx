@@ -3,15 +3,17 @@ import './NerveDisplay.css'
 import { useContext, useEffect, useState } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateNerveAndVitalityInfoFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
+import IsBlankContext from '../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    nerveAndVitalityInfo?: NerveAndVitalityInfo,
+    nerveAndVitalityInfo: NerveAndVitalityInfo,
     updateNerveAndVitalityInfo: UpdateNerveAndVitalityInfoFunction
 }
 
 export default function NerveDisplay({ nerveAndVitalityInfo, updateNerveAndVitalityInfo }: Props) {
+    const isBlank = useContext(IsBlankContext)
 
-    if (nerveAndVitalityInfo) {
+    if (!isBlank) {
         const isEditing = useContext(EditingContext)
 
         const { nerve, fatigue, stress, relaxation } = nerveAndVitalityInfo

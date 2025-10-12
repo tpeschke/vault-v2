@@ -2,16 +2,18 @@ import { MovementInfo } from "@vault/common/interfaces/v1/pageOne/leftColumnInte
 import { useContext } from "react"
 import EditingContext from "../../../../../contexts/EditingContext"
 import { UpdateMovementFunction } from "../../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces"
+import IsBlankContext from "../../../../../contexts/IsBlankContext"
 
 interface Props {
-    movementInfo?: MovementInfo,
+    movementInfo: MovementInfo,
     updateMovement: UpdateMovementFunction
 }
 
 export default function MovementDisplay({ movementInfo, updateMovement }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
-    if (movementInfo) {
+    if (!isBlank) {
         const { crawl, walk, jog, run, sprint } = movementInfo
 
         return (

@@ -3,14 +3,17 @@ import './FavorVitalityNRanges.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateVitalityNNerveFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
+import IsBlankContext from '../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    vitalityNNerveCalcInfo?: VitalityNNerveCalcInfo,
+    vitalityNNerveCalcInfo: VitalityNNerveCalcInfo,
     updateVitalityNNerve: UpdateVitalityNNerveFunction
 }
 
 export default function VitalityNNerveCalcDisplay({ vitalityNNerveCalcInfo, updateVitalityNNerve }: Props) {
-    if (vitalityNNerveCalcInfo) {
+    const isBlank = useContext(IsBlankContext)
+
+    if (!isBlank) {
         const isEditing = useContext(EditingContext)
 
         const { vitalityDie, minVitality, nerveDie, minNerve } = vitalityNNerveCalcInfo

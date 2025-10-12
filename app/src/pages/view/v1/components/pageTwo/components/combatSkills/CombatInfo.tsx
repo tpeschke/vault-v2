@@ -8,7 +8,7 @@ import { CombatUpdates } from '../../../../hooks/interfaces/pageTwoInterfaces/Up
 
 interface Props {
     combatWorkspaceInfo: CombatWorkspaceInfo,
-    int?: number,
+    int: number,
     updateCombatInfo: CombatUpdates
 }
 

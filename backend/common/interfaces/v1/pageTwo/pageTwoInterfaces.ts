@@ -12,8 +12,8 @@ export interface PageTwoInfo {
 }
 
 export interface CombatWorkspaceInfo {
-    armorInfo?: ArmorInfo,
-    shieldInfo?: ShieldInfo,
+    armorInfo: ArmorInfo,
+    shieldInfo: ShieldInfo,
     weaponInfo: WeaponInfo[],
     combatSkillInfo: CombatSkillsInfo
 }

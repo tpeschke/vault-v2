@@ -1,6 +1,6 @@
 export interface LeftColumnInfo {
-    statInfo?: StatsInfo,
-    movementInfo?: MovementInfo,
+    statInfo: StatsInfo,
+    movementInfo: MovementInfo,
     characteristicInfo: CharacteristicInfo,
 }
 
@@ -33,7 +33,7 @@ export interface PairObject {
 }
 
 export interface CharacteristicInfo {
-    integrityInfo?: IntegrityInfo,
+    integrityInfo: IntegrityInfo,
     goals: PairObject[],
     descriptions: PairObject[],
     convictions: PairObject[],
@@ -41,7 +41,7 @@ export interface CharacteristicInfo {
     flaws: PairObject[],
     culturalStrength: string,
     reputation: PairObject[],
-    assets?: string
+    assets: string
 }
 
 export type CharacteristicStringKeys = 'culturalStrength' | 'assets'

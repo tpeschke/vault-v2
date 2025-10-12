@@ -5,7 +5,7 @@ import { ToggleIsThrownFunction } from '../../../../../../hooks/interfaces/pageO
 
 interface Props {
     weapons: WeaponTable[],
-    maxRange?: number,
+    maxRange: number,
     toggleIsThrown: ToggleIsThrownFunction
 }
 

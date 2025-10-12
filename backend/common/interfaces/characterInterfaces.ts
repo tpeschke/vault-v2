@@ -3,12 +3,13 @@ import { GeneralNotesInfo } from "./v1/pageThree/generalNotesInterfaces"
 import { PageTwoInfo } from "./v1/pageTwo/pageTwoInterfaces"
 
 export interface CharacterBase {
-    version: 1 | 2
+    version: 1 | 1.5 | 2
 }
 
 export interface CharacterVersion1 extends CharacterBase {
     version: 1,
-    id: number | null,
+    isBlank?: boolean,
+    id: number,
     userInfo: CharacterUserInfo,
     pageOneInfo: PageOneInfo,
     pageTwoInfo: PageTwoInfo,
@@ -16,7 +17,7 @@ export interface CharacterVersion1 extends CharacterBase {
 }
 
 export interface CharacterUserInfo {
-    userID: number | null,
+    userID: number,
     ownsThisCharacter: boolean
 }
 

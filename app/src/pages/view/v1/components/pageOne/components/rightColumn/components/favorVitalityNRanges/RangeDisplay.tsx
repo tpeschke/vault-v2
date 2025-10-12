@@ -2,13 +2,15 @@ import { useContext, useEffect, useState } from 'react'
 import './FavorVitalityNRanges.css'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { UpdateMaxRangeFunction } from '../../../../../../hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
+import IsBlankContext from '../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    maxRange?: number,
+    maxRange: number,
     updateMaxRange: UpdateMaxRangeFunction
 }
 
 export default function RangeDisplay({ maxRange, updateMaxRange }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
     const penaltyArray = [0, -2, -4, -8, -16, -32]
@@ -16,23 +18,36 @@ export default function RangeDisplay({ maxRange, updateMaxRange }: Props) {
     const [rangeIncrement, setRangeIncrement] = useState(1)
 
     useEffect(() => {
-        if (maxRange) {
+        if (!isBlank) {
             setRangeIncrement(Math.ceil(maxRange / 6))
         }
     }, [maxRange])
 
     function RangeRow(penalty: number, lowEndValue: number, highEndValue: number) {
+        if (!isBlank) {
+            return (
+                <span key={penalty}>
+                    <strong>{penalty}</strong>
+                    <span>
+                        <p>{lowEndValue}</p>
+                        <p>-</p>
+                        {isEditing && penalty === -32 ?
+                            <input type='number' onChange={(event: any) => updateMaxRange(+event.target.value)} value={highEndValue} />
+                            :
+                            <p>{highEndValue}</p>
+                        }
+                    </span>
+                </span>
+            )
+        }
+
         return (
             <span key={penalty}>
                 <strong>{penalty}</strong>
                 <span>
-                    <p>{lowEndValue}</p>
+                    <p> </p>
                     <p>-</p>
-                    {isEditing && penalty === -32 ?
-                        <input type='number' onChange={(event: any) => updateMaxRange(+event.target.value)} value={highEndValue} />
-                        :
-                        <p>{highEndValue}</p>
-                    }
+                    <p> </p>
                 </span>
             </span>
         )

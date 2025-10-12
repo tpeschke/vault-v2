@@ -48,7 +48,7 @@ export default function CharacteristicsDisplay({ characteristicInfo, characteris
             </div>
             <ReputationDisplay reputation={reputation} insertReputation={insertCharacteristic('reputation')} updateReputation={updateCharacteristic('reputation')}/>
             <h3>Allies, Contacts, & Assets</h3>
-            <TextArea onChange={(event: any) => updateCharacteristicString('assets', event.target.value)} lines={6} value={assets} isBlank={assets === undefined} />
+            <TextArea onChange={(event: any) => updateCharacteristicString('assets', event.target.value)} lines={6} value={assets} />
         </div>
     )
 }

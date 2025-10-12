@@ -23,9 +23,9 @@ export interface ShieldModifiersInfo {
 export type ShieldModifiersInfoKeys = keyof ShieldModifiersInfo
 
 export interface ShieldModifiersObject {
-    base?: number,
-    skill?: number,
-    misc?: number,
+    base: number,
+    skill: number,
+    misc: number,
     total: number
 }
 

@@ -4,16 +4,18 @@ import { GeneralInfo as GeneralInfoDisplay } from '@vault/common/interfaces/v1/p
 import EditingContext from '../../../../contexts/EditingContext'
 import { useContext } from 'react'
 import { UpdateGeneralInfoFunction } from '../../../../hooks/interfaces/pageOneInterfaces/UpdateCharacteristicInterfaces'
+import IsBlankContext from '../../../../contexts/IsBlankContext'
 
 interface Props {
-    generalInfo?: GeneralInfoDisplay,
+    generalInfo: GeneralInfoDisplay,
     updateGeneralInfo: UpdateGeneralInfoFunction
 }
 
 export default function GeneralInfo({ generalInfo, updateGeneralInfo }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
-    if (generalInfo) {
+    if (!isBlank) {
         const { name, ancestry, class: primaryClass, subclass, level, crpUnspent, crpSpent, crpToNextLevel } = generalInfo
 
         return (

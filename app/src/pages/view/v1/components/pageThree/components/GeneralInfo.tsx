@@ -8,10 +8,10 @@ import { UpdateNotes } from '../../../hooks/interfaces/pageThreeInterfaces/gener
 interface Props {
     generalNotes: GeneralNotesInfo,
     updateNotes: UpdateNotes,
-    isBlank?: boolean
+    canEdit?: boolean
 }
 
-export default function GeneralInfoDisplay({ generalNotes, updateNotes, isBlank }: Props) {
+export default function GeneralInfoDisplay({ generalNotes, updateNotes, canEdit }: Props) {
     const isEditing = useContext(EditingContext)
 
     const { notes, isSecret } = generalNotes
@@ -35,7 +35,7 @@ export default function GeneralInfoDisplay({ generalNotes, updateNotes, isBlank 
                     </span>
                 }
             </span>
-            <TextArea onChange={(event: any) => updateNotes('notes', event.target.value)} lines={53} value={notes} isBlank={isBlank} />
+            <TextArea onChange={(event: any) => updateNotes('notes', event.target.value)} lines={53} value={notes} canEdit={canEdit} />
         </>
     )
 }

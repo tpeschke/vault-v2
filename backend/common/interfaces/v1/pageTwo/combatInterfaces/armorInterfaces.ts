@@ -21,9 +21,9 @@ export interface ArmorModifiersInfo {
 export type ArmorModifiersInfoKeys = keyof ArmorModifiersInfo
 
 export interface ArmorModifiersObject {
-    base?: number,
-    skill?: number,
-    misc?: number,
+    base: number,
+    skill: number,
+    misc: number,
     total: number
 }
 

@@ -6,7 +6,7 @@ import { SkillUpdates } from '../../../../hooks/interfaces/pageTwoInterfaces/Upd
 
 interface Props {
     skillInfo: SkillInfo,
-    int?: number,
+    int: number,
     updateSkillInfo: SkillUpdates
 }
 

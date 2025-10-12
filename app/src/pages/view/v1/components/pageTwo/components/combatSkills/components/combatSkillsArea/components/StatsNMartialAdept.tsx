@@ -3,17 +3,19 @@ import { useContext } from 'react'
 import EditingContext from '../../../../../../../contexts/EditingContext'
 import { UpdateMartialAdeptFunction } from '../../../../../../../hooks/interfaces/pageTwoInterfaces/UpdateCombatInterfaces'
 import { CombatStatModifiers } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/combatSkills'
+import IsBlankContext from '../../../../../../../contexts/IsBlankContext'
 
 interface Props {
-    combatStatModifiers?: CombatStatModifiers,
-    martialAdepts?: number,
+    combatStatModifiers: CombatStatModifiers,
+    martialAdepts: number,
     updateMartialAdept: UpdateMartialAdeptFunction
 }
 
 export default function StatsNMartialAdept({ combatStatModifiers, martialAdepts, updateMartialAdept }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
-    if (combatStatModifiers) {
+    if (!isBlank) {
         const { atk, def, dam, rec } = combatStatModifiers
 
         return (

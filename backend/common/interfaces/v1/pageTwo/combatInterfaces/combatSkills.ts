@@ -1,6 +1,6 @@
 export interface CombatSkillsInfo {
-    combatStatModifiers?: CombatStatModifiers,
-    martialAdepts?: number,
+    combatStatModifiers: CombatStatModifiers,
+    martialAdepts: number,
     combatSkillSuites: CombatSkillObject[],
     combatAdvSkills: CombatSkillObject[]
 }
@@ -18,7 +18,7 @@ export interface CombatSkillObject {
     skill: string,
     cost: number,
     isTrained?: boolean,
-    rank?: number
+    rank: number
 }
 
 export type CombatSkillObjectKeys = keyof CombatSkillObject

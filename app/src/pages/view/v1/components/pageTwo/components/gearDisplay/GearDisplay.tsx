@@ -1,8 +1,9 @@
 import { GearInfo, GearObject } from '@vault/common/interfaces/v1/pageTwo/gearInterfaces'
 import './GearDisplay.css'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { InsertGearFunction, UpdateCashFunction, UpdateGearFunction } from '../../../../hooks/interfaces/pageTwoInterfaces/UpdateGearInterfaces'
 import makeTempID from '../../../../../../../utilities/makeTempId'
+import IsBlankContext from '../../../../contexts/IsBlankContext'
 
 interface Props {
     gearInfo: GearInfo,
@@ -11,10 +12,19 @@ interface Props {
     insertGear: InsertGearFunction
 }
 
+export interface TempGearObject {
+    key?: string,
+    id?: number,
+    item?: string,
+    size?: string
+}
+
 export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGear }: Props) {
+    const isBlank = useContext(IsBlankContext)
+    
     const { copper, silver, gold, platinum, carry, gear } = gearInfo
 
-    if (carry) {
+    if (!isBlank) {
         const [leftOver, setLeftOver] = useState(0)
 
         const [largeEncumbrance, setLargeEncumbrance] = useState(0)
@@ -104,7 +114,7 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
         }
 
         function insertRow(key: 'item' | 'size', event: any) {
-            const tempGear: GearObject = {
+            const tempGear: TempGearObject = {
                 key: makeTempID(),
                 [key]: event.target.value
             }
@@ -112,7 +122,7 @@ export default function GearDisplay({ gearInfo, updateCash, updateGear, insertGe
             const isValidObject = tempGear.item !== '' || tempGear.size !== ''
 
             if (isValidObject) {
-                insertGear(tempGear)
+                insertGear(tempGear as GearObject)
                 event.target.value = null
             }
         }

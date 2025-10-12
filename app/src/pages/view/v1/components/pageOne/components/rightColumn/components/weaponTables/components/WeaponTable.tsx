@@ -3,15 +3,17 @@ import '../WeaponsTables.css'
 import { ToggleIsThrownFunction } from '../../../../../../../hooks/interfaces/pageOneInterfaces/UpdateWeaponInterfaces'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../../contexts/EditingContext'
+import IsBlankContext from '../../../../../../../contexts/IsBlankContext'
 
 interface Props {
     weapon: WeaponTable,
     weaponPosition: number,
-    maxRange?: number,
+    maxRange: number,
     toggleIsThrown: ToggleIsThrownFunction
 }
 
 export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleIsThrown }: Props) {
+    const isBlank = useContext(IsBlankContext)
     const isEditing = useContext(EditingContext)
 
     const isRanged = weaponPosition === 4
@@ -35,8 +37,7 @@ export default function WeaponsTable({ weapon, weaponPosition, maxRange, toggleI
         )
     }
 
-    if (weapon.attacks && weapon.defenses) {
-
+    if (!isBlank) {
         const { name, attacks, defenses } = weapon
         const { meas, atk, damage, type, rec, init } = attacks
         const { def, flanks, parry, cover, parryDR, dr } = defenses
