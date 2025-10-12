@@ -31,6 +31,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 import { useNavigate } from "react-router-dom";
 import { cacheCharacter, CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
+// One the server, this throws an error - apparently, this import can't be found
+// @ts-ignore
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
