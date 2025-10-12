@@ -25,12 +25,14 @@ import { updateBasicShieldInfoUtility, updateShieldModifierUtility } from "./uti
 import { WeaponInfoObjectKeys, WeaponModifiersInfoKeys, WeaponModifiersObjectKeys } from "@vault/common/interfaces/v1/pageTwo/weaponInterfaces";
 import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./utilities/updateUtilities/pageTwoUtilities/combatUtilities/weaponUtilities";
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
-import { ArmorQuickEditModifiers, QuickEditActions, ResolvedAction, ShieldQuickEditModifiers, WeaponQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
+import { ArmorQuickEditModifiers, QuickEditActions, ShieldQuickEditModifiers, WeaponQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
 import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
 import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 import { useNavigate } from "react-router-dom";
+import { cacheCharacter, CharacterPending } from "../../../../redux/slices/characterCacheSlice";
+import { delay } from '@vault/common/utilities/timingFunctions'
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -39,16 +41,25 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const charactersCache: { [key: number]: CharacterVersion1 } = useSelector((state: any) => state.charactersCache.characterCache)
+
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
-        axios.get(viewURL + characterID).then(({ data }) => {
-            if (data.message) {
-                navigate('/')
-            } else {
-                setCharacter(data)
-                setRevertedCharacter(data)
-            }
-        })
+
+        if (charactersCache[+characterID]) {
+            setCharacter(charactersCache[+characterID])
+            setRevertedCharacter(charactersCache[+characterID])
+        } else {
+            axios.get(viewURL + characterID).then(({ data }) => {
+                if (data.message) {
+                    navigate('/')
+                } else {
+                    setCharacter(data)
+                    setRevertedCharacter(data)
+                    dispatch(cacheCharacter(charactersCache[data]))
+                }
+            })
+        }
     }, [pathname])
 
     const [isDownloading, setIsDownloading] = useState(false)
@@ -385,9 +396,9 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
                 const { def, fat, rec, init } = newCharacter.pageTwoInfo.combatWorkspaceInfo.armorInfo.modifiers
                 quickBasicQuickSaving(['armor'], character.id, 'armor', {
                     armorID: newCharacter.pageTwoInfo.combatWorkspaceInfo.armorInfo.id,
-                    def: def.misc, 
-                    fat: fat.misc, 
-                    rec: rec.misc, 
+                    def: def.misc,
+                    fat: fat.misc,
+                    rec: rec.misc,
                     init: init.misc,
                     [modifier]: value
                 })
@@ -410,9 +421,9 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
                 const { def, fat, pry, brk } = newCharacter.pageTwoInfo.combatWorkspaceInfo.shieldInfo.modifiers
                 quickBasicQuickSaving(['shield'], character.id, 'shield', {
                     shieldID: newCharacter.pageTwoInfo.combatWorkspaceInfo.shieldInfo.id,
-                    def: def.misc, 
-                    fat: fat.misc, 
-                    pry: pry.misc, 
+                    def: def.misc,
+                    fat: fat.misc,
+                    pry: pry.misc,
                     brk: brk.misc,
                     [modifier]: value
                 })
@@ -436,9 +447,9 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
                 quickBasicQuickSaving(['weapon'], character.id, 'weapon', {
                     weaponID: newCharacter.pageTwoInfo.combatWorkspaceInfo.weaponInfo[changedIndex].id,
                     position: changedIndex,
-                    atk: atk.misc, 
-                    rec: rec.misc, 
-                    pry: pry.misc, 
+                    atk: atk.misc,
+                    rec: rec.misc,
+                    pry: pry.misc,
                     dam: dam.misc,
                     [modifier]: value
                 })

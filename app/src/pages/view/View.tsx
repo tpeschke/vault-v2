@@ -18,7 +18,6 @@ export default function View({ setLoading, pathname }: Props) {
 
     const [isInitialLoad, setIsInitialLoad] = useState(true)
 
-
     useEffect(() => {
         if (character && isInitialLoad) {
             document.title = `${character.pageOneInfo.generalInfo?.name} - Bonfire Character Vault`
