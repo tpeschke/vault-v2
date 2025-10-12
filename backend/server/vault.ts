@@ -74,7 +74,7 @@ app.use('/quickEdit', quickEditRoutes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
 app.all('/{*any}', (_: Request, response: Response) => {
-    response.sendFile(path.join(__dirname + '/../../app/dist/index.html'))
+    response.sendFile(path.join(__dirname + '/../../../app/dist/index.html'))
 })
 
 // ================================== \\
