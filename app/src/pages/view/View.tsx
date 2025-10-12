@@ -21,7 +21,8 @@ export default function View({ setLoading, pathname }: Props) {
 
     useEffect(() => {
         if (character && isInitialLoad) {
-            document.title = `${character.pageOneInfo.generalInfo?.name} - Bonfire Character Vault`
+            const { name } = character.pageOneInfo.generalInfo
+            document.title = `${name ? name : 'Blank'} - Bonfire Character Vault`
             window.scrollTo(0, 0)
             setIsInitialLoad(false)
         }
