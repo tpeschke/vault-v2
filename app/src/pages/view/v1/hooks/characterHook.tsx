@@ -31,7 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 import { useNavigate } from "react-router-dom";
 import { cacheCharacter, CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
-import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/leftColumnUtilities";
+import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/characteristicUtilities";
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
