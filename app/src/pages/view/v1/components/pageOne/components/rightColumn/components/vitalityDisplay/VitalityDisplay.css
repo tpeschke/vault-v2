@@ -37,6 +37,7 @@
 .wounds-shell span {
     display: flex;
     width: 50%;
+    height: 19px;
 }
 
 .wounds-shell span>* {

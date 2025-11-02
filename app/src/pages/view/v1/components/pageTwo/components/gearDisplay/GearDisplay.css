@@ -51,6 +51,7 @@
 .gear-rows-shell>span {
     width: 25%;
     display: flex;
+    height: 17px;
 }
 
 .gear-rows-shell>span>input {
