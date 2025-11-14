@@ -11,7 +11,8 @@
     "replace-server": "replace-in-file --configFile=replaceScripts/replace-server.json --verbose",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "npx tsx backend/server/vault.ts"
+    "server": "npx tsx backend/server/vault.ts",
+    "host": "pm2 restart backend/server/dist/vault.js"
   },
   "workspaces": [
     "app",
