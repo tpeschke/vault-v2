@@ -4,13 +4,12 @@ import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { CharacterPageReturns } from '../view2CharacterInterfaces';
 import assemblePageType1 from './utilities/pageType1/assemblePageType1';
 import { Page404Error, PageV2 } from '@vault/common/interfaces/v2/pageTypes'
-
+import getCharacterOwnerID from './utilities/metaInfo';
 
 export default async function assembleV2Character(request: Request, response: Response, characterID: number, characterPages: CharacterPageReturns[]) {
     const loggedInUserID = request.user?.id
 
-    // TODO Get meta info about character
-    const characterOwnerID = 0
+    const characterOwnerID = await getCharacterOwnerID(characterID)
 
     const collectedPages: Promise<PageV2>[] = characterPages.map(({ pagetypeid: pageTypeID }) => {
         switch (pageTypeID) {
