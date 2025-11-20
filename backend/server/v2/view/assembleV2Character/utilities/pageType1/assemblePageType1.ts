@@ -1,5 +1,6 @@
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes";
 import getGeneralInfo from "./utilities/getGeneralInfo";
+import getStats from "./utilities/getStats";
 
 export default async function assemblePageType1(characterID: number): Promise<Page1> {
     let basicPageSkeleton: Page1 = {
@@ -110,7 +111,8 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
     }
 
     await Promise.all([
-        getGeneralInfo(characterID).then(generalInfo => basicPageSkeleton.generalInfo = generalInfo)
+        getGeneralInfo(characterID).then(generalInfo => basicPageSkeleton.generalInfo = generalInfo),
+        getStats(characterID).then(stats => basicPageSkeleton.stats = stats)
     ])
 
     return basicPageSkeleton
