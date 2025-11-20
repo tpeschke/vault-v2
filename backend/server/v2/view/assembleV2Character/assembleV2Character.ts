@@ -4,7 +4,7 @@ import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { CharacterPageReturns } from '../viewV2CharacterInterfaces';
 import assemblePageType1 from './utilities/pageType1/assemblePageType1';
 import { Page404Error, PageV2 } from '@vault/common/interfaces/v2/pageTypes'
-import getCharacterOwnerID from './utilities/metaInfo';
+import { getCharacterOwnerID } from './utilities/ownerInfo';
 
 export default async function assembleV2Character(request: Request, response: Response, characterID: number, characterPages: CharacterPageReturns[]) {
     const loggedInUserID = request.user?.id
@@ -27,7 +27,7 @@ export default async function assembleV2Character(request: Request, response: Re
         id: characterID,
         userInfo: {
             userID: characterOwnerID,
-            ownsThisCharacter: loggedInUserID === characterOwnerID 
+            ownsThisCharacter: loggedInUserID === characterOwnerID
         },
         pages
     }
