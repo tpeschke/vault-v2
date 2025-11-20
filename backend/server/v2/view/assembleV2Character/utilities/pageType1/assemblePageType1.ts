@@ -109,11 +109,9 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
         }
     }
 
-    let promiseArray: Promise<any>[] = [
+    await Promise.all([
         getGeneralInfo(characterID).then(generalInfo => basicPageSkeleton.generalInfo = generalInfo)
-    ]
-
-    await Promise.all(promiseArray)
+    ])
 
     return basicPageSkeleton
 }
