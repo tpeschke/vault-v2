@@ -1,24 +1,9 @@
-import { checkForContentTypeBeforeSending } from '../../controllers/common/sendingFunctions'
-import { Response, Request } from '../../interfaces/apiInterfaces'
-import { addCharacterToOwnerTable } from '../view/assembleV2Character/utilities/ownerInfo'
+// @ts-ignore
+import express from 'express'
+import addV2Character from './addV2CharacterController'
 
-export default async function addCharacter(request: Request, response: Response) {
-    // TODO add double checking about whether the user can add 
-    // I don't want to end this until towards the end to keep the code more manageable
+const characterV2Routes = express.Router()
 
-    const userID = request.user?.id
+characterV2Routes.post('/new', addV2Character)
 
-    if (userID) {
-        const characterID = await addCharacterToOwnerTable(userID)
-        
-        // TODO
-        // add page type 1
-        //  Add page type 2
-        //  Add page type 3
-        //  Add page type 4
-
-        checkForContentTypeBeforeSending(response, characterID)
-    } else {
-        checkForContentTypeBeforeSending(response, { color: "red", message: "You must be logged in to add a character"})
-    }
-}
+export default characterV2Routes

@@ -1,7 +1,8 @@
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes";
+import getGeneralInfo from "./utilities/getGeneralInfo";
 
 export default async function assemblePageType1(characterID: number): Promise<Page1> {
-    return {
+    let basicPageSkeleton: Page1 = {
         type: 1,
         generalInfo: {
             name: '',
@@ -107,4 +108,12 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
             attacks: []
         }
     }
+
+    let promiseArray: Promise<any>[] = [
+        getGeneralInfo(characterID).then(generalInfo => basicPageSkeleton.generalInfo = generalInfo)
+    ]
+
+    await Promise.all(promiseArray)
+
+    return basicPageSkeleton
 }
