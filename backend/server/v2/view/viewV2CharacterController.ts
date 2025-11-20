@@ -2,7 +2,7 @@ import { checkForContentTypeBeforeSending } from '../../controllers/common/sendi
 import query from '../../db/database'
 import { Response, Request } from '../../interfaces/apiInterfaces'
 import assembleV2Character from './assembleV2Character/assembleV2Character'
-import { CharacterPageReturns } from './view2CharacterInterfaces'
+import { CharacterPageReturns } from './viewV2CharacterInterfaces'
 
 export interface ViewRequest extends Request {
     params: {

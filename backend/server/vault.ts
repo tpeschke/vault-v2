@@ -25,7 +25,7 @@ import homeRoutes from './v1/controllers/home/HomeRoutes'
 import characterRoutes from './v1/controllers/view/viewCharacterRoutes'
 import editCharacterRoutes from './v1/controllers/edit/editCharacterRouter'
 import quickEditRoutes from './v1/controllers/quickEdit/quickEditRoutes'
-import characterV2Routes from './v2/view/view2CharacterRoutes'
+import characterV2Routes from './v2/view/viewV2CharacterRoutes'
 
 const app = express()
 app.use(bodyParser.json({ limit: '10mb' }))

@@ -1,6 +1,6 @@
 // @ts-ignore
 import express from 'express'
-import { getV2Character } from './view2CharacterController'
+import { getV2Character } from './viewV2CharacterController'
 
 const characterV2Routes = express.Router()
 

@@ -1,7 +1,7 @@
 import { CharacterVersion2 } from '@vault/common/interfaces/characterInterfaces';
 import { checkForContentTypeBeforeSending } from '../../../controllers/common/sendingFunctions';
 import { Response, Request } from '../../../interfaces/apiInterfaces'
-import { CharacterPageReturns } from '../view2CharacterInterfaces';
+import { CharacterPageReturns } from '../viewV2CharacterInterfaces';
 import assemblePageType1 from './utilities/pageType1/assemblePageType1';
 import { Page404Error, PageV2 } from '@vault/common/interfaces/v2/pageTypes'
 import getCharacterOwnerID from './utilities/metaInfo';
@@ -24,7 +24,7 @@ export default async function assembleV2Character(request: Request, response: Re
 
     const finalCharacter: CharacterVersion2 = {
         version: 2,
-        id: 0,
+        id: characterID,
         userInfo: {
             userID: characterOwnerID,
             ownsThisCharacter: loggedInUserID === characterOwnerID 
