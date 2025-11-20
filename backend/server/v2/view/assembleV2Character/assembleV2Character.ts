@@ -1,3 +1,4 @@
+import { CharacterVersion2 } from '@vault/common/interfaces/characterInterfaces';
 import { checkForContentTypeBeforeSending } from '../../../controllers/common/sendingFunctions';
 import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { CharacterPageReturns } from '../view2CharacterInterfaces';
@@ -6,7 +7,12 @@ import { Page404Error, PageV2 } from '@vault/common/interfaces/v2/pageTypes'
 
 
 export default async function assembleV2Character(request: Request, response: Response, characterID: number, characterPages: CharacterPageReturns[]) {
-    const character: Promise<PageV2>[] = characterPages.map(({ pagetypeid: pageTypeID }) => {
+    const loggedInUserID = request.user?.id
+
+    // TODO Get meta info about character
+    const characterOwnerID = 0
+
+    const collectedPages: Promise<PageV2>[] = characterPages.map(({ pagetypeid: pageTypeID }) => {
         switch (pageTypeID) {
             case 1:
                 return assemblePageType1(characterID)
@@ -15,9 +21,19 @@ export default async function assembleV2Character(request: Request, response: Re
         }
     })
 
-    await Promise.all(character)
+    const pages = await Promise.all(collectedPages)
 
-    checkForContentTypeBeforeSending(response, character)
+    const finalCharacter: CharacterVersion2 = {
+        version: 2,
+        id: 0,
+        userInfo: {
+            userID: characterOwnerID,
+            ownsThisCharacter: loggedInUserID === characterOwnerID 
+        },
+        pages
+    }
+
+    checkForContentTypeBeforeSending(response, finalCharacter)
 }
 
 async function getPage404Error(): Promise<Page404Error> {

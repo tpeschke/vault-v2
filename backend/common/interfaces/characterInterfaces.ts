@@ -1,6 +1,7 @@
 import { PageOneInfo } from "./v1/pageOne/pageOneInterfaces"
 import { GeneralNotesInfo } from "./v1/pageThree/generalNotesInterfaces"
 import { PageTwoInfo } from "./v1/pageTwo/pageTwoInterfaces"
+import { PageV2 } from "./v2/pageTypes"
 
 export interface CharacterBase {
     version: 1 | 1.5 | 2
@@ -28,4 +29,11 @@ export interface CharacterHomeInfo {
     ancestry: string,
     class: string,
     subclass: string
+}
+
+export interface CharacterVersion2 extends CharacterBase {
+    version: 2,
+    id: number,
+    userInfo: CharacterUserInfo,
+    pages: PageV2[]
 }
