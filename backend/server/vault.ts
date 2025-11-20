@@ -25,6 +25,7 @@ import homeRoutes from './v1/controllers/home/HomeRoutes'
 import characterRoutes from './v1/controllers/view/viewCharacterRoutes'
 import editCharacterRoutes from './v1/controllers/edit/editCharacterRouter'
 import quickEditRoutes from './v1/controllers/quickEdit/quickEditRoutes'
+import characterV2Routes from './v2/view/view2CharacterRoutes'
 
 const app = express()
 app.use(bodyParser.json({ limit: '10mb' }))
@@ -68,9 +69,14 @@ app.use(fakeAuth)
 app.use('/auth', authRoutesWithoutPassword(passport))
 app.use('/user', userRoutes)
 app.use('/home', homeRoutes)
+
+// v1
 app.use('/getView', characterRoutes)
 app.use('/edit', editCharacterRoutes)
 app.use('/quickEdit', quickEditRoutes)
+
+// v2
+app.use('/v2/getView', characterV2Routes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
 app.all('/{*any}', (_: Request, response: Response) => {
