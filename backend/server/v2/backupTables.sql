@@ -24,6 +24,7 @@ create table
 
 create table
 	v2stats (
+		id serial primary key,
 		characterid integer,
 		str integer default 0,
 		dex integer default 0,
@@ -31,4 +32,18 @@ create table
 		mem integer default 0,
 		ins integer default 0,
 		pre integer default 0
+	);
+
+create table
+	v2BasicCharacteristics (
+		id serial primary key,
+		characterid integer,
+		capacity integer default 0,
+		culturalStrength varchar(250) default '',
+		socialSkillDiscount integer default 0,
+		affability varchar(250) default '',
+		openness varchar(250) default '',
+		outgoingness varchar(250) default '',
+		workEthic varchar(250) default '',
+		worry varchar(250) default ''
 	);

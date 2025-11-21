@@ -1,0 +1,61 @@
+import query from "../../../../../../../../db/database"
+
+interface RawBasicCharacteristics {
+    capacity: number,
+    culturalstrength: string,
+    socialskilldiscount: number,
+    affability: string,
+    openness: string,
+    outgoingness: string,
+    workethic: string,
+    worry: string,
+}
+
+interface BasicCharacteristicReturn {
+    capacity: number,
+    culturalStrength: string,
+    socialSkillDiscount: number,
+    temperaments: {
+        affability: string,
+        openness: string,
+        outgoingness: string,
+        workEthic: string,
+        worry: string,
+    }
+}
+
+const getBasicCharacteristicsSQL = `select * from v2BasicCharacteristics where characterID = $1`
+
+export default async function getBasicCharacteristics(characterID: number): Promise<BasicCharacteristicReturn> {
+    const [info]: RawBasicCharacteristics[] = await query(getBasicCharacteristicsSQL, characterID)
+
+    if (info) {
+        const { capacity, culturalstrength, socialskilldiscount, affability, openness, outgoingness, workethic, worry } = info
+
+        return {
+            capacity,
+            culturalStrength: culturalstrength,
+            socialSkillDiscount: socialskilldiscount,
+            temperaments: {
+                affability: affability,
+                openness: openness,
+                outgoingness: outgoingness,
+                workEthic: workethic,
+                worry: worry,
+            }
+        }
+    }
+
+    return {
+        capacity: 0,
+        culturalStrength: '',
+        socialSkillDiscount: 0,
+        temperaments: {
+            affability: '',
+            openness: '',
+            outgoingness: '',
+            workEthic: '',
+            worry: '',
+        }
+    }
+}

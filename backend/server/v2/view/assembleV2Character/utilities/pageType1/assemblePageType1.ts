@@ -1,6 +1,7 @@
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes";
 import getGeneralInfo from "./utilities/getGeneralInfo";
 import getStats from "./utilities/getStats";
+import getCharacteristicsInfo from "./utilities/getCharacteristics/getCharacteristicsInfo";
 
 export default async function assemblePageType1(characterID: number): Promise<Page1> {
     let basicPageSkeleton: Page1 = {
@@ -27,13 +28,8 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
         },
         characteristicsInfo: {
             capacity: 0,
-            goals: [],
             culturalStrength: '',
             socialSkillDiscount: 0,
-            reputations: [],
-            convictions: [],
-            relationships: [],
-            flaws: [],
             temperaments: {
                 affability: '',
                 openness: '',
@@ -41,6 +37,11 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
                 workEthic: '',
                 worry: '',
             },
+            goals: [],
+            reputations: [],
+            convictions: [],
+            relationships: [],
+            flaws: [],
             socialSuites: {
                 empathize: {
                     stat: 0,
@@ -112,7 +113,8 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
 
     await Promise.all([
         getGeneralInfo(characterID).then(generalInfo => basicPageSkeleton.generalInfo = generalInfo),
-        getStats(characterID).then(stats => basicPageSkeleton.stats = stats)
+        getStats(characterID).then(stats => basicPageSkeleton.stats = stats),
+        getCharacteristicsInfo(characterID).then(characteristicInfo => basicPageSkeleton.characteristicsInfo = characteristicInfo)
     ])
 
     return basicPageSkeleton
