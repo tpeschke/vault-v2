@@ -78,3 +78,10 @@ create table
 		value varchar(500),
 		rank integer
 	);
+
+create table
+	v2flaws (
+		id serial primary key,
+		characterid integer,
+		flaw varchar(500)
+	);

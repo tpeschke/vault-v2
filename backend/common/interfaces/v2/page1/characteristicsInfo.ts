@@ -8,7 +8,7 @@ export interface Characteristics {
     reputations: CharacteristicPair[],
     convictions: CharacteristicPair[],
     relationships: CharacteristicPair[],
-    flaws: string[],
+    flaws: Flaw[],
     temperaments: Temperaments,
     socialSuites: {
         empathize: SkillSuiteInfo,
@@ -21,6 +21,11 @@ export interface Characteristics {
 export interface Goal {
     id: number,
     goal: string
+}
+
+export interface Flaw {
+    id: number,
+    flaw: string
 }
 
 export interface CharacteristicPair {
