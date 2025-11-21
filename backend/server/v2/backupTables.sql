@@ -47,3 +47,10 @@ create table
 		workEthic varchar(250) default '',
 		worry varchar(250) default ''
 	);
+
+create table
+	v2goals (
+		id serial primary key,
+		characterid integer,
+		goal varchar(500)
+	);

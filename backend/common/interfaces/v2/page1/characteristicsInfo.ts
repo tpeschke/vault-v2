@@ -2,7 +2,7 @@ import { SkillPair } from "../pairInterfaces"
 
 export interface Characteristics {
     capacity: number,
-    goals: string[],
+    goals: Goal[],
     culturalStrength: string,
     socialSkillDiscount: number,
     reputations: CharacteristicPair[],
@@ -16,6 +16,11 @@ export interface Characteristics {
         lecture: SkillSuiteInfo,
         tempt: SkillSuiteInfo,   
     }
+}
+
+export interface Goal {
+    id: number,
+    goal: string
 }
 
 export interface CharacteristicPair {

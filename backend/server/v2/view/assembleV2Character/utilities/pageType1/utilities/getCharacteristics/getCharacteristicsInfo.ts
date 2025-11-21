@@ -1,8 +1,9 @@
 import { Characteristics } from "@vault/common/interfaces/v2/page1/characteristicsInfo";
 import getBasicCharacteristics from "./utilities/getBasicCharacteristics";
+import getGoals from "./utilities/getGoals";
 
 export default async function getCharacteristicsInfo(characterID: number): Promise<Characteristics> {
-    let characteristicInfo = {
+    let characteristicInfo: Characteristics = {
         capacity: 0,
         culturalStrength: '',
         socialSkillDiscount: 0,
@@ -48,7 +49,8 @@ export default async function getCharacteristicsInfo(characterID: number): Promi
                 ...characteristicInfo,
                 ...basicCharacteristics
             }
-        })
+        }),
+        getGoals(characterID).then(goals => characteristicInfo.goals = goals)
     ])
     
     return characteristicInfo
