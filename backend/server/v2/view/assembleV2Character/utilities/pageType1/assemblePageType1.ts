@@ -66,11 +66,11 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
             }
         },
         movement: {
-            crawl: '',
-            walk: '',
-            jog: '',
-            run: '',
-            sprint: ''
+            crawl: 0,
+            walk: 0,
+            jog: 0,
+            run: 0,
+            sprint: 0
         },
         vitalsInfo: {
             selfDoubt: {
