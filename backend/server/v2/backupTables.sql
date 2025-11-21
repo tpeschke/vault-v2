@@ -62,3 +62,11 @@ create table
 		value varchar(500),
 		rank integer
 	);
+
+create table
+	v2convictions (
+		id serial primary key,
+		characterid integer,
+		value varchar(500),
+		rank integer
+	);
