@@ -10,12 +10,7 @@ export interface Characteristics {
     relationships: CharacteristicPair[],
     flaws: Flaw[],
     temperaments: Temperaments,
-    socialSuites: {
-        empathize: SkillSuiteInfo,
-        intimidate: SkillSuiteInfo,
-        lecture: SkillSuiteInfo,
-        tempt: SkillSuiteInfo,   
-    }
+    socialSuites: SocialSkillSuites
 }
 
 export interface Goal {
@@ -40,6 +35,13 @@ export interface Temperaments {
     outgoingness: string,
     workEthic: string,
     worry: string,
+}
+
+export interface SocialSkillSuites {
+    empathize: SkillSuiteInfo,
+    intimidate: SkillSuiteInfo,
+    lecture: SkillSuiteInfo,
+    tempt: SkillSuiteInfo,
 }
 
 export interface SkillSuiteInfo {

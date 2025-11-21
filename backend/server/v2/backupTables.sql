@@ -85,3 +85,44 @@ create table
 		characterid integer,
 		flaw varchar(500)
 	);
+
+create table
+	v2SocialSkillSuites (
+		id serial primary key,
+		characterid integer,
+		suiteid integer,
+		stat integer default 0,
+		rank integer default 0
+	);
+
+create table
+	v2empathizeDescriptions (
+		id serial primary key,
+		characterid integer,
+		value varchar(500) default '',
+		rank integer default 0
+	);
+
+create table
+	v2intimidateDescriptions (
+		id serial primary key,
+		characterid integer,
+		value varchar(500) default '',
+		rank integer default 0
+	);
+
+create table
+	v2lectureDescriptions (
+		id serial primary key,
+		characterid integer,
+		value varchar(500) default '',
+		rank integer default 0
+	);
+
+create table
+	v2temptDescriptions (
+		id serial primary key,
+		characterid integer,
+		value varchar(500) default '',
+		rank integer default 0
+	);
