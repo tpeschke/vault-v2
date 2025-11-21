@@ -30,18 +30,15 @@ export default async function getBasicCharacteristics(characterID: number): Prom
     const [info]: RawBasicCharacteristics[] = await query(getBasicCharacteristicsSQL, characterID)
 
     if (info) {
-        const { capacity, culturalstrength, socialskilldiscount, affability, openness, outgoingness, workethic, worry } = info
+        const {
+            capacity, culturalstrength: culturalStrength, socialskilldiscount: socialSkillDiscount,
+            affability, openness, outgoingness, workethic: workEthic, worry
+        } = info
 
         return {
-            capacity,
-            culturalStrength: culturalstrength,
-            socialSkillDiscount: socialskilldiscount,
+            capacity, culturalStrength, socialSkillDiscount,
             temperaments: {
-                affability: affability,
-                openness: openness,
-                outgoingness: outgoingness,
-                workEthic: workethic,
-                worry: worry,
+                affability, openness, outgoingness, workEthic, worry,
             }
         }
     }
