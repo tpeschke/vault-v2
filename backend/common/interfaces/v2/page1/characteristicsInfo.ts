@@ -24,6 +24,7 @@ export interface Goal {
 }
 
 export interface CharacteristicPair {
+    id: number,
     value: string,
     rank: string
 }

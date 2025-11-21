@@ -1,6 +1,7 @@
 import { Characteristics } from "@vault/common/interfaces/v2/page1/characteristicsInfo";
 import getBasicCharacteristics from "./utilities/getBasicCharacteristics";
 import getGoals from "./utilities/getGoals";
+import getReputations from "./utilities/getReputations";
 
 export default async function getCharacteristicsInfo(characterID: number): Promise<Characteristics> {
     let characteristicInfo: Characteristics = {
@@ -50,7 +51,8 @@ export default async function getCharacteristicsInfo(characterID: number): Promi
                 ...basicCharacteristics
             }
         }),
-        getGoals(characterID).then(goals => characteristicInfo.goals = goals)
+        getGoals(characterID).then(goals => characteristicInfo.goals = goals),
+        getReputations(characterID).then(reputations => characteristicInfo.reputations = reputations)
     ])
     
     return characteristicInfo

@@ -54,3 +54,11 @@ create table
 		characterid integer,
 		goal varchar(500)
 	);
+
+create table
+	v2reputations (
+		id serial primary key,
+		characterid integer,
+		value varchar(500),
+		rank integer
+	);
