@@ -3,6 +3,7 @@ import getBasicCharacteristics from "./utilities/getBasicCharacteristics";
 import getGoals from "./utilities/getGoals";
 import getReputations from "./utilities/getReputations";
 import getConvictions from "./utilities/getConvictions";
+import getRelationships from "./utilities/getRelationships";
 
 export default async function getCharacteristicsInfo(characterID: number): Promise<Characteristics> {
     let characteristicInfo: Characteristics = {
@@ -54,7 +55,8 @@ export default async function getCharacteristicsInfo(characterID: number): Promi
         }),
         getGoals(characterID).then(goals => characteristicInfo.goals = goals),
         getReputations(characterID).then(reputations => characteristicInfo.reputations = reputations),
-        getConvictions(characterID).then(convictions => characteristicInfo.convictions = convictions)
+        getConvictions(characterID).then(convictions => characteristicInfo.convictions = convictions),
+        getRelationships(characterID).then(relationships => characteristicInfo.relationships = relationships)
     ])
     
     return characteristicInfo
