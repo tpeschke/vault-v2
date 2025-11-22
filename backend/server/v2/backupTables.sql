@@ -126,3 +126,14 @@ create table
 		value varchar(500) default '',
 		rank integer default 0
 	);
+
+create table
+	v2movements (
+		id serial primary key,
+		characterid integer,
+		crawl integer default 0,
+		walk integer default 0,
+		jog integer default 0,
+		run integer default 0,
+		sprint integer default 0
+	);
