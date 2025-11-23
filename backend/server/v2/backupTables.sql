@@ -146,3 +146,13 @@ create table
 		threshold integer default 0,
 		diePenalty integer default 0
 	);
+
+create table
+	v2Damage (
+		id serial primary key,
+		characterid integer,
+		dieIndex integer default 0,
+		knockback integer default 0,
+		damage integer default 0,
+		threshold integer default 0
+	);
