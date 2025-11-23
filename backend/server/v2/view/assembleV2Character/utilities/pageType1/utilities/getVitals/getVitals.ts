@@ -1,4 +1,5 @@
 import { Vitals } from "@vault/common/interfaces/v2/page1/vitals"
+import getSelfDoubt from "./utilities/getSelfDoubt"
 
 export default async function getVitals(characterID: number): Promise<Vitals> {
     let vitalsInfo: Vitals = {
@@ -21,6 +22,7 @@ export default async function getVitals(characterID: number): Promise<Vitals> {
         }
 
     await Promise.all([
+        getSelfDoubt(characterID).then(selfDoubt => vitalsInfo.selfDoubt = selfDoubt)
     ])
     
     return vitalsInfo
