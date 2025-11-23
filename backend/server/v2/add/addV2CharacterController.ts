@@ -17,7 +17,6 @@ export default async function addV2Character(request: Request, response: Respons
             // TODO
             //  Add page type 2
             //  Add page type 3
-            //  Add page type 4
         ])
 
         checkForContentTypeBeforeSending(response, characterID)
