@@ -1,6 +1,7 @@
 import { Vitals } from "@vault/common/interfaces/v2/page1/vitals"
 import getSelfDoubt from "./utilities/getSelfDoubt"
 import getDamage from "./utilities/getDamage"
+import getStress from "./utilities/getStress"
 
 export default async function getVitals(characterID: number): Promise<Vitals> {
     let vitalsInfo: Vitals = {
@@ -24,7 +25,8 @@ export default async function getVitals(characterID: number): Promise<Vitals> {
 
     await Promise.all([
         getSelfDoubt(characterID).then(selfDoubt => vitalsInfo.selfDoubt = selfDoubt),
-        getDamage(characterID).then(damage => vitalsInfo.damage = damage)
+        getDamage(characterID).then(damage => vitalsInfo.damage = damage),
+        getStress(characterID).then(stress => vitalsInfo.stress = stress)
     ])
     
     return vitalsInfo

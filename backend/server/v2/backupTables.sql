@@ -156,3 +156,12 @@ create table
 		damage integer default 0,
 		threshold integer default 0
 	);
+
+create table
+	v2Stress (
+		id serial primary key,
+		characterid integer,
+		dieIndex integer default 0,
+		stress integer default 0,
+		threshold integer default 0
+	);
