@@ -165,3 +165,12 @@ create table
 		stress integer default 0,
 		threshold integer default 0
 	);
+
+create table
+	v2Favor (
+		id serial primary key,
+		characterid integer,
+        anointed boolean default false,
+        current integer default 0,
+        max integer default 0
+	);

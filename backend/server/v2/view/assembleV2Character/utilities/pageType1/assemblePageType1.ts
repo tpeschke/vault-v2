@@ -4,6 +4,7 @@ import getStats from "./utilities/getStats";
 import getCharacteristicsInfo from "./utilities/getCharacteristics/getCharacteristicsInfo";
 import getMovement from "./utilities/getMovement";
 import getVitals from "./utilities/getVitals/getVitals";
+import getFavor from "./utilities/getFavor";
 
 export default async function assemblePageType1(characterID: number): Promise<Page1> {
     let basicPageSkeleton: Page1 = {
@@ -118,7 +119,8 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
         getStats(characterID).then(stats => basicPageSkeleton.stats = stats),
         getCharacteristicsInfo(characterID).then(characteristicInfo => basicPageSkeleton.characteristicsInfo = characteristicInfo),
         getMovement(characterID).then(movement => basicPageSkeleton.movement = movement),
-        getVitals(characterID).then(vitalsInfo => basicPageSkeleton.vitalsInfo = vitalsInfo)
+        getVitals(characterID).then(vitalsInfo => basicPageSkeleton.vitalsInfo = vitalsInfo),
+        getFavor(characterID).then(favor => basicPageSkeleton.favor = favor)
     ])
 
     return basicPageSkeleton
