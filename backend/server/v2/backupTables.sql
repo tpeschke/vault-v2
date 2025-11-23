@@ -137,3 +137,12 @@ create table
 		run integer default 0,
 		sprint integer default 0
 	);
+
+create table
+	v2SelfDoubt (
+		id serial primary key,
+		characterid integer,
+		dieIndex integer default 0,
+		threshold integer default 0,
+		diePenalty integer default 0
+	);
