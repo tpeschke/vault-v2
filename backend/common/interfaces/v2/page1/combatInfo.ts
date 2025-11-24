@@ -1,6 +1,6 @@
 export interface CombatInfo {
     defenses: Defense,
-    attacks: [Attack, Attack, Attack, Attack]
+    attacks: AttacksArray
 }
 
 export interface Defense {
@@ -15,6 +15,8 @@ export interface Defense {
     notes: string
 }
 
+export type AttacksArray = [Attack, Attack, Attack, Attack]
+
 export interface Attack {
     index: 0 | 1 | 2 | 3,
     name: string,
@@ -23,5 +25,5 @@ export interface Attack {
     damage: string,
     type: string,
     recovery: number,
-    notes: string,
+    notes: string
 }

@@ -178,3 +178,17 @@ create table
         dr varchar(150) default '',
         notes varchar(150) default ''
     );
+
+create table
+    v2Attacks (
+        id serial primary key,
+        characterid integer,
+        index integer,
+        name varchar(150) default '',
+        measure integer default 0,
+        attack integer default 0,
+        damage varchar(150) default '',
+        type varchar(150) default '',
+        recovery integer default 0,
+        notes varchar(150) default ''
+    );

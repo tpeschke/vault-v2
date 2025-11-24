@@ -1,5 +1,6 @@
 import { CombatInfo } from "@vault/common/interfaces/v2/page1/combatInfo";
 import getDefenses from "./utilities/getDefenses";
+import getAttacks from "./utilities/getAttacks";
 
 export default async function getCombatInfo(characterID: number): Promise<CombatInfo> {
     let combatInfo: CombatInfo = {
@@ -59,7 +60,8 @@ export default async function getCombatInfo(characterID: number): Promise<Combat
     }
 
     await Promise.all([
-        getDefenses(characterID).then(defenses => combatInfo.defenses)
+        getDefenses(characterID).then(defenses => combatInfo.defenses = defenses),
+        getAttacks(characterID).then(attacks => combatInfo.attacks = attacks)
     ])
 
     return combatInfo
