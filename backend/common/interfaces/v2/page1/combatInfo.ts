@@ -1,6 +1,6 @@
 export interface CombatInfo {
     defenses: Defense,
-    attacks: Attack[]
+    attacks: [Attack, Attack, Attack, Attack]
 }
 
 export interface Defense {
@@ -16,6 +16,7 @@ export interface Defense {
 }
 
 export interface Attack {
+    index: 0 | 1 | 2 | 3,
     name: string,
     measure: number,
     attack: number,

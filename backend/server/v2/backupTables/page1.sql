@@ -163,3 +163,18 @@ create table
         current integer default 0,
         max integer default 0
     );
+
+create table
+    v2Defenses (
+        id serial primary key,
+        characterid integer,
+        name varchar(150) default '',
+        initiative integer default 0,
+        defense integer default 0,
+        parry integer default 0,
+        flanks integer default 0,
+        cover varchar(150) default '',
+        parryDR varchar(150) default '',
+        dr varchar(150) default '',
+        notes varchar(150) default ''
+    );

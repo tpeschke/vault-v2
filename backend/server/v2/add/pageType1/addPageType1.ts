@@ -1,4 +1,5 @@
 import addCharacteristics from "./utilities/addCharacteristics/addCharacteristics"
+import addCombatInfo from "./utilities/addCombatInfo/addCombatInfo"
 import addFavor from "./utilities/addFavor"
 import addGeneralInfo from "./utilities/addGeneralInfo"
 import addMovements from "./utilities/addMovement"
@@ -13,7 +14,8 @@ export default async function addPageType1(characterID: number): Promise<boolean
         addCharacteristics(characterID),
         addMovements(characterID),
         addVitals(characterID),
-        addFavor(characterID)
+        addFavor(characterID),
+        addCombatInfo(characterID)
     ])
     return true
 }

@@ -5,6 +5,7 @@ import getCharacteristicsInfo from "./utilities/getCharacteristics/getCharacteri
 import getMovement from "./utilities/getMovement";
 import getVitals from "./utilities/getVitals/getVitals";
 import getFavor from "./utilities/getFavor";
+import getCombatInfo from "./utilities/getCombatInfo/getCombatInfo";
 
 export default async function assemblePageType1(characterID: number): Promise<Page1> {
     let basicPageSkeleton: Page1 = {
@@ -110,7 +111,48 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
                 dr: '',
                 notes: ''
             },
-            attacks: []
+            attacks: [
+                {
+                    index: 0,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                },
+                {
+                    index: 1,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                },
+                {
+                    index: 2,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                },
+                {
+                    index: 3,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                }
+            ]
         }
     }
 
@@ -120,7 +162,8 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
         getCharacteristicsInfo(characterID).then(characteristicInfo => basicPageSkeleton.characteristicsInfo = characteristicInfo),
         getMovement(characterID).then(movement => basicPageSkeleton.movement = movement),
         getVitals(characterID).then(vitalsInfo => basicPageSkeleton.vitalsInfo = vitalsInfo),
-        getFavor(characterID).then(favor => basicPageSkeleton.favor = favor)
+        getFavor(characterID).then(favor => basicPageSkeleton.favor = favor),
+        getCombatInfo(characterID).then(combatInfo => basicPageSkeleton.combatInfo = combatInfo)
     ])
 
     return basicPageSkeleton
