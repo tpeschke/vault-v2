@@ -2,8 +2,6 @@ import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { editURL, quickEditURL, viewURL } from "../../../../frontend-config";
-import jsPDF from "jspdf";
-import { getFileName, getPageImage, getPregen, getWidthAndHeight } from "./utilities/downloadUtilities";
 import { AbilitiesNBurdensInfoKeys, GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
 import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
@@ -32,6 +30,8 @@ import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice
 import { useNavigate } from "react-router-dom";
 import { cacheCharacter, CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
 import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/characteristicUtilities";
+import jsPDF from "jspdf";
+import { getWidthAndHeight, getPageImage, getFileName, getPregen } from "./utilities/downloadUtilities";
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -47,16 +47,14 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
         if (charactersCache[+characterID]) {
             charactersCache[+characterID].characterInfo.then(data => {
-                setCharacter(data)
-                setRevertedCharacter(data)
+                setCharacterInfo(data)
             })
         } else {
             axios.get(viewURL + characterID).then(({ data }) => {
                 if (data.message) {
                     navigate('/')
                 } else {
-                    setCharacter(data)
-                    setRevertedCharacter(data)
+                    setCharacterInfo(data)
                     dispatch(cacheCharacter(data))
                 }
             })
@@ -68,43 +66,47 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     useEffect(() => {
         if (isDownloading) {
-            const pdf = new jsPDF("p", "mm", "letter");
-            const widthAndHeight = getWidthAndHeight(pdf)
-
-            if (character) {
-                let promiseArray: any[] = [
-                    getPageImage('page-0'),
-                    getPageImage('page-1')
-                ]
-
-                if (!character?.generalNotes.isSecret || character.userInfo.ownsThisCharacter) {
-                    promiseArray.push(getPageImage('page-2'))
-                }
-
-                Promise.all(promiseArray).then(pages => {
-                    pdf.addImage(pages[0], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
-
-                    pdf.addPage(widthAndHeight);
-                    pdf.addImage(pages[1], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
-
-                    if (pages[2]) {
-                        pdf.addPage(widthAndHeight);
-                        pdf.addImage(pages[2], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
-                    }
-
-                    const fileName = getFileName(character)
-
-                    pdf.save(`${fileName}.pdf`)
-
-                    if (oldCharacter) {
-                        setCharacter(oldCharacter)
-                    }
-
-                    setIsDownloading(false)
-                })
-            }
+            processDownload()
         }
     }, [isDownloading])
+
+    async function processDownload() {
+        const pdf = new jsPDF("p", "mm", "letter");
+        const widthAndHeight = getWidthAndHeight(pdf)
+
+        if (character) {
+            let promiseArray: any[] = [
+                getPageImage('page-0'),
+                getPageImage('page-1')
+            ]
+
+            if (!character?.generalNotes.isSecret || character.userInfo.ownsThisCharacter) {
+                promiseArray.push(getPageImage('page-2'))
+            }
+
+            Promise.all(promiseArray).then(pages => {
+                pdf.addImage(pages[0], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+
+                pdf.addPage(widthAndHeight);
+                pdf.addImage(pages[1], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+
+                if (pages[2]) {
+                    pdf.addPage(widthAndHeight);
+                    pdf.addImage(pages[2], 'jpeg', 0, 0, widthAndHeight[0], widthAndHeight[1] - 5);
+                }
+
+                const fileName = getFileName(character)
+
+                pdf.save(`${fileName}.pdf`)
+
+                if (oldCharacter) {
+                    setCharacter(oldCharacter)
+                }
+
+                setIsDownloading(false)
+            })
+        }
+    }
 
     async function downloadCharacter(isPregen: boolean): Promise<void> {
         if (character) {
@@ -121,7 +123,12 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     }
 
     function revertCharacter() {
-        setCharacter(revertedCharacter)
+        setCharacterInfo(revertedCharacter)
+    }
+
+    function setCharacterInfo(updateCharacterInfo: CharacterVersion1 | null) {
+        setCharacter(updateCharacterInfo)
+        setRevertedCharacter(updateCharacterInfo)
     }
 
     async function saveCharacterToBackend() {
@@ -129,8 +136,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
             const characterToSend = { ...character }
             setCharacter(null)
             const { data } = await axios.post(editURL + characterToSend.id, characterToSend)
-            setCharacter(data)
-            setRevertedCharacter(data)
+            setCharacterInfo(data)
         }
     }
 
@@ -181,7 +187,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     async function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
         if (character) {
             const newCharacter = updateGeneralInfoUtility(character, key, value)
-            setCharacter(newCharacter)
+            setCharacterInfo(newCharacter)
 
             quickBasicQuickSaving(['crpUnspent', 'crpSpent'], character.id, key, value)
 
@@ -194,19 +200,19 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateStat(key: StatKeys, value: number) {
         if (character) {
-            setCharacter(updateStatUtility(character, key, value))
+            setCharacterInfo(updateStatUtility(character, key, value))
         }
     }
 
     function updateMovement(key: MovementKeys, value: number) {
         if (character) {
-            setCharacter(updateMovementUtility(character, key, value))
+            setCharacterInfo(updateMovementUtility(character, key, value))
         }
     }
 
     function updateIntegrityInfo(key: IntegrityKeys, value: number) {
         if (character) {
-            setCharacter(updateIntegrityInfoUtility(character, key, value))
+            setCharacterInfo(updateIntegrityInfoUtility(character, key, value))
 
             quickBasicQuickSaving(['integrity', 'gritDice'], character.id, key, value)
         }
@@ -214,7 +220,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateCharacteristicString(key: CharacteristicStringKeys, value: string) {
         if (character) {
-            setCharacter(updateCharacteristicStringUtility(character, key, value))
+            setCharacterInfo(updateCharacteristicStringUtility(character, key, value))
 
             quickBasicQuickSaving(['assets'], character.id, key, value)
         }
@@ -223,7 +229,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function insertCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
         return (newObject: PairObject) => {
             if (character) {
-                setCharacter(insertCharacteristicUtility(character, characteristic, newObject))
+                setCharacterInfo(insertCharacteristicUtility(character, characteristic, newObject))
             }
         }
     }
@@ -231,20 +237,20 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     function updateCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
         return (changedIndex: number, newObject: PairObject) => {
             if (character) {
-                setCharacter(updateCharacteristicUtility(character, characteristic, changedIndex, newObject))
+                setCharacterInfo(updateCharacteristicUtility(character, characteristic, changedIndex, newObject))
             }
         }
     }
 
     function toggleIsThrown() {
         if (character) {
-            setCharacter(toggleIsThrownUtility(character))
+            setCharacterInfo(toggleIsThrownUtility(character))
         }
     }
 
     function updateFavorInfo(key: FavorInfoKeys, value: number | boolean) {
         if (character) {
-            setCharacter(updateFavorInfoUtility(character, key, value))
+            setCharacterInfo(updateFavorInfoUtility(character, key, value))
 
             if (typeof value === 'number') {
                 quickBasicQuickSaving(['favor'], character.id, key, value)
@@ -254,19 +260,19 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateVitalityNNerve(key: VitalityNNerveCalcInfoKeys, value: number | string) {
         if (character) {
-            setCharacter(updateVitalityNNerveUtility(character, key, value))
+            setCharacterInfo(updateVitalityNNerveUtility(character, key, value))
         }
     }
 
     function updateMaxRange(value: number) {
         if (character) {
-            setCharacter(updateMaxRangeUtility(character, value))
+            setCharacterInfo(updateMaxRangeUtility(character, value))
         }
     }
 
     function updateNerveAndVitalityInfo(key: NerveAndVitalityObjectKeys, value: number) {
         if (character) {
-            setCharacter(updateNerveAndVitalityInfoUtility(character, key, value))
+            setCharacterInfo(updateNerveAndVitalityInfoUtility(character, key, value))
 
             quickBasicQuickSaving(['stress', 'relaxation'], character.id, key, value)
         }
@@ -274,7 +280,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateWound(changedIndex: number, newWound: Wound) {
         if (character) {
-            setCharacter(updateWoundUtility(character, changedIndex, newWound))
+            setCharacterInfo(updateWoundUtility(character, changedIndex, newWound))
 
             const action: QuickEditActions = newWound.severity || newWound.days ? 'update' : 'delete'
             quickQuickSavingWithAction(['wound'], character.id, 'wound', newWound, action)
@@ -284,16 +290,16 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     async function insertWound(newWound: Wound) {
         if (character) {
             const newCharacter = insertWoundUtility(character, newWound)
-            setCharacter(newCharacter)
+            setCharacterInfo(newCharacter)
 
             const { data } = await quickQuickSavingWithAction(['wound'], newCharacter.id, 'wound', newWound, 'add')
-            setCharacter(updateWoundWithID(newCharacter, data))
+            setCharacterInfo(updateWoundWithID(newCharacter, data))
         }
     }
 
     function updateAbilities(key: AbilitiesNBurdensInfoKeys, value: string) {
         if (character) {
-            setCharacter(updateAbilitiesUtility(character, key, value))
+            setCharacterInfo(updateAbilitiesUtility(character, key, value))
         }
     }
 
@@ -303,7 +309,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateCash(key: GearInfoObjectsKeys, value: number) {
         if (character) {
-            setCharacter(updateCashUtility(character, key, value))
+            setCharacterInfo(updateCashUtility(character, key, value))
 
             quickBasicQuickSaving(['copper', 'silver', 'gold', 'platinum'], character.id, key, value)
         }
@@ -311,7 +317,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateGear(changedIndex: number, newGear: GearObject) {
         if (character) {
-            setCharacter(updateGearUtility(character, changedIndex, newGear))
+            setCharacterInfo(updateGearUtility(character, changedIndex, newGear))
 
             const action: QuickEditActions = newGear.item || newGear.size ? 'update' : 'delete'
             quickQuickSavingWithAction(['equipment'], character.id, 'equipment', newGear, action)
@@ -321,77 +327,77 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     async function insertGear(newGear: GearObject) {
         if (character) {
             const newCharacter = insertGearUtility(character, newGear)
-            setCharacter(newCharacter)
+            setCharacterInfo(newCharacter)
 
             const { data } = await quickQuickSavingWithAction(['equipment'], newCharacter.id, 'equipment', newGear, 'add')
-            setCharacter(updateGearWithID(newCharacter, data))
+            setCharacterInfo(updateGearWithID(newCharacter, data))
         }
     }
 
     function updateSkillAdept(value: number) {
         if (character) {
-            setCharacter(updateSkillAdeptUtility(character, value))
+            setCharacterInfo(updateSkillAdeptUtility(character, value))
         }
     }
 
     function updateSkillSuite(changedIndex: number, newSkillSuite: SkillObject) {
         if (character) {
-            setCharacter(updateSkillSuiteUtility(character, changedIndex, newSkillSuite))
+            setCharacterInfo(updateSkillSuiteUtility(character, changedIndex, newSkillSuite))
         }
     }
 
     function updateNativeLanguage(nativeLanguage: SkillObject) {
         if (character) {
-            setCharacter(updateNativeLanguageUtility(character, nativeLanguage))
+            setCharacterInfo(updateNativeLanguageUtility(character, nativeLanguage))
         }
     }
 
     function insertSkill(newSkill: SkillObject) {
         if (character) {
-            setCharacter(insertSkillUtility(character, newSkill))
+            setCharacterInfo(insertSkillUtility(character, newSkill))
         }
     }
 
     function updateSkill(changedIndex: number, newSkill: SkillObject) {
         if (character) {
-            setCharacter(updateSkillUtility(character, changedIndex, newSkill))
+            setCharacterInfo(updateSkillUtility(character, changedIndex, newSkill))
         }
     }
 
     function updateMartialAdept(value: number) {
         if (character) {
-            setCharacter(updateMartialAdeptUtility(character, value))
+            setCharacterInfo(updateMartialAdeptUtility(character, value))
         }
     }
 
     function updateCombatSkillSuite(changedIndex: number, alteredCombatSuite: CombatSkillObject) {
         if (character) {
-            setCharacter(updateCombatSkillSuiteUtility(character, changedIndex, alteredCombatSuite))
+            setCharacterInfo(updateCombatSkillSuiteUtility(character, changedIndex, alteredCombatSuite))
         }
     }
 
     function insertCombatSkill(newCombatSkill: CombatSkillObject) {
         if (character) {
-            setCharacter(insertCombatSkillUtility(character, newCombatSkill))
+            setCharacterInfo(insertCombatSkillUtility(character, newCombatSkill))
         }
     }
 
     function updateCombatSkill(changedIndex: number, newCombatSkill: CombatSkillObject) {
         if (character) {
-            setCharacter(updateCombatSkillUtility(character, changedIndex, newCombatSkill))
+            setCharacterInfo(updateCombatSkillUtility(character, changedIndex, newCombatSkill))
         }
     }
 
     function updateBasicArmorInfo(key: ArmorInfoObjectKeys, value: string | number) {
         if (character) {
-            setCharacter(updateBasicArmorInfoUtility(character, key, value))
+            setCharacterInfo(updateBasicArmorInfoUtility(character, key, value))
         }
     }
 
     function updateArmorModifier(modifier: ArmorModifiersInfoKeys, key: ArmorModifiersObjectKeys, value: number) {
         if (character) {
             const newCharacter = updateArmorModifierUtility(character, modifier, key, value)
-            setCharacter(newCharacter)
+            setCharacterInfo(newCharacter)
 
             if (key === 'misc') {
                 const { def, fat, rec, init } = newCharacter.pageTwoInfo.combatWorkspaceInfo.armorInfo.modifiers
@@ -409,14 +415,14 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateBasicShieldInfo(key: ShieldInfoObjectKeys, value: string | number) {
         if (character) {
-            setCharacter(updateBasicShieldInfoUtility(character, key, value))
+            setCharacterInfo(updateBasicShieldInfoUtility(character, key, value))
         }
     }
 
     function updateShieldModifier(modifier: ShieldModifiersInfoKeys, key: ShieldModifiersObjectKeys, value: number) {
         if (character) {
             const newCharacter = updateShieldModifierUtility(character, modifier, key, value)
-            setCharacter(newCharacter)
+            setCharacterInfo(newCharacter)
 
             if (key === 'misc') {
                 const { def, fat, pry, brk } = newCharacter.pageTwoInfo.combatWorkspaceInfo.shieldInfo.modifiers
@@ -434,14 +440,14 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateBasicWeaponInfo(changedIndex: number, key: WeaponInfoObjectKeys, value: string | number) {
         if (character) {
-            setCharacter(updateBasicWeaponInfoUtility(character, changedIndex, key, value))
+            setCharacterInfo(updateBasicWeaponInfoUtility(character, changedIndex, key, value))
         }
     }
 
     function updateWeaponModifier(changedIndex: number, modifier: WeaponModifiersInfoKeys, key: WeaponModifiersObjectKeys, value: number) {
         if (character) {
             const newCharacter = updateWeaponModifierUtility(character, changedIndex, modifier, key, value)
-            setCharacter(newCharacter)
+            setCharacterInfo(newCharacter)
 
             if (key === 'misc') {
                 const { atk, rec, pry, dam } = newCharacter.pageTwoInfo.combatWorkspaceInfo.weaponInfo[changedIndex].modifiers
@@ -464,7 +470,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     function updateNotes(key: GeneralNotesInfoKeys, value: string | boolean) {
         if (character) {
-            setCharacter(updateNotesUtility(character, key, value))
+            setCharacterInfo(updateNotesUtility(character, key, value))
 
             if (typeof value === 'string') {
                 quickBasicQuickSaving(['notes'], character.id, key, value)
@@ -474,8 +480,8 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
     return {
         character,
-        downloadCharacter,
         isDownloading,
+        downloadCharacter,
         isQuickSaving,
         updateFunctions: {
             revertCharacter,

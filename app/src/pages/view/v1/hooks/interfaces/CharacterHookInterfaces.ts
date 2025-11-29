@@ -5,10 +5,10 @@ import { UpdateNotes } from "./pageThreeInterfaces/generalNotesInterfaces"
 
 export interface CharacterHookReturn {
     character: CharacterVersion1 | null,
-    downloadCharacter: DownloadCharacterFunction,
-    isDownloading: boolean,
     isQuickSaving: boolean,
-    updateFunctions: UpdateFunctions
+    updateFunctions: UpdateFunctions,
+    downloadCharacter: DownloadCharacterFunction,
+    isDownloading: boolean
 }
 
 export type DownloadCharacterFunction = (isPregen: boolean) => void

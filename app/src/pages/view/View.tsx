@@ -15,7 +15,8 @@ interface Props {
 export default function View({ setLoading, pathname }: Props) {
     const [isEditing, setIsEditing] = useState(false)
 
-    const { character, downloadCharacter, isDownloading, isQuickSaving, updateFunctions } = CharacterHook(pathname, isEditing)
+    const { character, isQuickSaving, updateFunctions, downloadCharacter, isDownloading } = CharacterHook(pathname, isEditing)
+
     const { saveCharacterToBackend, revertCharacter } = updateFunctions
 
     const [isInitialLoad, setIsInitialLoad] = useState(true)
