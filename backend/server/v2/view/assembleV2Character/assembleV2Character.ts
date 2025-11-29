@@ -5,11 +5,15 @@ import { CharacterPageReturns } from '../viewV2CharacterInterfaces';
 import assemblePageType1 from './utilities/pageType1/assemblePageType1';
 import { Page404Error, PageV2 } from '@vault/common/interfaces/v2/pageTypes'
 import { getCharacterOwnerID } from './utilities/ownerInfo';
+import query from '../../../db/database';
+
+const getCharacterName = `select name from v2GeneralInfo gi where characterID = $1`
 
 export default async function assembleV2Character(request: Request, response: Response, characterID: number, characterPages: CharacterPageReturns[]) {
     const loggedInUserID = request.user?.id
 
     const characterOwnerID = await getCharacterOwnerID(characterID)
+    const [{name}] = await query(getCharacterName, characterID)
 
     const collectedPages: Promise<PageV2>[] = characterPages.map(({ pagetypeid: pageTypeID }) => {
         switch (pageTypeID) {
@@ -24,6 +28,7 @@ export default async function assembleV2Character(request: Request, response: Re
 
     const finalCharacter: CharacterVersion2 = {
         version: 2,
+        name,
         id: characterID,
         userInfo: {
             userID: characterOwnerID,

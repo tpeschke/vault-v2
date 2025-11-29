@@ -12,8 +12,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['chapter/cacheCharacter'],
-        ignoredPaths: ['charactersCache.characterCache']
+        ignoredActions: ['chapter/cacheCharacterV1', 'chapter/cacheCharacterV2'],
+        ignoredPaths: ['charactersCache']
       },
     })
 })

@@ -9,7 +9,7 @@ import { ArmorQuickEditModifiers, QuickEditActions, ShieldQuickEditModifiers, We
 import { useDispatch, useSelector } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 import { useNavigate } from "react-router-dom";
-import { cacheCharacter, CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
+import { cacheCharacterV1, V1CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
 import jsPDF from "jspdf";
 import { getWidthAndHeight, getPageImage, getFileName, getPregen } from "./utilities/downloadUtilities";
 import getV1Updates from "./v1Updates/getV1Updates";
@@ -23,7 +23,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const charactersCache: { [key: number]: CharacterCacheInfo } = useSelector((state: any) => state.charactersCache.characterCache)
+    const charactersCache: { [key: number]: V1CharacterCacheInfo } = useSelector((state: any) => state.charactersCache.characterCache[1])
 
     useEffect(() => {
         const [_, baseURL, characterID] = pathname.split('/')
@@ -33,8 +33,9 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
                 setCharacterInfo(data)
             })
         } else {
-            dispatch(cacheCharacter({
+            dispatch(cacheCharacterV1({
                 id: +characterID,
+                version: 1,
                 characterInfo: axios.get(viewURL + characterID).then(({ data }) => {
                     if (data.message) {
                         navigate('/')

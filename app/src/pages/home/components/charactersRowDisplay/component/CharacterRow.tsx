@@ -6,7 +6,7 @@ import { DeleteCharacterFunction } from '../../../../../hooks/UsersCharactersHoo
 import axios from 'axios'
 import { viewURL } from '../../../../../frontend-config'
 import { useDispatch, useSelector } from 'react-redux'
-import { cacheCharacter } from '../../../../../redux/slices/characterCacheSlice'
+import { cacheCharacterV1, cacheCharacterV2 } from '../../../../../redux/slices/characterCacheSlice'
 
 interface Props {
     character: CharacterHomeInfo,
@@ -36,17 +36,26 @@ export default function CharacterRow({ character, deleteCharacter, viewRoute }: 
         deleteCharacter(characterID)
     }
 
-    const charactersCache: {[key: number]: CharacterVersion1} = useSelector((state: any) => state.charactersCache.characterCache)
+    const charactersCache: { [key: number]: CharacterVersion1 } = useSelector((state: any) => state.charactersCache.characterCache)
     const [timeOutID, setTimeOutID] = useState<any | null>(null)
 
     function preloadCharacterInfo(characterID: number) {
         clearTimeout(timeOutID)
         setTimeOutID(setTimeout(() => {
             if (!charactersCache[characterID]) {
-                dispatch(cacheCharacter({
-                    id: characterID,
-                    characterInfo: axios.get(viewURL + characterID).then(({ data }) => data)
-                }))
+                if (viewRoute === 'view') {
+                    dispatch(cacheCharacterV1({
+                        id: characterID,
+                        version: 1,
+                        characterInfo: axios.get(viewURL + characterID).then(({ data }) => data)
+                    }))
+                } else if (viewRoute === 'v') {
+                    dispatch(cacheCharacterV2({
+                        id: characterID,
+                        version: 2,
+                        characterInfo: axios.get(viewURL + characterID).then(({ data }) => data)
+                    }))
+                }
             }
         }, 100))
     }

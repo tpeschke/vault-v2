@@ -34,6 +34,7 @@ export interface CharacterHomeInfo {
 export interface CharacterVersion2 extends CharacterBase {
     version: 2,
     id: number,
+    name: string,
     userInfo: CharacterUserInfo,
     pages: PageV2[]
 }

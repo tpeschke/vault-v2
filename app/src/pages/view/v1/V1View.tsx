@@ -1,18 +1,18 @@
-import './View.css'
+import '../View.css'
 import { useEffect, useState } from "react"
-import { SetLoadingFunction } from "../../components/loading/Loading"
-import ViewVersionOne from "./v1/ViewVersionOne"
-import CharacterHook from './v1/hooks/characterHook'
-import EditingContext from './v1/contexts/EditingContext'
-import IsBlankContext from './v1/contexts/IsBlankContext'
-import LoadingIndicator from '../../components/loading/components/LoadingIndicator'
+import { SetLoadingFunction } from "../../../components/loading/Loading"
+import ViewVersionOne from "./V1Body"
+import CharacterHook from './hooks/characterHook'
+import EditingContext from './contexts/EditingContext'
+import IsBlankContext from './contexts/IsBlankContext'
+import LoadingIndicator from '../../../components/loading/components/LoadingIndicator'
 
 interface Props {
     setLoading?: SetLoadingFunction,
     pathname: string
 }
 
-export default function View({ setLoading, pathname }: Props) {
+export default function V1View({ setLoading, pathname }: Props) {
     const [isEditing, setIsEditing] = useState(false)
 
     const { character, isQuickSaving, updateFunctions, downloadCharacter, isDownloading } = CharacterHook(pathname, isEditing)
