@@ -4,11 +4,8 @@ import { useEffect, useState } from "react";
 import { editURL, quickEditURL, viewURL } from "../../../../frontend-config";
 import { AbilitiesNBurdensInfoKeys, GeneralInfoKeys } from "@vault/common/interfaces/v1/pageOne/pageOneInterfaces";
 import { CharacterHookReturn } from "./interfaces/CharacterHookInterfaces";
-import { CharacteristicPairObjectsKeys, CharacteristicStringKeys, IntegrityKeys, MovementKeys, PairObject, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
-import { updateGeneralInfoUtility, updateMovementUtility } from "./utilities/updateUtilities/pageOneUtilities/upperSectionUtilities";
-import { insertWoundUtility, toggleIsThrownUtility, updateFavorInfoUtility, updateMaxRangeUtility, updateNerveAndVitalityInfoUtility, updateVitalityNNerveUtility, updateWoundUtility, updateWoundWithID } from "./utilities/updateUtilities/pageOneUtilities/rightColumnUtilities";
-import { FavorInfoKeys, NerveAndVitalityObjectKeys, VitalityNNerveCalcInfoKeys, Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
-import { updateAbilitiesUtility } from "./utilities/updateUtilities/pageOneUtilities/lowerSectionUtilities";
+import { MovementKeys, StatKeys } from "@vault/common/interfaces/v1/pageOne/leftColumnInterfaces";
+import { updateGeneralInfoUtility } from "./utilities/updateUtilities/pageOneUtilities/upperSectionUtilities";
 import { GearInfoObjectsKeys, GearObject } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces";
 import { insertGearUtility, updateCashUtility, updateGearUtility, updateGearWithID } from "./utilities/updateUtilities/pageTwoUtilities/gearUtilities";
 import { insertSkillUtility, updateNativeLanguageUtility, updateSkillAdeptUtility, updateSkillSuiteUtility, updateSkillUtility } from "./utilities/updateUtilities/pageTwoUtilities/skillUtilities";
@@ -24,14 +21,14 @@ import { updateBasicWeaponInfoUtility, updateWeaponModifierUtility } from "./uti
 import { GeneralNotesInfoKeys } from "@vault/common/interfaces/v1/pageThree/generalNotesInterfaces";
 import { ArmorQuickEditModifiers, QuickEditActions, ShieldQuickEditModifiers, WeaponQuickEditModifiers } from '@vault/common/interfaces/v1/quickEdit'
 import { updateNotesUtility } from "./utilities/updateUtilities/noteUtilities";
-import { updateStatUtility } from "./utilities/updateUtilities/pageOneUtilities/updateStatUtility";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice";
 import { useNavigate } from "react-router-dom";
 import { cacheCharacter, CharacterCacheInfo } from "../../../../redux/slices/characterCacheSlice";
-import { updateIntegrityInfoUtility, updateCharacteristicStringUtility, insertCharacteristicUtility, updateCharacteristicUtility } from "./utilities/updateUtilities/pageOneUtilities/characteristicUtilities";
 import jsPDF from "jspdf";
 import { getWidthAndHeight, getPageImage, getFileName, getPregen } from "./utilities/downloadUtilities";
+import getV1Updates from "./v1Updates/getV1Updates";
+import { Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces";
 
 export default function CharacterHook(pathname: string, isEditing: boolean): CharacterHookReturn {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion1 | null>(null)
@@ -159,7 +156,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
         }
     }
 
-    async function quickQuickSavingWithAction(quickEdit: string[], characterID: number, attribute: string, value: Wound | GearObject, action: QuickEditActions): Promise<any> {
+    async function quickSavingWithAction(quickEdit: string[], characterID: number, attribute: string, value: Wound | GearObject, action: QuickEditActions): Promise<any> {
         if (!isEditing && quickEdit.includes(attribute)) {
             clearTimeout(timeOutID)
 
@@ -181,8 +178,9 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
     }
 
     // ---------------------------------------------------- \\
-    // ----------------- Page One Updates ----------------- \\
+    // ---------------------- Updates --------------------- \\
     // ---------------------------------------------------- \\
+
 
     async function updateGeneralInfo(key: GeneralInfoKeys, value: string | number) {
         if (character) {
@@ -197,111 +195,11 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
         }
     }
 
+    const [{ pageOneUpdateFunctions }, setPageOneUpdates] = useState(getV1Updates(character, setCharacterInfo, quickSavingWithAction, quickBasicQuickSaving))
 
-    function updateStat(key: StatKeys, value: number) {
-        if (character) {
-            setCharacterInfo(updateStatUtility(character, key, value))
-        }
-    }
-
-    function updateMovement(key: MovementKeys, value: number) {
-        if (character) {
-            setCharacterInfo(updateMovementUtility(character, key, value))
-        }
-    }
-
-    function updateIntegrityInfo(key: IntegrityKeys, value: number) {
-        if (character) {
-            setCharacterInfo(updateIntegrityInfoUtility(character, key, value))
-
-            quickBasicQuickSaving(['integrity', 'gritDice'], character.id, key, value)
-        }
-    }
-
-    function updateCharacteristicString(key: CharacteristicStringKeys, value: string) {
-        if (character) {
-            setCharacterInfo(updateCharacteristicStringUtility(character, key, value))
-
-            quickBasicQuickSaving(['assets'], character.id, key, value)
-        }
-    }
-
-    function insertCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
-        return (newObject: PairObject) => {
-            if (character) {
-                setCharacterInfo(insertCharacteristicUtility(character, characteristic, newObject))
-            }
-        }
-    }
-
-    function updateCharacteristic(characteristic: CharacteristicPairObjectsKeys) {
-        return (changedIndex: number, newObject: PairObject) => {
-            if (character) {
-                setCharacterInfo(updateCharacteristicUtility(character, characteristic, changedIndex, newObject))
-            }
-        }
-    }
-
-    function toggleIsThrown() {
-        if (character) {
-            setCharacterInfo(toggleIsThrownUtility(character))
-        }
-    }
-
-    function updateFavorInfo(key: FavorInfoKeys, value: number | boolean) {
-        if (character) {
-            setCharacterInfo(updateFavorInfoUtility(character, key, value))
-
-            if (typeof value === 'number') {
-                quickBasicQuickSaving(['favor'], character.id, key, value)
-            }
-        }
-    }
-
-    function updateVitalityNNerve(key: VitalityNNerveCalcInfoKeys, value: number | string) {
-        if (character) {
-            setCharacterInfo(updateVitalityNNerveUtility(character, key, value))
-        }
-    }
-
-    function updateMaxRange(value: number) {
-        if (character) {
-            setCharacterInfo(updateMaxRangeUtility(character, value))
-        }
-    }
-
-    function updateNerveAndVitalityInfo(key: NerveAndVitalityObjectKeys, value: number) {
-        if (character) {
-            setCharacterInfo(updateNerveAndVitalityInfoUtility(character, key, value))
-
-            quickBasicQuickSaving(['stress', 'relaxation'], character.id, key, value)
-        }
-    }
-
-    function updateWound(changedIndex: number, newWound: Wound) {
-        if (character) {
-            setCharacterInfo(updateWoundUtility(character, changedIndex, newWound))
-
-            const action: QuickEditActions = newWound.severity || newWound.days ? 'update' : 'delete'
-            quickQuickSavingWithAction(['wound'], character.id, 'wound', newWound, action)
-        }
-    }
-
-    async function insertWound(newWound: Wound) {
-        if (character) {
-            const newCharacter = insertWoundUtility(character, newWound)
-            setCharacterInfo(newCharacter)
-
-            const { data } = await quickQuickSavingWithAction(['wound'], newCharacter.id, 'wound', newWound, 'add')
-            setCharacterInfo(updateWoundWithID(newCharacter, data))
-        }
-    }
-
-    function updateAbilities(key: AbilitiesNBurdensInfoKeys, value: string) {
-        if (character) {
-            setCharacterInfo(updateAbilitiesUtility(character, key, value))
-        }
-    }
+    useEffect(() => {
+        setPageOneUpdates(getV1Updates(character, setCharacterInfo, quickSavingWithAction, quickBasicQuickSaving))
+    }, [character])
 
     // ---------------------------------------------------- \\
     // ----------------- Page Two Updates ----------------- \\
@@ -320,7 +218,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
             setCharacterInfo(updateGearUtility(character, changedIndex, newGear))
 
             const action: QuickEditActions = newGear.item || newGear.size ? 'update' : 'delete'
-            quickQuickSavingWithAction(['equipment'], character.id, 'equipment', newGear, action)
+            quickSavingWithAction(['equipment'], character.id, 'equipment', newGear, action)
         }
     }
 
@@ -329,7 +227,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
             const newCharacter = insertGearUtility(character, newGear)
             setCharacterInfo(newCharacter)
 
-            const { data } = await quickQuickSavingWithAction(['equipment'], newCharacter.id, 'equipment', newGear, 'add')
+            const { data } = await quickSavingWithAction(['equipment'], newCharacter.id, 'equipment', newGear, 'add')
             setCharacterInfo(updateGearWithID(newCharacter, data))
         }
     }
@@ -488,26 +386,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
             saveCharacterToBackend,
             pageOneUpdateFunctions: {
                 updateGeneralInfo,
-                leftColumnUpdateFunctions: {
-                    updateStat,
-                    updateMovement,
-                    characteristicUpdateFunctions: {
-                        updateIntegrityInfo,
-                        insertCharacteristic,
-                        updateCharacteristic,
-                        updateCharacteristicString
-                    }
-                },
-                rightColumnUpdateFunctions: {
-                    toggleIsThrown,
-                    updateFavorInfo,
-                    updateVitalityNNerve,
-                    updateMaxRange,
-                    updateNerveAndVitalityInfo,
-                    updateWound,
-                    insertWound,
-                },
-                updateAbilities
+                ...pageOneUpdateFunctions
             },
             pageTwoUpdateFunctions: {
                 updateCash,
