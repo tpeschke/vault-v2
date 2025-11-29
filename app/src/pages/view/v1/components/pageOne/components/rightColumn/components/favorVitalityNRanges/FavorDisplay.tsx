@@ -21,7 +21,7 @@ export default function FavorDisplay({ favorInfo, updateFavorInfo }: Props) {
             <div className='favor-display-shell'>
                 <span>
                     <h3>Favor</h3>
-                    <input type='number' onChange={(event: any) => updateFavorInfo('favor', +event.target.value)} value={favor} />
+                    <input type='number' onChange={(event: any) => updateFavorInfo('favor', +event.target.value)} value={favor ? favor : ''} />
                 </span>
                 <span>
                     <strong>Max</strong>

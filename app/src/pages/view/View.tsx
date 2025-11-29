@@ -68,7 +68,8 @@ export default function View({ setLoading, pathname }: Props) {
                             saveCharacter={saveCharacter}
                             revertCharacterToUnedited={revertCharacterToUnedited}
                             isQuickSaving={isQuickSaving}
-                        />}
+                        />
+                    }
                 </EditingContext>
             </IsBlankContext>
         </div>

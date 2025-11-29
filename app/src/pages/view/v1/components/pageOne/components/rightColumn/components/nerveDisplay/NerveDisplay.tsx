@@ -80,11 +80,11 @@ export default function NerveDisplay({ nerveAndVitalityInfo, updateNerveAndVital
                         <div className='stress-n-relaxation-shell'>
                             <span>
                                 <strong>Stress</strong>
-                                <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('stress', +event.target.value)} value={stress} />
+                                <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('stress', +event.target.value)} value={stress ? stress : ''} />
                             </span>
                             <span>
-                                <strong>Relaxation</strong>
-                                <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('relaxation', +event.target.value)} value={relaxation} />
+                                <strong>Relaxation</strong> 
+                                <input type='number' onChange={(event: any) => updateNerveAndVitalityInfo('relaxation', +event.target.value)} value={relaxation ? relaxation : ''} />
                             </span>
                         </div>
                     }
