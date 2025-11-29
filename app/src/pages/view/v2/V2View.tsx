@@ -14,7 +14,6 @@ export default function V2View({ setLoading, pathname }: Props) {
     const { character } = characterHook(pathname)
 
     useEffect(() => {
-        console.log(character)
         if (character && isInitialLoad) {
             const { name } = character
             document.title = `${name ? name : 'Blank'} - Bonfire Character Vault`
