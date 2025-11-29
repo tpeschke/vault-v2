@@ -33,14 +33,17 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
                 setCharacterInfo(data)
             })
         } else {
-            axios.get(viewURL + characterID).then(({ data }) => {
-                if (data.message) {
-                    navigate('/')
-                } else {
-                    setCharacterInfo(data)
-                    dispatch(cacheCharacter(data))
-                }
-            })
+            dispatch(cacheCharacter({
+                id: +characterID,
+                characterInfo: axios.get(viewURL + characterID).then(({ data }) => {
+                    if (data.message) {
+                        navigate('/')
+                    } else {
+                        setCharacterInfo(data)
+                        return data
+                    }
+                })
+            }))
         }
     }, [pathname])
 
