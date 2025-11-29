@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import './Sidebar.css'
 import EditingContext from '../../contexts/EditingContext'
 import LoadingIndicator from '../../../../../components/loading/components/LoadingIndicator'
+import IsBlankContext from '../../contexts/IsBlankContext'
 
 interface Props {
     toggleViewQuickEdit: () => void,
@@ -25,6 +26,7 @@ export default function Sidebar({
     isQuickSaving
 }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(IsBlankContext)
 
     if (isQuickSaving) {
         return (
@@ -47,11 +49,11 @@ export default function Sidebar({
                     {ownsThisCharacter && <button onClick={toggleIsEditing}><i className="fa-solid fa-pen-nib"></i> Edit</button>}
                     <button onClick={_ => prepAndDownload(false)}><i className="fa-solid fa-download"></i> Download</button>
                     <button onClick={_ => prepAndDownload(true)}><i className="fa-solid fa-mask"></i> Download as Pregen</button>
-                    {viewQuickEdit ?
+                    {!isBlank && (viewQuickEdit ?
                         <button onClick={toggleViewQuickEdit}><i className="fa-solid fa-eye-slash"></i> Hide Quick Edit Locations</button>
                         :
                         <button onClick={toggleViewQuickEdit}><i className="fa-solid fa-eye"></i> Show Quick Edit Locations</button>
-                    }
+                    )}
                 </>
             }
         </div>
