@@ -1,7 +1,7 @@
 import { CharacterVersion1 } from "@vault/common/interfaces/characterInterfaces"
 import { PageOneUpdates } from "./pageOneInterfaces/UpdateExportInterfaces"
 import { PageTwoUpdates } from "./pageTwoInterfaces/UpdateExportInterfaces"
-import { UpdateNotes } from "./pageThreeInterfaces/generalNotesInterfaces"
+import { UpdateNotesFunction } from "./pageThreeInterfaces/generalNotesInterfaces"
 import { Wound } from "@vault/common/interfaces/v1/pageOne/rightColumnInterfaces"
 import { GearObject } from "@vault/common/interfaces/v1/pageTwo/gearInterfaces"
 import { ArmorQuickEditModifiers, QuickEditActions, ShieldQuickEditModifiers, WeaponQuickEditModifiers } from "@vault/common/interfaces/v1/quickEdit"
@@ -21,7 +21,7 @@ export interface UpdateFunctions {
     saveCharacterToBackend: () => void,
     pageOneUpdateFunctions: PageOneUpdates,
     pageTwoUpdateFunctions: PageTwoUpdates,
-    updateNotes: UpdateNotes
+    updateNotes: UpdateNotesFunction
 }
 
 export type QuickSavingWithActionFunction = (quickEdit: string[], characterID: number, attribute: string, value: Wound | GearObject, action: QuickEditActions) => Promise<any>
