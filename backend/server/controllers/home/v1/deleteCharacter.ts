@@ -1,22 +1,12 @@
-import { checkForContentTypeBeforeSending } from "../../../controllers/common/sendingFunctions"
-import query from "../../../db/database"
-import homeSQL from "../../queries/home"
-import combatDeleteSQL from "../../queries/combat/deletes"
-import gearDeleteSQL from "../../queries/gear/deletes"
-import skillDeleteSQL from "../../queries/skill/deletes"
-import confrontationDeleteSQL from "../../queries/confrontation/deletes"
+import query from '../../../db/database'
 import { Request, Response } from '../../../interfaces/apiInterfaces'
-import { isOwner } from "../../../controllers/user/ownerFunctions"
+import { checkForContentTypeBeforeSending } from '../../common/sendingFunctions'
 
-export async function viewUsersCharacters(request: Request, response: Response) {
-    const userID = request.user?.id
-    if (!userID) {
-        checkForContentTypeBeforeSending(response, { message: 'User Not Logged In' })
-    } else {
-        const data = await query(homeSQL.allUsersCharacters, userID)
-        checkForContentTypeBeforeSending(response, data)
-    }
-}
+import homeSQL from '../../../v1/queries/home'
+import combatDeleteSQL from "../../../v1/queries/combat/deletes"
+import gearDeleteSQL from "../../../v1/queries/gear/deletes"
+import skillDeleteSQL from "../../../v1/queries/skill/deletes"
+import confrontationDeleteSQL from "../../../v1/queries/confrontation/deletes"
 
 interface DeleteCharacterRequest extends Request {
     params: {
@@ -24,7 +14,7 @@ interface DeleteCharacterRequest extends Request {
     }
 }
 
-export async function deleteCharacter(request: DeleteCharacterRequest, response: Response) {
+export default async function deleteCharacter(request: DeleteCharacterRequest, response: Response) {
     const characterID: number = +request.params.characterID
     const userID = request.user?.id
 
@@ -60,25 +50,5 @@ export async function deleteCharacter(request: DeleteCharacterRequest, response:
         checkForContentTypeBeforeSending(response, { message: "Successfully Deleted" })
     } else {
         checkForContentTypeBeforeSending(response, { message: "This isn't your character to delete" })
-    }
-}
-
-export async function addCharacter(request: Request, response: Response) {
-    const userID = request.user?.id
-    const patreon = request.user?.patreon
-
-    if (patreon) {
-        const limit = (patreon * 20) + 10
-        const [{ count: currentCharacterCount }] = await query(homeSQL.characterCount, userID)
-
-        if (isOwner(userID) || currentCharacterCount < limit) {
-            const [{ id: newCharacterID }] = await query(homeSQL.insertCharacter, userID)
-
-            checkForContentTypeBeforeSending(response, { newCharacterID })
-        } else {
-            checkForContentTypeBeforeSending(response, { message: "You've Hit Your Character Limit. Upgrade Your Patreon to Add More." })
-        }
-    } else {
-        checkForContentTypeBeforeSending(response, { message: "You Need to Log On" })
     }
 }

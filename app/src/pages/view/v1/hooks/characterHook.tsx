@@ -187,7 +187,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
             const { id, pageOneInfo } = newCharacter
             const { name, ancestry, class: primaryClass, subclass, level } = pageOneInfo.generalInfo
-            dispatch(updateCatalogInfo({ id, name, ancestry, class: primaryClass, subclass, level }))
+            dispatch(updateCatalogInfo({ info: {id, name, ancestry, class: primaryClass, subclass, level}, index: 0 }))
         }
     }
 

@@ -1,26 +1,25 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { homeURL } from "../frontend-config"
-import { CharacterHomeInfo } from '@vault/common/interfaces/characterInterfaces'
 import { useDispatch, useSelector } from "react-redux"
-import { cacheCharacters } from "../redux/slices/usersCharactersSlice"
+import { cacheCharacters, UsersCharacterCache } from "../redux/slices/usersCharactersSlice"
 import { useNavigate } from "react-router-dom"
 
 export type DeleteCharacterFunction = (characterID: number) => void
 
 interface UsersCharactersReturn {
-    usersCharacters: CharacterHomeInfo[] | null,
+    usersCharacters: UsersCharacterCache,
     deleteCharacter: DeleteCharacterFunction,
     addCharacter: () => void
 }
 
 export default function UsersCharactersHook(pathname?: string): UsersCharactersReturn {
-    const [usersCharacters, setUsersCharacters] = useState<CharacterHomeInfo[] | null>(null)
+    const [usersCharacters, setUsersCharacters] = useState<UsersCharacterCache>(null)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const charactersCache: CharacterHomeInfo[] = useSelector((state: any) => state.usersCharacters.usersCharactersCache)
+    const charactersCache: UsersCharacterCache = useSelector((state: any) => state.usersCharacters.usersCharactersCache)
 
     useEffect(() => {
         if (pathname === '/') {
@@ -40,12 +39,14 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
     }
 
     function deleteCharacter(characterID: number) {
-        const newUsersCharacters = usersCharacters?.filter((({ id }) => id !== characterID))
-
-        axios.delete(homeURL + '/' + characterID)
-
-        if (newUsersCharacters) {
-            setCharacterData(newUsersCharacters)
+        if (usersCharacters && usersCharacters[0]) {
+            const newUsersCharacters = usersCharacters[0].filter((({ id }) => id !== characterID))
+    
+            axios.delete(homeURL + '/' + characterID)
+    
+            if (newUsersCharacters) {
+                setCharacterData(newUsersCharacters)
+            }
         }
     }
 

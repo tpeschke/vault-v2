@@ -5,6 +5,7 @@ import ViewVersionOne from "./v1/ViewVersionOne"
 import CharacterHook from './v1/hooks/characterHook'
 import EditingContext from './v1/contexts/EditingContext'
 import IsBlankContext from './v1/contexts/IsBlankContext'
+import LoadingIndicator from '../../components/loading/components/LoadingIndicator'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -50,7 +51,13 @@ export default function View({ setLoading, pathname }: Props) {
         <div className="home-shell">
             <IsBlankContext value={!!character?.isBlank}>
                 <EditingContext value={isEditing}>
-                    {character &&
+                    {isDownloading && (
+                        <div className='download-banner'>
+                            <h1>Downloading</h1>
+                            <LoadingIndicator stylings={''} secondary={true} />
+                        </div>
+                    )}
+                    {character && character.version === 1 &&
                         <ViewVersionOne
                             character={character}
                             downloadCharacter={downloadCharacter}

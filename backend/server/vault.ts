@@ -21,12 +21,12 @@ import authRoutesWithoutPassword from './routes/authentication'
 import query from './db/database'
 import userSQL from './v1/queries/user'
 import userRoutes from './controllers/user/userRoutes'
-import homeRoutes from './v1/controllers/home/HomeRoutes'
 import characterRoutes from './v1/controllers/view/viewCharacterRoutes'
 import editCharacterRoutes from './v1/controllers/edit/editCharacterRouter'
 import quickEditRoutes from './v1/controllers/quickEdit/quickEditRoutes'
 import characterV2Routes from './v2/view/viewV2CharacterRoutes'
 import addV2Routes from './v2/add/addV2CharacterRoutes'
+import homeRoutes from './controllers/home/HomeRoutes'
 
 const app = express()
 app.use(bodyParser.json({ limit: '10mb' }))

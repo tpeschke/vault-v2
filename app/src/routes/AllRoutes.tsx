@@ -20,6 +20,11 @@ export default function AllRoutes({ pathname }: Props) {
                     <View pathname={pathname} />
                 </Loading>
             } />
+            <Route path="v/:characterID" element={
+                <Loading>
+                    <View pathname={pathname} />
+                </Loading>
+            } />
             <Route path="*" element={<Navigate to='/' replace />} />
         </Routes>
     )

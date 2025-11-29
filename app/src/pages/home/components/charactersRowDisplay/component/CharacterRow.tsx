@@ -10,10 +10,11 @@ import { cacheCharacter } from '../../../../../redux/slices/characterCacheSlice'
 
 interface Props {
     character: CharacterHomeInfo,
-    deleteCharacter: DeleteCharacterFunction
+    deleteCharacter: DeleteCharacterFunction,
+    viewRoute: 'v' | 'view'
 }
 
-export default function CharacterRow({ character, deleteCharacter }: Props) {
+export default function CharacterRow({ character, deleteCharacter, viewRoute }: Props) {
     const { id, name, ancestry, class: primaryClass, subclass, level } = character
 
     const [confirmDelete, setConfirmDelete] = useState(false)
@@ -22,7 +23,7 @@ export default function CharacterRow({ character, deleteCharacter }: Props) {
     const dispatch = useDispatch()
 
     function goToCharacter(characterID: number) {
-        navigate(`/view/${characterID}`)
+        navigate(`/${viewRoute}/${characterID}`)
     }
 
     function toggleCheckDelete(event: any) {

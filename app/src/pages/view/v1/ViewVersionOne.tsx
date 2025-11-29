@@ -53,12 +53,6 @@ export default function ViewVersionOne({
 
     return (
         <>
-            {isDownloading && (
-                <div className='download-banner'>
-                    <h1>Downloading</h1>
-                    <LoadingIndicator stylings={''} secondary={true} />
-                </div>
-            )}
             <div className='version-one-shell'>
                 <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
                     <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunctions={pageOneUpdateFunctions} />

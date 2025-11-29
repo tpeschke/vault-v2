@@ -1,3 +1,7 @@
+.home-shell .card:first-child {
+    margin-bottom: 15px;
+}
+
 .home-shell-heading {
     background: #515151;
     margin: -16px -16px 0;

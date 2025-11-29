@@ -2,10 +2,10 @@ import "./Home.css"
 import { useEffect } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import UsersCharactersHook from "../../hooks/UsersCharactersHook"
-import CharacterRowDisplay from "./components/charactersRowDisplay/CharacterRowsDisplay"
-import HomeFooter from "./components/homeFooter/HomeFooter"
 import { useSelector } from "react-redux"
 import { isUserLoggedOn } from "../../redux/slices/userSlice"
+import V1CharacterDisplay from "./components/v1CharacterDisplay/V1CharacterDisplay"
+import V2CharacterDisplay from "./components/V2CharacterDisplay.tsx/V2CharacterDisplay"
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -14,7 +14,7 @@ interface Props {
 
 export default function Home({ setLoading, pathname }: Props) {
     document.title = "Bonfire Character Vault"
-    
+
     const userIsLoggedIn = useSelector(isUserLoggedOn)
 
     const { usersCharacters, deleteCharacter } = UsersCharactersHook(pathname)
@@ -26,16 +26,11 @@ export default function Home({ setLoading, pathname }: Props) {
     }, [usersCharacters])
 
     return (
-        <div className="home-shell card">
-            {userIsLoggedIn ? (
+        <div className="home-shell">
+            {userIsLoggedIn && usersCharacters ? (
                 <>
-                    <div className="home-shell-heading">
-                        <i className="fa-solid fa-users"></i>
-                        <h1>Your Characters</h1>
-                    </div>
-                    <CharacterRowDisplay usersCharacters={usersCharacters} deleteCharacter={deleteCharacter} />
-                    {/* I'm pausing the ability to add new characters until the new update is made */}
-                    {/* <HomeFooter numberOfCharacters={usersCharacters?.length} addCharacter={addCharacter} /> */}
+                    <V2CharacterDisplay usersCharacters={usersCharacters[1]} deleteCharacter={deleteCharacter} />
+                    <V1CharacterDisplay usersCharacters={usersCharacters[0]} deleteCharacter={deleteCharacter} />
                 </>
             ) : (
                 <h1>You Need to Log In To View Your Characters</h1>
