@@ -11,7 +11,7 @@ interface RawStats {
     pre: number
 }
 
-const getStatsSQL = `select * from v2stats where characterID = number`
+const getStatsSQL = `select * from v2stats where characterID = $1`
 
 export default async function getStats(characterID: number): Promise<Stats> {
     const [info]: RawStats[] = await query(getStatsSQL, characterID)
