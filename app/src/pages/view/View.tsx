@@ -58,7 +58,7 @@ export default function View({ setLoading, pathname }: Props) {
                             <LoadingIndicator stylings={''} secondary={true} />
                         </div>
                     )}
-                    {character && character.version === 1 &&
+                    {character &&
                         <ViewVersionOne
                             character={character}
                             downloadCharacter={downloadCharacter}
