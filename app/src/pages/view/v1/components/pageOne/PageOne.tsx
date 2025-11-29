@@ -16,7 +16,7 @@ export default function PageOne({ pageOneInfo, pageOneUpdateFunctions }: Props) 
     const { updateGeneralInfo, leftColumnUpdateFunctions, rightColumnUpdateFunctions, updateAbilities } = pageOneUpdateFunctions
 
     return (
-        <div className='page-shell page card page-one' id='page-one'>
+        <div className='page-shell page card page-one' id='page-0'>
             <GeneralInfo generalInfo={generalInfo} updateGeneralInfo={updateGeneralInfo} />
             <div className='page-one-columns'>
                 <LeftColumn leftColumnInfo={leftColumnInfo} leftColumnUpdateFunctions={leftColumnUpdateFunctions}/>

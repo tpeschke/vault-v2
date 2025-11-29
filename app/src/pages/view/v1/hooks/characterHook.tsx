@@ -57,7 +57,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
                 } else {
                     setCharacter(data)
                     setRevertedCharacter(data)
-                    dispatch(cacheCharacter(charactersCache[data]))
+                    dispatch(cacheCharacter(data))
                 }
             })
         }
@@ -72,13 +72,13 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
             const widthAndHeight = getWidthAndHeight(pdf)
 
             if (character) {
-                let promiseArray: any[] = []
-
-                promiseArray.push(getPageImage('page-one'))
-                promiseArray.push(getPageImage('page-two'))
+                let promiseArray: any[] = [
+                    getPageImage('page-0'),
+                    getPageImage('page-1')
+                ]
 
                 if (!character?.generalNotes.isSecret || character.userInfo.ownsThisCharacter) {
-                    promiseArray.push(getPageImage('page-three'))
+                    promiseArray.push(getPageImage('page-2'))
                 }
 
                 Promise.all(promiseArray).then(pages => {
@@ -187,7 +187,7 @@ export default function CharacterHook(pathname: string, isEditing: boolean): Cha
 
             const { id, pageOneInfo } = newCharacter
             const { name, ancestry, class: primaryClass, subclass, level } = pageOneInfo.generalInfo
-            dispatch(updateCatalogInfo({ info: {id, name, ancestry, class: primaryClass, subclass, level}, index: 0 }))
+            dispatch(updateCatalogInfo({ info: { id, name, ancestry, class: primaryClass, subclass, level }, index: 0 }))
         }
     }
 

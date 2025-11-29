@@ -16,7 +16,7 @@ export default function PageTwo({ pageTwoInfo, int, pageTwoUpdateFunctions }: Pr
     const { updateCash, updateGear, insertGear, updateSkillInfo, updateCombatInfo } = pageTwoUpdateFunctions
 
     return (
-        <div className='page-shell page card page-two' id='page-two'>
+        <div className='page-shell page card page-two' id='page-1'>
             <GearDisplay gearInfo={gearInfo} updateCash={updateCash} updateGear={updateGear} insertGear={insertGear}/>
             <SkillDisplay skillInfo={skillInfo} int={int} updateSkillInfo={updateSkillInfo}/>
             <CombatInfoDisplay combatWorkspaceInfo={combatWorkspaceInfo} int={int} updateCombatInfo={updateCombatInfo}/>

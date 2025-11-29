@@ -1,6 +1,6 @@
 import query from "../../../db/database";
 
-const allUsersCharacters = `select gi.characterID, name, ancestry, class, subclass, level from v2GeneralInfo gi
+const allUsersCharacters = `select gi.characterID as id, name, ancestry, class, subclass, level from v2GeneralInfo gi
 where characterID in (
 	select characterID from v2CharacterOwner
 	where ownerID = $1

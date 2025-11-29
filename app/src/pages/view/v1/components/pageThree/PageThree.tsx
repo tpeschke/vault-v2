@@ -11,7 +11,7 @@ interface Props {
 
 export default function PageThree({ generalNotes, updateNotes, canEdit }: Props) {
     return (
-        <div className='page-shell page card page-three' id='page-three'>
+        <div className='page-shell page card page-three' id='page-2'>
             <GeneralInfoDisplay generalNotes={generalNotes} updateNotes={updateNotes} canEdit={canEdit}/>
         </div>
     )

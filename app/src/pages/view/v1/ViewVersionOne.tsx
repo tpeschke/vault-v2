@@ -5,7 +5,6 @@ import PageTwo from './components/pageTwo/PageTwo'
 import Sidebar from './components/sidebar/Sidebar'
 import './ViewVersionOne.css'
 import { CharacterVersion1 } from '@vault/common/interfaces/characterInterfaces'
-import LoadingIndicator from '../../../components/loading/components/LoadingIndicator'
 import { DownloadCharacterFunction, UpdateFunctions } from './hooks/interfaces/CharacterHookInterfaces'
 import EditingContext from './contexts/EditingContext'
 
