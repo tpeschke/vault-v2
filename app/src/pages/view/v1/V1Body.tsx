@@ -51,25 +51,23 @@ export default function ViewVersionOne({
     const showNotes = !generalNotes.isSecret || ownsThisCharacter
 
     return (
-        <>
-            <div className='version-one-shell'>
-                <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
-                    <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunctions={pageOneUpdateFunctions} />
-                    <PageTwo pageTwoInfo={pageTwoInfo} int={int} pageTwoUpdateFunctions={pageTwoUpdateFunctions} />
-                    {showNotes && <PageThree generalNotes={generalNotes} updateNotes={updateNotes} canEdit={!ownsThisCharacter} />}
-                </div>
-                {!isDownloading &&
-                    <Sidebar
-                        toggleViewQuickEdit={toggleViewQuickEdit}
-                        viewQuickEdit={viewQuickEdit}
-                        prepAndDownload={prepAndDownload}
-                        toggleIsEditing={toggleIsEditing}
-                        saveCharacter={saveCharacter}
-                        revertCharacterToUnedited={revertCharacterToUnedited}
-                        ownsThisCharacter={ownsThisCharacter}
-                        isQuickSaving={isQuickSaving}
-                    />}
+        <div className='version-one-shell'>
+            <div className={`page-shell ${viewQuickEdit ? 'view-quick-edit' : ''} ${isEditing ? 'view-edit' : ''}`}>
+                <PageOne pageOneInfo={pageOneInfo} pageOneUpdateFunctions={pageOneUpdateFunctions} />
+                <PageTwo pageTwoInfo={pageTwoInfo} int={int} pageTwoUpdateFunctions={pageTwoUpdateFunctions} />
+                {showNotes && <PageThree generalNotes={generalNotes} updateNotes={updateNotes} canEdit={!ownsThisCharacter} />}
             </div>
-        </>
+            {!isDownloading &&
+                <Sidebar
+                    toggleViewQuickEdit={toggleViewQuickEdit}
+                    viewQuickEdit={viewQuickEdit}
+                    prepAndDownload={prepAndDownload}
+                    toggleIsEditing={toggleIsEditing}
+                    saveCharacter={saveCharacter}
+                    revertCharacterToUnedited={revertCharacterToUnedited}
+                    ownsThisCharacter={ownsThisCharacter}
+                    isQuickSaving={isQuickSaving}
+                />}
+        </div>
     )
 }

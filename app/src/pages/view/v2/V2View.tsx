@@ -2,6 +2,7 @@ import '../View.css'
 import { useEffect, useState } from "react"
 import { SetLoadingFunction } from "../../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
+import PageType1 from './pageTypes/pageType1/PageType1'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -28,9 +29,17 @@ export default function V2View({ setLoading, pathname }: Props) {
 
     return (
         <div className="home-shell">
-            {character &&
-                <p>{character.name}</p>
-            }
+            <div className='page-shell'>
+                {character && character.pages.map(page => {
+                    switch (page.type) {
+                        case 1:
+                            return <PageType1 pageInfo={page} />
+                        default:
+                            return <></>
+                    }
+                })}
+            </div>
+            {/* Sidebar */}
         </div>
     )
 }
