@@ -1,16 +1,18 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { addV2URL, homeURL } from "../frontend-config"
+import { addV2URL, homeURL, removeV2URL } from "../frontend-config"
 import { useDispatch, useSelector } from "react-redux"
 import { cacheCharacters, UsersCharacterCache } from "../redux/slices/usersCharactersSlice"
 import { useNavigate } from "react-router-dom"
+import { CharacterHomeInfo } from '@vault/common/interfaces/characterInterfaces'
 
 export type DeleteCharacterFunction = (characterID: number) => void
 
 interface UsersCharactersReturn {
     usersCharacters: UsersCharacterCache,
     deleteCharacter: {
-        deleteV1Character: DeleteCharacterFunction
+        deleteV1Character: DeleteCharacterFunction,
+        deleteV2Character: DeleteCharacterFunction
     },
     addCharacter: () => void
 }
@@ -42,10 +44,28 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
 
     function deleteV1Character(characterID: number) {
         if (usersCharacters && usersCharacters[0]) {
-            const newUsersCharacters = usersCharacters[0].filter((({ id }) => id !== characterID))
-    
+            const newUsersCharacters: UsersCharacterCache = [
+                usersCharacters[0].filter((({ id }) => id !== characterID)),
+                usersCharacters[1]
+            ]
+
             axios.delete(homeURL + '/' + characterID)
-    
+
+            if (newUsersCharacters) {
+                setCharacterData(newUsersCharacters)
+            }
+        }
+    }
+
+    function deleteV2Character(characterID: number) {
+        if (usersCharacters && usersCharacters[1]) {
+            const newUsersCharacters: UsersCharacterCache = [
+                usersCharacters[0],
+                usersCharacters[1].filter((({ id }) => id !== characterID))
+            ]
+
+            axios.delete(removeV2URL + characterID)
+
             if (newUsersCharacters) {
                 setCharacterData(newUsersCharacters)
             }
@@ -57,8 +77,8 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
 
         window.scrollTo(0, 0);
 
-        const {data} = await axios.post(addV2URL)
-        
+        const { data } = await axios.post(addV2URL)
+
         if (data.newCharacterID) {
             navigate(`/v/${data.newCharacterID}`)
         } else {
@@ -69,7 +89,8 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
     return {
         usersCharacters,
         deleteCharacter: {
-            deleteV1Character
+            deleteV1Character,
+            deleteV2Character
         },
         addCharacter
     }

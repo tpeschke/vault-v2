@@ -27,6 +27,7 @@ import quickEditRoutes from './v1/controllers/quickEdit/quickEditRoutes'
 import characterV2Routes from './v2/view/viewV2CharacterRoutes'
 import addV2Routes from './v2/add/addV2CharacterRoutes'
 import homeRoutes from './controllers/home/HomeRoutes'
+import deleteV2Routes from './v2/delete/deleteV2CharacterRoutes'
 
 const app = express()
 app.use(bodyParser.json({ limit: '10mb' }))
@@ -79,6 +80,7 @@ app.use('/quickEdit', quickEditRoutes)
 // v2
 app.use('/v2/getView', characterV2Routes)
 app.use('/v2', addV2Routes)
+app.use('/v2/remove', deleteV2Routes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
 app.all('/{*any}', (_: Request, response: Response) => {

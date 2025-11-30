@@ -29,7 +29,7 @@ export default function Home({ setLoading, pathname }: Props) {
         <div className="home-shell">
             {userIsLoggedIn && usersCharacters ? (
                 <>
-                    <V2CharacterDisplay usersCharacters={usersCharacters[1]} addCharacter={addCharacter} deleteCharacter={deleteCharacter.deleteV1Character} />
+                    <V2CharacterDisplay usersCharacters={usersCharacters[1]} addCharacter={addCharacter} deleteCharacter={deleteCharacter.deleteV2Character} />
                     <V1CharacterDisplay usersCharacters={usersCharacters[0]} deleteCharacter={deleteCharacter.deleteV1Character} />
                 </>
             ) : (
