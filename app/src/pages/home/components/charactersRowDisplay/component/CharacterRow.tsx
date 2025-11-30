@@ -63,9 +63,9 @@ export default function CharacterRow({ character, deleteCharacter, viewRoute }: 
     return (
         <div onMouseEnter={_ => preloadCharacterInfo(id)} onMouseLeave={_ => clearTimeout(timeOutID)} onClick={_ => goToCharacter(id)}>
             <strong>{name ?? '?'}</strong>
-            <p>{ancestry ?? '?'}</p>
-            <p>{primaryClass ?? '?'} / {subclass ?? '?'}</p>
-            <p>lvl {level ?? '?'}</p>
+            <p>{ancestry ? ancestry : '?'}</p>
+            <p>{primaryClass ? primaryClass : '?'} / {subclass ? subclass : '?'}</p>
+            <p>lvl {level ? level : '?'}</p>
             {!confirmDelete && <button className='transparent-warn' onClick={toggleCheckDelete} data-tooltip-id="my-tooltip" data-tooltip-content={`Delete ${name ?? '?'}`}><i className="fa-solid fa-trash"></i></button>}
             {!!confirmDelete && (
                 <>
