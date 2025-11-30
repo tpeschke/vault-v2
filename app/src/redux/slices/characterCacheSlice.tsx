@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { CharacterVersion1, CharacterVersion2 } from "@vault/common/interfaces/characterInterfaces"
 
 interface State {
-    characterCache: {
-        1: {
-            [key: number]: V1CharacterCacheInfo
-        },
-        2: {
-            [key: number]: V2CharacterCacheInfo
-        }
+    characterCache: CharacterCache
+}
+
+export interface CharacterCache {
+    1: {
+        [key: number]: V1CharacterCacheInfo
+    },
+    2: {
+        [key: number]: V2CharacterCacheInfo
     }
 }
 
