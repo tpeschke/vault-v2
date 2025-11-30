@@ -7,10 +7,10 @@ interface GoalReturn {
     goal: string
 }
 
-const getGoalsSQL = `select * from v2goals where characterID = $1`
+const getGoalsSQL = `select * from v2goals where pageID = $1`
 
-export default async function getGoals(characterID: number): Promise<Goal[]> {
-    const info: GoalReturn[] = await query(getGoalsSQL, characterID)
+export default async function getGoals(pageID: number): Promise<Goal[]> {
+    const info: GoalReturn[] = await query(getGoalsSQL, pageID)
 
     if (info.length > 0) {
         return info.map(({ id, goal }) => {

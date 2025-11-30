@@ -24,10 +24,10 @@ interface BasicCharacteristicReturn {
     }
 }
 
-const getBasicCharacteristicsSQL = `select * from v2BasicCharacteristics where characterID = $1`
+const getBasicCharacteristicsSQL = `select * from v2BasicCharacteristics where pageID = $1`
 
-export default async function getBasicCharacteristics(characterID: number): Promise<BasicCharacteristicReturn> {
-    const [info]: RawBasicCharacteristics[] = await query(getBasicCharacteristicsSQL, characterID)
+export default async function getBasicCharacteristics(pageID: number): Promise<BasicCharacteristicReturn> {
+    const [info]: RawBasicCharacteristics[] = await query(getBasicCharacteristicsSQL, pageID)
 
     if (info) {
         const {

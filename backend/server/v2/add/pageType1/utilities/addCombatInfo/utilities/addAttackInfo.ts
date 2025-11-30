@@ -1,12 +1,12 @@
 import query from "../../../../../../db/database"
 
-const addAttackInfoSQL = `insert into v2Attacks (characterid, index) values ($1, $2);`
+const addAttackInfoSQL = `insert into v2Attacks (pageID, index) values ($1, $2);`
 
-export default async function addAttackInfo(characterID: number) {
+export default async function addAttackInfo(pageID: number) {
     return Promise.all([
-        query(addAttackInfoSQL, [characterID, 0]),
-        query(addAttackInfoSQL, [characterID, 1]),
-        query(addAttackInfoSQL, [characterID, 2]),
-        query(addAttackInfoSQL, [characterID, 3]),
+        query(addAttackInfoSQL, [pageID, 0]),
+        query(addAttackInfoSQL, [pageID, 1]),
+        query(addAttackInfoSQL, [pageID, 2]),
+        query(addAttackInfoSQL, [pageID, 3]),
     ])
 }

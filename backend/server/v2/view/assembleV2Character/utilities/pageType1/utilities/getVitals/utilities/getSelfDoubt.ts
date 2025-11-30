@@ -3,16 +3,16 @@ import query from "../../../../../../../../db/database"
 
 interface SelfDoubtReturn {
     id: number,
-    characterid: number,
+    pageid: number,
     dieindex: number,
     threshold: number,
     diepenalty: number
 }
 
-const getSelfDoubtSQL = `select * from v2SelfDoubt where characterID = $1`
+const getSelfDoubtSQL = `select * from v2SelfDoubt where pageID = $1`
 
-export default async function getSelfDoubt(characterID: number): Promise<SelfDoubt> {
-    const [info]: SelfDoubtReturn[] = await query(getSelfDoubtSQL, characterID)
+export default async function getSelfDoubt(pageID: number): Promise<SelfDoubt> {
+    const [info]: SelfDoubtReturn[] = await query(getSelfDoubtSQL, pageID)
 
     if (info) {
         const { dieindex: dieIndex, threshold, diepenalty: diePenalty } = info

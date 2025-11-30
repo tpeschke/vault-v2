@@ -9,10 +9,10 @@ interface DamageReturn {
     threshold: number
 }
 
-const getDamageSQL = `select * from v2Damage where characterID = $1`
+const getDamageSQL = `select * from v2Damage where pageID = $1`
 
-export default async function getDamage(characterID: number): Promise<Damage> {
-    const [info]: DamageReturn[] = await query(getDamageSQL, characterID)
+export default async function getDamage(pageID: number): Promise<Damage> {
+    const [info]: DamageReturn[] = await query(getDamageSQL, pageID)
 
     if (info) {
         const { dieindex: dieIndex, threshold, knockback, damage } = info

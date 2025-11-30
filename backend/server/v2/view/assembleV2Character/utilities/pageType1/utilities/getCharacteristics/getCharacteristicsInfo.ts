@@ -7,7 +7,7 @@ import getRelationships from "./utilities/getRelationships";
 import getFlaws from "./utilities/getFlaws";
 import getSocialSuites from "./utilities/getSocialSuites";
 
-export default async function getCharacteristicsInfo(characterID: number): Promise<Characteristics> {
+export default async function getCharacteristicsInfo(pageID: number): Promise<Characteristics> {
     let characteristicInfo: Characteristics = {
         capacity: 0,
         culturalStrength: '',
@@ -49,18 +49,18 @@ export default async function getCharacteristicsInfo(characterID: number): Promi
     }
 
     await Promise.all([
-        getBasicCharacteristics(characterID).then(basicCharacteristics => {
+        getBasicCharacteristics(pageID).then(basicCharacteristics => {
             return {
                 ...characteristicInfo,
                 ...basicCharacteristics
             }
         }),
-        getGoals(characterID).then(goals => characteristicInfo.goals = goals),
-        getReputations(characterID).then(reputations => characteristicInfo.reputations = reputations),
-        getConvictions(characterID).then(convictions => characteristicInfo.convictions = convictions),
-        getRelationships(characterID).then(relationships => characteristicInfo.relationships = relationships),
-        getFlaws(characterID).then(flaws => characteristicInfo.flaws = flaws),
-        getSocialSuites(characterID).then(socialSuites => characteristicInfo.socialSuites = socialSuites)
+        getGoals(pageID).then(goals => characteristicInfo.goals = goals),
+        getReputations(pageID).then(reputations => characteristicInfo.reputations = reputations),
+        getConvictions(pageID).then(convictions => characteristicInfo.convictions = convictions),
+        getRelationships(pageID).then(relationships => characteristicInfo.relationships = relationships),
+        getFlaws(pageID).then(flaws => characteristicInfo.flaws = flaws),
+        getSocialSuites(pageID).then(socialSuites => characteristicInfo.socialSuites = socialSuites)
     ])
     
     return characteristicInfo

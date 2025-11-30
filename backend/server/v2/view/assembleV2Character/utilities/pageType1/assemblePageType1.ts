@@ -7,9 +7,10 @@ import getVitals from "./utilities/getVitals/getVitals";
 import getFavor from "./utilities/getFavor";
 import getCombatInfo from "./utilities/getCombatInfo/getCombatInfo";
 
-export default async function assemblePageType1(characterID: number): Promise<Page1> {
+export default async function assemblePageType1(pageID: number): Promise<Page1> {
     let basicPageSkeleton: Page1 = {
         type: 1,
+        pageID,
         generalInfo: {
             name: '',
             ancestry: '',
@@ -157,13 +158,13 @@ export default async function assemblePageType1(characterID: number): Promise<Pa
     }
 
     await Promise.all([
-        getGeneralInfo(characterID).then(generalInfo => basicPageSkeleton.generalInfo = generalInfo),
-        getStats(characterID).then(stats => basicPageSkeleton.stats = stats),
-        getCharacteristicsInfo(characterID).then(characteristicInfo => basicPageSkeleton.characteristicsInfo = characteristicInfo),
-        getMovement(characterID).then(movement => basicPageSkeleton.movement = movement),
-        getVitals(characterID).then(vitalsInfo => basicPageSkeleton.vitalsInfo = vitalsInfo),
-        getFavor(characterID).then(favor => basicPageSkeleton.favor = favor),
-        getCombatInfo(characterID).then(combatInfo => basicPageSkeleton.combatInfo = combatInfo)
+        getGeneralInfo(pageID).then(generalInfo => basicPageSkeleton.generalInfo = generalInfo),
+        getStats(pageID).then(stats => basicPageSkeleton.stats = stats),
+        getCharacteristicsInfo(pageID).then(characteristicInfo => basicPageSkeleton.characteristicsInfo = characteristicInfo),
+        getMovement(pageID).then(movement => basicPageSkeleton.movement = movement),
+        getVitals(pageID).then(vitalsInfo => basicPageSkeleton.vitalsInfo = vitalsInfo),
+        getFavor(pageID).then(favor => basicPageSkeleton.favor = favor),
+        getCombatInfo(pageID).then(combatInfo => basicPageSkeleton.combatInfo = combatInfo)
     ])
 
     return basicPageSkeleton

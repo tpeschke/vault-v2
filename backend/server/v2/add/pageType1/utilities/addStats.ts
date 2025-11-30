@@ -1,7 +1,7 @@
 import query from "../../../../db/database"
 
-const addStatsSQL = `insert into v2stats (characterID) values ($1)`
+const addStatsSQL = `insert into v2stats (pageID) values ($1)`
 
-export default async function addStats(characterID: number) {
-    return query(addStatsSQL, characterID)
+export default async function addStats(pageID: number) {
+    return query(addStatsSQL, pageID)
 }

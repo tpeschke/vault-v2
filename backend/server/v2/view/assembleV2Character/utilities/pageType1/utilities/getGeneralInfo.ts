@@ -3,7 +3,7 @@ import query from "../../../../../../db/database";
 
 interface RawGeneralInfo {
     id: number,
-    characterid: number,
+    pageid: number,
     name: string,
     ancestry: string,
     class: string,
@@ -13,10 +13,10 @@ interface RawGeneralInfo {
     spent: number
 }
 
-const getGeneralInfoSQL = `select * from v2generalinfo where characterID = $1`
+const getGeneralInfoSQL = `select * from v2GeneralInfo where pageID = $1`
 
-export default async function getGeneralInfo(characterID: number): Promise<GeneralInfo> {
-    const [info]: RawGeneralInfo[] = await query(getGeneralInfoSQL, characterID)
+export default async function getGeneralInfo(pageID: number): Promise<GeneralInfo> {
+    const [info]: RawGeneralInfo[] = await query(getGeneralInfoSQL, pageID)
 
     if (info) {
         const { name, ancestry, class: primeClass, subclass, level, unspent, spent } = info

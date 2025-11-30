@@ -8,10 +8,10 @@ interface StressReturn {
     threshold: 0
 }
 
-const getStressSQL = `select * from v2Stress where characterID = $1`
+const getStressSQL = `select * from v2Stress where pageID = $1`
 
-export default async function getStress(characterID: number): Promise<Stress> {
-    const [info]: StressReturn[] = await query(getStressSQL, characterID)
+export default async function getStress(pageID: number): Promise<Stress> {
+    const [info]: StressReturn[] = await query(getStressSQL, pageID)
 
     if (info) {
         const { dieindex: dieIndex, threshold, stress } = info

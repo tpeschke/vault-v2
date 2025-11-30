@@ -4,20 +4,20 @@ import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
 
 interface SocialSuiteReturn {
     id: number,
-    characterid: number,
+    pageid: number,
     suiteid: number,
     stat: number,
     rank: number
 }
 
-const getSocialSuiteSQL = `select * from v2SocialSkillSuites where characterID = $1 order by suiteID`
+const getSocialSuiteSQL = `select * from v2SocialSkillSuites where pageID = $1 order by suiteID`
 
-const getEmpathizeDescriptionsSQL = `select * from v2EmpathizeDescriptions where characterID = $1`
-const getIntimidateDescriptionsSQL = `select * from v2IntimidateDescriptions where characterID = $1`
-const getLectureDescriptionsSQL = `select * from v2LectureDescriptions where characterID = $1`
-const getTemptDescriptionsSQL = `select * from v2TemptDescriptions where characterID = $1`
+const getEmpathizeDescriptionsSQL = `select * from v2EmpathizeDescriptions where pageID = $1`
+const getIntimidateDescriptionsSQL = `select * from v2IntimidateDescriptions where pageID = $1`
+const getLectureDescriptionsSQL = `select * from v2LectureDescriptions where pageID = $1`
+const getTemptDescriptionsSQL = `select * from v2TemptDescriptions where pageID = $1`
 
-export default async function getSocialSuites(characterID: number): Promise<SocialSkillSuites> {
+export default async function getSocialSuites(pageID: number): Promise<SocialSkillSuites> {
     const [
         [empathize, intimidate, lecture, tempt],
         empathizeDescriptions,
@@ -25,11 +25,11 @@ export default async function getSocialSuites(characterID: number): Promise<Soci
         lectureDescriptions,
         temptDescriptions,
     ]: [SocialSuiteReturn[], SkillPair[], SkillPair[], SkillPair[], SkillPair[]] = await Promise.all([
-        query(getSocialSuiteSQL, characterID),
-        query(getEmpathizeDescriptionsSQL, characterID),
-        query(getIntimidateDescriptionsSQL, characterID),
-        query(getLectureDescriptionsSQL, characterID),
-        query(getTemptDescriptionsSQL, characterID),
+        query(getSocialSuiteSQL, pageID),
+        query(getEmpathizeDescriptionsSQL, pageID),
+        query(getIntimidateDescriptionsSQL, pageID),
+        query(getLectureDescriptionsSQL, pageID),
+        query(getTemptDescriptionsSQL, pageID),
     ])
 
     return {

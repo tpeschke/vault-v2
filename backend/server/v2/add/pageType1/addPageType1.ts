@@ -6,16 +6,15 @@ import addMovements from "./utilities/addMovement"
 import addStats from "./utilities/addStats"
 import addVitals from "./utilities/addVitals/addVitals"
 
-
-export default async function addPageType1(characterID: number): Promise<boolean> {
+export default async function addPageType1(pageID: number): Promise<boolean> {
     await Promise.all([
-        addGeneralInfo(characterID),
-        addStats(characterID),
-        addCharacteristics(characterID),
-        addMovements(characterID),
-        addVitals(characterID),
-        addFavor(characterID),
-        addCombatInfo(characterID)
+        addGeneralInfo(pageID),
+        addStats(pageID),
+        addCharacteristics(pageID),
+        addMovements(pageID),
+        addVitals(pageID),
+        addFavor(pageID),
+        addCombatInfo(pageID)
     ])
     return true
 }

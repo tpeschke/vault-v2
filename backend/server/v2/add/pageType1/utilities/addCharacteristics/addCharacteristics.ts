@@ -1,9 +1,9 @@
 import addBasicCharacteristicInfo from "./utilities/addBasicCharacteristicInfo";
 import addSocialSuites from "./utilities/addSocialSuites";
 
-export default async function addCharacteristics(characterID: number) {
+export default async function addCharacteristics(pageID: number) {
     return Promise.all([
-        addBasicCharacteristicInfo(characterID),
-        addSocialSuites(characterID)
+        addBasicCharacteristicInfo(pageID),
+        addSocialSuites(pageID)
     ])
 }

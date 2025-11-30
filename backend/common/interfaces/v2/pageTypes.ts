@@ -16,6 +16,7 @@ export interface Page404Error {
 
 export interface Page1 {
     type: 1,
+    pageID: number,
     generalInfo: GeneralInfo,
     stats: Stats,
     characteristicsInfo: Characteristics

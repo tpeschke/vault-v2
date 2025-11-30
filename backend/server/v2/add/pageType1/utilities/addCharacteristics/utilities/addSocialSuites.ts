@@ -1,12 +1,12 @@
 import query from "../../../../../../db/database"
 
-const addSocialSuitesSQL = `insert into v2SocialSkillSuites (characterID, suiteID) values ($1, $2)`
+const addSocialSuitesSQL = `insert into v2SocialSkillSuites (pageID, suiteID) values ($1, $2)`
 
-export default async function addSocialSuites(characterID: number) {
+export default async function addSocialSuites(pageID: number) {
     return Promise.all([
-        query(addSocialSuitesSQL, [characterID, 1]),
-        query(addSocialSuitesSQL, [characterID, 2]),
-        query(addSocialSuitesSQL, [characterID, 3]),
-        query(addSocialSuitesSQL, [characterID, 4])
+        query(addSocialSuitesSQL, [pageID, 1]),
+        query(addSocialSuitesSQL, [pageID, 2]),
+        query(addSocialSuitesSQL, [pageID, 3]),
+        query(addSocialSuitesSQL, [pageID, 4])
     ])
 }

@@ -1,9 +1,9 @@
 import addAttackInfo from "./utilities/addAttackInfo";
 import addDefenseInfo from "./utilities/addDefenseInfo";
 
-export default async function addCombatInfo(characterID: number) {
+export default async function addCombatInfo(pageID: number) {
     return Promise.all([
-        addDefenseInfo(characterID),
-        addAttackInfo(characterID)
+        addDefenseInfo(pageID),
+        addAttackInfo(pageID)
     ])
 }

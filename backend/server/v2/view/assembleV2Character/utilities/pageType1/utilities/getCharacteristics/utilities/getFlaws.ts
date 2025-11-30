@@ -3,14 +3,14 @@ import query from "../../../../../../../../db/database"
 
 interface FlawReturn {
     id: number,
-    characterid: number,
+    pageid: number,
     flaw: string
 }
 
-const getFlawsSQL = `select * from v2flaws where characterID = $1`
+const getFlawsSQL = `select * from v2flaws where pageID = $1`
 
-export default async function getFlaws(characterID: number): Promise<Flaw[]> {
-    const info: FlawReturn[] = await query(getFlawsSQL, characterID)
+export default async function getFlaws(pageID: number): Promise<Flaw[]> {
+    const info: FlawReturn[] = await query(getFlawsSQL, pageID)
 
     if (info.length > 0) {
         return info.map(({ id, flaw }) => {

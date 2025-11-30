@@ -1,7 +1,7 @@
 import query from "../../../../../../db/database";
 
-const addDefenseInfoSQL = `insert into v2Defenses (characterID) values ($1)`
+const addDefenseInfoSQL = `insert into v2Defenses (pageID) values ($1)`
 
-export default async function addDefenseInfo(characterID: number) {
-    return query(addDefenseInfoSQL, characterID)
+export default async function addDefenseInfo(pageID: number) {
+    return query(addDefenseInfoSQL, pageID)
 }

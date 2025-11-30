@@ -2,7 +2,7 @@ import { Stats } from "@vault/common/interfaces/v2/page1/statsInterface";
 import query from "../../../../../../db/database";
 
 interface RawStats {
-    characterid: number,
+    pageid: number,
     str: number,
     dex: number,
     con: number,
@@ -11,10 +11,10 @@ interface RawStats {
     pre: number
 }
 
-const getStatsSQL = `select * from v2stats where characterID = $1`
+const getStatsSQL = `select * from v2stats where pageID = $1`
 
-export default async function getStats(characterID: number): Promise<Stats> {
-    const [info]: RawStats[] = await query(getStatsSQL, characterID)
+export default async function getStats(pageID: number): Promise<Stats> {
+    const [info]: RawStats[] = await query(getStatsSQL, pageID)
 
     if (info) {
         const { str, dex, con, mem, ins, pre } = info

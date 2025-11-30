@@ -1,10 +1,10 @@
 import { AttacksArray } from "@vault/common/interfaces/v2/page1/combatInfo";
 import query from "../../../../../../../../db/database";
 
-const getAttacksSQL = `select * from v2Attacks where characterID = $1 order by index`
+const getAttacksSQL = `select * from v2Attacks where pageID = $1 order by index`
 
-export default async function getAttacks(characterID: number): Promise<AttacksArray> {
-    const info = await query(getAttacksSQL, characterID) as AttacksArray
+export default async function getAttacks(pageID: number): Promise<AttacksArray> {
+    const info = await query(getAttacksSQL, pageID) as AttacksArray
 
     if (info) {
         return info

@@ -3,7 +3,7 @@ import getSelfDoubt from "./utilities/getSelfDoubt"
 import getDamage from "./utilities/getDamage"
 import getStress from "./utilities/getStress"
 
-export default async function getVitals(characterID: number): Promise<Vitals> {
+export default async function getVitals(pageID: number): Promise<Vitals> {
     let vitalsInfo: Vitals = {
             selfDoubt: {
                 dieIndex: 0,
@@ -24,9 +24,9 @@ export default async function getVitals(characterID: number): Promise<Vitals> {
         }
 
     await Promise.all([
-        getSelfDoubt(characterID).then(selfDoubt => vitalsInfo.selfDoubt = selfDoubt),
-        getDamage(characterID).then(damage => vitalsInfo.damage = damage),
-        getStress(characterID).then(stress => vitalsInfo.stress = stress)
+        getSelfDoubt(pageID).then(selfDoubt => vitalsInfo.selfDoubt = selfDoubt),
+        getDamage(pageID).then(damage => vitalsInfo.damage = damage),
+        getStress(pageID).then(stress => vitalsInfo.stress = stress)
     ])
     
     return vitalsInfo

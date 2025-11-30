@@ -13,10 +13,10 @@ interface DefenseReturn {
     notes: ''
 }
 
-const getDefenseSQL = `select * From v2Defenses where characterID = $1`
+const getDefenseSQL = `select * From v2Defenses where pageID = $1`
 
-export default async function getDefenses(characterID: number): Promise<Defense> {
-    const [info]: DefenseReturn[] = await query(getDefenseSQL, characterID)
+export default async function getDefenses(pageID: number): Promise<Defense> {
+    const [info]: DefenseReturn[] = await query(getDefenseSQL, pageID)
 
     if (info) {
         const { name, initiative, defense, parry, flanks, cover, parrydr: parryDR, dr, notes } = info

@@ -2,10 +2,10 @@ import addDamage from "./utilities/addDamage";
 import addSelfDoubt from "./utilities/addSelfDoubt";
 import addStress from "./utilities/addStress";
 
-export default async function addVitals(characterID: number) {
+export default async function addVitals(pageID: number) {
     return Promise.all([
-        addSelfDoubt(characterID),
-        addDamage(characterID),
-        addStress(characterID)
+        addSelfDoubt(pageID),
+        addDamage(pageID),
+        addStress(pageID)
     ])
 }

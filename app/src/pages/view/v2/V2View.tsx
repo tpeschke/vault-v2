@@ -30,10 +30,10 @@ export default function V2View({ setLoading, pathname }: Props) {
     return (
         <div className="home-shell">
             <div className='page-shell'>
-                {character && character.pages.map(page => {
+                {character && character.pages.map((page, index) => {
                     switch (page.type) {
                         case 1:
-                            return <PageType1 pageInfo={page} />
+                            return <PageType1 key={page.pageID} pageInfo={page} index={index} />
                         default:
                             return <></>
                     }

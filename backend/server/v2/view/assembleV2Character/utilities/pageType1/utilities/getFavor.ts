@@ -1,10 +1,10 @@
 import { Favor } from "@vault/common/interfaces/v2/page1/favor";
 import query from "../../../../../../db/database";
 
-const getFavorSQL = `select * from v2Favor where characterID = $1`
+const getFavorSQL = `select * from v2Favor where pageID = $1`
 
-export default async function getFavor(characterID: number): Promise<Favor> {
-    const [info]: Favor[] = await query(getFavorSQL, characterID)
+export default async function getFavor(pageID: number): Promise<Favor> {
+    const [info]: Favor[] = await query(getFavorSQL, pageID)
 
     if (info) {
         const { anointed, current, max } = info
