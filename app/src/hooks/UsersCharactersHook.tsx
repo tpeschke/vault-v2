@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { homeURL } from "../frontend-config"
+import { addV2URL, homeURL } from "../frontend-config"
 import { useDispatch, useSelector } from "react-redux"
 import { cacheCharacters, UsersCharacterCache } from "../redux/slices/usersCharactersSlice"
 import { useNavigate } from "react-router-dom"
@@ -9,7 +9,9 @@ export type DeleteCharacterFunction = (characterID: number) => void
 
 interface UsersCharactersReturn {
     usersCharacters: UsersCharacterCache,
-    deleteCharacter: DeleteCharacterFunction,
+    deleteCharacter: {
+        deleteV1Character: DeleteCharacterFunction
+    },
     addCharacter: () => void
 }
 
@@ -38,7 +40,7 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
         dispatch(cacheCharacters(data))
     }
 
-    function deleteCharacter(characterID: number) {
+    function deleteV1Character(characterID: number) {
         if (usersCharacters && usersCharacters[0]) {
             const newUsersCharacters = usersCharacters[0].filter((({ id }) => id !== characterID))
     
@@ -55,10 +57,10 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
 
         window.scrollTo(0, 0);
 
-        const {data} = await axios.post(homeURL + '/add')
+        const {data} = await axios.post(addV2URL)
         
         if (data.newCharacterID) {
-            navigate(`/view/${data.newCharacterID}`)
+            navigate(`/v/${data.newCharacterID}`)
         } else {
             setUsersCharacters(charactersCache)
         }
@@ -66,7 +68,9 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
 
     return {
         usersCharacters,
-        deleteCharacter,
+        deleteCharacter: {
+            deleteV1Character
+        },
         addCharacter
     }
 }

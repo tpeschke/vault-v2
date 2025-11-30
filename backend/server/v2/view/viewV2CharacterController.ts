@@ -26,7 +26,7 @@ export async function getV2Character(request: ViewRequest, response: Response) {
             const characterPages: CharacterPageReturns[] = await query(getCharacterPages, characterID)
             
             if (characterPages.length === 0) {
-                checkForContentTypeBeforeSending(response, { message: 'Bad ID' })
+                checkForContentTypeBeforeSending(response, { message: 'No Pages' })
             } else {
                 assembleV2Character(request, response, characterID, characterPages)
             }

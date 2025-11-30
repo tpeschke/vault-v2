@@ -78,7 +78,7 @@ app.use('/quickEdit', quickEditRoutes)
 
 // v2
 app.use('/v2/getView', characterV2Routes)
-app.use('/v2/add', addV2Routes)
+app.use('/v2', addV2Routes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
 app.all('/{*any}', (_: Request, response: Response) => {

@@ -17,7 +17,7 @@ export default function Home({ setLoading, pathname }: Props) {
 
     const userIsLoggedIn = useSelector(isUserLoggedOn)
 
-    const { usersCharacters, deleteCharacter } = UsersCharactersHook(pathname)
+    const { usersCharacters, deleteCharacter, addCharacter } = UsersCharactersHook(pathname)
 
     useEffect(() => {
         if (setLoading) {
@@ -29,8 +29,8 @@ export default function Home({ setLoading, pathname }: Props) {
         <div className="home-shell">
             {userIsLoggedIn && usersCharacters ? (
                 <>
-                    <V2CharacterDisplay usersCharacters={usersCharacters[1]} deleteCharacter={deleteCharacter} />
-                    <V1CharacterDisplay usersCharacters={usersCharacters[0]} deleteCharacter={deleteCharacter} />
+                    <V2CharacterDisplay usersCharacters={usersCharacters[1]} addCharacter={addCharacter} deleteCharacter={deleteCharacter.deleteV1Character} />
+                    <V1CharacterDisplay usersCharacters={usersCharacters[0]} deleteCharacter={deleteCharacter.deleteV1Character} />
                 </>
             ) : (
                 <h1>You Need to Log In To View Your Characters</h1>

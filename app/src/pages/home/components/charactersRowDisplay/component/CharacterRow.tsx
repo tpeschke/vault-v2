@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import { DeleteCharacterFunction } from '../../../../../hooks/UsersCharactersHook'
 import axios from 'axios'
-import { viewURL } from '../../../../../frontend-config'
+import { viewURL, viewV2URL } from '../../../../../frontend-config'
 import { useDispatch, useSelector } from 'react-redux'
 import { cacheCharacterV1, cacheCharacterV2 } from '../../../../../redux/slices/characterCacheSlice'
 
@@ -53,7 +53,7 @@ export default function CharacterRow({ character, deleteCharacter, viewRoute }: 
                     dispatch(cacheCharacterV2({
                         id: characterID,
                         version: 2,
-                        characterInfo: axios.get(viewURL + characterID).then(({ data }) => data)
+                        characterInfo: axios.get(viewV2URL + characterID).then(({ data }) => data)
                     }))
                 }
             }

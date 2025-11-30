@@ -4,7 +4,7 @@ import { Response, Request } from '../../interfaces/apiInterfaces'
 import { addCharacterToOwnerTable } from '../view/assembleV2Character/utilities/ownerInfo'
 import addPageType1 from './pageType1/addPageType1'
 
-const addPageType1SQL = `insert into v2CharacterPages (index, pageTypeID, characterID) value ($1, $2, $3) returning id`
+const addPageType1SQL = `insert into v2CharacterPages (index, pageTypeID, characterID) values ($1, $2, $3) returning id`
 
 export default async function addV2Character(request: Request, response: Response) {
     // TODO add double checking about whether the user can add 
