@@ -79,8 +79,8 @@ export default function UsersCharactersHook(pathname?: string): UsersCharactersR
 
         const { data } = await axios.post(addV2URL)
 
-        if (data.newCharacterID) {
-            navigate(`/v/${data.newCharacterID}`)
+        if (data) {
+            navigate(`/v/${data}`)
         } else {
             setUsersCharacters(charactersCache)
         }

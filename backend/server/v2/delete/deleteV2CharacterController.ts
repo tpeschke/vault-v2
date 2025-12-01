@@ -10,5 +10,10 @@ export interface ViewRequest extends Request {
 export async function deleteV2Character(request: ViewRequest, response: Response) {
     // const characterID = +request.params.characterID
 
+    // delete from owner
+    // get pages
+    // loop through pages, delete by type
+    // delete from pages
+
     checkForContentTypeBeforeSending(response, { message: 'Deleted' })
 }
