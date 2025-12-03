@@ -12,6 +12,9 @@ export interface ViewRequest extends Request {
 export async function deleteV2Character(request: ViewRequest, response: Response) {
     const characterID = +request.params.characterID
 
+    // TODO
+    // check if owner
+
     await Promise.all([
         deleteFromOwner(characterID),
         deletePages(characterID)
