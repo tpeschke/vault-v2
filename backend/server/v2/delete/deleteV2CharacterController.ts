@@ -1,5 +1,6 @@
 import { checkForContentTypeBeforeSending } from '../../controllers/common/sendingFunctions'
 import { Response, Request } from '../../interfaces/apiInterfaces'
+import deleteFromCharacterPages from './utilities/deleteFromCharacterPages'
 import deleteFromOwner from './utilities/deleteFromOwner'
 import deletePages from './utilities/deletePages'
 
@@ -17,8 +18,8 @@ export async function deleteV2Character(request: ViewRequest, response: Response
 
     await Promise.all([
         deleteFromOwner(characterID),
-        deletePages(characterID)
-        // delete from pages
+        deletePages(characterID),
+        deleteFromCharacterPages(characterID)
     ])
 
     checkForContentTypeBeforeSending(response, { message: 'Deleted' })
