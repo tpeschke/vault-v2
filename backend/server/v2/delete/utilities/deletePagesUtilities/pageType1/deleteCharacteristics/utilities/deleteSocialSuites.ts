@@ -1,6 +1,6 @@
 import query from "../../../../../../../db/database"
 
-const deleteSocialSuiteSQL = `delete from v2SocialSkillSuites where pageID = $1 order by suiteID`
+const deleteSocialSuiteSQL = `delete from v2SocialSkillSuites where pageID = $1`
 
 const deleteEmpathizeDescriptionsSQL = `delete from v2EmpathizeDescriptions where pageID = $1`
 const deleteIntimidateDescriptionsSQL = `delete from v2IntimidateDescriptions where pageID = $1`
