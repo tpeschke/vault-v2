@@ -5,7 +5,7 @@ import UsersCharactersHook from "../../hooks/UsersCharactersHook"
 import { useSelector } from "react-redux"
 import { isUserLoggedOn } from "../../redux/slices/userSlice"
 import V1CharacterDisplay from "./components/v1CharacterDisplay/V1CharacterDisplay"
-import V2CharacterDisplay from "./components/V2CharacterDisplay.tsx/V2CharacterDisplay"
+import V2CharacterDisplay from "./components/V2CharacterDisplay/V2CharacterDisplay"
 
 interface Props {
     setLoading?: SetLoadingFunction,
