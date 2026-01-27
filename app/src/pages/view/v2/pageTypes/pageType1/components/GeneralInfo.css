@@ -1,0 +1,20 @@
+.general-info-v2 span {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 3px 0;
+}
+
+.general-info-v2 strong {
+    margin-right: 5px;
+}
+
+.general-info-v2 p {
+    width: 100%;
+}
+
+.general-info-v2 .multi-item-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

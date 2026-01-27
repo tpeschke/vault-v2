@@ -15,19 +15,87 @@
   src: url('./assets/fonts/HamletOrNot.ttf') format("truetype");
 }
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -37,8 +105,17 @@ time, mark, audio, video {
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block;
 }
 
@@ -46,16 +123,20 @@ body {
   line-height: 1;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
   content: '';
   content: none;
 }
@@ -65,16 +146,24 @@ table {
   border-spacing: 0;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-family: 'HamletOrNot';
   letter-spacing: 1px;
 }
 
-p, label {
+p,
+label {
   font-family: "Source Sans 3", sans-serif;
   font-size: 15px;
-  min-height: 1px;
+  min-height: 17.38px;
   line-height: 1.2;
+}
+
+p.border {
+  line-height: 1.1;
+  min-height: 16.58px;
+  border-bottom: 1px solid black;
 }
 
 a {
@@ -92,6 +181,12 @@ strong {
   font-family: 'oldClaude';
   font-weight: bold;
   font-size: 12px;
+}
+
+em {
+  font-family: 'oldClaude';
+  font-size: 12px;
+  white-space: pre;
 }
 
 button {
@@ -161,12 +256,13 @@ input:hover {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
 }
 
 textarea {
@@ -177,13 +273,25 @@ textarea:hover {
   background: rgba(173, 216, 230, 0.5) !important;
 }
 
-.view-quick-edit input, .view-quick-edit textarea, .view-quick-edit .fake-button, .view-quick-edit button,
-.view-edit input, .view-edit textarea, .view-edit .fake-button, .view-edit button {
+.view-quick-edit input,
+.view-quick-edit textarea,
+.view-quick-edit .fake-button,
+.view-quick-edit button,
+.view-edit input,
+.view-edit textarea,
+.view-edit .fake-button,
+.view-edit button {
   background: rgba(173, 216, 230) !important;
 }
 
-.view-quick-edit input:hover, .view-quick-edit textarea:hover, .view-quick-edit .fake-button:hover, .view-quick-edit button:hover,
-.view-edit input:hover, .view-edit textarea:hover, .view-edit .fake-button:hover, .view-edit button:hover {
+.view-quick-edit input:hover,
+.view-quick-edit textarea:hover,
+.view-quick-edit .fake-button:hover,
+.view-quick-edit button:hover,
+.view-edit input:hover,
+.view-edit textarea:hover,
+.view-edit .fake-button:hover,
+.view-edit button:hover {
   background: rgb(145, 181, 194) !important;
 }
 
@@ -193,4 +301,8 @@ textarea:hover {
 
 .fa-x {
   color: red
+}
+
+.center-text {
+  text-align: center;
 }

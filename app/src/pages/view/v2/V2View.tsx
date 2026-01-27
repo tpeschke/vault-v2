@@ -28,7 +28,7 @@ export default function V2View({ setLoading, pathname }: Props) {
     }, [character])
 
     return (
-        <div className="home-shell">
+        <div className="home-shell v2">
             <div className='page-shell'>
                 {character && character.pages.map((page, index) => {
                     switch (page.type) {
