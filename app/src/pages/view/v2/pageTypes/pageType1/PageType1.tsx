@@ -1,7 +1,8 @@
 import './PageType1.css'
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes";
 import DoubleColumn from "../components/doubleColumn/DoubleColumn";
-import GeneralInfoDisplay from './components/GeneralInfo';
+import GeneralInfoDisplay from './components/GeneralInfo/GeneralInfo';
+import StatsDisplay from './components/Stats/Stats';
 
 interface Props {
     pageInfo: Page1,
@@ -9,10 +10,9 @@ interface Props {
 }
 
 export default function PageType1({ pageInfo, index }: Props) {
-    const { generalInfo } = pageInfo
+    const { generalInfo, stats } = pageInfo
 
     // Left Column
-    //  Stats
     //  Characteristics
     //  Movement
     // Right Column
@@ -27,6 +27,7 @@ export default function PageType1({ pageInfo, index }: Props) {
             <DoubleColumn>
                 <>
                     <GeneralInfoDisplay generalInfo={generalInfo} />
+                    <StatsDisplay stats={stats} />
                 </>
                 <>
                     Right

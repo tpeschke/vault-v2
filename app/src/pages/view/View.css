@@ -3,6 +3,12 @@
     width: 796px;
 }
 
+.v2 h1 {
+    color: white;
+    background: black;
+    padding: 4px;
+}
+
 .v2 strong {
     font-size: 14px;
 }

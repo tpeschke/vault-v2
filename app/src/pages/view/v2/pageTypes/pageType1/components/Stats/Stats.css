@@ -1,0 +1,31 @@
+.stats-display-v2 {
+    width: 95%;
+    margin: 15px auto 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-display-v2>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats-display-v2>div:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.stats-display-v2>div span {
+    width: 33%;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+.stats-display-v2>div strong {
+    width: 25%;
+}
+
+.stats-display-v2>div p {
+    width: 75%;
+    text-align: center;
+}
