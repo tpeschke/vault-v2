@@ -13,29 +13,29 @@ export default function StatsDisplay({ stats }: Props) {
             <h1>Stats</h1>
             <div>
                 <span>
-                    <strong>Str</strong>
+                    <strong>STR</strong>
                     <p>{str}</p>
                 </span>
                 <span>
-                    <strong>Dex</strong>
+                    <strong>DEX</strong>
                     <p>{dex}</p>
                 </span>
                 <span>
-                    <strong>Con</strong>
+                    <strong>CON</strong>
                     <p>{con}</p>
                 </span>
             </div>
             <div>
                 <span>
-                    <strong>Mem</strong>
+                    <strong>MEM</strong>
                     <p>{mem}</p>
                 </span>
                 <span>
-                    <strong>Ins</strong>
+                    <strong>INS</strong>
                     <p>{ins}</p>
                 </span>
                 <span>
-                    <strong>Pre</strong>
+                    <strong>PRE</strong>
                     <p>{pre}</p>
                 </span>
             </div>
