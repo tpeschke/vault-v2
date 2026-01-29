@@ -7,6 +7,13 @@
     color: white;
     background: black;
     padding: 4px;
+    min-height: 16px;
+}
+
+.v2 h2 {
+    padding: 4px;
+    font-family: 'oldClaude';
+    background: #bdbdbd
 }
 
 .v2 strong {

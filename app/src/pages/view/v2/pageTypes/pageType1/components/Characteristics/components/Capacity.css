@@ -1,0 +1,23 @@
+.capacity-v2 {
+    margin-top: 15px;
+    display: flex;
+}
+
+.capacity-v2>div {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.capacity-v2>div:first-child {
+    text-align: left;
+}
+
+.capacity-v2 h1.minor-heading {
+    font-size: 12px;
+    font-family: 'oldClaude';
+}
+
+.capacity-v2>div:nth-child(even) h1 {
+    min-width: 39px;
+}
