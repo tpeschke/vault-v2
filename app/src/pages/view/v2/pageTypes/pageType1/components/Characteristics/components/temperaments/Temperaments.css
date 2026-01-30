@@ -1,0 +1,29 @@
+.temperament-display-v2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.temperament-display-v2>div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.temperament-display-v2>div:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.temperament-display-v2>div span {
+    width: 33%;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+.temperament-display-v2>div em {
+    width: 50%;
+}
+
+.temperament-display-v2>div p {
+    width: 50%;
+    text-align: center;
+}
