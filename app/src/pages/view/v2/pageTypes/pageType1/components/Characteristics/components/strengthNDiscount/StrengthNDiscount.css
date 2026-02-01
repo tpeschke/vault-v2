@@ -1,0 +1,34 @@
+.strength-and-discount-v2 {
+    display: flex;
+    border-bottom: 1px solid white;
+}
+
+.strength-and-discount-v2 p {
+    padding: 4px;
+    border-top: 1px solid #bdbdbd;
+}
+
+.strength-and-discount-v2>span {
+    display: flex;
+}
+
+.strength-and-discount-v2 .cultural-strength {
+    min-width: 58%;
+}
+
+.strength-and-discount-v2 .cultural-strength h2 {
+    min-width: 45%;
+}
+
+.strength-and-discount-v2 .cultural-strength p {
+    min-width: 49%
+}
+
+.strength-and-discount-v2 .social-skill-discount h2 {
+    min-width: 86%;
+}
+
+.strength-and-discount-v2 .social-skill-discount p {
+    min-width: 22%;
+    text-align: center;
+}

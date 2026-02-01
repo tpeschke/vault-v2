@@ -3,13 +3,14 @@ import { Characteristics } from "@vault/common/interfaces/v2/page1/characteristi
 import CapacityDisplay from './components/capacity/Capacity'
 import TemperamentsDisplay from './components/temperaments/Temperaments'
 import SocialSuitesDisplay from './components/socialSuites/SocialSuites'
+import StrengthNDiscount from './components/strengthNDiscount/StrengthNDiscount'
 
 interface Props {
     characteristicsInfo: Characteristics
 }
 
 export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
-    const { capacity, goals, temperaments, socialSuites } = characteristicsInfo
+    const { capacity, goals, temperaments, socialSuites, culturalStrength, socialSkillDiscount } = characteristicsInfo
     
     return (
         <div className="characteristics-display-v2">
@@ -23,6 +24,8 @@ export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
 
             <TemperamentsDisplay temperaments={temperaments} />
             <SocialSuitesDisplay socialSuites={socialSuites} />
+
+            <StrengthNDiscount culturalStrength={culturalStrength} socialSkillDiscount={socialSkillDiscount} />
         </div>
     )
 }
