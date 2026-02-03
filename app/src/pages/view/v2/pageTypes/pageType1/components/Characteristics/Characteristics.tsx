@@ -6,6 +6,7 @@ import SocialSuitesDisplay from './components/socialSuites/SocialSuites'
 import StrengthNDiscount from './components/strengthNDiscount/StrengthNDiscount'
 import ReputationDisplay from './components/reputation/ReputationDisplay'
 import RelationshipsDisplay from './components/relationships/Relationships'
+import FlawsDisplay from './components/flaws/Flaws'
 
 interface Props {
     characteristicsInfo: Characteristics
@@ -13,7 +14,7 @@ interface Props {
 
 export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
     const { capacity, goals, temperaments, socialSuites, culturalStrength, socialSkillDiscount, reputations, 
-        relationships } = characteristicsInfo
+        relationships, flaws } = characteristicsInfo
     
     return (
         <div className="characteristics-display-v2">
@@ -32,6 +33,7 @@ export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
 
             <ReputationDisplay reputations={reputations} />
             <RelationshipsDisplay relationships={relationships} />
+            <FlawsDisplay flaws={flaws} />
         </div>
     )
 }
