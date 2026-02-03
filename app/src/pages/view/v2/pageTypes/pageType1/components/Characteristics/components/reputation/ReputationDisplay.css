@@ -1,0 +1,8 @@
+.reputation-display-v2 > span {
+    padding: 4px 4px 0;
+    display: flex;
+}
+
+.reputation-display-v2 > span:nth-child(odd) {
+    background: #f3f3f3;
+}
