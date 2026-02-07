@@ -1,0 +1,41 @@
+.movement-v2 {
+    width: 58%;
+    margin-top: 15px;
+}
+
+.movement-v2 .movement-header {
+    display: flex;
+    align-items: baseline;
+    background: black;
+}
+
+.movement-v2 .movement-header h1 {
+    width: 77px;
+}
+
+.movement-v2 .movement-header p {
+    color: white;
+    font-family: 'oldClaude';
+    font-size: 10px;
+    min-height: unset;
+    width: 25%;
+    text-align: center;
+}
+
+.movement-v2 .movement-category-row {
+    display: flex;
+    align-items: center;
+}
+
+.movement-v2 .movement-category-row:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.movement-v2 .movement-category-row>* {
+    min-width: 77px;
+}
+
+.movement-v2 .movement-category-row p {
+    text-align: center;
+    width: 25%;
+}

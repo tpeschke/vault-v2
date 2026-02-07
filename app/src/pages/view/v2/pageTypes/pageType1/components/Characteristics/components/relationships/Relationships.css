@@ -6,3 +6,7 @@
 .relationships-v2 > span:nth-child(odd) {
     background: #f3f3f3;
 }
+
+.relationships-v2 > span > p {
+    min-height: 14px;
+}

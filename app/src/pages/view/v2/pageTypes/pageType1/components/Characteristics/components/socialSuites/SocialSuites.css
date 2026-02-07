@@ -24,6 +24,7 @@
     min-width: 15%;
     padding: 4px 4px 0;
     border-left: 1px solid #bdbdbd;
+    min-height: 15px;
 }
 
 .social-suites-v2>div>span *:first-child {

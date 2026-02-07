@@ -4,6 +4,7 @@ import DoubleColumn from "../components/doubleColumn/DoubleColumn";
 import GeneralInfoDisplay from './components/GeneralInfo/GeneralInfo';
 import StatsDisplay from './components/Stats/Stats';
 import CharacteristicsDisplay from './components/Characteristics/Characteristics';
+import MovementDisplay from './components/Characteristics/components/movement/MovementDisplay';
 
 interface Props {
     pageInfo: Page1,
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export default function PageType1({ pageInfo, index }: Props) {
-    const { generalInfo, stats, characteristicsInfo } = pageInfo
+    const { generalInfo, stats, characteristicsInfo, movement } = pageInfo
 
     // Left Column
     //  Movement
@@ -29,6 +30,7 @@ export default function PageType1({ pageInfo, index }: Props) {
                     <GeneralInfoDisplay generalInfo={generalInfo} />
                     <StatsDisplay stats={stats} />
                     <CharacteristicsDisplay characteristicsInfo={characteristicsInfo} />
+                    <MovementDisplay movement={movement} />
                 </>
                 <>
                     Right
