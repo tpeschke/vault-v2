@@ -17,7 +17,7 @@ The designer. This panel owns how tasks route to code, not product meaning.
 ## What it provides
 
 - This file: purpose, vocabulary, where to go
-- `00-START-HERE.yaml`: feature routing (`primary` / `adjacent` filled by T-002)
+- `00-START-HERE.yaml`: feature routing (`primary` / `adjacent`)
 - Pointers to `rewrite-ledger/` (decisions, inventory, TODOs)
 
 ## What it does not own

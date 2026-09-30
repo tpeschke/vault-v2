@@ -49,7 +49,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Feature-index decision | `feature-index.md` |
 | Feature inventory (accepted) | `feature-inventory.md` |
 | Feature index (L1) | `../00-START-HERE.yaml` |
-| Code | observed paths above until T-002 fills routing |
+| Code | `../00-START-HERE.yaml` `routing` |
 | Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 
 ## Ledger hygiene

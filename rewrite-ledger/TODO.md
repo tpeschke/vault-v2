@@ -6,23 +6,6 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 
 ## Active
 
-### T-002: Map each accepted feature to backend primary and frontend adjacency
-status: proposed
-source: rewrite-ledger/feature-index.md, 2026-09-30
-why: Index-in-place needs current paths. Backend is primary when the feature spans surfaces.
-scope: `00-START-HERE.yaml` `routing` entries. Observed code under `backend/` (primary) and `app/` (adjacent). Owner unresolved: application owners are not established; use current paths.
-steps:
-1. For each row in the accepted inventory, set `primary` to the backend router/controller/directory that implements it (v1 vs v2 paths as split).
-2. Set `adjacent` to the app page/hook/component directories that call or render it.
-3. Unversioned log in / log out: primary `backend/server/routes/authentication.ts`; adjacent `app/src/components/header/icons/LoginLogoutIcons.tsx`.
-4. Do not move files. Do not create FSD layer directories.
-5. Do not add a v1 create-character route. Do not map v2 Create character to `HomeController.addCharacter`. Map it to `backend/server/v2/add/`. T-004 removed the unwired v1 function.
-done when: every accepted inventory row has a `routing` key; YAML parses; each `primary` path exists on disk; `features/`, `entities/`, `widgets/` directories have not been created; grep of root `00-START-HERE.yaml` for a v1 create-character key is 0 hits.
-depends on: T-001
-open questions: none
-deviations from design: none
-result:
-
 ### T-003: Completeness pass excluding dist/
 status: proposed
 source: rewrite-ledger/feature-index.md, 2026-09-30
@@ -39,6 +22,14 @@ deviations from design: none
 result:
 
 ## Done
+
+### T-002: Map each accepted feature to backend primary and frontend adjacency
+status: done
+source: rewrite-ledger/feature-index.md, 2026-09-30
+why: Index-in-place needs current paths. Backend is primary when the feature spans surfaces.
+scope: `00-START-HERE.yaml` `routing`.
+result: Twelve inventory rows mapped. PDF has no backend; primary is `app/src/pages/view/v1/hooks/utilities/downloadUtilities.ts`. Create character maps to `backend/server/v2/add/`.
+deviations from design: download v1 PDF primary is frontend-only (no backend path).
 
 ### T-004: Remove HomeController.addCharacter
 status: done

@@ -14,38 +14,67 @@ entrypoints:
   inventory: rewrite-ledger/feature-inventory.md
 routing:
   log in / sign in / login / authenticate:
-    primary:
+    primary: backend/server/routes/authentication.ts
     adjacent:
+      - app/src/components/header/icons/LoginLogoutIcons.tsx
+      - backend/server/controllers/user/
   log out / sign out / logout:
-    primary:
+    primary: backend/server/routes/authentication.ts
     adjacent:
+      - app/src/components/header/icons/LoginLogoutIcons.tsx
   list characters / catalog / home characters:
-    primary:
+    primary: backend/server/controllers/home/v2/getCharacters.ts
     adjacent:
+      - backend/server/controllers/home/HomeController.ts
+      - backend/server/controllers/home/HomeRoutes.ts
+      - app/src/pages/home/Home.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
+      - app/src/hooks/UsersCharactersHook.tsx
   create character / add character / add new character:
-    primary:
+    primary: backend/server/v2/add/
     adjacent:
+      - app/src/hooks/UsersCharactersHook.tsx
+      - app/src/pages/home/components/homeFooter/HomeFooter.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
   view character sheet / view character / open character:
-    primary:
+    primary: backend/server/v2/view/
     adjacent:
+      - app/src/pages/view/v2/
+      - app/src/routes/AllRoutes.tsx
   delete character / remove character:
-    primary:
+    primary: backend/server/v2/delete/
     adjacent:
+      - app/src/hooks/UsersCharactersHook.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
   list v1 characters / ancient characters / list ancient:
-    primary:
+    primary: backend/server/controllers/home/v1/getCharacters.ts
     adjacent:
+      - backend/server/controllers/home/HomeController.ts
+      - backend/server/controllers/home/HomeRoutes.ts
+      - app/src/pages/home/Home.tsx
+      - app/src/pages/home/components/v1CharacterDisplay/
+      - app/src/hooks/UsersCharactersHook.tsx
   view v1 character sheet / view v1 character:
-    primary:
+    primary: backend/server/v1/controllers/view/
     adjacent:
+      - app/src/pages/view/v1/
+      - app/src/routes/AllRoutes.tsx
   edit v1 character sheet / save v1 character:
-    primary:
+    primary: backend/server/v1/controllers/edit/
     adjacent:
+      - app/src/pages/view/v1/
   quick-edit v1 character / quick edit v1:
-    primary:
+    primary: backend/server/v1/controllers/quickEdit/
     adjacent:
+      - app/src/pages/view/v1/
   download v1 character as pdf / v1 pdf:
-    primary:
+    primary: app/src/pages/view/v1/hooks/utilities/downloadUtilities.ts
     adjacent:
+      - app/src/pages/view/v1/hooks/characterHook.tsx
+      - app/src/pages/view/v1/V1View.tsx
   delete v1 character / remove v1 character / delete ancient:
-    primary:
+    primary: backend/server/controllers/home/v1/deleteCharacter.ts
     adjacent:
+      - backend/server/controllers/home/HomeRoutes.ts
+      - app/src/hooks/UsersCharactersHook.tsx
+      - app/src/pages/home/components/v1CharacterDisplay/
