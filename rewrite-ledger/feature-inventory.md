@@ -19,7 +19,7 @@ Presence notes are evidence from current routes and controllers, not extra featu
 - Download character as PDF
 - Delete character
 
-Not present as a live objective: create character (backend `HomeController.addCharacter` exists and is unwired).
+Permanently excluded: create character. v1 will never add characters. Do not add this objective later. Leftover: `backend/server/controllers/home/HomeController.ts` `addCharacter` is unwired and is not a feature.
 
 ## Version 2
 

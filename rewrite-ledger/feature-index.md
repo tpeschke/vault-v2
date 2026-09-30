@@ -11,11 +11,13 @@ Constraints it imposes:
 - One file, one primary owner; primary is backend when the feature has a backend. Frontend paths are adjacencies.
 - `dist/` is excluded from the completeness rule (generated SPA output).
 - Do not create FSD folders until a separate structural design is approved.
+- v1 has no create-character objective, ever. Do not add it to the inventory or to L1 routing.
 
 Rejected:
 - Colocate into feature folders now (index-in-place chosen).
 - Derive feature names from current folders (`pageOne`, `pageTwo`) as the primary vocabulary.
 - CODEOWNERS, FeatureIDE traces, or recovered feature-location as the living index.
+- v1 create character (permanently excluded).
 
 Touches: repository front panels (not yet created); `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
 TODOs: T-001, T-002, T-003
