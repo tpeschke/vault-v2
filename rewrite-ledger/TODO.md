@@ -14,7 +14,7 @@ scope: new `00-START-HERE.md` and `00-START-HERE.yaml` at repo root. Owner unres
 steps:
 1. Wait until `rewrite-ledger/feature-inventory.md` status is `accepted` (designer finished edits).
 2. Create paired root front panels. Human panel: what the repo is, that L1 routing is the feature index, pointer to `rewrite-ledger/feature-index.md`.
-3. YAML: `kind: project`, `routing` keys = inventory names plus aliases, each value `primary` (backend path) and `adjacent` (app paths) left empty until T-002, plus `excludes: [dist/]`.
+3. YAML: `kind: project`, `routing` keys = inventory names plus aliases (no v1 create-character key), each value `primary` (backend path) and `adjacent` (app paths) left empty until T-002, plus `excludes: [dist/]`.
 4. Update `rewrite-ledger/00-START-HERE.md` and `.yaml` to route “feature index” to the root panels, and drop the gap “no repository 00-START-HERE panels”.
 done when: both root panel files exist; YAML parses; `rewrite-ledger/00-START-HERE.yaml` `gaps` no longer lists missing root panels; grep `no repository 00-START-HERE` in `rewrite-ledger/` is 0 hits.
 depends on: designer accepting `rewrite-ledger/feature-inventory.md`
