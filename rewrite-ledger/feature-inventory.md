@@ -1,7 +1,7 @@
 # Feature inventory
-status: proposed   date: 2026-09-30
+status: accepted   date: 2026-09-30
 
-Ready for accept or edit. Unmarked **character** means v2. v1 rows are marked. Sheet widgets are not features.
+Unmarked **character** means v2. v1 rows are marked. Sheet widgets are not features.
 
 Home is one page; list objectives stay split by version.
 

@@ -25,5 +25,4 @@ routing:
   gaps:
     - no repository 00-START-HERE panels
     - no AGENTS.md
-    - feature inventory not yet accepted
     - FSD layer directories not created (deferred; index-in-place)

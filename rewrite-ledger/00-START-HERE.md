@@ -46,7 +46,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Designer vocabulary (“character”) | this file, § Designer vocabulary |
 | TODOs | `TODO.md` |
 | Feature-index decision | `feature-index.md` |
-| Feature inventory (designer-edited) | `feature-inventory.md` |
+| Feature inventory (accepted) | `feature-inventory.md` |
 | Code | the observed paths above, until root front panels exist |
 | Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 
