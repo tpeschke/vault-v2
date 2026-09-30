@@ -32,7 +32,7 @@ steps:
 2. Set `adjacent` to the app page/hook/component directories that call or render it.
 3. Unversioned log in / log out: primary `backend/server/routes/authentication.ts`; adjacent `app/src/components/header/icons/LoginLogoutIcons.tsx`.
 4. Do not move files. Do not create FSD layer directories.
-5. Do not add a v1 create-character route. `HomeController.addCharacter` is not a feature; if still present, T-003 lists it unindexed.
+5. Do not add a v1 create-character route. Do not map v2 Create character to `HomeController.addCharacter` (unwired v1 insert into `cvcharactermain`). Map it to `backend/server/v2/add/`. If `HomeController.addCharacter` is still present, T-003 lists it unindexed.
 done when: every accepted inventory row has a `routing` key; YAML parses; each `primary` path exists on disk; `features/`, `entities/`, `widgets/` directories have not been created; grep of root `00-START-HERE.yaml` for a v1 create-character key is 0 hits.
 depends on: T-001
 open questions: none

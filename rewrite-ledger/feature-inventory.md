@@ -19,12 +19,14 @@ Presence notes are evidence from current routes and controllers, not extra featu
 - Download character as PDF
 - Delete character
 
-Permanently excluded: create character. v1 will never add characters. Do not add this objective later. Leftover: `backend/server/controllers/home/HomeController.ts` `addCharacter` is unwired and is not a feature.
+Permanently excluded: create character. v1 will never add characters. Do not add this objective later.
+
+Not the v2 feature: `HomeController.addCharacter` inserts into `cvcharactermain` (v1) and is not mounted on `HomeRoutes`. The home “Add New Character” button is v2 Create character (`UsersCharactersHook.addCharacter` → `POST` v2 add).
 
 ## Version 2
 
 - List characters
-- Create character
+- Create character — home footer on the v2 list → `UsersCharactersHook.addCharacter` → `backend/server/v2/add/addV2CharacterController.ts`
 - View character sheet
 - Delete character
 
