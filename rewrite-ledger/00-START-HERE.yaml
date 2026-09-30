@@ -12,7 +12,9 @@ uses: []
 entrypoints:
   start: 00-START-HERE.md
   todos: TODO.md
+  vocabulary: 00-START-HERE.md#designer-vocabulary
 routing:
+  character: 00-START-HERE.md#designer-vocabulary
   TODO: TODO.md
   feature-index: feature-index.md
   feature-inventory: feature-inventory.md

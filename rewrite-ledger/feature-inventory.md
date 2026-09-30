@@ -1,7 +1,7 @@
 # Feature inventory
 status: proposed (designer will edit)   date: 2026-09-30
 
-Edit this list: keep, rename, merge, split, or delete. A feature is a user objective, split by version when that objective exists in that version. Sheet regions (weapons, vitality, …) are not features unless added here.
+Edit this list: keep, rename, merge, split, or delete. A feature is a user objective, split by version when that objective exists in that version. In designer speech, unmarked “character” means v2 (`rewrite-ledger/00-START-HERE.md` § Designer vocabulary); this list still names versions explicitly. Sheet regions (weapons, vitality, …) are not features unless added here.
 
 Presence notes are evidence from current routes and controllers, not extra features.
 

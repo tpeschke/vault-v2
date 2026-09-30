@@ -8,6 +8,10 @@ Project memory for this repository. Records inherited behavior, architectural di
 
 The ledger exposes context. It does not impose coding procedure.
 
+## Designer vocabulary
+
+Unmarked **character** means a **v2** character. Say **v1** (or “ancient”) when the other sheet is meant. Do not infer v1 from an unmarked “character.”
+
 ## Who owns changes to its meaning
 
 The designer (the human directing this session). Agents merge, execute, and record; they do not invent design.
@@ -39,6 +43,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 
 | Need | Go to |
 |---|---|
+| Designer vocabulary (“character”) | this file, § Designer vocabulary |
 | TODOs | `TODO.md` |
 | Feature-index decision | `feature-index.md` |
 | Feature inventory (designer-edited) | `feature-inventory.md` |
