@@ -1,39 +1,33 @@
 # Feature inventory
-status: proposed (designer will edit)   date: 2026-09-30
+status: proposed   date: 2026-09-30
 
-Edit this list: keep, rename, merge, split, or delete. A feature is a user objective, split by version when that objective exists in that version. In designer speech, unmarked “character” means v2 (`rewrite-ledger/00-START-HERE.md` § Designer vocabulary); this list still names versions explicitly. Sheet regions (weapons, vitality, …) are not features unless added here.
+Ready for accept or edit. Unmarked **character** means v2. v1 rows are marked. Sheet widgets are not features.
 
-Presence notes are evidence from current routes and controllers, not extra features.
+Home is one page; list objectives stay split by version.
 
 ## Unversioned
 
 - Log in
 - Log out
 
-## Version 1
+## Character (v2)
 
 - List characters
-- View character sheet
-- Edit character sheet
-- Quick-edit character
-- Download character as PDF
-- Delete character
-
-Permanently excluded: create character. v1 will never add characters. Do not add this objective later.
-
-Not the v2 feature: `HomeController.addCharacter` inserts into `cvcharactermain` (v1) and is not mounted on `HomeRoutes`. Remove it via T-004. The home “Add New Character” button is v2 Create character (`UsersCharactersHook.addCharacter` → `POST` v2 add).
-
-## Version 2
-
-- List characters
-- Create character — home footer on the v2 list → `UsersCharactersHook.addCharacter` → `backend/server/v2/add/addV2CharacterController.ts`
+- Create character
 - View character sheet
 - Delete character
 
-Not present: edit character sheet, quick-edit, download PDF.
+Create character: home footer → `UsersCharactersHook.addCharacter` → `backend/server/v2/add/`. Slot limit (Patreon/owner) is a constraint, not a feature.
 
-Create character is gated by Patreon/owner slot limit; that limit is a constraint on this objective, not a separate feature.
+Not present: edit, quick-edit, download PDF.
 
-## Shared home surface
+## v1 (ancient)
 
-Home lists both versions on one page. Split as List characters v1 and List characters v2 above. Merge those two if home should be one objective.
+- List v1 characters
+- View v1 character sheet
+- Edit v1 character sheet
+- Quick-edit v1 character
+- Download v1 character as PDF
+- Delete v1 character
+
+Excluded: create v1 character (permanent). T-004 removes unused `HomeController.addCharacter`.
