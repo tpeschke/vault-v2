@@ -36,6 +36,7 @@ The designer. This panel owns how tasks route to code, not product meaning.
 | Need | Go to |
 |---|---|
 | Feature route (L1) | `00-START-HERE.yaml` `routing` |
+| Unindexed source | `00-START-HERE.yaml` `unindexed` |
 | Accepted feature names | `rewrite-ledger/feature-inventory.md` |
 | Index rules | `rewrite-ledger/feature-index.md` |
 | TODOs | `rewrite-ledger/TODO.md` |

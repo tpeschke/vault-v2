@@ -21,4 +21,4 @@ Rejected:
 - v1 create character (permanently excluded).
 
 Touches: repository `00-START-HERE.md`, `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
-TODOs: T-001, T-002, T-003, T-004
+TODOs: T-001, T-002, T-003, T-004 (all done)

@@ -78,3 +78,34 @@ routing:
       - backend/server/controllers/home/HomeRoutes.ts
       - app/src/hooks/UsersCharactersHook.tsx
       - app/src/pages/home/components/v1CharacterDisplay/
+unindexed:
+  # Mechanisms, chrome, contracts, and scripts that are not a user-objective feature. Do not invent features for these.
+  - replaceScripts/
+  - backend/common/
+  - backend/server/db/
+  - backend/server/interfaces/
+  - backend/server/controllers/common/
+  - backend/server/v1/queries/
+  - backend/server/v2/backupTables/
+  - backend/server/vault.ts
+  - backend/server/package.json
+  - backend/server/tsconfig.json
+  - app/src/assets/
+  - app/src/redux/
+  - app/src/utilities/
+  - app/src/components/displayArray/
+  - app/src/components/footer/
+  - app/src/components/loading/
+  - app/src/components/textArea/
+  - app/src/pages/home/components/charactersRowDisplay/
+  - app/src/App.tsx
+  - app/src/App.css
+  - app/src/main.tsx
+  - app/src/index.css
+  - app/src/vite-env.d.ts
+  - app/src/components/header/Header.tsx
+  - app/src/components/header/Header.css
+  - app/src/hooks/LocationHook.tsx
+  - app/src/pages/home/Home.css
+  - app/src/pages/home/components/homeFooter/HomeFooter.css
+  - app/src/pages/view/View.css

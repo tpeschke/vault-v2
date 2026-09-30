@@ -6,22 +6,18 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 
 ## Active
 
-### T-003: Completeness pass excluding dist/
-status: proposed
-source: rewrite-ledger/feature-index.md, 2026-09-30
-why: An unrouted source file is an index gap. Generated `dist/` is excluded by decision.
-scope: owned source under `app/src`, `backend/`, `replaceScripts/`. Root `00-START-HERE.yaml`.
-steps:
-1. List source files under `app/src`, `backend/`, `replaceScripts/` (exclude `**/dist/**`, `node_modules`, lockfiles).
-2. Mark each as covered by a routing `primary`/`adjacent` path (directory cover counts), or record it under a panel `unindexed` gap list — do not invent a new feature.
-3. Confirm `app/dist` and `backend/**/dist` are not routing targets.
-done when: a file list of those three trees minus `dist/` and `node_modules` is either path-prefixed by some routing entry or named in `unindexed`; YAML `excludes` contains `dist/`; no `dist` path appears under `routing` values.
-depends on: T-002, T-004
-open questions: where to put files that are mechanisms (Redux store, database helper, replaceScripts) if they are not a user objective — list them as `unindexed` and stop, do not assign a feature.
-deviations from design: none
-result:
+(none)
 
 ## Done
+
+### T-003: Completeness pass excluding dist/
+status: done
+source: rewrite-ledger/feature-index.md, 2026-09-30
+why: An unrouted source file is an index gap. Generated `dist/` is excluded by decision.
+scope: `00-START-HERE.yaml` `unindexed`; source under `app/src`, `backend/`, `replaceScripts/`.
+result: 372 source files are either under a routing primary/adjacent path or named in `unindexed`. Mechanisms (redux, db, vault.ts, replaceScripts, common contracts) listed unindexed; no new features invented. `dist/` is in excludes and not a routing target.
+deviations from design: none
+open questions: none (mechanisms listed unindexed as specified)
 
 ### T-002: Map each accepted feature to backend primary and frontend adjacency
 status: done
