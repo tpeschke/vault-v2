@@ -30,4 +30,4 @@ Not present: edit, quick-edit, download PDF.
 - Download v1 character as PDF
 - Delete v1 character
 
-Excluded: create v1 character (permanent). T-004 removes unused `HomeController.addCharacter`.
+Excluded: create v1 character (permanent). T-004 removed unused `HomeController.addCharacter`.

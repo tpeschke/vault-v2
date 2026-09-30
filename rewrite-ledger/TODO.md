@@ -16,7 +16,7 @@ steps:
 2. Set `adjacent` to the app page/hook/component directories that call or render it.
 3. Unversioned log in / log out: primary `backend/server/routes/authentication.ts`; adjacent `app/src/components/header/icons/LoginLogoutIcons.tsx`.
 4. Do not move files. Do not create FSD layer directories.
-5. Do not add a v1 create-character route. Do not map v2 Create character to `HomeController.addCharacter`. Map it to `backend/server/v2/add/`. T-004 removes the unwired v1 function.
+5. Do not add a v1 create-character route. Do not map v2 Create character to `HomeController.addCharacter`. Map it to `backend/server/v2/add/`. T-004 removed the unwired v1 function.
 done when: every accepted inventory row has a `routing` key; YAML parses; each `primary` path exists on disk; `features/`, `entities/`, `widgets/` directories have not been created; grep of root `00-START-HERE.yaml` for a v1 create-character key is 0 hits.
 depends on: T-001
 open questions: none
@@ -38,24 +38,15 @@ open questions: where to put files that are mechanisms (Redux store, database he
 deviations from design: none
 result:
 
+## Done
+
 ### T-004: Remove HomeController.addCharacter
-status: proposed
+status: done
 source: rewrite-ledger/feature-index.md, 2026-09-30 (v1 create permanently excluded)
 why: v1 will never add characters. `HomeController.addCharacter` inserts into `cvcharactermain` and is not mounted. It is not the v2 Create character path.
-scope: `backend/server/controllers/home/HomeController.ts`; `backend/server/v1/queries/home.ts` keys `insertCharacter` and `characterCount` (only used by that function). Owner unresolved: home/backend has no front panel; current paths.
-steps:
-1. Delete `export async function addCharacter` from `HomeController.ts`.
-2. Remove imports that become unused (`homeSQL`, `isOwner`, `query`) if `viewUsersCharacters` does not use them.
-3. Remove `insertCharacter` and `characterCount` from `backend/server/v1/queries/home.ts` if no remaining references.
-4. Do not change `UsersCharactersHook.addCharacter`, `HomeFooter`, `V2CharacterDisplay`, or `backend/server/v2/add/`.
-5. Do not mount a replacement v1 create route.
-done when: grep `function addCharacter` in `backend/server/controllers/home/` is 0 hits; grep `homeSQL.insertCharacter` and `homeSQL.characterCount` in `backend/` is 0 hits; grep `insertCharacter:` and `characterCount:` in `backend/server/v1/queries/home.ts` is 0 hits; `HomeRoutes.ts` still exports GET `allOfUsersCharacter` and DELETE `/:characterID`; v2 add route in `vault.ts` is unchanged.
-depends on: none
-open questions: none
+scope: `backend/server/controllers/home/HomeController.ts`; `backend/server/v1/queries/home.ts`.
+result: Deleted `addCharacter` and unused imports from HomeController. Removed `insertCharacter` and `characterCount` SQL. Home GET/DELETE and v2 add path unchanged.
 deviations from design: none
-result:
-
-## Done
 
 ### T-001: Add repository front panels that own the feature index
 status: done
