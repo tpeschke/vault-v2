@@ -1,0 +1,51 @@
+schema_version: 1
+kind: project
+id: bonfire-character-vault
+name: Bonfire Character Vault
+owns: Repository navigation and the L1 feature index.
+excludes:
+  - dist/
+  - create v1 character
+uses:
+  - rewrite-ledger
+entrypoints:
+  start: 00-START-HERE.md
+  ledger: rewrite-ledger/00-START-HERE.md
+  inventory: rewrite-ledger/feature-inventory.md
+routing:
+  log in / sign in / login / authenticate:
+    primary:
+    adjacent:
+  log out / sign out / logout:
+    primary:
+    adjacent:
+  list characters / catalog / home characters:
+    primary:
+    adjacent:
+  create character / add character / add new character:
+    primary:
+    adjacent:
+  view character sheet / view character / open character:
+    primary:
+    adjacent:
+  delete character / remove character:
+    primary:
+    adjacent:
+  list v1 characters / ancient characters / list ancient:
+    primary:
+    adjacent:
+  view v1 character sheet / view v1 character:
+    primary:
+    adjacent:
+  edit v1 character sheet / save v1 character:
+    primary:
+    adjacent:
+  quick-edit v1 character / quick edit v1:
+    primary:
+    adjacent:
+  download v1 character as pdf / v1 pdf:
+    primary:
+    adjacent:
+  delete v1 character / remove v1 character / delete ancient:
+    primary:
+    adjacent:

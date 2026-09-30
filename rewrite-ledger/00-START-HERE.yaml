@@ -7,22 +7,22 @@ excludes:
   - application code and tests
   - design-chat research
   - coding procedure unless the user asks to record it
-  - live feature index (repository front panels, once created)
+  - live feature index (repository front panels)
 uses: []
 entrypoints:
   start: 00-START-HERE.md
   todos: TODO.md
-  vocabulary: 00-START-HERE.md#designer-vocabulary
+  vocabulary: ../00-START-HERE.md#designer-vocabulary
 routing:
-  character: 00-START-HERE.md#designer-vocabulary
+  character: ../00-START-HERE.md#designer-vocabulary
+  L1: ../00-START-HERE.yaml
   TODO: TODO.md
-  feature-index: feature-index.md
+  feature-index-decision: feature-index.md
   feature-inventory: feature-inventory.md
   observed_code_paths:
     app: ../app
     backend: ../backend
     replaceScripts: ../replaceScripts
   gaps:
-    - no repository 00-START-HERE panels
     - no AGENTS.md
     - FSD layer directories not created (deferred; index-in-place)

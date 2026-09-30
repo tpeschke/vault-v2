@@ -6,21 +6,6 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 
 ## Active
 
-### T-001: Add repository front panels that own the feature index
-status: proposed
-source: rewrite-ledger/feature-index.md, 2026-09-30
-why: L1 for the repo does not exist. The feature index lives on the root panels, not in the ledger.
-scope: new `00-START-HERE.md` and `00-START-HERE.yaml` at repo root. Owner unresolved until those panels exist; they will own repository navigation.
-steps:
-1. Create paired root front panels. Human panel: what the repo is, that L1 routing is the feature index, pointer to `rewrite-ledger/feature-index.md`, and designer vocabulary (unmarked “character” means v2; say v1 otherwise).
-2. YAML: `kind: project`, `routing` keys = accepted inventory names plus aliases (no v1 create-character key), each value `primary` (backend path) and `adjacent` (app paths) left empty until T-002, plus `excludes: [dist/]`.
-3. Update `rewrite-ledger/00-START-HERE.md` and `.yaml` to route “feature index” to the root panels, and drop the gap “no repository 00-START-HERE panels”.
-done when: both root panel files exist; YAML parses; `rewrite-ledger/00-START-HERE.yaml` `gaps` no longer lists missing root panels; grep `no repository 00-START-HERE` in `rewrite-ledger/` is 0 hits.
-depends on: none (inventory accepted 2026-09-30)
-open questions: none
-deviations from design: none
-result:
-
 ### T-002: Map each accepted feature to backend primary and frontend adjacency
 status: proposed
 source: rewrite-ledger/feature-index.md, 2026-09-30
@@ -72,4 +57,11 @@ result:
 
 ## Done
 
-(none)
+### T-001: Add repository front panels that own the feature index
+status: done
+source: rewrite-ledger/feature-index.md, 2026-09-30
+why: L1 for the repo does not exist. The feature index lives on the root panels, not in the ledger.
+scope: `00-START-HERE.md` and `00-START-HERE.yaml` at repo root (now the navigation owner).
+result: Root panels added. YAML routing keys match the accepted inventory plus aliases; `primary`/`adjacent` left empty for T-002. No v1 create-character key. Vocabulary lives on the repo human panel. Ledger routes L1 to the root YAML.
+deviations from design: none
+

@@ -12,7 +12,7 @@ Constraints it imposes:
 - `dist/` is excluded from the completeness rule (generated SPA output).
 - Do not create FSD folders until a separate structural design is approved.
 - v1 has no create-character objective, ever. Do not add it to the inventory or to L1 routing.
-- Designer speech: unmarked “character” means v2. Canonical: `rewrite-ledger/00-START-HERE.md` § Designer vocabulary (copy onto repo front panels in T-001).
+- Designer speech: unmarked “character” means v2. Canonical: repository `00-START-HERE.md` § Designer vocabulary.
 
 Rejected:
 - Colocate into feature folders now (index-in-place chosen).
@@ -20,5 +20,5 @@ Rejected:
 - CODEOWNERS, FeatureIDE traces, or recovered feature-location as the living index.
 - v1 create character (permanently excluded).
 
-Touches: repository front panels (not yet created); `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
+Touches: repository `00-START-HERE.md`, `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
 TODOs: T-001, T-002, T-003, T-004
