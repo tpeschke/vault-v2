@@ -7,14 +7,15 @@ excludes:
   - application code and tests
   - design-chat research
   - coding procedure unless the user asks to record it
-  - repository owner taxonomy (not yet established)
+  - live feature index (repository front panels, once created)
 uses: []
 entrypoints:
   start: 00-START-HERE.md
   todos: TODO.md
 routing:
   TODO: TODO.md
-  # Topic files are added only when a real need appears.
+  feature-index: feature-index.md
+  feature-inventory: feature-inventory.md
   observed_code_paths:
     app: ../app
     backend: ../backend
@@ -22,4 +23,5 @@ routing:
   gaps:
     - no repository 00-START-HERE panels
     - no AGENTS.md
-    - no in-repo CODE-LAYOUT-STANDARD.md
+    - feature inventory not yet accepted
+    - FSD layer directories not created (deferred; index-in-place)

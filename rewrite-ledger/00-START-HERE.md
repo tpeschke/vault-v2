@@ -23,7 +23,7 @@ The designer (the human directing this session). Agents merge, execute, and reco
 - Application code, tests, build config, and scripts
 - Design-chat research (sources, essays, generic doctrine)
 - Coding practices and procedures, unless the user asks to record them
-- Repository layout and owner taxonomy (no in-repo `CODE-LAYOUT-STANDARD.md` yet; skill fallback is `.cursor/skills/ledger-workflow/references/CODE-LAYOUT-STANDARD.md`)
+- The live feature index (repository `00-START-HERE` panels, once T-001 runs)
 
 ## Neighboring owners
 
@@ -40,9 +40,10 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Need | Go to |
 |---|---|
 | TODOs | `TODO.md` |
-| A recorded decision or inherited behavior | the topic file named in `routing` below, once one exists |
+| Feature-index decision | `feature-index.md` |
+| Feature inventory (designer-edited) | `feature-inventory.md` |
 | Code | the observed paths above, until root front panels exist |
-| Layout standard | skill fallback until a repo copy is added |
+| Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 
 ## Ledger hygiene
 
