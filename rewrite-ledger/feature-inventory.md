@@ -21,7 +21,7 @@ Presence notes are evidence from current routes and controllers, not extra featu
 
 Permanently excluded: create character. v1 will never add characters. Do not add this objective later.
 
-Not the v2 feature: `HomeController.addCharacter` inserts into `cvcharactermain` (v1) and is not mounted on `HomeRoutes`. The home “Add New Character” button is v2 Create character (`UsersCharactersHook.addCharacter` → `POST` v2 add).
+Not the v2 feature: `HomeController.addCharacter` inserts into `cvcharactermain` (v1) and is not mounted on `HomeRoutes`. Remove it via T-004. The home “Add New Character” button is v2 Create character (`UsersCharactersHook.addCharacter` → `POST` v2 add).
 
 ## Version 2
 
