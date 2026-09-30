@@ -1,0 +1,25 @@
+schema_version: 1
+kind: ledger
+id: rewrite-ledger
+name: Rewrite Ledger
+owns: Project memory for this repository — inherited behavior, architectural discoveries, decisions, migration plans, known gaps, design notes, and detailed TODOs.
+excludes:
+  - application code and tests
+  - design-chat research
+  - coding procedure unless the user asks to record it
+  - repository owner taxonomy (not yet established)
+uses: []
+entrypoints:
+  start: 00-START-HERE.md
+  todos: TODO.md
+routing:
+  TODO: TODO.md
+  # Topic files are added only when a real need appears.
+  observed_code_paths:
+    app: ../app
+    backend: ../backend
+    replaceScripts: ../replaceScripts
+  gaps:
+    - no repository 00-START-HERE panels
+    - no AGENTS.md
+    - no in-repo CODE-LAYOUT-STANDARD.md
