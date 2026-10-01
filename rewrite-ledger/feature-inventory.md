@@ -3,7 +3,7 @@ status: accepted   date: 2026-09-30
 
 Unmarked **character** means v2. v1 rows are marked. Sheet widgets are not features.
 
-Home is one page; list objectives stay split by version.
+Home is one page; list objectives stay split by version. Create character stays on that home page slice on the frontend (not a route, not `features/create-character`). View is two page slices (v1 and v2), not one `pages/view` with versions nested. Canonical: `fsd-colocation.md`.
 
 ## Unversioned
 

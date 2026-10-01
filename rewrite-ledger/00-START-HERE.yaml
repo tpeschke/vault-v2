@@ -27,4 +27,4 @@ routing:
     backend: ../backend
     replaceScripts: ../replaceScripts
   gaps:
-    - FSD layer directories not created (deferred; layers will be `app/src/...`, not repo-root)
+    - FSD layer directories not created (deferred; `fsd-colocation.md`: two view slices, backend L1-only, create stays on home)
