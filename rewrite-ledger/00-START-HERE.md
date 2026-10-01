@@ -8,6 +8,10 @@ Project memory for this repository. Records inherited behavior, architectural di
 
 The ledger exposes context. It does not impose coding procedure.
 
+## Designer vocabulary
+
+Canonical: repository `00-START-HERE.md` § Designer vocabulary. Unmarked **character** means v2.
+
 ## Who owns changes to its meaning
 
 The designer (the human directing this session). Agents merge, execute, and record; they do not invent design.
@@ -23,11 +27,12 @@ The designer (the human directing this session). Agents merge, execute, and reco
 - Application code, tests, build config, and scripts
 - Design-chat research (sources, essays, generic doctrine)
 - Coding practices and procedures, unless the user asks to record them
-- Repository layout and owner taxonomy (no in-repo `CODE-LAYOUT-STANDARD.md` yet; skill fallback is `.cursor/skills/ledger-workflow/references/CODE-LAYOUT-STANDARD.md`)
+- The live feature index (repository `00-START-HERE` panels)
 
 ## Neighboring owners
 
-None established. The repository has no root `00-START-HERE` panels and no `AGENTS.md`. Current code locations are observed paths, not owners:
+- Repository front panels: `../00-START-HERE.md` and `../00-START-HERE.yaml` (L1 feature index).
+- No `AGENTS.md`. Current code locations are observed paths, not owners:
 
 - `app/` — Vite/React frontend (`@vault/main` workspace)
 - `backend/` — server and common packages
@@ -39,10 +44,13 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 
 | Need | Go to |
 |---|---|
+| Designer vocabulary (“character”) | `../00-START-HERE.md` § Designer vocabulary |
 | TODOs | `TODO.md` |
-| A recorded decision or inherited behavior | the topic file named in `routing` below, once one exists |
-| Code | the observed paths above, until root front panels exist |
-| Layout standard | skill fallback until a repo copy is added |
+| Feature-index decision | `feature-index.md` |
+| Feature inventory (accepted) | `feature-inventory.md` |
+| Feature index (L1) | `../00-START-HERE.yaml` |
+| Code | `../00-START-HERE.yaml` `routing` |
+| Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 
 ## Ledger hygiene
 

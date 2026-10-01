@@ -1,0 +1,111 @@
+schema_version: 1
+kind: project
+id: bonfire-character-vault
+name: Bonfire Character Vault
+owns: Repository navigation and the L1 feature index.
+excludes:
+  - dist/
+  - create v1 character
+uses:
+  - rewrite-ledger
+entrypoints:
+  start: 00-START-HERE.md
+  ledger: rewrite-ledger/00-START-HERE.md
+  inventory: rewrite-ledger/feature-inventory.md
+routing:
+  log in / sign in / login / authenticate:
+    primary: backend/server/routes/authentication.ts
+    adjacent:
+      - app/src/components/header/icons/LoginLogoutIcons.tsx
+      - backend/server/controllers/user/
+  log out / sign out / logout:
+    primary: backend/server/routes/authentication.ts
+    adjacent:
+      - app/src/components/header/icons/LoginLogoutIcons.tsx
+  list characters / catalog / home characters:
+    primary: backend/server/controllers/home/v2/getCharacters.ts
+    adjacent:
+      - backend/server/controllers/home/HomeController.ts
+      - backend/server/controllers/home/HomeRoutes.ts
+      - app/src/pages/home/Home.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
+      - app/src/hooks/UsersCharactersHook.tsx
+  create character / add character / add new character:
+    primary: backend/server/v2/add/
+    adjacent:
+      - app/src/hooks/UsersCharactersHook.tsx
+      - app/src/pages/home/components/homeFooter/HomeFooter.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
+  view character sheet / view character / open character:
+    primary: backend/server/v2/view/
+    adjacent:
+      - app/src/pages/view/v2/
+      - app/src/routes/AllRoutes.tsx
+  delete character / remove character:
+    primary: backend/server/v2/delete/
+    adjacent:
+      - app/src/hooks/UsersCharactersHook.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
+  list v1 characters / ancient characters / list ancient:
+    primary: backend/server/controllers/home/v1/getCharacters.ts
+    adjacent:
+      - backend/server/controllers/home/HomeController.ts
+      - backend/server/controllers/home/HomeRoutes.ts
+      - app/src/pages/home/Home.tsx
+      - app/src/pages/home/components/v1CharacterDisplay/
+      - app/src/hooks/UsersCharactersHook.tsx
+  view v1 character sheet / view v1 character:
+    primary: backend/server/v1/controllers/view/
+    adjacent:
+      - app/src/pages/view/v1/
+      - app/src/routes/AllRoutes.tsx
+  edit v1 character sheet / save v1 character:
+    primary: backend/server/v1/controllers/edit/
+    adjacent:
+      - app/src/pages/view/v1/
+  quick-edit v1 character / quick edit v1:
+    primary: backend/server/v1/controllers/quickEdit/
+    adjacent:
+      - app/src/pages/view/v1/
+  download v1 character as pdf / v1 pdf:
+    primary: app/src/pages/view/v1/hooks/utilities/downloadUtilities.ts
+    adjacent:
+      - app/src/pages/view/v1/hooks/characterHook.tsx
+      - app/src/pages/view/v1/V1View.tsx
+  delete v1 character / remove v1 character / delete ancient:
+    primary: backend/server/controllers/home/v1/deleteCharacter.ts
+    adjacent:
+      - backend/server/controllers/home/HomeRoutes.ts
+      - app/src/hooks/UsersCharactersHook.tsx
+      - app/src/pages/home/components/v1CharacterDisplay/
+unindexed:
+  # Mechanisms, chrome, contracts, and scripts that are not a user-objective feature. Do not invent features for these.
+  - replaceScripts/
+  - backend/common/
+  - backend/server/db/
+  - backend/server/interfaces/
+  - backend/server/controllers/common/
+  - backend/server/v1/queries/
+  - backend/server/v2/backupTables/
+  - backend/server/vault.ts
+  - backend/server/package.json
+  - backend/server/tsconfig.json
+  - app/src/assets/
+  - app/src/redux/
+  - app/src/utilities/
+  - app/src/components/displayArray/
+  - app/src/components/footer/
+  - app/src/components/loading/
+  - app/src/components/textArea/
+  - app/src/pages/home/components/charactersRowDisplay/
+  - app/src/App.tsx
+  - app/src/App.css
+  - app/src/main.tsx
+  - app/src/index.css
+  - app/src/vite-env.d.ts
+  - app/src/components/header/Header.tsx
+  - app/src/components/header/Header.css
+  - app/src/hooks/LocationHook.tsx
+  - app/src/pages/home/Home.css
+  - app/src/pages/home/components/homeFooter/HomeFooter.css
+  - app/src/pages/view/View.css
