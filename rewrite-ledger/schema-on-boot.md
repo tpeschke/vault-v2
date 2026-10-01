@@ -8,8 +8,8 @@ Why: T-013/T-014 recorded DDL in `backupTables/page1.sql` but nothing applied it
 Constraints it imposes:
 - One module next to the existing pool (`backend/server/db/ensureSchema.ts`). Call it from `vault.ts` before `app.listen`.
 - Use the existing `query()` helper. No `node-pg-migrate` or other new dependency.
-- Every statement is safe to re-run: `ADD COLUMN IF NOT EXISTS`; table renames guarded by `information_schema` (Postgres folds unquoted names to lowercase).
-- Patches this script owns: `currentEmotions` on `v2BasicCharacteristics`; `v2convictions` → `v2descriptions`; suite description tables empathize/lecture/tempt → influence/inform/inspire.
+- Every statement is safe to re-run: `ADD COLUMN IF NOT EXISTS`; `CREATE TABLE IF NOT EXISTS`; table renames guarded by `information_schema` (Postgres folds unquoted names to lowercase).
+- Patches this script owns: `v2currentEmotions` child table; drop `v2BasicCharacteristics.currentEmotions` after copying leftover varchar values into rank 0; `v2convictions` → `v2descriptions`; suite description tables empathize/lecture/tempt → influence/inform/inspire.
 - If both `v2convictions` and `v2descriptions` exist, drop the empty T-014 `v2descriptions`, then rename `v2convictions`.
 - Keep `rank` on the renamed descriptions table.
 - Update `backupTables/page1.sql` in the same change as each rename so the snapshot matches live names.
@@ -19,4 +19,4 @@ Rejected:
 - Applying DDL only by hand.
 
 Touches: `backend/server/db/` (unindexed); `backend/server/vault.ts` (unindexed); `backend/server/v2/backupTables/page1.sql` (unindexed)
-TODOs: T-017, T-018 (done)
+TODOs: T-017, T-018 (done); T-022 (proposed)
