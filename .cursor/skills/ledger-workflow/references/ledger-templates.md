@@ -38,7 +38,7 @@ routing: {}
 
 ## Decision entry
 
-Written during Merge wherever the ledger keeps decisions. The distilled result of a design note, not a copy of it.
+Written during Todo-ify wherever the ledger keeps decisions. The distilled result of a design note, not a copy of it.
 
 ```markdown
 # <topic>
@@ -68,11 +68,11 @@ steps:
 done when: <mechanical checks: test command, type-check, build, grep expecting zero hits>
 depends on: <T-ids or none>
 open questions: <items needing a designer ruling, or none>
-deviations from design: <changes made at merge, and why, or none>
+deviations from design: <changes made at Todo-ify, and why, or none>
 result: <filled on completion: 1-3 lines>
 ```
 
-Status flow: Merge writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in a `Done` section at the bottom of `TODO.md` and prune old ones so the active list stays short.
+Status flow: Todo-ify writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in a `Done` section at the bottom of `TODO.md` and prune old ones so the active list stays short.
 
 ## Ledger hygiene
 

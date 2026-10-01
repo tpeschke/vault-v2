@@ -2,7 +2,7 @@
 
 Read `00-START-HERE.md` and `00-START-HERE.yaml` first. That pair is L1. Route the task; do not scan the tree.
 
-A new session that states an overall goal is Merge: write ledger TODOs and stop. That goal statement is not Execute approval. Execute only TODOs the designer names or approves.
+A new session that states an overall goal is Todo-ify: write ledger TODOs and stop. That goal statement is not Execute approval. Execute only TODOs the designer names or approves.
 
 When a phase is finished, report that phase, then note the next-phase options. Do not start the next phase until the designer chooses.
 
