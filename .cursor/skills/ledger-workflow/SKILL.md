@@ -42,6 +42,7 @@ Say which phase you are in and stay in it. Interleaving design and implementatio
 - Todo-ify and Execute are separate turns. After Todo-ify, stop so the user can review the TODOs. Execute only TODOs the user names or approves.
 - A new session that states an overall goal is Todo-ify (write TODOs, stop). Canonical: repository `AGENTS.md`. Do not treat that goal statement as Execute approval.
 - When a phase is finished, report that phase, then note the next-phase options. Canonical: repository `AGENTS.md`. Do not start the next phase until the designer chooses.
+- When Execute is finished, include the pull-request URL. Canonical: repository `AGENTS.md`.
 - A design question that surfaces during Execute is recorded as an open question on the TODO, not resolved inline.
 - If the user asks for design work inside this session, treat it as Design: search for how others solved the problem before offering any opinion, and output design notes only.
 - **Proportionality.** Ceremony scales with design content. A typo, bug fix or mechanical rename needs no TODO and no design step. A new structure, interface, dependency or behavior does.
@@ -134,6 +135,7 @@ Deviations: <anything that differs from the design or TODO, and why; "none">
 Needs decision: <choices that belong to the designer; "none">
 Verified: <checks run and results, or "not mechanically verifiable">
 Ledger/index: <what changed>
+PR: <pull-request URL on Execute; omit on Todo-ify>
 ```
 
 Example:
@@ -144,6 +146,7 @@ Deviations: T-015 step 3 skipped; the key already existed
 Needs decision: none
 Verified: npm test in 30-Shared-Tools/Payments-Client/50-Tests (12 passed); grep for old name retryCount, 0 hits
 Ledger/index: T-014, T-015 marked done; front panels unchanged
+PR: https://github.com/example/repo/pull/1
 ```
 
 ## Reference files

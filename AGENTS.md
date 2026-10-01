@@ -6,6 +6,8 @@ A new session that states an overall goal is Todo-ify: write ledger TODOs and st
 
 When a phase is finished, report that phase, then note the next-phase options. Do not start the next phase until the designer chooses.
 
+When Execute is finished, include the pull-request URL in that report.
+
 Unmarked **character** means v2. Say **v1** (or “ancient”) otherwise. Canonical: `00-START-HERE.md` § Designer vocabulary.
 
 Decisions, inventory, and TODOs: `rewrite-ledger/00-START-HERE.md`. The ledger exposes context; it does not add coding procedure.
