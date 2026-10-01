@@ -15,7 +15,7 @@ status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01 (design: attack and defense special info)
 why: `notes` is already on the payload. The view omits it. Design: unlabeled string below each block’s stats, two value-cell lines minimum, wrap and grow.
 scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Defenses/` (`Defenses.tsx`, `Defenses.css`) and `.../Attacks/` (`Attacks.tsx`, `Attacks.css`).
-result: Unlabeled `notes` under Defense and each of four Attacks. `min-height: calc(2 * 17.38px)`. Defense `name` still hidden. Browser overflow pending.
+result: Unlabeled `notes` under Defense and each of four Attacks. `min-height: calc(2 * 17.38px)` (browser 34.76px). Wrap and grow. Defense `name` still hidden. Empty sheet `.page-type-one` 1068px, `overflow=false`.
 deviations from design: none
 open questions: none
 
