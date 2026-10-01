@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
-    const { capacity, socialSuites, culturalStrength, socialSkillDiscount, reputations, convictions, flaws } = characteristicsInfo
+    const { capacity, socialSuites, culturalStrength, socialSkillDiscount, currentEmotions, reputations, descriptions, flaws } = characteristicsInfo
 
     return (
         <div className="characteristics-display-v2">
@@ -20,15 +20,13 @@ export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
 
             <h2>Current Emotions</h2>
             <div className='line-shell'>
-                <p></p>
-                <p></p>
-                <p></p>
+                <p>{currentEmotions}</p>
             </div>
 
             <SocialSuitesDisplay socialSuites={socialSuites} />
             <ReputationDisplay reputations={reputations} />
             <StrengthNDiscount culturalStrength={culturalStrength} socialSkillDiscount={socialSkillDiscount} />
-            <DescriptionsDisplay convictions={convictions} />
+            <DescriptionsDisplay descriptions={descriptions} />
             <FlawsDisplay flaws={flaws} />
         </div>
     )

@@ -22,4 +22,4 @@ Rejected:
 - Drawing defense name/notes or attack notes on page type 1.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/assets/images/` (unindexed; wordmark file); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/`; `backend/server/v2/add/pageType1/` (Current Emotions column default only); `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/`; `backend/server/v2/backupTables/page1.sql` (unindexed schema snapshot)
-TODOs: T-009–T-011 (done); T-012–T-015 (proposed)
+TODOs: T-009–T-015 (done)

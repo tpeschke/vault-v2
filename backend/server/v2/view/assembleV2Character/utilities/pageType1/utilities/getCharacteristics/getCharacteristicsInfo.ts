@@ -6,12 +6,14 @@ import getConvictions from "./utilities/getConvictions";
 import getRelationships from "./utilities/getRelationships";
 import getFlaws from "./utilities/getFlaws";
 import getSocialSuites from "./utilities/getSocialSuites";
+import getDescriptions from "./utilities/getDescriptions";
 
 export default async function getCharacteristicsInfo(pageID: number): Promise<Characteristics> {
     let characteristicInfo: Characteristics = {
         capacity: 0,
         culturalStrength: '',
         socialSkillDiscount: 0,
+        currentEmotions: '',
         temperaments: {
             affability: '',
             openness: '',
@@ -22,6 +24,7 @@ export default async function getCharacteristicsInfo(pageID: number): Promise<Ch
         goals: [],
         reputations: [],
         convictions: [],
+        descriptions: [],
         relationships: [],
         flaws: [],
         socialSuites: {
@@ -53,11 +56,13 @@ export default async function getCharacteristicsInfo(pageID: number): Promise<Ch
             characteristicInfo.capacity = basicCharacteristics.capacity
             characteristicInfo.culturalStrength = basicCharacteristics.culturalStrength
             characteristicInfo.socialSkillDiscount = basicCharacteristics.socialSkillDiscount
+            characteristicInfo.currentEmotions = basicCharacteristics.currentEmotions
             characteristicInfo.temperaments = basicCharacteristics.temperaments
         }),
         getGoals(pageID).then(goals => characteristicInfo.goals = goals),
         getReputations(pageID).then(reputations => characteristicInfo.reputations = reputations),
         getConvictions(pageID).then(convictions => characteristicInfo.convictions = convictions),
+        getDescriptions(pageID).then(descriptions => characteristicInfo.descriptions = descriptions),
         getRelationships(pageID).then(relationships => characteristicInfo.relationships = relationships),
         getFlaws(pageID).then(flaws => characteristicInfo.flaws = flaws),
         getSocialSuites(pageID).then(socialSuites => characteristicInfo.socialSuites = socialSuites)

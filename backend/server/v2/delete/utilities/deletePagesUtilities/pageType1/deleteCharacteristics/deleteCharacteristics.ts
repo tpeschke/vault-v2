@@ -1,5 +1,6 @@
 import deleteBasicCharacteristics from "./utilities/deleteBasicCharacteristics";
 import deleteConvictions from "./utilities/deleteConvictions";
+import deleteDescriptions from "./utilities/deleteDescriptions";
 import deleteFlaws from "./utilities/deleteFlaws";
 import deleteGoals from "./utilities/deleteGoals";
 import deleteRelationships from "./utilities/deleteRelationships";
@@ -10,6 +11,7 @@ export default async function deleteCharacteristics(pageID: number) {
     return Promise.all([
         deleteBasicCharacteristics(pageID),
         deleteConvictions(pageID),
+        deleteDescriptions(pageID),
         deleteFlaws(pageID),
         deleteGoals(pageID),
         deleteRelationships(pageID),

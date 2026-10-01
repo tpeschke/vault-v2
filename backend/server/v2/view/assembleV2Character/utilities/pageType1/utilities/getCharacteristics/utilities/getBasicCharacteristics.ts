@@ -4,6 +4,7 @@ interface RawBasicCharacteristics {
     capacity: number,
     culturalstrength: string,
     socialskilldiscount: number,
+    currentemotions: string,
     affability: string,
     openness: string,
     outgoingness: string,
@@ -15,6 +16,7 @@ interface BasicCharacteristicReturn {
     capacity: number,
     culturalStrength: string,
     socialSkillDiscount: number,
+    currentEmotions: string,
     temperaments: {
         affability: string,
         openness: string,
@@ -32,11 +34,12 @@ export default async function getBasicCharacteristics(pageID: number): Promise<B
     if (info) {
         const {
             capacity, culturalstrength: culturalStrength, socialskilldiscount: socialSkillDiscount,
+            currentemotions: currentEmotions,
             affability, openness, outgoingness, workethic: workEthic, worry
         } = info
 
         return {
-            capacity, culturalStrength, socialSkillDiscount,
+            capacity, culturalStrength, socialSkillDiscount, currentEmotions: currentEmotions ?? '',
             temperaments: {
                 affability, openness, outgoingness, workEthic, worry,
             }
@@ -47,6 +50,7 @@ export default async function getBasicCharacteristics(pageID: number): Promise<B
         capacity: 0,
         culturalStrength: '',
         socialSkillDiscount: 0,
+        currentEmotions: '',
         temperaments: {
             affability: '',
             openness: '',

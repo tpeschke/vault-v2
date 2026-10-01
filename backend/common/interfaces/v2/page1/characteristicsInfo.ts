@@ -5,8 +5,10 @@ export interface Characteristics {
     goals: Goal[],
     culturalStrength: string,
     socialSkillDiscount: number,
+    currentEmotions: string,
     reputations: CharacteristicPair[],
     convictions: CharacteristicPair[],
+    descriptions: Description[],
     relationships: CharacteristicPair[],
     flaws: Flaw[],
     temperaments: Temperaments,
@@ -16,6 +18,11 @@ export interface Characteristics {
 export interface Goal {
     id: number,
     goal: string
+}
+
+export interface Description {
+    id: number,
+    value: string
 }
 
 export interface Flaw {

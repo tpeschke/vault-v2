@@ -17,8 +17,8 @@ export default function SocialSuitesDisplay({ socialSuites }: Props) {
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>
-                <SocialSuiteDisplay suiteName='Empathize' socialSuite={empathize} />
-                <SocialSuiteDisplay suiteName='Lecture' socialSuite={lecture} />
+                <SocialSuiteDisplay suiteName='Influence' socialSuite={empathize} />
+                <SocialSuiteDisplay suiteName='Inform' socialSuite={lecture} />
             </div>
             <div>
                 <span>
@@ -26,8 +26,8 @@ export default function SocialSuitesDisplay({ socialSuites }: Props) {
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>
+                <SocialSuiteDisplay suiteName='Inspire' socialSuite={tempt} />
                 <SocialSuiteDisplay suiteName='Intimidate' socialSuite={intimidate} />
-                <SocialSuiteDisplay suiteName='Tempt' socialSuite={tempt} />
             </div>
 
         </div>

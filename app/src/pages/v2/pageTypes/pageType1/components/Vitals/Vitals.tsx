@@ -58,7 +58,7 @@ function DieRow({ dieIndex }: { dieIndex: number }) {
         <div className="die-row">
             <h2>Die</h2>
             {DICE.map((die, index) => (
-                <p key={die} className={index === dieIndex ? 'selected center-text' : 'center-text'}>{die}</p>
+                <p key={die} className={dieIndex > 0 && (dieIndex - 1) === index ? 'selected center-text' : 'center-text'}>{die}</p>
             ))}
         </div>
     )

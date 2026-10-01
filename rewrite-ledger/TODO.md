@@ -6,66 +6,46 @@ Todo-ify writes `proposed`. Execute approval is the designer naming TODOs, not t
 
 ## Active
 
+(none)
+
+## Done
+
 ### T-012: Relabel and reorder page-type-1 social suites
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01
 why: Sheet labels are Influence / Inform / Inspire / Intimidate. The view still draws Empathize / Lecture / Intimidate / Tempt.
 scope: view character sheet adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/socialSuites/SocialSuites.tsx`. Do not rename `SocialSkillSuites` keys, `suiteID` values, or `v2*Descriptions` tables.
-steps:
-1. Keep payload keys `empathize`, `lecture`, `intimidate`, `tempt`. Map labels: empathize → Influence, lecture → Inform, tempt → Inspire, intimidate → Intimidate (`suiteID` 1 / 3 / 4 / 2).
-2. Draw order: Influence then Inform in the first column; Inspire then Intimidate in the second (same two-column shell).
-3. Leave assemble, add, and delete social-suite code unchanged.
-done when: In `SocialSuites.tsx`, labels are Influence, Inform, Inspire, Intimidate in that visual order. `rg 'Empathize|Lecture|Tempt' app/src/pages/v2/pageTypes/pageType1` is 0. `characteristicsInfo.ts` still has keys `empathize`, `lecture`, `intimidate`, `tempt`.
-depends on: none
+result: Labels are Influence / Inform then Inspire / Intimidate. Payload keys and suiteIDs unchanged.
+deviations from design: none
 open questions: none
-deviations from design: none (suiteID → new-name pairing is the implied map recorded on `page1-view.md`)
 
 ### T-013: Bind Current Emotions to a new basic-characteristics string
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01
 why: Current Emotions is three empty lines. Design: new stored field, one string.
-scope: view character `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/` (`getBasicCharacteristics.ts`, `getCharacteristicsInfo.ts`); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `assemblePageType1.ts` skeleton; view adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx`; unindexed schema snapshot `backend/server/v2/backupTables/page1.sql`. Create character add path is unchanged (`insert into v2BasicCharacteristics (pageID)` relies on the column default).
-steps:
-1. Add `currentEmotions varchar(250) default ''` on `v2BasicCharacteristics` in `backupTables/page1.sql`. Live queries use `pageID` (the snapshot’s `characterid` on that table is inherited; do not rewrite the rest of the file). Apply the column to the live database; there is no migration runner.
-2. Add `currentEmotions: string` to `Characteristics` and to `getBasicCharacteristics`’s return. Map the selected column (postgres lowercases unquoted `currentEmotions` to `currentemotions`). Default `''` when the row is missing.
-3. Assign it in `getCharacteristicsInfo` and in the `assemblePageType1` skeleton.
-4. In `Characteristics.tsx`, bind that one string under Current Emotions. Replace the three empty `<p>` lines. Do not bind goals or temperaments here.
-done when: `Characteristics` includes `currentEmotions: string`. `getBasicCharacteristics` returns it. `Characteristics.tsx` renders `{currentEmotions}` and does not contain three empty Current Emotions `<p>` tags. `backupTables/page1.sql` defines the column. `npx tsc -p app --pretty false --noEmit` reports no errors in the files above (ignore pre-existing v1 `UpdateNotes` errors).
-depends on: none
+scope: view character `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/` (`getBasicCharacteristics.ts`, `getCharacteristicsInfo.ts`); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `assemblePageType1.ts` skeleton; view adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx`; unindexed schema snapshot `backend/server/v2/backupTables/page1.sql`.
+result: `currentEmotions` is on the interface, assemble path, and one bound line in the view. Column recorded in `backupTables/page1.sql`.
+deviations from design: live ALTER not applied; this environment has no `server-config` / postgres.
 open questions: none
-deviations from design: none
 
 ### T-014: Bind Descriptions to a new stored list
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01
 why: Descriptions currently maps `convictions`. Design: a new stored field, not convictions, goals, or relationships.
-scope: view character `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `getCharacteristicsInfo.ts`; new getter beside the other characteristic getters; `assemblePageType1.ts` skeleton; view adjacency `Descriptions.tsx` and `Characteristics.tsx`; delete character `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/`; unindexed `backend/server/v2/backupTables/page1.sql`. No v2 edit feature; no add insert (same as goals: empty until rows exist).
-steps:
-1. Add table `v2descriptions` (`id serial primary key`, `pageID integer`, `value varchar(500)`) to `backupTables/page1.sql` using `pageID` to match live getters. Apply `CREATE TABLE` to the live database; there is no migration runner.
-2. Add `Description { id, value }` and `descriptions: Description[]` on `Characteristics`. Keep `convictions` on the payload; this page does not draw them.
-3. Add `getDescriptions(pageID)` following `getFlaws` / `getGoals` (`select * from v2descriptions where pageID = $1`). Wire it in `getCharacteristicsInfo`. Default `[]` on the assemble skeleton.
-4. Change `DescriptionsDisplay` to take `descriptions` and render `value` lines, still padding to 5 empty rows. `Characteristics.tsx` passes `descriptions`, not `convictions`.
-5. Add `deleteDescriptions` (`delete from v2descriptions where pageID = $1`) and call it from `deleteCharacteristics`.
-done when: `Descriptions.tsx` has no `convictions` prop. `getDescriptions` exists and is assigned in `getCharacteristicsInfo`. `deleteCharacteristics` deletes `v2descriptions`. `rg convictions app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions` is 0. `rg 'convictions=\{convictions\}' app/src/pages/v2/pageTypes/pageType1` is 0. `backupTables/page1.sql` has `v2descriptions`. `npx tsc -p app --pretty false --noEmit` reports no errors in the files above (ignore pre-existing v1 `UpdateNotes` errors).
-depends on: none
+scope: view character `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `getCharacteristicsInfo.ts`; `getDescriptions.ts`; `assemblePageType1.ts`; `Descriptions.tsx`; `Characteristics.tsx`; delete character `deleteDescriptions.ts`; `backupTables/page1.sql`.
+result: Descriptions bind `descriptions`. `getDescriptions` / `deleteDescriptions` added. Convictions stay on the payload and are not drawn. Table recorded in `backupTables/page1.sql`.
+deviations from design: list shape `{ id, value }[]` padded to 5 taken from the existing widget. Live CREATE not applied; no postgres in this environment.
 open questions: none
-deviations from design: list shape `{ id, value }[]` padded to 5 is taken from the existing Descriptions widget; Design named a new field, not the row shape.
 
 ### T-015: Draw no die selection when dieIndex is 0
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01
 why: `DieRow` treats `dieIndex` 0 as d4 (`index === dieIndex`). Design: 0 is no selection. Defaults and empty vitals already store 0.
-scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` (`DieRow` only). Assemble defaults stay 0.
-steps:
-1. In `DieRow`, apply `selected` only when `dieIndex > 0 && index === dieIndex - 1` (1 = d4 … 6 = d20).
-2. Do not change stored defaults, getters, or the `DICE` order.
-done when: `Vitals.tsx` has no `index === dieIndex`. `dieIndex === 0` assigns no `selected` class. `dieIndex === 1` selects `d4`. `npx tsc -p app --pretty false --noEmit` reports no errors in `Vitals.tsx` (ignore pre-existing v1 `UpdateNotes` errors).
-depends on: none
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` (`DieRow` only).
+result: `selected` only when `dieIndex > 0 && (dieIndex - 1) === index`. Defaults stay 0.
+deviations from design: 1–6 → d4–d20 as recorded on `page1-view.md`.
 open questions: none
-deviations from design: 1–6 → d4–d20 is the mapping that keeps every die selectable once 0 means unset.
 
-
-## Done
 
 ### T-009: Lay out page-type-1 left column to match the blank sheet
 status: done
