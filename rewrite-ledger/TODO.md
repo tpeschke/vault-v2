@@ -6,7 +6,34 @@ Todo-ify writes `proposed`. Execute approval is the designer naming TODOs, not t
 
 ## Active
 
-(none)
+### T-019: Remove extra Favor boxes and Attack/Defense underlines
+status: proposed
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Those decorations are not on the blank sheet. GeneralInfo underlines, Social Suite grid, Vitals boxes, and Positions outlines stay.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css`, `Defenses/Defenses.css`, `Favor/Favor.css`. Do not change `index.css` `p.border`, Social Suites, Vitals, or Positions.
+steps:
+1. `Attacks.css`: remove `border-bottom` from `.attacks-v2 .attack-row p`. Leave width and min-height (T-020 sets the height).
+2. `Defenses.css`: remove `border-bottom` from `.defenses-v2 .def-row p` and `.defenses-v2 .cover-row p`.
+3. `Favor.css`: remove `border` from `.favor-v2 .favor-track > p` and from `.favor-v2 .anointed-box`. Keep `.anointed-box.checked { background: black }` so anointed still shows as a filled mark. Keep `.favor-track` `border-left` (divider, not a value box).
+done when: `rg 'border-bottom' app/src/pages/v2/pageTypes/pageType1/components/Attacks app/src/pages/v2/pageTypes/pageType1/components/Defenses` is 0. `rg 'border:' app/src/pages/v2/pageTypes/pageType1/components/Favor/Favor.css` is 0. `p.border` still exists in `app/src/index.css`. Vitals and Social Suites still have their `#bdbdbd` borders. Positions `.outlined` still has `outline`.
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-020: Give page-type-1 value cells a one-line min-height
+status: proposed
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Empty value cells collapse. Height must come from `min-height`, not from the chrome T-019 removes.
+scope: view character adjacency CSS under `app/src/pages/v2/pageTypes/pageType1/`. Do not change global `app/src/index.css` `p` (whole app). Do not change Positions legend rows or GeneralInfo (already `p.border`).
+steps:
+1. Set `min-height: 17.38px` on value `p`s that currently use a smaller or missing floor: `Characteristics.css` `.line-shell p`; `descriptions/Descriptions.css` `span > p`; `flaws/Flaws.css` `span > p`; `reputation/ReputationDisplay.css` `span > p`; `socialSuites/SocialSuites.css` `span *`; `Attacks.css` `.attack-row p`; `Defenses.css` header `p`, `.def-row p`, `.cover-row p`; `Favor.css` `.favor-track > p`; `Vitals.css` `.vitals-split p`, `.damage-values p`, `.stress-values p` (keep their `#bdbdbd` borders).
+2. Add `min-height: 17.38px` on `Stats.css` `> div p`, `capacity/Capacity.css` `.capacity-values p` (not `.slash`), `strengthNDiscount/StrengthNDiscount.css` `p`, and `Attacks.css` `.attack-block h2` (empty attack names).
+3. Do not add borders to create height. Current Emotions stays one bound string.
+done when: Those selectors use `17.38px` (grep `min-height: 14px` and `min-height: 16px` in `pageType1/` is 0 except `PageType1.css` `.right-column h1` if still 14px — leave heading min-heights). `npx tsc -p app --pretty false --noEmit` reports no errors in the TSX that import these CSS files (ignore v1 `UpdateNotes`).
+depends on: none
+open questions: none
+deviations from design: none
+
 
 ## Done
 

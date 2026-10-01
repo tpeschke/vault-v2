@@ -15,6 +15,8 @@ Constraints it imposes:
 - Descriptions is the renamed v2 convictions store: table `v2descriptions` (was `v2convictions`; `rank` kept, view ignores it). v2 payload has `descriptions` only — no `convictions` key. Not goals or relationships. `DescriptionsDisplay` treats a missing array as `[]` (five empty lines). (Revised: T-014 added a parallel empty table and kept `convictions` on the payload.)
 - `dieIndex` 0 draws no selection. Stored 1–6 map to d4–d20 (`selected` when `index === dieIndex - 1`).
 - Defense `name` / `notes` and attack `notes` stay undrawn on this page.
+- Empty value cells keep one line of height (`min-height: 17.38px`, same as global `p` in `app/src/index.css`). Do not use a border to hold that height.
+- Extra chrome to omit: Attack value underlines, Defense value underlines, Favor number boxes, Favor anointed outline box. Keep GeneralInfo `p.border`, Social Suite grid, Vitals boxes, Positions Neutral/W1 outlines.
 
 Rejected:
 - Binding Descriptions to goals or relationships. Binding to the old `convictions` *payload key* while keeping both stores (T-014) — superseded by renaming the convictions *table* to descriptions.
@@ -23,4 +25,4 @@ Rejected:
 - A new migration framework for these patches (`schema-on-boot.md`).
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/assets/images/` (unindexed; wordmark file); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/`; `backend/server/v2/add/pageType1/` (Current Emotions column default only); `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/`; `backend/server/v2/backupTables/page1.sql` (unindexed schema snapshot); boot script `schema-on-boot.md`
-TODOs: T-009–T-018 (done)
+TODOs: T-009–T-018 (done); T-019–T-020 (proposed)
