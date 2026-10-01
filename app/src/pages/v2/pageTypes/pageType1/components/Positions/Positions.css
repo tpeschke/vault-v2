@@ -1,0 +1,50 @@
+.positions-v2 h1 {
+    background: #515151;
+}
+
+.positions-v2 .positions-header,
+.positions-v2 .positions-row {
+    display: flex;
+    align-items: center;
+}
+
+.positions-v2 .positions-header {
+    background: #515151;
+    color: white;
+}
+
+.positions-v2 .positions-header em {
+    color: white;
+    padding: 3px 4px;
+}
+
+.positions-v2 .positions-row:nth-child(even) {
+    background: #f3f3f3;
+}
+
+.positions-v2 .positions-row.outlined {
+    outline: 2px solid black;
+    outline-offset: -1px;
+}
+
+.positions-v2 .positions-header em:nth-child(1),
+.positions-v2 .positions-row p:nth-child(1) {
+    width: 28%;
+}
+
+.positions-v2 .positions-header em:nth-child(2),
+.positions-v2 .positions-row p:nth-child(2) {
+    width: 12%;
+    text-align: center;
+}
+
+.positions-v2 .positions-header em:nth-child(3),
+.positions-v2 .positions-row p:nth-child(3) {
+    width: 60%;
+}
+
+.positions-v2 .positions-row p {
+    padding: 2px 4px;
+    font-size: 12px;
+    min-height: 15px;
+}

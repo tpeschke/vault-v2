@@ -1,0 +1,13 @@
+.descriptions-v2 > span {
+    padding: 4px 4px 0;
+    display: flex;
+}
+
+.descriptions-v2 > span:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.descriptions-v2 > span > p {
+    min-height: 14px;
+    width: 100%;
+}

@@ -1,3 +1,8 @@
 .characteristics-display-v2 .line-shell p:nth-child(even) {
     background: #f3f3f3;
 }
+
+.characteristics-display-v2 .line-shell p {
+    min-height: 14px;
+    padding: 4px 4px 0;
+}

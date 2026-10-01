@@ -1,59 +1,38 @@
+import { Fragment } from 'react'
 import './Capacity.css'
 
 interface Props {
     capacity: number
 }
 
+const BANDS = (capacity: number) => [
+    { label: 'Na', value: '<0' },
+    { label: 'N', value: `≤${Math.ceil(capacity * .1)}` },
+    { label: 'Nb', value: `≤${Math.floor(capacity * .5)}` },
+    { label: 'Yb', value: `≤${capacity}` },
+    { label: 'Y', value: `≤${capacity * 1.5}` },
+    { label: 'Ya', value: `>${capacity * 1.5}` },
+]
+
 export default function CapacityDisplay({ capacity }: Props) {
+    const bands = BANDS(capacity)
+
     return (
         <div className="capacity-v2">
-            <div>
+            <div className="capacity-headings">
                 <h1>Characteristics</h1>
+                {bands.map(({ label }) => (
+                    <h1 key={label} className='minor-heading'>{label}</h1>
+                ))}
+            </div>
+            <div className="capacity-values">
                 <h2>Emotional Capacity</h2>
-            </div>
-            <div>
-                <h1 className='minor-heading'>Na</h1>
-                <p>&lt;0</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'> </h1>
-                <p>/</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'>N</h1>
-                <p>≤{Math.ceil(capacity * .1)}</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'> </h1>
-                <p>/</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'>Nb</h1>
-                <p>≤{Math.floor(capacity * .5)}</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'> </h1>
-                <p>/</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'>Yb</h1>
-                <p>≤{capacity}</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'> </h1>
-                <p>/</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'>Y</h1>
-                <p>≤{capacity * 1.5}</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'> </h1>
-                <p>/</p>
-            </div>
-            <div>
-                <h1 className='minor-heading'>Ya</h1>
-                <p>&gt;{capacity * 1.5 }</p>
+                {bands.map(({ label, value }, index) => (
+                    <Fragment key={label}>
+                        {index > 0 && <p className="slash">/</p>}
+                        <p>{value}</p>
+                    </Fragment>
+                ))}
             </div>
         </div>
     )

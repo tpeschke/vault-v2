@@ -50,10 +50,10 @@ export default async function getCharacteristicsInfo(pageID: number): Promise<Ch
 
     await Promise.all([
         getBasicCharacteristics(pageID).then(basicCharacteristics => {
-            return {
-                ...characteristicInfo,
-                ...basicCharacteristics
-            }
+            characteristicInfo.capacity = basicCharacteristics.capacity
+            characteristicInfo.culturalStrength = basicCharacteristics.culturalStrength
+            characteristicInfo.socialSkillDiscount = basicCharacteristics.socialSkillDiscount
+            characteristicInfo.temperaments = basicCharacteristics.temperaments
         }),
         getGoals(pageID).then(goals => characteristicInfo.goals = goals),
         getReputations(pageID).then(reputations => characteristicInfo.reputations = reputations),

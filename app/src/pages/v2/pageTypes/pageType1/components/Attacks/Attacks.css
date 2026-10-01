@@ -1,0 +1,27 @@
+.attacks-v2 {
+    margin-top: 8px;
+}
+
+.attacks-v2 .attack-block {
+    margin-top: 4px;
+}
+
+.attacks-v2 .attack-row {
+    display: flex;
+}
+
+.attacks-v2 .attack-row span {
+    display: flex;
+    align-items: center;
+    width: 33%;
+}
+
+.attacks-v2 .attack-row em {
+    padding-right: 4px;
+}
+
+.attacks-v2 .attack-row p {
+    width: 100%;
+    min-height: 16px;
+    border-bottom: 1px solid black;
+}

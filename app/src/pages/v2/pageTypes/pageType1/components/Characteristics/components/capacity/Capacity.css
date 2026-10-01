@@ -1,24 +1,30 @@
 .capacity-v2 {
-    margin-top: 15px;
-    display: flex;
-    border: 2px solid white;
+    margin-top: 10px;
 }
 
-.capacity-v2>div {
+.capacity-v2 .capacity-headings,
+.capacity-v2 .capacity-values {
     display: flex;
-    flex-direction: column;
-    text-align: center;
+    align-items: stretch;
 }
 
-.capacity-v2>div:first-child {
-    text-align: left;
+.capacity-v2 .capacity-headings h1:first-child,
+.capacity-v2 .capacity-values h2 {
+    width: 38%;
 }
 
 .capacity-v2 h1.minor-heading {
     font-size: 12px;
     font-family: 'oldClaude';
+    width: 10.3%;
+    text-align: center;
 }
 
-.capacity-v2>div:nth-child(even) h1 {
-    min-width: 39px;
+.capacity-v2 .capacity-values p {
+    width: 10.3%;
+    text-align: center;
+}
+
+.capacity-v2 .capacity-values p.slash {
+    width: 2.5%;
 }

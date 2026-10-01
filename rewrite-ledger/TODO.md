@@ -6,7 +6,19 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 
 ## Active
 
-(none)
+### T-009: Finish page-type-1 view to match the blank sheet
+status: in-progress
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Page type 1 still showed a partial left column and a placeholder right column. The official blank sheet is the layout source, with vault fonts and Cultural Strength kept.
+scope: `app/src/pages/v2/pageTypes/pageType1/` (view character sheet adjacency); `getCharacteristicsInfo.ts` assignment of basic characteristics.
+steps:
+1. Lay out left column as Name through Favor, including Current Emotions, Descriptions (`convictions`), and Favor. Keep Cultural Strength. Drop Goals, Temperaments, Relationships, and Movement from this page.
+2. Lay out right column as Positions (static), Self Doubt, Damage, Stress, Defenses, Attacks.
+3. Assign `getBasicCharacteristics` onto `characteristicInfo` so capacity and Cultural Strength values appear.
+done when: `npx tsc -p app --noEmit` succeeds; page-type-1 view shows both columns with the sheet section order; grep `Cultural Strength` still hits the label; Movement/Goals/Temperaments/Relationships are not imported by `PageType1.tsx` or `Characteristics.tsx`.
+depends on: none
+open questions: Social suite names on the sheet are Influence / Inform / Inspire / Intimidate; v2 data is Empathize / Lecture / Intimidate / Tempt. Display keeps v2 names until ruled otherwise.
+deviations from design: none yet
 
 ## Done
 

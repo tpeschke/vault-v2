@@ -1,8 +1,23 @@
 .reputation-display-v2 > span {
     padding: 4px 4px 0;
     display: flex;
+    align-items: center;
 }
 
 .reputation-display-v2 > span:nth-child(odd) {
     background: #f3f3f3;
+}
+
+.reputation-display-v2 em {
+    min-width: 88px;
+}
+
+.reputation-display-v2 > span > p:first-of-type {
+    width: 100%;
+    min-height: 14px;
+}
+
+.reputation-display-v2 > span > p:last-of-type {
+    min-width: 28px;
+    text-align: center;
 }

@@ -29,7 +29,7 @@ export default function GeneralInfoDisplay({ generalInfo }: Props) {
                     <p className="border">{subclass}</p>
                 </span>
                 <span>
-                    <strong>lvl</strong>
+                    <strong>Lvl</strong>
                     <p className="border center-text">{level}</p>
                 </span>
             </div>
@@ -44,7 +44,7 @@ export default function GeneralInfoDisplay({ generalInfo }: Props) {
                     <p className='border center-text'>{spent}</p>
                 </span>
                 <span>
-                    <em>Spent to Level</em>
+                    <em>Spent to lvl</em>
                     <p className='border center-text'>{toLvl}</p>
                 </span>
             </div>

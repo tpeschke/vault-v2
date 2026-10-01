@@ -1,0 +1,74 @@
+.vitals-v2 section {
+    margin-top: 8px;
+}
+
+.vitals-v2 .die-row {
+    display: flex;
+    align-items: stretch;
+}
+
+.vitals-v2 .die-row h2 {
+    width: 14%;
+}
+
+.vitals-v2 .die-row p {
+    width: 14.3%;
+    border: 1px solid #bdbdbd;
+    padding: 3px 0;
+}
+
+.vitals-v2 .die-row p.selected {
+    background: black;
+    color: white;
+}
+
+.vitals-v2 .vitals-split {
+    display: flex;
+}
+
+.vitals-v2 .vitals-split span {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vitals-v2 .vitals-split p,
+.vitals-v2 .damage-values p,
+.vitals-v2 .stress-values p {
+    min-height: 18px;
+    border: 1px solid #bdbdbd;
+}
+
+.vitals-v2 .damage-values,
+.vitals-v2 .stress-values {
+    display: flex;
+    align-items: stretch;
+}
+
+.vitals-v2 .damage-values em {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    width: 22%;
+}
+
+.vitals-v2 .damage-values span:not(.slash) {
+    width: 32%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vitals-v2 .damage-values > p,
+.vitals-v2 .stress-values > p {
+    width: 18%;
+}
+
+.vitals-v2 .slash {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+}
+
+.vitals-v2 .stress-values {
+    justify-content: flex-end;
+}

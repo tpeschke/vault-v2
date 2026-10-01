@@ -13,7 +13,7 @@ export default function SocialSuitesDisplay({ socialSuites }: Props) {
         <div className="social-suites-v2">
             <div>
                 <span>
-                    <h2>Social Suite</h2>
+                    <h2>Social Suites</h2>
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>
@@ -22,7 +22,7 @@ export default function SocialSuitesDisplay({ socialSuites }: Props) {
             </div>
             <div>
                 <span>
-                    <h2>Social Suite</h2>
+                    <h2>Social Suites</h2>
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>

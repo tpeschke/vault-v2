@@ -4,7 +4,11 @@ import DoubleColumn from "../components/doubleColumn/DoubleColumn";
 import GeneralInfoDisplay from './components/GeneralInfo/GeneralInfo';
 import StatsDisplay from './components/Stats/Stats';
 import CharacteristicsDisplay from './components/Characteristics/Characteristics';
-import MovementDisplay from './components/Characteristics/components/movement/MovementDisplay';
+import PositionsDisplay from './components/Positions/Positions';
+import VitalsDisplay from './components/Vitals/Vitals';
+import DefensesDisplay from './components/Defenses/Defenses';
+import AttacksDisplay from './components/Attacks/Attacks';
+import FavorDisplay from './components/Favor/Favor';
 
 interface Props {
     pageInfo: Page1,
@@ -12,16 +16,7 @@ interface Props {
 }
 
 export default function PageType1({ pageInfo, index }: Props) {
-    const { generalInfo, stats, characteristicsInfo, movement } = pageInfo
-
-    // Left Column
-    //  Movement
-    // Right Column
-    //  Logo
-    //  Vitals
-    //  Favor
-    //  Defenses
-    //  Attacks
+    const { generalInfo, stats, characteristicsInfo, vitalsInfo, favor, combatInfo } = pageInfo
 
     return (
         <div className='page-shell page card page-type-one' id={'page-' + index}>
@@ -30,10 +25,13 @@ export default function PageType1({ pageInfo, index }: Props) {
                     <GeneralInfoDisplay generalInfo={generalInfo} />
                     <StatsDisplay stats={stats} />
                     <CharacteristicsDisplay characteristicsInfo={characteristicsInfo} />
-                    <MovementDisplay movement={movement} />
+                    <FavorDisplay favor={favor} />
                 </>
                 <>
-                    Right
+                    <PositionsDisplay />
+                    <VitalsDisplay vitals={vitalsInfo} />
+                    <DefensesDisplay defenses={combatInfo.defenses} />
+                    <AttacksDisplay attacks={combatInfo.attacks} />
                 </>
             </DoubleColumn>
         </div>
