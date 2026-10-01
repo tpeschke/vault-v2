@@ -45,8 +45,8 @@ routing:
   view character sheet / view character / open character:
     primary: backend/server/v2/view/
     adjacent:
-      - app/src/pages/view/v2/
-      - app/src/pages/view/View.css
+      - app/src/pages/v2/
+      - app/src/pages/View.css
       - app/src/routes/AllRoutes.tsx
       - backend/common/interfaces/v2/
   delete character / remove character:
@@ -70,8 +70,8 @@ routing:
   view v1 character sheet / view v1 character:
     primary: backend/server/v1/controllers/view/
     adjacent:
-      - app/src/pages/view/v1/
-      - app/src/pages/view/View.css
+      - app/src/pages/v1/
+      - app/src/pages/View.css
       - app/src/routes/AllRoutes.tsx
       - app/src/components/displayArray/
       - app/src/components/textArea/
@@ -80,7 +80,7 @@ routing:
   edit v1 character sheet / save v1 character:
     primary: backend/server/v1/controllers/edit/
     adjacent:
-      - app/src/pages/view/v1/
+      - app/src/pages/v1/
       - app/src/components/displayArray/
       - app/src/components/textArea/
       - backend/common/interfaces/v1/
@@ -93,13 +93,13 @@ routing:
   quick-edit v1 character / quick edit v1:
     primary: backend/server/v1/controllers/quickEdit/
     adjacent:
-      - app/src/pages/view/v1/
+      - app/src/pages/v1/
       - backend/common/interfaces/v1/
   download v1 character as pdf / v1 pdf:
-    primary: app/src/pages/view/v1/hooks/utilities/downloadUtilities.ts
+    primary: app/src/pages/v1/hooks/utilities/downloadUtilities.ts
     adjacent:
-      - app/src/pages/view/v1/hooks/characterHook.tsx
-      - app/src/pages/view/v1/V1View.tsx
+      - app/src/pages/v1/hooks/characterHook.tsx
+      - app/src/pages/v1/V1View.tsx
   delete v1 character / remove v1 character / delete ancient:
     primary: backend/server/controllers/home/v1/deleteCharacter.ts
     adjacent:

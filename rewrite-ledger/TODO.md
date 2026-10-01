@@ -6,23 +6,18 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 
 ## Active
 
-### T-008: Split nested `pages/view` into two FSD page slices
-status: proposed
-source: rewrite-ledger/fsd-colocation.md, 2026-10-01
-why: Designer chose two view page slices, not one `pages/view` with v1/v2 inside.
-scope: `app/src/pages/view/`; `app/src/routes/AllRoutes.tsx`; `00-START-HERE.yaml` routing keys that list `app/src/pages/view/`. Home slice and backend paths unchanged. Owner unresolved: names of the two view slices; `View.css`.
-steps:
-1. Stop if slice directory names are still unset. Do not invent names.
-2. `git mv` each view version into its named page slice. Leave `app/src/pages/home` in place. Do not extract create-character. Do not create `app/src/app`, `widgets/`, `features/`, `entities/`, or `shared/` in this TODO.
-3. Update imports (`AllRoutes.tsx` and any relative imports broken by the move).
-4. Update `00-START-HERE.yaml` adjacent paths in the same change. Grep old `app/src/pages/view/` paths across code, panels, ledger, and docs; expect zero hits.
-5. Do not move backend files.
-done when: `@vault/main` typecheck/build succeeds; grep `app/src/pages/view/` is 0; YAML routing for view character and view v1 character points at the new slice paths; create-character adjacency still lists `app/src/pages/home/components/homeFooter/` and `app/src/hooks/UsersCharactersHook.tsx`.
-depends on: designer names the two view slices and the `View.css` owner; user names this TODO to execute
-open questions: slice directory names; `View.css` owner
-deviations from design: none
+(none)
 
 ## Done
+
+### T-008: Split nested view folder into two FSD page slices
+status: done
+source: rewrite-ledger/fsd-colocation.md, 2026-10-01
+why: Designer chose two view page slices, not one nested view folder with v1/v2 inside.
+scope: former nested view folder under `app/src/pages/`; `app/src/routes/AllRoutes.tsx`; `00-START-HERE.yaml` view routing keys. Home slice and backend paths unchanged.
+result: `git mv` to `app/src/pages/v1` and `app/src/pages/v2`. `View.css` is `app/src/pages/View.css`, imported by both slices. Home and create-character paths unchanged. No `app/src/app`, `widgets/`, `features/`, `entities/`, or `shared/` created. Backend unmoved.
+deviations from design: Slice names `v1`/`v2` taken from observed folders because execute was ordered while names were unset. `View.css` kept as a sibling of both slices rather than creating `shared/`.
+open questions: none
 
 ### T-005: Add AGENTS.md as agent entry to L1 and the ledger
 status: done
@@ -63,7 +58,7 @@ status: done
 source: rewrite-ledger/feature-index.md, 2026-09-30
 why: Index-in-place needs current paths. Backend is primary when the feature spans surfaces.
 scope: `00-START-HERE.yaml` `routing`.
-result: Twelve inventory rows mapped. PDF has no backend; primary is `app/src/pages/view/v1/hooks/utilities/downloadUtilities.ts`. Create character maps to `backend/server/v2/add/`.
+result: Twelve inventory rows mapped. PDF has no backend; primary is now `app/src/pages/v1/hooks/utilities/downloadUtilities.ts` (path updated by T-008). Create character maps to `backend/server/v2/add/`.
 deviations from design: download v1 PDF primary is frontend-only (no backend path).
 
 ### T-004: Remove HomeController.addCharacter

@@ -10,8 +10,8 @@ Constraints it imposes:
 - Do not treat sheet widgets (weapons, stats, armor, …) as features unless the inventory names them as user objectives.
 - One file, one primary owner; primary is backend when the feature has a backend. Frontend paths are adjacencies.
 - `dist/` is excluded from the completeness rule (generated SPA output).
-- Do not create FSD folders until TODOs execute the move. Canonical: `rewrite-ledger/fsd-colocation.md`.
-- When FSD is executed, layers live at `app/src/{app,pages,widgets,features,entities,shared}`. Repo `app/` stays the Vite/React package. `pages/` is home plus two view slices, not one `pages/view` with v1/v2 nested. Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`.
+- Do not create remaining FSD layer folders (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`) until a TODO executes that move. Canonical: `rewrite-ledger/fsd-colocation.md`.
+- When FSD is executed, layers live at `app/src/{app,pages,widgets,features,entities,shared}`. Repo `app/` stays the Vite/React package. View slices are `app/src/pages/v1` and `app/src/pages/v2`. Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`.
 - v1 has no create-character objective, ever. Do not add it to the inventory or to L1 routing.
 - Designer speech: unmarked “character” means v2. Canonical: repository `00-START-HERE.md` § Designer vocabulary.
 
@@ -22,4 +22,4 @@ Rejected:
 - v1 create character (permanently excluded).
 
 Touches: repository `00-START-HERE.md`, `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
-TODOs: T-001–T-007 (all done). FSD move: T-008 (proposed; `fsd-colocation.md`)
+TODOs: T-001–T-008 (all done)

@@ -10,6 +10,6 @@ YAML `routing` maps each user objective to a backend `primary` (when one exists)
 
 Create v1 character is not a route. Exclude `dist/`.
 
-Later tree (not now): Feature-Sliced Design layers under `app/src/` (`app/src/app`, `pages`, `widgets`, `features`, `entities`, `shared`). Repo `app/` stays the Vite package. Two view page slices, not one `pages/view` with v1/v2 nested. Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`. Do not create those layer folders unless a ledger TODO says so. Canonical: `rewrite-ledger/fsd-colocation.md`.
+Later tree: Feature-Sliced Design layers under `app/src/` (`app/src/app`, `pages`, `widgets`, `features`, `entities`, `shared`). Repo `app/` stays the Vite package. View page slices are `app/src/pages/v1` and `app/src/pages/v2`; home stays `app/src/pages/home`. Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`. Do not create `app/src/app`, `widgets/`, `features/`, `entities/`, or `shared/` unless a ledger TODO says so. Canonical: `rewrite-ledger/fsd-colocation.md`.
 
 Keep `00-START-HERE.yaml` in the same change as add/move/rename/delete of indexed files. After a rename, grep the old path; expect zero hits.

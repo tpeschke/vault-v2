@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import EditingContext from '../../pages/view/v1/contexts/EditingContext'
+import EditingContext from '../../pages/v1/contexts/EditingContext'
 import './TextArea.css'
 import TextArea from './TextArea'
-import { UpdateAbilitiesFunction } from '../../pages/view/v1/hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
+import { UpdateAbilitiesFunction } from '../../pages/v1/hooks/interfaces/pageOneInterfaces/UpdateRightColumnInterfaces'
 
 interface Props {
     lines: number,

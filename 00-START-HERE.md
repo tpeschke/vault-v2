@@ -25,7 +25,7 @@ The designer. This panel owns how tasks route to code, not product meaning.
 
 - Application code, tests, build, and scripts
 - Design decisions (ledger)
-- FSD layer directories (deferred; `rewrite-ledger/fsd-colocation.md`)
+- Remaining FSD layer directories (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`; `rewrite-ledger/fsd-colocation.md`)
 
 ## Neighboring owners
 

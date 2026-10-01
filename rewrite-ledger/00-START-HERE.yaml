@@ -27,4 +27,4 @@ routing:
     backend: ../backend
     replaceScripts: ../replaceScripts
   gaps:
-    - FSD layer directories not created (deferred; `fsd-colocation.md`: two view slices, backend L1-only, create stays on home)
+    - Remaining FSD layers not created (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`); view slices are `app/src/pages/v1` and `app/src/pages/v2`
