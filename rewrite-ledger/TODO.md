@@ -6,7 +6,26 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-(none)
+### T-024: Draw unlabeled two-line notes under Defense and each Attack
+status: proposed
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: attack and defense special info)
+why: `notes` is already on the payload. The view omits it. Design: unlabeled string below each block’s stats, two value-cell lines minimum, wrap and grow.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Defenses/` (`Defenses.tsx`, `Defenses.css`) and `.../Attacks/` (`Attacks.tsx`, `Attacks.css`). Do not change `combatInfo.ts`, assemble, schema, `varchar(150)`, edit/save, v1, or Defense `name`.
+steps:
+1. `DefensesDisplay`: destructure `notes`. After the Cover / P. DR / DR row, render one unlabeled `<p>{notes ?? ''}</p>` as a direct child of `.defenses-v2`. Do not render `name`. Do not add a heading.
+2. `AttacksDisplay`: include `notes` in the `attacks.map` destructure. After that attack’s Type / Rec row, render one unlabeled `<p>{notes ?? ''}</p>` as a direct child of `.attack-block`. All four slots get the `<p>`, including empty `name`. Do not add a heading.
+3. CSS: `.defenses-v2 > p` and `.attacks-v2 .attack-block > p` get `min-height: calc(2 * 17.38px)`. Do not add border, underline, or `#bdbdbd` box. Do not set `overflow: hidden` or `-webkit-line-clamp`. Wrapping is the default; do not set `white-space: nowrap`. Leave `.attack-row p` / Cover-row `min-height: 17.38px` as one-line value cells.
+4. If `.page-type-one` exceeds `.page` 1036px (card ~1068px), record overflow in the TODO result. Do not invent compression. Do not shrink Vitals dice.
+done when:
+- `rg 'notes' app/src/pages/v2/pageTypes/pageType1/components/Defenses/Defenses.tsx` is at least 2 (destructure + render).
+- `rg 'notes' app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.tsx` is at least 2.
+- `rg '\\{name' app/src/pages/v2/pageTypes/pageType1/components/Defenses/Defenses.tsx` is 0.
+- `rg 'Specials|Special Info|>Notes</' app/src/pages/v2/pageTypes/pageType1/components/Defenses/ app/src/pages/v2/pageTypes/pageType1/components/Attacks/` is 0.
+- `rg 'min-height: calc\\(2 \\* 17\\.38px\\)' app/src/pages/v2/pageTypes/pageType1/components/Defenses/Defenses.css app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` is 1 in each file.
+- `rg 'border' app/src/pages/v2/pageTypes/pageType1/components/Defenses/Defenses.css app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` is 0.
+depends on: none
+open questions: none
+deviations from design: none
 
 ## Done
 
