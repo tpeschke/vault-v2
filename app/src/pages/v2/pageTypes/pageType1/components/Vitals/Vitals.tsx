@@ -1,7 +1,11 @@
 import './Vitals.css'
 import { Vitals } from "@vault/common/interfaces/v2/page1/vitals"
-
-const DICE = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20']
+import d4 from '../../../../../../assets/images/d4.png'
+import d6 from '../../../../../../assets/images/d6.png'
+import d8 from '../../../../../../assets/images/d8.png'
+import d10 from '../../../../../../assets/images/d10.png'
+import d12 from '../../../../../../assets/images/d12.png'
+import d20 from '../../../../../../assets/images/d20.png'
 
 interface Props {
     vitals: Vitals
@@ -54,12 +58,17 @@ export default function VitalsDisplay({ vitals }: Props) {
 }
 
 function DieRow({ dieIndex }: { dieIndex: number }) {
+    const cellClass = (index: number) => dieIndex > 0 && (dieIndex - 1) === index ? 'selected center-text' : 'center-text'
+
     return (
         <div className="die-row">
             <h2>Die</h2>
-            {DICE.map((die, index) => (
-                <p key={die} className={dieIndex > 0 && (dieIndex - 1) === index ? 'selected center-text' : 'center-text'}>{die}</p>
-            ))}
+            <p className={cellClass(0)}><img src={d4} alt="d4" /></p>
+            <p className={cellClass(1)}><img src={d6} alt="d6" /></p>
+            <p className={cellClass(2)}><img src={d8} alt="d8" /></p>
+            <p className={cellClass(3)}><img src={d10} alt="d10" /></p>
+            <p className={cellClass(4)}><img src={d12} alt="d12" /></p>
+            <p className={cellClass(5)}><img src={d20} alt="d20" /></p>
         </div>
     )
 }

@@ -17,9 +17,15 @@
     padding: 1px 0;
 }
 
+.vitals-v2 .die-row p img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 .vitals-v2 .die-row p.selected {
-    background: black;
-    color: white;
+    outline: 2px solid black;
+    outline-offset: -1px;
 }
 
 .vitals-v2 .vitals-split {

@@ -26,4 +26,4 @@ Rejected:
 - SVG die glyphs; CSS invert / second asset set for unselected; selected as black fill; capping die-row height to one text line; visually hidden text in addition to `alt`.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/assets/images/` (unindexed; wordmark and die PNGs); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/`; `backend/server/v2/add/pageType1/` (Current Emotions column default only); `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/`; `backend/server/v2/backupTables/page1.sql` (unindexed schema snapshot); boot script `schema-on-boot.md`
-TODOs: T-009–T-020 (done); T-021 (proposed)
+TODOs: T-009–T-021 (done)

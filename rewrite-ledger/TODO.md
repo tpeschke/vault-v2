@@ -6,27 +6,18 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+(none)
+
+## Done
+
 ### T-021: Replace Vitals Die labels with polyhedral PNGs
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01 (design: vitals die glyphs)
 why: Self Doubt, Damage, and Stress still paint `d4`…`d20` text. Design: those six cells show the attached die PNGs.
 scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/` (`Vitals.tsx` `DieRow`; `Vitals.css`); unindexed `app/src/assets/images/` (same slot as `bonfire-wordmark.png`). Do not change `dieIndex` storage, assemble, or v1 Integrity `d4!` copy.
-steps:
-1. Copy the six design-chat PNGs into `app/src/assets/images/` as `d4.png`, `d6.png`, `d8.png`, `d10.png`, `d12.png`, `d20.png`. Source order (d4 → d20): `/home/ubuntu/.cursor/projects/workspace/assets/a884b66a-8b42-4137-aa6d-fe771b10626a.png`, `f0b46028-da42-4a57-bb4e-b57b6e7b1fe8.png`, `fa602f10-b1eb-4021-ba2e-3c7c22eb6e91.png`, `0a440778-ad93-4e6f-ba3b-cd18ca4036f2.png`, `d6dedb9d-9d0f-4ae2-bf99-551a21f3bb54.png`, `657dded0-ee5d-4e55-9ec5-9c06fe0fe7e2.png`.
-2. In `DieRow`, keep the six bordered `<p>` cells and the `dieIndex > 0 && (dieIndex - 1) === index` selected test. Replace the text child `{die}` with an `<img>` of the matching PNG. `alt` is `d4` / `d6` / `d8` / `d10` / `d12` / `d20` only. All six images render when `dieIndex` is 0.
-3. CSS: keep `.vitals-v2 .die-row p` grey `border: 1px solid #bdbdbd`. Remove `.die-row p.selected` black fill / white text. Selected uses the Positions outline: `outline: 2px solid black; outline-offset: -1px`. Size each `img` to the cell width (`width: 100%; height: auto; display: block`). Do not set a max-height to protect `.page` height.
-4. If `.page-type-one` content overflows 1036px after the three image rows, record that in the TODO result. Do not shrink the glyphs.
-done when:
-- `test -f app/src/assets/images/d4.png` (and d6, d8, d10, d12, d20) succeeds.
-- `rg '\{die\}' app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` is 0.
-- `rg 'die-row p.selected' -A3 app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` shows outline, not `background: black`.
-- `rg 'alt="d4"|alt="d6"|alt="d8"|alt="d10"|alt="d12"|alt="d20"' app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` is 6.
-- `rg 'd4!' app/src/pages/v1/components/pageOne/components/leftColumn/components/characteristics/leftColumnComponents/IntegrityDisplay.tsx` still matches (v1 untouched).
-depends on: none
+result: Die cells are `d4.png`…`d20.png` with `alt` d4–d20. Grey boxes kept. Selected is Positions outline, not fill. `dieIndex` 0 still draws all six. v1 `d4!` untouched.
+deviations from design: none beyond Order (Positions 2px outline; no glyph shrink).
 open questions: none
-deviations from design: selected outline taken from Positions (`2px solid black`, `outline-offset: -1px`) as the Design-close default. Design outline “compress if needed” dropped; Q3 (image defines row height) wins.
-
-## Done
 
 ### T-019: Remove extra Favor boxes and Attack/Defense underlines
 status: done
