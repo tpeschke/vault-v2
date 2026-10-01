@@ -1,0 +1,43 @@
+.attacks-v2 {
+    margin-top: 15px;
+}
+
+.attacks-v2 .attack-block {
+    margin-top: 6px;
+}
+
+.attacks-v2 .attack-block>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.attacks-v2 .attack-block>div span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 3px;
+}
+
+.attacks-v2 .attack-block>div span:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.attacks-v2 .attack-block>div p {
+    text-align: center;
+    width: 100%;
+}
+
+.attacks-v2 .notes-row {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+.attacks-v2 .notes-row em {
+    width: 20%;
+}
+
+.attacks-v2 .notes-row p {
+    width: 80%;
+}

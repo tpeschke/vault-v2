@@ -6,9 +6,28 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 
 ## Active
 
-(none)
+### T-010: Display convictions on page type 1
+status: proposed
+source: leftover after T-009; `characteristicsInfo.convictions` is assembled and unused
+why: Backend already returns convictions. CharacteristicsDisplay does not render them. Page-one completeness left this field out; designer did not list it in the right-column remainder.
+scope: `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/`
+steps:
+1. Add a convictions row display matching reputations (CharacteristicPair: value + rank).
+2. Place it in CharacteristicsDisplay next to the other pair lists.
+done when: `convictions` is read from `characteristicsInfo` in CharacteristicsDisplay; tsc clean.
+depends on: T-009
+open questions: placement among goals / reputations / relationships / flaws; whether empty slots pad to 3 like reputations.
 
 ## Done
+
+### T-009: Finish page type 1 right column
+status: done
+source: PageType1 remainder comments; session 2026-10-01
+why: Left column already shows general info, stats, characteristics, and movement. Right column was a stub. Assembled `vitalsInfo`, `favor`, and `combatInfo` were unused.
+scope: `app/src/pages/v2/pageTypes/pageType1/` (view character adjacency).
+result: Right column renders Logo (inherited v1 branding), Vitals, Favor, Defenses, and Attacks. `dieIndex` shown as the stored number (no face dictionary in repo). Convictions still unrendered (T-010).
+deviations from design: none recorded; layout follows existing v2 row/header chrome and v1 combat abbreviations (Init, Def, Meas, Atk, Rec).
+open questions: whether `dieIndex` should map to a die face string.
 
 ### T-008: Split nested view folder into two FSD page slices
 status: done

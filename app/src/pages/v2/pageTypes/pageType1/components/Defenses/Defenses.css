@@ -1,0 +1,42 @@
+.defenses-v2 {
+    margin-top: 15px;
+}
+
+.defenses-v2>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.defenses-v2>div:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.defenses-v2>div span {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 3px;
+}
+
+.defenses-v2>div em {
+    width: 50%;
+}
+
+.defenses-v2>div p {
+    width: 50%;
+    text-align: center;
+}
+
+.defenses-v2 .notes-row {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+.defenses-v2 .notes-row em {
+    width: 20%;
+}
+
+.defenses-v2 .notes-row p {
+    width: 80%;
+}

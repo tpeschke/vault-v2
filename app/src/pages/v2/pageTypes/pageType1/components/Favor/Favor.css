@@ -1,0 +1,25 @@
+.favor-v2 {
+    margin-top: 15px;
+}
+
+.favor-v2>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.favor-v2>div span {
+    display: flex;
+    align-items: center;
+    width: 33%;
+    padding: 3px;
+}
+
+.favor-v2>div em {
+    width: 60%;
+}
+
+.favor-v2>div p,
+.favor-v2>div i {
+    width: 40%;
+    text-align: center;
+}

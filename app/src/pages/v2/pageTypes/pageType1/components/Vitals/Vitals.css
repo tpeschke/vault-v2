@@ -1,0 +1,22 @@
+.vitals-v2 {
+    margin-top: 15px;
+}
+
+.vitals-v2>div {
+    display: flex;
+    justify-content: space-between;
+    background: #f3f3f3;
+}
+
+.vitals-v2>div span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 3px;
+}
+
+.vitals-v2>div p {
+    text-align: center;
+    width: 100%;
+}
