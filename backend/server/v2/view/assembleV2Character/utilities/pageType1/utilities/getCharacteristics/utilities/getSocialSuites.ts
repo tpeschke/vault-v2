@@ -12,42 +12,42 @@ interface SocialSuiteReturn {
 
 const getSocialSuiteSQL = `select * from v2SocialSkillSuites where pageID = $1 order by suiteID`
 
-const getEmpathizeDescriptionsSQL = `select * from v2EmpathizeDescriptions where pageID = $1`
-const getIntimidateDescriptionsSQL = `select * from v2IntimidateDescriptions where pageID = $1`
-const getLectureDescriptionsSQL = `select * from v2LectureDescriptions where pageID = $1`
-const getTemptDescriptionsSQL = `select * from v2TemptDescriptions where pageID = $1`
+const getInfluenceDescriptionsSQL = `select * from v2influenceDescriptions where pageID = $1`
+const getIntimidateDescriptionsSQL = `select * from v2intimidateDescriptions where pageID = $1`
+const getInformDescriptionsSQL = `select * from v2informDescriptions where pageID = $1`
+const getInspireDescriptionsSQL = `select * from v2inspireDescriptions where pageID = $1`
 
 export default async function getSocialSuites(pageID: number): Promise<SocialSkillSuites> {
     const [
-        [empathize, intimidate, lecture, tempt],
-        empathizeDescriptions,
+        [influence, intimidate, inform, inspire],
+        influenceDescriptions,
         intimidateDescriptions,
-        lectureDescriptions,
-        temptDescriptions,
+        informDescriptions,
+        inspireDescriptions,
     ]: [SocialSuiteReturn[], SkillPair[], SkillPair[], SkillPair[], SkillPair[]] = await Promise.all([
         query(getSocialSuiteSQL, pageID),
-        query(getEmpathizeDescriptionsSQL, pageID),
+        query(getInfluenceDescriptionsSQL, pageID),
         query(getIntimidateDescriptionsSQL, pageID),
-        query(getLectureDescriptionsSQL, pageID),
-        query(getTemptDescriptionsSQL, pageID),
+        query(getInformDescriptionsSQL, pageID),
+        query(getInspireDescriptionsSQL, pageID),
     ])
 
     return {
-        empathize: {
-            ...empathize,
-            descriptions: empathizeDescriptions
+        influence: {
+            ...influence,
+            descriptions: influenceDescriptions
         },
         intimidate: {
             ...intimidate,
             descriptions: intimidateDescriptions
         },
-        lecture: {
-            ...lecture,
-            descriptions: lectureDescriptions
+        inform: {
+            ...inform,
+            descriptions: informDescriptions
         },
-        tempt: {
-            ...tempt,
-            descriptions: temptDescriptions
+        inspire: {
+            ...inspire,
+            descriptions: inspireDescriptions
         },
     }
 }

@@ -19,6 +19,7 @@ import { Profile } from './interfaces/apiInterfaces'
 import { Response, Request } from './interfaces/apiInterfaces'
 import authRoutesWithoutPassword from './routes/authentication'
 import query from './db/database'
+import ensureSchema from './db/ensureSchema'
 import userSQL from './v1/queries/user'
 import userRoutes from './controllers/user/userRoutes'
 import characterRoutes from './v1/controllers/view/viewCharacterRoutes'
@@ -88,10 +89,13 @@ app.all('/{*any}', (_: Request, response: Response) => {
 })
 
 // ================================== \\
-try {
+async function start() {
+    await ensureSchema()
     app.listen(server, () => {
         console.log(`Weep a thousand tears and you won't drown the desert ${server}`)
     })
-} catch (error) {
-    console.log(error)
 }
+
+start().catch((error) => {
+    console.log(error)
+})

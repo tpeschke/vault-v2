@@ -6,51 +6,37 @@ Todo-ify writes `proposed`. Execute approval is the designer naming TODOs, not t
 
 ## Active
 
-### T-016: Treat missing descriptions as an empty list
-status: proposed
-source: rewrite-ledger/page1-view.md, 2026-10-01 (view crash)
-why: `DescriptionsDisplay` calls `descriptions.map`. A viewed character can omit the key (old assemble, or T-014 table never created). That throws `Cannot read properties of undefined (reading 'map')`.
-scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx`.
-steps:
-1. Bind `const rows = descriptions ?? []` (or equivalent). Map and pad to 5 from `rows`. Do not fall back to convictions.
-2. Leave the prop type as `Description[]`. Do not change assemble in this TODO.
-done when: `Descriptions.tsx` does not call `.map` or `.length` on `descriptions` without a `?? []` (or local `rows`). `npx tsc -p app --pretty false --noEmit` reports no errors in that file (ignore pre-existing v1 `UpdateNotes` errors).
-depends on: none
-open questions: none
-deviations from design: none
-
-### T-017: Apply schema on boot and rename convictions to descriptions
-status: proposed
-source: rewrite-ledger/schema-on-boot.md, rewrite-ledger/page1-view.md, 2026-10-01
-why: Live DB never received T-013/T-014 DDL. Descriptions is the convictions store renamed, not a second table. v2 payload should not keep `convictions`.
-scope: unindexed `backend/server/db/ensureSchema.ts` (new), `backend/server/vault.ts`, `backend/server/v2/backupTables/page1.sql`; view character `characteristicsInfo.ts`, `getCharacteristicsInfo.ts`, `getDescriptions.ts`, `getConvictions.ts` (remove), `assemblePageType1.ts`; delete character `deleteCharacteristics.ts`, `deleteConvictions.ts` (remove), `deleteDescriptions.ts`. v1 convictions files stay.
-steps:
-1. Add `ensureSchema` using existing `query()`. Before `app.listen` in `vault.ts`, `await` it; on throw, do not listen. No new npm package.
-2. Idempotent patches: `ALTER TABLE v2BasicCharacteristics ADD COLUMN IF NOT EXISTS currentEmotions varchar(250) DEFAULT ''`. If `information_schema.tables` has `v2convictions` and not `v2descriptions`, `ALTER TABLE v2convictions RENAME TO v2descriptions`. If both exist, `DROP TABLE v2descriptions` then rename `v2convictions`. Check folded lowercase names.
-3. v2 `Characteristics`: keep `descriptions`, remove `convictions`. `getCharacteristicsInfo` / `assemblePageType1` assign only `descriptions` via `getDescriptions` (`select * from v2descriptions where pageID = $1`). Delete `getConvictions.ts` and `deleteConvictions.ts`. `deleteCharacteristics` calls `deleteDescriptions` only for that store.
-4. Snapshot: remove the `v2convictions` create and the T-014 `v2descriptions` (pageID, value only). One `v2descriptions` create matching the renamed table (`id`, keep existing id column style, `value`, `rank`). Do not rewrite other snapshot `characterid` columns.
-done when: `vault.ts` awaits `ensureSchema` before listen. `rg convictions backend/server/v2 backend/common/interfaces/v2` is 0. `getConvictions.ts` and `deleteConvictions.ts` are gone. `backupTables/page1.sql` has `v2descriptions` with `rank` and no `v2convictions`. `npx tsc -p app --pretty false --noEmit` reports no errors in the view files above (ignore v1 `UpdateNotes`).
-depends on: none
-open questions: none
-deviations from design: none (table rename, not a column; rank kept)
-
-### T-018: Rename v2 social-suite keys and description tables
-status: proposed
-source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, 2026-10-01
-why: Labels already changed (T-012). Storage keys and description tables are still empathize / lecture / tempt.
-scope: `ensureSchema.ts` (add suite renames); `backupTables/page1.sql`; `characteristicsInfo.ts` `SocialSkillSuites`; `getSocialSuites.ts`; `assemblePageType1.ts` / `getCharacteristicsInfo.ts` skeletons; `deleteSocialSuites.ts`; view adjacency `SocialSuites.tsx`. `suiteID` 1–4 and addSocialSuites inserts unchanged.
-steps:
-1. In `ensureSchema`, if old table exists and new does not, rename: `v2empathizedescriptions` → `v2influencedescriptions`, `v2lecturedescriptions` → `v2informdescriptions`, `v2temptdescriptions` → `v2inspiredescriptions`. Intimidate table name stays. Idempotent `information_schema` checks.
-2. Payload keys: `influence`, `inform`, `inspire`, `intimidate`. Assemble / getSocialSuites `order by suiteID` still maps row 1/2/3/4 to those keys. SQL uses `v2influenceDescriptions`, `v2informDescriptions`, `v2inspireDescriptions`, `v2intimidateDescriptions`.
-3. `SocialSuites.tsx` destructures the new keys; labels and draw order stay Influence, Inform, then Inspire, Intimidate.
-4. Snapshot: replace empathize/lecture/tempt creates with influence/inform/inspire. Keep intimidate.
-done when: `rg -i 'empathize|lecture|\\btempt\\b' backend/server/v2 app/src/pages/v2/pageTypes/pageType1 backend/common/interfaces/v2` is 0. `suiteID` inserts still 1–4. `npx tsc -p app --pretty false --noEmit` reports no errors in `SocialSuites.tsx` (ignore v1 `UpdateNotes`).
-depends on: T-017
-open questions: none
-deviations from design: none
-
+(none)
 
 ## Done
+
+### T-016: Treat missing descriptions as an empty list
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (view crash)
+why: `DescriptionsDisplay` calls `descriptions.map`. A viewed character can omit the key.
+scope: `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx`
+result: Maps and pads from `const rows = descriptions ?? []`. No convictions fallback.
+deviations from design: none
+open questions: none
+
+### T-017: Apply schema on boot and rename convictions to descriptions
+status: done
+source: rewrite-ledger/schema-on-boot.md, rewrite-ledger/page1-view.md, 2026-10-01
+why: Live DB never received T-013/T-014 DDL. Descriptions is the convictions store renamed.
+scope: `backend/server/db/ensureSchema.ts`; `vault.ts`; `backupTables/page1.sql`; v2 characteristics assemble/delete; `characteristicsInfo.ts`.
+result: `start()` awaits `ensureSchema` before listen. `currentEmotions` added if missing. `v2convictions` renamed to `v2descriptions` (drop empty T-014 table if both exist). v2 payload has `descriptions` only. `getConvictions` / `deleteConvictions` removed.
+deviations from design: `query()` swallows errors; script verifies `information_schema` and throws if a patch did not land.
+open questions: none
+
+### T-018: Rename v2 social-suite keys and description tables
+status: done
+source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, 2026-10-01
+why: Labels already changed (T-012). Storage keys and description tables were still empathize / lecture / tempt.
+scope: `ensureSchema.ts`; `getSocialSuites.ts`; `deleteSocialSuites.ts`; `SocialSuites.tsx`; assemble skeletons; `backupTables/page1.sql`.
+result: Keys and tables are influence / inform / inspire / intimidate. `suiteID` 1–4 unchanged.
+deviations from design: none
+open questions: none
+
 
 ### T-012: Relabel and reorder page-type-1 social suites
 status: done

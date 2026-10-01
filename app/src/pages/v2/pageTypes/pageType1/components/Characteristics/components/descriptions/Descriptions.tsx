@@ -6,17 +6,19 @@ interface Props {
 }
 
 export default function DescriptionsDisplay({ descriptions }: Props) {
+    const rows = descriptions ?? []
+
     return (
         <div className='descriptions-v2'>
             <h2>Descriptions</h2>
-            {descriptions.map(({ id, value }) => {
+            {rows.map(({ id, value }) => {
                 return (
                     <span key={id}>
                         <p>{value}</p>
                     </span>
                 )
             })}
-            {[...Array(Math.max(0, 5 - descriptions.length))].map((_, index) => {
+            {[...Array(Math.max(0, 5 - rows.length))].map((_, index) => {
                 return (
                     <span key={index}>
                         <p></p>

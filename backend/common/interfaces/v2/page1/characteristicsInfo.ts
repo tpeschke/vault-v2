@@ -7,7 +7,6 @@ export interface Characteristics {
     socialSkillDiscount: number,
     currentEmotions: string,
     reputations: CharacteristicPair[],
-    convictions: CharacteristicPair[],
     descriptions: Description[],
     relationships: CharacteristicPair[],
     flaws: Flaw[],
@@ -45,10 +44,10 @@ export interface Temperaments {
 }
 
 export interface SocialSkillSuites {
-    empathize: SkillSuiteInfo,
+    influence: SkillSuiteInfo,
     intimidate: SkillSuiteInfo,
-    lecture: SkillSuiteInfo,
-    tempt: SkillSuiteInfo,
+    inform: SkillSuiteInfo,
+    inspire: SkillSuiteInfo,
 }
 
 export interface SkillSuiteInfo {
