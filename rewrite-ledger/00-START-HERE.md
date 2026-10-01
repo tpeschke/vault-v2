@@ -14,7 +14,7 @@ Canonical: repository `00-START-HERE.md` § Designer vocabulary. Unmarked **char
 
 ## Who owns changes to its meaning
 
-The designer (the human directing this session). Agents todo-ify, execute, and record; they do not invent design.
+The designer (the human directing this session). Agents order, execute, and record; they do not invent design.
 
 ## What it provides
 
