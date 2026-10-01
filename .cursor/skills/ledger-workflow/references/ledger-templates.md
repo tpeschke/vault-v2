@@ -72,7 +72,7 @@ deviations from design: <changes made at merge, and why, or none>
 result: <filled on completion: 1-3 lines>
 ```
 
-Status flow: Merge writes `proposed`. The user's instruction to execute counts as approval. Keep finished entries in a `Done` section at the bottom of `TODO.md` and prune old ones so the active list stays short.
+Status flow: Merge writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in a `Done` section at the bottom of `TODO.md` and prune old ones so the active list stays short.
 
 ## Ledger hygiene
 

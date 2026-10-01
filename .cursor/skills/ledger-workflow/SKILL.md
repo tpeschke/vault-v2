@@ -40,6 +40,7 @@ Say which phase you are in and stay in it. Interleaving design and implementatio
 | Execute | This session | Code for reviewed TODOs, plus ledger status | Decide design questions |
 
 - Merge and Execute are separate turns. After a merge, stop so the user can review the TODOs. Execute only TODOs the user names or approves.
+- A new session that states an overall goal is Merge (write TODOs, stop). Canonical: repository `AGENTS.md`. Do not treat that goal statement as Execute approval.
 - A design question that surfaces during Execute is recorded as an open question on the TODO, not resolved inline.
 - If the user asks for design work inside this session, treat it as Design: search for how others solved the problem before offering any opinion, and output design notes only.
 - **Proportionality.** Ceremony scales with design content. A typo, bug fix or mechanical rename needs no TODO and no design step. A new structure, interface, dependency or behavior does.

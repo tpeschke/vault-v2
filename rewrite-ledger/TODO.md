@@ -2,23 +2,50 @@
 
 status: active   date: 2026-09-30
 
-Merge writes `proposed`. The user's instruction to execute counts as approval. Keep finished entries in Done and prune old ones so the active list stays short.
+Merge writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
 
-### T-009: Finish page-type-1 view to match the blank sheet
-status: in-progress
+### T-009: Lay out page-type-1 left column to match the blank sheet
+status: proposed
 source: rewrite-ledger/page1-view.md, 2026-10-01
-why: Page type 1 still showed a partial left column and a placeholder right column. The official blank sheet is the layout source, with vault fonts and Cultural Strength kept.
-scope: `app/src/pages/v2/pageTypes/pageType1/` (view character sheet adjacency); `getCharacteristicsInfo.ts` assignment of basic characteristics.
+why: Left column was a partial stack (general info, stats, characteristics including Goals/Temperaments/Relationships, movement). The sheet’s left column is Name through Favor.
+scope: `app/src/pages/v2/pageTypes/pageType1/` (view character sheet adjacency): `PageType1.tsx`, `GeneralInfo/`, `Stats/`, `Characteristics/` (capacity, social suites, reputation, strengthNDiscount, descriptions, flaws), `Favor/`.
 steps:
-1. Lay out left column as Name through Favor, including Current Emotions, Descriptions (`convictions`), and Favor. Keep Cultural Strength. Drop Goals, Temperaments, Relationships, and Movement from this page.
-2. Lay out right column as Positions (static), Self Doubt, Damage, Stress, Defenses, Attacks.
-3. Assign `getBasicCharacteristics` onto `characteristicInfo` so capacity and Cultural Strength values appear.
-done when: `npx tsc -p app --noEmit` succeeds; page-type-1 view shows both columns with the sheet section order; grep `Cultural Strength` still hits the label; Movement/Goals/Temperaments/Relationships are not imported by `PageType1.tsx` or `Characteristics.tsx`.
+1. Order left column: Name, Ancestry, Class / Subclass / Lvl, CrP, Stats, Characteristics / Emotional Capacity, Current Emotions, Social Suites, Reputation, Cultural Strength / Social Skill Discount, Descriptions, Flaws, Favor.
+2. Keep vault fonts and the label Cultural Strength. Match sheet labels otherwise (`Lvl`, `Spent to lvl`, `Social Suites`, `Reputation`).
+3. Do not render Goals, Temperaments, Relationships, or Movement on this page. Leave those components in place; they are not this page.
+4. Current Emotions: lined write-in (no stored field). Descriptions: bind to `convictions`.
+done when: `npx tsc -p app --noEmit` has no errors under `app/src/pages/v2/`; grep `Cultural Strength` still hits `StrengthNDiscount.tsx`; `PageType1.tsx` and `Characteristics.tsx` do not import Movement, Goals, Temperaments, or Relationships; left column section headings match the sheet order.
 depends on: none
-open questions: Social suite names on the sheet are Influence / Inform / Inspire / Intimidate; v2 data is Empathize / Lecture / Intimidate / Tempt. Display keeps v2 names until ruled otherwise.
-deviations from design: none yet
+open questions: Social suite display names (sheet Influence / Inform / Inspire / Intimidate vs v2 Empathize / Lecture / Intimidate / Tempt). Whether Current Emotions should bind to `goals` instead of empty lines. Whether Descriptions should bind to `convictions`.
+deviations from design: Code for these steps is already on this branch from a premature execute. On execute, verify and correct; do not recreate unless review rejects the code.
+
+### T-010: Lay out page-type-1 right column to match the blank sheet
+status: proposed
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Right column was a placeholder (`Right`). The sheet’s right column is Positions, Self Doubt, Damage, Stress, Defenses, Attacks.
+scope: `app/src/pages/v2/pageTypes/pageType1/` (view character sheet adjacency): `PageType1.tsx`, `Positions/`, `Vitals/`, `Defenses/`, `Attacks/`.
+steps:
+1. Add static Positions legend (Low + X through High + X, including the Neutral / Weak 1 outline).
+2. Render Self Doubt (die d4–d20, Integrity Threshold, Die Penalty), Damage (die, Trauma label, Knock Back, damage / threshold), Stress (die, stress / threshold) from `vitalsInfo`.
+3. Render Defenses (`Def (Parry / Flanks)`, Cover, P. DR, DR, Initiative) and four Attacks (`Meas/RI`, Atk, Damage, Type, Rec) from `combatInfo`.
+done when: `npx tsc -p app --noEmit` has no errors under `app/src/pages/v2/`; `PageType1.tsx` right column mounts Positions, Vitals, Defenses, Attacks in that order; die faces are `d4 d6 d8 d10 d12 d20`.
+depends on: none
+open questions: Highlight `dieIndex` 0 as d4, or treat 0 as none selected. Whether to draw defense `name`/`notes` and attack `notes` (not on the sheet).
+deviations from design: Code for these steps is already on this branch from a premature execute. On execute, verify and correct; do not recreate unless review rejects the code.
+
+### T-011: Assign basic characteristics onto the page-type-1 payload
+status: proposed
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: `getCharacteristicsInfo` discarded `getBasicCharacteristics`’s return, so capacity, Cultural Strength, social skill discount, and temperaments never reached the view.
+scope: `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/getCharacteristicsInfo.ts` (view character sheet primary).
+steps:
+1. Copy `capacity`, `culturalStrength`, `socialSkillDiscount`, and `temperaments` from `getBasicCharacteristics` onto `characteristicInfo`. Do not replace the whole object (parallel array assignments must keep their results).
+done when: that `.then` assigns those four fields; grep in that file for `return { ...characteristicInfo, ...basicCharacteristics }` has 0 hits.
+depends on: none
+open questions: none
+deviations from design: Assignment already present on this branch from a premature execute. On execute, verify the four fields are assigned in place.
 
 ## Done
 

@@ -9,12 +9,11 @@ Constraints it imposes:
 - Left: Name, Ancestry, Class / Subclass / Lvl, CrP, Stats, Characteristics / Emotional Capacity, Current Emotions, Social Suites, Reputation, Cultural Strength / Social Skill Discount, Descriptions, Flaws, Favor.
 - Right: Positions (static legend), Self Doubt, Damage, Stress, Defenses, Attacks.
 - Do not put Goals, Temperaments, Relationships, or Movement on this page.
-- Descriptions bind to `convictions`. Current Emotions is a lined write-in with no stored field.
-- Social suite display names stay Empathize / Lecture / Intimidate / Tempt (v2 data). Positions, die faces, and combat field labels follow the sheet.
+- Fonts unchanged. Label “Cultural Strength” unchanged.
 
-Rejected:
-- Replacing vault fonts with the sheet’s IM FELL / Arial.
-- Renaming Cultural Strength to Culture Strength.
+Open (not decided):
+- Social suite display names: sheet Influence / Inform / Inspire / Intimidate vs v2 data Empathize / Lecture / Intimidate / Tempt.
+- Current Emotions has no stored field. Descriptions vs `convictions`. Defense `name`/`notes` and attack `notes` are not on the sheet.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/getCharacteristicsInfo.ts`
-TODOs: T-009
+TODOs: T-009, T-010, T-011
