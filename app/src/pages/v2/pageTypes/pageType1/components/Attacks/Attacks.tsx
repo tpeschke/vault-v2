@@ -9,7 +9,7 @@ export default function AttacksDisplay({ attacks }: Props) {
     return (
         <div className="attacks-v2">
             <h1>Attacks</h1>
-            {attacks.map(({ index, name, measure, attack, damage, type, recovery }) => (
+            {attacks.map(({ index, name, measure, attack, damage, type, recovery, notes }) => (
                 <div key={index} className="attack-block">
                     <h2>{name}</h2>
                     <div className="attack-row">
@@ -36,6 +36,7 @@ export default function AttacksDisplay({ attacks }: Props) {
                             <p className="center-text">{recovery}</p>
                         </span>
                     </div>
+                    <p>{notes ?? ''}</p>
                 </div>
             ))}
         </div>

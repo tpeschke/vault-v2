@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function DefensesDisplay({ defenses }: Props) {
-    const { initiative, defense, parry, flanks, cover, parryDR, dr } = defenses
+    const { initiative, defense, parry, flanks, cover, parryDR, dr, notes } = defenses
 
     return (
         <div className="defenses-v2">
@@ -40,6 +40,7 @@ export default function DefensesDisplay({ defenses }: Props) {
                     <p>{dr}</p>
                 </span>
             </div>
+            <p>{notes ?? ''}</p>
         </div>
     )
 }

@@ -28,3 +28,7 @@
     width: 100%;
     min-height: 17.38px;
 }
+
+.attacks-v2 .attack-block > p {
+    min-height: calc(2 * 17.38px);
+}
