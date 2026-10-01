@@ -13,14 +13,20 @@ interface Props {
 
 export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
     const { capacity, socialSuites, culturalStrength, socialSkillDiscount, currentEmotions, reputations, descriptions, flaws } = characteristicsInfo
+    const rows = currentEmotions ?? []
 
     return (
         <div className="characteristics-display-v2">
             <CapacityDisplay capacity={capacity} />
 
             <h2>Current Emotions</h2>
-            <div className='line-shell'>
-                <p>{currentEmotions}</p>
+            <div className="current-emotions-v2">
+                {rows.slice(0, 6).map(({ id, value }) => (
+                    <p key={id}>{value}</p>
+                ))}
+                {[...Array(Math.max(0, 6 - rows.length))].map((_, index) => (
+                    <p key={index}></p>
+                ))}
             </div>
 
             <SocialSuitesDisplay socialSuites={socialSuites} />

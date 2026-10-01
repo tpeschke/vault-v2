@@ -35,7 +35,7 @@ export default async function assemblePageType1(pageID: number): Promise<Page1> 
             capacity: 0,
             culturalStrength: '',
             socialSkillDiscount: 0,
-            currentEmotions: '',
+            currentEmotions: [],
             temperaments: {
                 affability: '',
                 openness: '',

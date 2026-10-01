@@ -1,9 +1,28 @@
 import query from './database'
 
 export default async function ensureSchema() {
-    await query(`alter table v2BasicCharacteristics add column if not exists currentEmotions varchar(250) default ''`)
-    if (!await columnExists('v2basiccharacteristics', 'currentemotions')) {
-        throw new Error('ensureSchema: currentEmotions missing on v2BasicCharacteristics')
+    await query(`create table if not exists v2currentEmotions (
+        id serial primary key,
+        pageID integer,
+        value varchar(500),
+        rank integer
+    )`)
+    if (!await tableExists('v2currentemotions')) {
+        throw new Error('ensureSchema: v2currentEmotions missing')
+    }
+
+    if (await columnExists('v2basiccharacteristics', 'currentemotions')) {
+        await query(`insert into v2currentEmotions (pageID, value, rank)
+            select pageID, currentEmotions, 0 from v2BasicCharacteristics
+            where currentEmotions is not null and currentEmotions <> ''
+            and not exists (
+                select 1 from v2currentEmotions e
+                where e.pageID = v2BasicCharacteristics.pageID and e.rank = 0
+            )`)
+        await query(`alter table v2BasicCharacteristics drop column if exists currentEmotions`)
+    }
+    if (await columnExists('v2basiccharacteristics', 'currentemotions')) {
+        throw new Error('ensureSchema: currentEmotions still on v2BasicCharacteristics')
     }
 
     await renameTable('v2convictions', 'v2descriptions')

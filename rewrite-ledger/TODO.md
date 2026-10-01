@@ -6,49 +6,27 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-022: Store Current Emotions as a six-slot child table
-status: proposed
-source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, 2026-10-01 (design: Current Emotions six-cell grid)
-why: T-013 stored one varchar on `v2BasicCharacteristics`. Design: child table of `{ id, value }` rows, old string in rank 0.
-scope: view character `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `getCharacteristicsInfo.ts`; `getBasicCharacteristics.ts`; `assemblePageType1.ts` skeleton; new `getCurrentEmotions.ts` beside `getDescriptions.ts`; delete character `deleteCharacteristics.ts` + new `deleteCurrentEmotions.ts`; boot `backend/server/db/ensureSchema.ts`; unindexed `backupTables/page1.sql`. Add-character insert of `v2BasicCharacteristics (pageID)` stays; do not insert six dummy rows. v1 out of scope.
-steps:
-1. Add `Emotion { id: number, value: string }` (same fields as `Description`). Change `Characteristics.currentEmotions` to `Emotion[]`. Skeleton default `[]`. Stop reading `currentEmotions` from `getBasicCharacteristics`.
-2. Add `getCurrentEmotions(pageID)` selecting from `v2currentEmotions` `where pageID = $1 order by rank asc`, mapping `{ id, value }`. Wire it in `getCharacteristicsInfo` `Promise.all`. Missing query result is `[]`.
-3. Add `deleteCurrentEmotions(pageID)` (`delete from v2currentEmotions where pageID = $1`) to the `deleteCharacteristics` list.
-4. `ensureSchema`: `create table if not exists v2currentEmotions (id serial primary key, pageID integer, value varchar(500), rank integer)`. If `v2BasicCharacteristics.currentEmotions` still exists, copy each non-empty varchar into rank 0 for that `pageID` when no rank-0 row exists, then `drop column if exists currentEmotions`. Fail closed: table present in `information_schema`; column absent. Keep all statements re-runnable. Do not add a migration package.
-5. Snapshot: remove `currentEmotions` from `v2BasicCharacteristics` in `backupTables/page1.sql`; add `v2currentEmotions` with `pageID` (not the snapshot’s `characterid` on descriptions).
-done when:
-- `rg 'currentEmotions: string' backend/common/interfaces/v2/page1/characteristicsInfo.ts` is 0.
-- `rg "currentEmotions: ''" backend/server/v2/view/assembleV2Character/utilities/pageType1/assemblePageType1.ts` is 0.
-- `rg 'currentEmotions' backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/utilities/getBasicCharacteristics.ts` is 0.
-- `rg 'v2currentEmotions' backend/server/db/ensureSchema.ts backend/server/v2/backupTables/page1.sql backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/utilities/getCurrentEmotions.ts backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/utilities/deleteCurrentEmotions.ts` has hits in all four.
-- `rg 'currentEmotions varchar' backend/server/v2/backupTables/page1.sql` is 0.
-- `rg 'deleteCurrentEmotions' backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/deleteCharacteristics.ts` is 1.
-depends on: none
-open questions: none
-deviations from design: `rank` 0–5 used as the slot (Descriptions already has `rank`). Empty varchars are not inserted; the view pads. New table uses `pageID` to match `getDescriptions` / `getFlaws` queries, not the snapshot’s `characterid`.
-
-### T-023: Draw Current Emotions as a 3×2 Social Suite–style grid
-status: proposed
-source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Current Emotions six-cell grid)
-why: The view still paints one string in `.line-shell`. Design: six unlabeled cells, 3 columns × 2 rows, Social Suite grid lines.
-scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/` (`Characteristics.tsx`, `Characteristics.css`). Do not change Social Suites themselves.
-steps:
-1. Keep `<h2>Current Emotions</h2>`. Replace `.line-shell` / single `<p>{currentEmotions}</p>` with a 3×2 grid of six `<p>`s. `const rows = currentEmotions ?? []`. Paint `rows` in rank order (already ordered by T-022), then pad with empty `<p>`s to six. No per-cell labels.
-2. CSS: `display: grid; grid-template-columns: repeat(3, 1fr)`. Cell chrome matches Social Suites lines: `border: 1px solid #bdbdbd` (same color/width as `.social-suites-v2` `border-left: 1px solid #bdbdbd`), `padding: 4px 4px 0`, `min-height: 17.38px`. Do not add zebra unless it falls out of that grid; Q4 was grid lines.
-3. Remove unused `.line-shell` rules if nothing else uses them.
-4. If the left column overflows `.page` 1036px, record it in the TODO result. Do not invent compression.
-done when:
-- `rg 'line-shell' app/src/pages/v2/pageTypes/pageType1/components/Characteristics/` is 0.
-- `rg 'Current Emotions' app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` is 1.
-- `rg 'repeat\\(3, 1fr\\)' app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.css` is 1.
-- `rg '#bdbdbd' app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.css` is at least 1.
-- `rg 'min-height: 17.38px' app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.css` is at least 1.
-depends on: T-022
-open questions: none
-deviations from design: none
+(none)
 
 ## Done
+
+### T-022: Store Current Emotions as a six-slot child table
+status: done
+source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, 2026-10-01 (design: Current Emotions six-cell grid)
+why: T-013 stored one varchar on `v2BasicCharacteristics`. Design: child table of `{ id, value }` rows, old string in rank 0.
+scope: view character `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `getCharacteristicsInfo.ts`; `getBasicCharacteristics.ts`; `assemblePageType1.ts` skeleton; new `getCurrentEmotions.ts` beside `getDescriptions.ts`; delete character `deleteCharacteristics.ts` + new `deleteCurrentEmotions.ts`; boot `backend/server/db/ensureSchema.ts`; unindexed `backupTables/page1.sql`.
+result: Payload is `Emotion[]`. Table `v2currentEmotions`. Assemble via `getCurrentEmotions` ordered by rank. Old varchar copied to rank 0 then dropped. Delete path added. Live postgres still needs a server restart for `ensureSchema`.
+deviations from design: none beyond Order (`rank` as slot; empty varchars not inserted; `pageID` not `characterid`).
+open questions: none
+
+### T-023: Draw Current Emotions as a 3×2 Social Suite–style grid
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Current Emotions six-cell grid)
+why: The view still paints one string in `.line-shell`. Design: six unlabeled cells, 3 columns × 2 rows, Social Suite grid lines.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/` (`Characteristics.tsx`, `Characteristics.css`).
+result: Heading Current Emotions. Six unlabeled `p`s in `repeat(3, 1fr)`, padded from `currentEmotions ?? []`. `#bdbdbd` 1px borders, min-height 17.38px. `.line-shell` removed.
+deviations from design: none
+open questions: none
 
 ### T-021: Replace Vitals Die labels with polyhedral PNGs
 status: done

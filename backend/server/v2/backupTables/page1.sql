@@ -34,8 +34,15 @@ create table
         openness varchar(250) default '',
         outgoingness varchar(250) default '',
         workEthic varchar(250) default '',
-        worry varchar(250) default '',
-        currentEmotions varchar(250) default ''
+        worry varchar(250) default ''
+    );
+
+create table
+    v2currentEmotions (
+        id serial primary key,
+        pageID integer,
+        value varchar(500),
+        rank integer
     );
 
 create table

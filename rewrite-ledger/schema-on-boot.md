@@ -19,4 +19,4 @@ Rejected:
 - Applying DDL only by hand.
 
 Touches: `backend/server/db/` (unindexed); `backend/server/vault.ts` (unindexed); `backend/server/v2/backupTables/page1.sql` (unindexed)
-TODOs: T-017, T-018 (done); T-022 (proposed)
+TODOs: T-017, T-018, T-022 (done)
