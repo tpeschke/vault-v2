@@ -15,7 +15,7 @@
 
 .positions-v2 .positions-header em {
     color: white;
-    padding: 3px 4px;
+    padding: 1px 4px;
 }
 
 .positions-v2 .positions-row:nth-child(even) {
@@ -44,7 +44,7 @@
 }
 
 .positions-v2 .positions-row p {
-    padding: 2px 4px;
-    font-size: 12px;
-    min-height: 15px;
+    padding: 1px 4px;
+    font-size: 11px;
+    min-height: 13px;
 }

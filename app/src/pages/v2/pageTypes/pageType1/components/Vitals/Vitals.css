@@ -1,5 +1,5 @@
 .vitals-v2 section {
-    margin-top: 8px;
+    margin-top: 4px;
 }
 
 .vitals-v2 .die-row {
@@ -14,7 +14,7 @@
 .vitals-v2 .die-row p {
     width: 14.3%;
     border: 1px solid #bdbdbd;
-    padding: 3px 0;
+    padding: 1px 0;
 }
 
 .vitals-v2 .die-row p.selected {
@@ -35,7 +35,7 @@
 .vitals-v2 .vitals-split p,
 .vitals-v2 .damage-values p,
 .vitals-v2 .stress-values p {
-    min-height: 18px;
+    min-height: 14px;
     border: 1px solid #bdbdbd;
 }
 

@@ -1,9 +1,9 @@
 .attacks-v2 {
-    margin-top: 8px;
+    margin-top: 4px;
 }
 
 .attacks-v2 .attack-block {
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .attacks-v2 .attack-row {
@@ -22,6 +22,6 @@
 
 .attacks-v2 .attack-row p {
     width: 100%;
-    min-height: 16px;
+    min-height: 14px;
     border-bottom: 1px solid black;
 }

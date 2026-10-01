@@ -9,6 +9,7 @@ import VitalsDisplay from './components/Vitals/Vitals';
 import DefensesDisplay from './components/Defenses/Defenses';
 import AttacksDisplay from './components/Attacks/Attacks';
 import FavorDisplay from './components/Favor/Favor';
+import wordmark from '../../../../assets/images/bonfire-wordmark.png'
 
 interface Props {
     pageInfo: Page1,
@@ -28,6 +29,7 @@ export default function PageType1({ pageInfo, index }: Props) {
                     <FavorDisplay favor={favor} />
                 </>
                 <>
+                    <img className="page-type-one-wordmark" src={wordmark} alt="Bonfire The Roleplaying Game" />
                     <PositionsDisplay />
                     <VitalsDisplay vitals={vitalsInfo} />
                     <DefensesDisplay defenses={combatInfo.defenses} />

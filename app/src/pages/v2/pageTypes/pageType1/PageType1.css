@@ -5,3 +5,20 @@
 .page-type-one .right-column {
     width: 42%;
 }
+
+.page-type-one-wordmark {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 4px;
+}
+
+.page-type-one .right-column h1 {
+    padding: 2px 4px;
+    min-height: 14px;
+}
+
+.page-type-one .right-column h2 {
+    padding: 2px 4px 0;
+    font-size: 12px;
+}
