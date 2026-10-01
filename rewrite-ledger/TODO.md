@@ -24,16 +24,18 @@ deviations from design: Code for these steps is already on this branch from a pr
 ### T-010: Lay out page-type-1 right column to match the blank sheet
 status: proposed
 source: rewrite-ledger/page1-view.md, 2026-10-01
-why: Right column was a placeholder (`Right`). The sheet’s right column is Positions, Self Doubt, Damage, Stress, Defenses, Attacks.
-scope: `app/src/pages/v2/pageTypes/pageType1/` (view character sheet adjacency): `PageType1.tsx`, `Positions/`, `Vitals/`, `Defenses/`, `Attacks/`.
+why: Right column was a placeholder (`Right`). The sheet’s right column is Positions, Self Doubt, Damage, Stress, Defenses, Attacks. The designer added a Bonfire wordmark at the top of that column, which the blank PDF does not have.
+scope: `app/src/pages/v2/pageTypes/pageType1/` (view character sheet adjacency): `PageType1.tsx`, `Positions/`, `Vitals/`, `Defenses/`, `Attacks/`; wordmark file under `app/src/assets/images/` (unindexed, same folder as `logo-black.png` / `logo-white.png`).
 steps:
-1. Add static Positions legend (Low + X through High + X, including the Neutral / Weak 1 outline).
-2. Render Self Doubt (die d4–d20, Integrity Threshold, Die Penalty), Damage (die, Trauma label, Knock Back, damage / threshold), Stress (die, stress / threshold) from `vitalsInfo`.
-3. Render Defenses (`Def (Parry / Flanks)`, Cover, P. DR, DR, Initiative) and four Attacks (`Meas/RI`, Atk, Damage, Type, Rec) from `combatInfo`.
-done when: `npx tsc -p app --noEmit` has no errors under `app/src/pages/v2/`; `PageType1.tsx` right column mounts Positions, Vitals, Defenses, Attacks in that order; die faces are `d4 d6 d8 d10 d12 d20`.
+1. Add the attached wordmark (flame + BONFIRE + “The Roleplaying Game”) as an image asset. Do not rebuild it from `logo-black.png` plus headings. Mount it as the first block in the right column, full column width.
+2. Below the logo: static Positions legend (Low + X through High + X, including the Neutral / Weak 1 outline).
+3. Render Self Doubt (die d4–d20, Integrity Threshold, Die Penalty), Damage (die, Trauma label, Knock Back, damage / threshold), Stress (die, stress / threshold) from `vitalsInfo`.
+4. Render Defenses (`Def (Parry / Flanks)`, Cover, P. DR, DR, Initiative) and four Attacks (`Meas/RI`, Atk, Damage, Type, Rec) from `combatInfo`.
+5. Tighten spacing of Positions through Attacks so the page still fits `.page` (1036px) after the logo takes the top of the column.
+done when: `npx tsc -p app --noEmit` has no errors under `app/src/pages/v2/`; `PageType1.tsx` right column order is wordmark, Positions, Vitals, Defenses, Attacks; die faces are `d4 d6 d8 d10 d12 d20`; the wordmark file exists under `app/src/assets/images/` and is imported by the page-type-1 view; `.page-type-one` does not overflow `.page` height.
 depends on: none
 open questions: Highlight `dieIndex` 0 as d4, or treat 0 as none selected. Whether to draw defense `name`/`notes` and attack `notes` (not on the sheet).
-deviations from design: Code for these steps is already on this branch from a premature execute. On execute, verify and correct; do not recreate unless review rejects the code.
+deviations from design: Positions/vitals/combat code is already on this branch from a premature execute, without the wordmark and without a reflow for it. On execute, add the logo and compress the column; do not recreate the rest unless review rejects it.
 
 ### T-011: Assign basic characteristics onto the page-type-1 payload
 status: proposed
