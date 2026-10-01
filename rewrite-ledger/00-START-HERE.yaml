@@ -12,6 +12,7 @@ uses: []
 entrypoints:
   start: 00-START-HERE.md
   todos: TODO.md
+  agents: ../AGENTS.md
   vocabulary: ../00-START-HERE.md#designer-vocabulary
 routing:
   character: ../00-START-HERE.md#designer-vocabulary
@@ -19,10 +20,10 @@ routing:
   TODO: TODO.md
   feature-index-decision: feature-index.md
   feature-inventory: feature-inventory.md
+  L2-L3: l2-l3-deferred.md
   observed_code_paths:
     app: ../app
     backend: ../backend
     replaceScripts: ../replaceScripts
   gaps:
     - FSD layer directories not created (deferred; index-in-place)
-    - no AGENTS.md

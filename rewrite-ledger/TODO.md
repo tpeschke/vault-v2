@@ -10,6 +10,31 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 
 ## Done
 
+### T-005: Add AGENTS.md as agent entry to L1 and the ledger
+status: done
+source: recorded gap “no AGENTS.md”; session 2026-10-01
+why: Agents must route through root panels instead of scanning.
+scope: `AGENTS.md`; `00-START-HERE.md` / `.yaml`; `rewrite-ledger/00-START-HERE.md` / `.yaml`.
+result: `AGENTS.md` points at L1, vocabulary, ledger, unindexed rule, and FSD-later. Gap removed.
+deviations from design: AGENTS.md does not route CODE-LAYOUT-STANDARD as current tree law; designer adopted FSD for a later transformation.
+
+### T-006: Tighten L1 from unindexed misses
+status: done
+source: index next-steps 2026-10-01 item 3
+why: Files that implement an accepted objective were listed unindexed (home rows, header, v1 widgets, contracts, SQL).
+scope: `00-START-HERE.yaml` `routing` and `unindexed`.
+result: Promoted home row display, header, App login bootstrap, v1 displayArray/textArea, view/home CSS, v1/v2 interfaces, v1 dictionaries, and v1 query SQL onto existing features. Remaining unindexed is shell/machinery (38 files). Completeness still holds.
+deviations from design: none
+
+### T-007: Context-loss review for L2/L3
+status: done
+source: anne-index applying-to-code; session 2026-10-01 item 4
+why: L2/L3 only if a miss the front panel cannot carry.
+scope: `rewrite-ledger/l2-l3-deferred.md`
+result: No such miss after T-006. L2/L3 not added. Format remains unset.
+deviations from design: none
+
+
 ### T-003: Completeness pass excluding dist/
 status: done
 source: rewrite-ledger/feature-index.md, 2026-09-30
