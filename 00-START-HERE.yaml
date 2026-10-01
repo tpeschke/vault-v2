@@ -10,102 +10,128 @@ uses:
   - rewrite-ledger
 entrypoints:
   start: 00-START-HERE.md
+  agents: AGENTS.md
   ledger: rewrite-ledger/00-START-HERE.md
   inventory: rewrite-ledger/feature-inventory.md
 routing:
   log in / sign in / login / authenticate:
     primary: backend/server/routes/authentication.ts
     adjacent:
-      - app/src/components/header/icons/LoginLogoutIcons.tsx
+      - app/src/components/header/
+      - app/src/App.tsx
       - backend/server/controllers/user/
+      - backend/server/v1/queries/user.ts
   log out / sign out / logout:
     primary: backend/server/routes/authentication.ts
     adjacent:
-      - app/src/components/header/icons/LoginLogoutIcons.tsx
+      - app/src/components/header/
   list characters / catalog / home characters:
     primary: backend/server/controllers/home/v2/getCharacters.ts
     adjacent:
       - backend/server/controllers/home/HomeController.ts
       - backend/server/controllers/home/HomeRoutes.ts
       - app/src/pages/home/Home.tsx
+      - app/src/pages/home/Home.css
       - app/src/pages/home/components/V2CharacterDisplay/
+      - app/src/pages/home/components/charactersRowDisplay/
       - app/src/hooks/UsersCharactersHook.tsx
+      - backend/common/interfaces/characterInterfaces.ts
   create character / add character / add new character:
     primary: backend/server/v2/add/
     adjacent:
       - app/src/hooks/UsersCharactersHook.tsx
-      - app/src/pages/home/components/homeFooter/HomeFooter.tsx
+      - app/src/pages/home/components/homeFooter/
       - app/src/pages/home/components/V2CharacterDisplay/
   view character sheet / view character / open character:
     primary: backend/server/v2/view/
     adjacent:
-      - app/src/pages/view/v2/
+      - app/src/pages/v2/
+      - app/src/pages/View.css
       - app/src/routes/AllRoutes.tsx
+      - backend/common/interfaces/v2/
   delete character / remove character:
     primary: backend/server/v2/delete/
     adjacent:
       - app/src/hooks/UsersCharactersHook.tsx
       - app/src/pages/home/components/V2CharacterDisplay/
+      - app/src/pages/home/components/charactersRowDisplay/
   list v1 characters / ancient characters / list ancient:
     primary: backend/server/controllers/home/v1/getCharacters.ts
     adjacent:
       - backend/server/controllers/home/HomeController.ts
       - backend/server/controllers/home/HomeRoutes.ts
+      - backend/server/v1/queries/home.ts
       - app/src/pages/home/Home.tsx
+      - app/src/pages/home/Home.css
       - app/src/pages/home/components/v1CharacterDisplay/
+      - app/src/pages/home/components/charactersRowDisplay/
       - app/src/hooks/UsersCharactersHook.tsx
+      - backend/common/interfaces/characterInterfaces.ts
   view v1 character sheet / view v1 character:
     primary: backend/server/v1/controllers/view/
     adjacent:
-      - app/src/pages/view/v1/
+      - app/src/pages/v1/
+      - app/src/pages/View.css
       - app/src/routes/AllRoutes.tsx
+      - app/src/components/displayArray/
+      - app/src/components/textArea/
+      - backend/common/interfaces/v1/
+      - backend/common/dictionaries/v1/
   edit v1 character sheet / save v1 character:
     primary: backend/server/v1/controllers/edit/
     adjacent:
-      - app/src/pages/view/v1/
+      - app/src/pages/v1/
+      - app/src/components/displayArray/
+      - app/src/components/textArea/
+      - backend/common/interfaces/v1/
+      - backend/common/dictionaries/v1/
+      - backend/server/v1/queries/basic/
+      - backend/server/v1/queries/combat/
+      - backend/server/v1/queries/confrontation/
+      - backend/server/v1/queries/gear/
+      - backend/server/v1/queries/skill/
   quick-edit v1 character / quick edit v1:
     primary: backend/server/v1/controllers/quickEdit/
     adjacent:
-      - app/src/pages/view/v1/
+      - app/src/pages/v1/
+      - backend/common/interfaces/v1/
   download v1 character as pdf / v1 pdf:
-    primary: app/src/pages/view/v1/hooks/utilities/downloadUtilities.ts
+    primary: app/src/pages/v1/hooks/utilities/downloadUtilities.ts
     adjacent:
-      - app/src/pages/view/v1/hooks/characterHook.tsx
-      - app/src/pages/view/v1/V1View.tsx
+      - app/src/pages/v1/hooks/characterHook.tsx
+      - app/src/pages/v1/V1View.tsx
   delete v1 character / remove v1 character / delete ancient:
     primary: backend/server/controllers/home/v1/deleteCharacter.ts
     adjacent:
       - backend/server/controllers/home/HomeRoutes.ts
+      - backend/server/v1/queries/home.ts
+      - backend/server/v1/queries/combat/
+      - backend/server/v1/queries/gear/
+      - backend/server/v1/queries/skill/
+      - backend/server/v1/queries/confrontation/
       - app/src/hooks/UsersCharactersHook.tsx
       - app/src/pages/home/components/v1CharacterDisplay/
+      - app/src/pages/home/components/charactersRowDisplay/
 unindexed:
-  # Mechanisms, chrome, contracts, and scripts that are not a user-objective feature. Do not invent features for these.
+  # Remaining machinery and chrome. Not features.
   - replaceScripts/
-  - backend/common/
-  - backend/server/db/
-  - backend/server/interfaces/
-  - backend/server/controllers/common/
-  - backend/server/v1/queries/
-  - backend/server/v2/backupTables/
-  - backend/server/vault.ts
-  - backend/server/package.json
-  - backend/server/tsconfig.json
   - app/src/assets/
   - app/src/redux/
   - app/src/utilities/
-  - app/src/components/displayArray/
+  - backend/common/utilities/
+  - backend/server/db/
+  - backend/server/interfaces/
+  - backend/server/controllers/common/
+  - backend/server/v2/backupTables/
   - app/src/components/footer/
   - app/src/components/loading/
-  - app/src/components/textArea/
-  - app/src/pages/home/components/charactersRowDisplay/
-  - app/src/App.tsx
   - app/src/App.css
-  - app/src/main.tsx
-  - app/src/index.css
-  - app/src/vite-env.d.ts
-  - app/src/components/header/Header.tsx
-  - app/src/components/header/Header.css
   - app/src/hooks/LocationHook.tsx
-  - app/src/pages/home/Home.css
-  - app/src/pages/home/components/homeFooter/HomeFooter.css
-  - app/src/pages/view/View.css
+  - app/src/index.css
+  - app/src/main.tsx
+  - app/src/vite-env.d.ts
+  - backend/common/package.json
+  - backend/common/tsconfig.json
+  - backend/server/package.json
+  - backend/server/tsconfig.json
+  - backend/server/vault.ts

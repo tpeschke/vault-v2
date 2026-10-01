@@ -17,14 +17,15 @@ The designer. This panel owns how tasks route to code, not product meaning.
 ## What it provides
 
 - This file: purpose, vocabulary, where to go
-- `00-START-HERE.yaml`: feature routing (`primary` / `adjacent`)
+- `00-START-HERE.yaml`: feature routing (`primary` / `adjacent`) and `unindexed`
+- `AGENTS.md`: agent entry — start at this pair, then the ledger
 - Pointers to `rewrite-ledger/` (decisions, inventory, TODOs)
 
 ## What it does not own
 
 - Application code, tests, build, and scripts
 - Design decisions (ledger)
-- FSD layer directories (deferred; index-in-place)
+- Remaining FSD layer directories (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`; `rewrite-ledger/fsd-colocation.md`)
 
 ## Neighboring owners
 
@@ -35,6 +36,7 @@ The designer. This panel owns how tasks route to code, not product meaning.
 
 | Need | Go to |
 |---|---|
+| Agent entry | `AGENTS.md` |
 | Feature route (L1) | `00-START-HERE.yaml` `routing` |
 | Unindexed source | `00-START-HERE.yaml` `unindexed` |
 | Accepted feature names | `rewrite-ledger/feature-inventory.md` |

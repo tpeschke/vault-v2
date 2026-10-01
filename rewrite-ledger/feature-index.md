@@ -1,7 +1,7 @@
 # Index files by feature
 status: accepted   date: 2026-09-30
 
-Decision: Index files in place. L1 keys are user objectives, each split by sheet version (v1 / v2) when that objective exists in that version. When a feature spans frontend and backend, the primary owner is the backend. Exclude `dist/` from completeness. A later tree transformation, if done, uses Feature-Sliced Design layer names (`app`, `pages`, `widgets`, `features`, `entities`, `shared`), not Workbenches / Playbooks / Tools / Mechanisms.
+Decision: Index files in place. L1 keys are user objectives, each split by sheet version (v1 / v2) when that objective exists in that version. When a feature spans frontend and backend, the primary owner is the backend. Exclude `dist/` from completeness. A later tree transformation, if done, uses Feature-Sliced Design layers under `app/src/` (see `fsd-colocation.md`). Repo `app/` stays the Vite package.
 
 Why: Task lookup needs a feature vocabulary without moving code. Version splits match the two live sheet implementations. Backend owns meaning for cross-surface features. FSD names are the designer’s target taxonomy for a future move, not this index.
 
@@ -10,7 +10,8 @@ Constraints it imposes:
 - Do not treat sheet widgets (weapons, stats, armor, …) as features unless the inventory names them as user objectives.
 - One file, one primary owner; primary is backend when the feature has a backend. Frontend paths are adjacencies.
 - `dist/` is excluded from the completeness rule (generated SPA output).
-- Do not create FSD folders until a separate structural design is approved.
+- Do not create remaining FSD layer folders (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`) until a TODO executes that move. Canonical: `rewrite-ledger/fsd-colocation.md`.
+- When FSD is executed, layers live at `app/src/{app,pages,widgets,features,entities,shared}`. Repo `app/` stays the Vite/React package. View slices are `app/src/pages/v1` and `app/src/pages/v2`. Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`.
 - v1 has no create-character objective, ever. Do not add it to the inventory or to L1 routing.
 - Designer speech: unmarked “character” means v2. Canonical: repository `00-START-HERE.md` § Designer vocabulary.
 
@@ -21,4 +22,4 @@ Rejected:
 - v1 create character (permanently excluded).
 
 Touches: repository `00-START-HERE.md`, `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
-TODOs: T-001, T-002, T-003, T-004 (all done)
+TODOs: T-001–T-008 (all done)

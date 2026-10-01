@@ -32,7 +32,8 @@ The designer (the human directing this session). Agents merge, execute, and reco
 ## Neighboring owners
 
 - Repository front panels: `../00-START-HERE.md` and `../00-START-HERE.yaml` (L1 feature index).
-- No `AGENTS.md`. Current code locations are observed paths, not owners:
+- `../AGENTS.md` — agent entry to those panels and this ledger.
+- Current code locations are observed paths, not owners:
 
 - `app/` — Vite/React frontend (`@vault/main` workspace)
 - `backend/` — server and common packages
@@ -44,11 +45,14 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 
 | Need | Go to |
 |---|---|
+| Agent entry | `../AGENTS.md` |
 | Designer vocabulary (“character”) | `../00-START-HERE.md` § Designer vocabulary |
 | TODOs | `TODO.md` |
 | Feature-index decision | `feature-index.md` |
 | Feature inventory (accepted) | `feature-inventory.md` |
 | Feature index (L1) | `../00-START-HERE.yaml` |
+| L2/L3 | `l2-l3-deferred.md` |
+| FSD colocation | `fsd-colocation.md` |
 | Code | `../00-START-HERE.yaml` `routing` |
 | Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 

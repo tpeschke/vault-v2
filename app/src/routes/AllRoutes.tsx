@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Loading from "../components/loading/Loading";
 import Home from "../pages/home/Home";
-import V1View from "../pages/view/v1/V1View";
-import V2View from "../pages/view/v2/V2View";
+import V1View from "../pages/v1/V1View";
+import V2View from "../pages/v2/V2View";
 
 interface Props {
     pathname: string

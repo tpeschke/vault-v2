@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import IsBlankContext from '../../pages/view/v1/contexts/IsBlankContext'
+import IsBlankContext from '../../pages/v1/contexts/IsBlankContext'
 import './TextArea.css'
 
 interface Props {
