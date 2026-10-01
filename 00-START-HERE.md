@@ -25,7 +25,7 @@ The designer. This panel owns how tasks route to code, not product meaning.
 
 - Application code, tests, build, and scripts
 - Design decisions (ledger)
-- FSD layer directories (deferred; index-in-place)
+- FSD layer directories (deferred; will be `app/src/{app,pages,…}`, not a rename of package `app/`)
 
 ## Neighboring owners
 

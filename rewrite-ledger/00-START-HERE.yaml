@@ -20,10 +20,11 @@ routing:
   TODO: TODO.md
   feature-index-decision: feature-index.md
   feature-inventory: feature-inventory.md
+  fsd-colocation: fsd-colocation.md
   L2-L3: l2-l3-deferred.md
   observed_code_paths:
     app: ../app
     backend: ../backend
     replaceScripts: ../replaceScripts
   gaps:
-    - FSD layer directories not created (deferred; index-in-place)
+    - FSD layer directories not created (deferred; layers will be `app/src/...`, not repo-root)
