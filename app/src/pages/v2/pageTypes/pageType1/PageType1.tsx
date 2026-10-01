@@ -5,6 +5,11 @@ import GeneralInfoDisplay from './components/GeneralInfo/GeneralInfo';
 import StatsDisplay from './components/Stats/Stats';
 import CharacteristicsDisplay from './components/Characteristics/Characteristics';
 import MovementDisplay from './components/Characteristics/components/movement/MovementDisplay';
+import LogoDisplay from './components/Logo/Logo';
+import VitalsDisplay from './components/Vitals/Vitals';
+import FavorDisplay from './components/Favor/Favor';
+import DefensesDisplay from './components/Defenses/Defenses';
+import AttacksDisplay from './components/Attacks/Attacks';
 
 interface Props {
     pageInfo: Page1,
@@ -12,16 +17,8 @@ interface Props {
 }
 
 export default function PageType1({ pageInfo, index }: Props) {
-    const { generalInfo, stats, characteristicsInfo, movement } = pageInfo
-
-    // Left Column
-    //  Movement
-    // Right Column
-    //  Logo
-    //  Vitals
-    //  Favor
-    //  Defenses
-    //  Attacks
+    const { generalInfo, stats, characteristicsInfo, movement, vitalsInfo, favor, combatInfo } = pageInfo
+    const { defenses, attacks } = combatInfo
 
     return (
         <div className='page-shell page card page-type-one' id={'page-' + index}>
@@ -33,7 +30,11 @@ export default function PageType1({ pageInfo, index }: Props) {
                     <MovementDisplay movement={movement} />
                 </>
                 <>
-                    Right
+                    <LogoDisplay />
+                    <VitalsDisplay vitalsInfo={vitalsInfo} />
+                    <FavorDisplay favor={favor} />
+                    <DefensesDisplay defenses={defenses} />
+                    <AttacksDisplay attacks={attacks} />
                 </>
             </DoubleColumn>
         </div>

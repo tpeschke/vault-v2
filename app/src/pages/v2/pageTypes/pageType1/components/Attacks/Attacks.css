@@ -1,0 +1,38 @@
+.attacks-v2 {
+    margin-top: 15px;
+}
+
+.attacks-v2 > span {
+    display: flex;
+}
+
+.attacks-v2 > span:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.attacks-v2 > span > * {
+    text-align: center;
+    padding: 4px 2px 0;
+    min-height: 15px;
+    overflow: hidden;
+}
+
+.attacks-v2 > span > *:first-child {
+    text-align: left;
+    width: 22%;
+}
+
+.attacks-v2 > span > *:nth-child(2),
+.attacks-v2 > span > *:nth-child(3),
+.attacks-v2 > span > *:nth-child(6) {
+    width: 10%;
+}
+
+.attacks-v2 > span > *:nth-child(4),
+.attacks-v2 > span > *:nth-child(5) {
+    width: 14%;
+}
+
+.attacks-v2 > span > *:last-child {
+    width: 20%;
+}

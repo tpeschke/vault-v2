@@ -1,6 +1,6 @@
 # TODOs
 
-status: active   date: 2026-09-30
+status: active   date: 2026-10-01
 
 Merge writes `proposed`. The user's instruction to execute counts as approval. Keep finished entries in Done and prune old ones so the active list stays short.
 
@@ -9,6 +9,24 @@ Merge writes `proposed`. The user's instruction to execute counts as approval. K
 (none)
 
 ## Done
+
+### T-010: Render convictions on page type 1
+status: done
+source: `Characteristics` in `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; assembled by `getCharacteristicsInfo`; session 2026-10-01 “finish page 1”
+why: Convictions are on the page-1 payload and unused in `Characteristics.tsx`. Finishing the page means that field is visible.
+scope: `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/`
+result: ConvictionsDisplay after Reputations; value/rank rows padded to 3. Matches Reputation/Relationships pair blocks.
+deviations from design: not listed in the PageType1 right-column comments; left-column hole on the same page.
+open questions: none
+
+### T-009: Render page type 1 right column
+status: done
+source: `app/src/pages/v2/pageTypes/pageType1/PageType1.tsx` remaining-work comments; `Page1` in `backend/common/interfaces/v2/pageTypes.ts`; session 2026-10-01 “finish page 1”
+why: Backend already assembles `vitalsInfo`, `favor`, and `combatInfo`. The right column is the placeholder string `Right`.
+scope: view character sheet adjacency `app/src/pages/v2/pageTypes/pageType1/` (Logo, Vitals, Favor, Defenses, Attacks displays); `PageType1.tsx`. Backend `backend/server/v2/view/` unchanged.
+result: Right column shows Logo, Vitals, Favor, Defenses, Attacks in comment order. `dieIndex` shown as an integer labeled Die. Placeholder `Right` removed.
+deviations from design: none
+open questions: dieIndex → die-face mapping; whether attacks should be 2×2 mini-tables like v1 weapons instead of one four-row table.
 
 ### T-008: Split nested view folder into two FSD page slices
 status: done

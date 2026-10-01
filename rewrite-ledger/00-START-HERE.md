@@ -53,6 +53,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Feature index (L1) | `../00-START-HERE.yaml` |
 | L2/L3 | `l2-l3-deferred.md` |
 | FSD colocation | `fsd-colocation.md` |
+| Page type 1 view | `page-type-1-view.md` |
 | Code | `../00-START-HERE.yaml` `routing` |
 | Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 

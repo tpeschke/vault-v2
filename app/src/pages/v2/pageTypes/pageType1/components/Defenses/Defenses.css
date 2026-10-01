@@ -1,0 +1,41 @@
+.defenses-v2 {
+    margin-top: 15px;
+}
+
+.defenses-v2 .defenses-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.defenses-v2 .defenses-row span:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.defenses-v2 .defenses-row span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3px;
+    width: 100%;
+}
+
+.defenses-v2 .defenses-row p {
+    text-align: center;
+    width: 100%;
+    min-height: 14px;
+}
+
+.defenses-v2 .defenses-notes {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+.defenses-v2 .defenses-notes strong {
+    margin-right: 5px;
+}
+
+.defenses-v2 .defenses-notes p {
+    width: 100%;
+    min-height: 14px;
+}
