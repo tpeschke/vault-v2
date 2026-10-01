@@ -25,7 +25,7 @@
 
 .defenses-v2 .defenses-header p {
     background: white;
-    min-height: 16px;
+    min-height: 17.38px;
 }
 
 .defenses-v2 .def-row,
@@ -44,8 +44,7 @@
 
 .defenses-v2 .def-row p {
     width: 14%;
-    min-height: 16px;
-    border-bottom: 1px solid black;
+    min-height: 17.38px;
 }
 
 .defenses-v2 .def-row span {
@@ -64,6 +63,5 @@
 
 .defenses-v2 .cover-row p {
     width: 100%;
-    min-height: 16px;
-    border-bottom: 1px solid black;
+    min-height: 17.38px;
 }

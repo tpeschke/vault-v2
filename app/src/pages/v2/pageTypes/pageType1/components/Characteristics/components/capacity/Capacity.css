@@ -23,8 +23,10 @@
 .capacity-v2 .capacity-values p {
     width: 10.3%;
     text-align: center;
+    min-height: 17.38px;
 }
 
 .capacity-v2 .capacity-values p.slash {
     width: 2.5%;
+    min-height: unset;
 }

@@ -27,8 +27,7 @@
 
 .favor-v2 .favor-track > p {
     width: 28%;
-    min-height: 18px;
-    border: 1px solid #bdbdbd;
+    min-height: 17.38px;
 }
 
 .favor-v2 .favor-track > span:not(.anointed-row) {
@@ -48,7 +47,6 @@
     width: 12px;
     height: 12px;
     margin-left: 6px;
-    border: 1px solid black;
 }
 
 .favor-v2 .anointed-box.checked {

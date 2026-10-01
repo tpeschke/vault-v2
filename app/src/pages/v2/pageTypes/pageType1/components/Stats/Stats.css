@@ -28,4 +28,5 @@
 .stats-display-v2>div p {
     width: 75%;
     text-align: center;
+    min-height: 17.38px;
 }
