@@ -10,10 +10,16 @@ Constraints it imposes:
 - Right: Bonfire wordmark (attached logo: flame + BONFIRE + “The Roleplaying Game”) at the top, then Positions (static legend), Self Doubt, Damage, Stress, Defenses, Attacks. Compress the blocks below the logo so the page still fits `.page` height (1036px). Do not use the v1 flame-only `logo-black.png` plus HTML title.
 - Do not put Goals, Temperaments, Relationships, or Movement on this page.
 - Fonts unchanged. Label “Cultural Strength” unchanged.
+- Social suite **labels** are Influence, Inform, Inspire, Intimidate. Draw order on the page: Influence, Inform, then Inspire, Intimidate. Stored identity stays `suiteID` 1–4. Payload keys and description tables stay `empathize` / `intimidate` / `lecture` / `tempt`. Map: 1 empathize → Influence, 2 intimidate → Intimidate, 3 lecture → Inform, 4 tempt → Inspire.
+- Current Emotions is a new stored string on `v2BasicCharacteristics` (`currentEmotions`). The view binds that one string.
+- Descriptions binds a new stored list, not `convictions`, `goals`, or `relationships`. Convictions stay in the payload; this page does not draw them.
+- `dieIndex` 0 draws no selection. Stored 1–6 map to d4–d20 (`selected` when `index === dieIndex - 1`).
+- Defense `name` / `notes` and attack `notes` stay undrawn on this page.
 
-Open (not decided):
-- Social suite display names: sheet Influence / Inform / Inspire / Intimidate vs v2 data Empathize / Lecture / Intimidate / Tempt.
-- Current Emotions has no stored field. Descriptions vs `convictions`. Defense `name`/`notes` and attack `notes` are not on the sheet.
+Rejected:
+- Binding Descriptions to convictions, goals, or relationships.
+- Treating `dieIndex` 0 as d4.
+- Drawing defense name/notes or attack notes on page type 1.
 
-Touches: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/assets/images/` (unindexed; wordmark file); `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/getCharacteristicsInfo.ts`
-TODOs: T-009, T-010, T-011
+Touches: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/assets/images/` (unindexed; wordmark file); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/`; `backend/server/v2/add/pageType1/` (Current Emotions column default only); `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/`; `backend/server/v2/backupTables/page1.sql` (unindexed schema snapshot)
+TODOs: T-009–T-011 (done); T-012–T-015 (proposed)
