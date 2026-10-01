@@ -6,62 +6,27 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-025: Load Kalam Regular and define `.character-value`
-status: proposed
-source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Kalam for character values)
-why: Character-object fill-ins must use Kalam 400. Form chrome stays HamletOrNot / oldClaude / Source Sans 3.
-scope: unindexed `app/src/index.css` (existing Google `@import`); view character adjacency `app/src/pages/View.css` (v2 sheet pages inherit this). Do not add npm `@fontsource/kalam`, self-hosted files, or weights 300/700. Do not restyle global `p`.
-steps:
-1. Extend the existing Google Fonts `@import` in `index.css` with `family=Kalam:wght@400` on the same URL as Source Sans 3 (`display=swap`). Keep `@import` as the first rule. Do not add a second `@import`.
-2. In `View.css` add `.v2 .character-value { font-family: 'Kalam', cursive; }` so it beats `.v2 h2 { font-family: 'oldClaude' }` (attack names). Do not set `font-size` or `min-height` (keep 15px / 17.38px from global `p`; attack `h2` keeps its current size).
-3. If `.page` overflows after T-026, record it there. Do not invent compression.
-done when:
-- `rg 'family=Kalam:wght@400' app/src/index.css` is 1.
-- `rg 'Kalam:wght@(300|700)' app/src/index.css` is 0.
-- `rg "@fontsource/kalam" app/` is 0.
-- `rg "font-family: 'Kalam', cursive" app/src/pages/View.css` is 1.
-- `rg '\\.v2 \\.character-value' app/src/pages/View.css` is 1.
-depends on: none
-open questions: none
-deviations from design: selector is `.v2 .character-value`, not bare `.character-value`, so attack-name `h2` is not kept on oldClaude by `.v2 h2`.
-
-### T-026: Mark interpolated v2 sheet values with `character-value`
-status: proposed
-source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Kalam for character values)
-why: Q4-B: a class on each interpolated node, not all `p`. Q1-B: every v2 sheet page, including existing off-page-1 interpolations.
-scope: view character adjacency under `app/src/pages/v2/pageTypes/pageType1/`. Append `character-value` to existing `className`s. Do not change v1, home, Positions, die `<img>` cells, Anointed box, Favor prompt, or static slashes.
-steps:
-1. Add `character-value` on these interpolations (and their empty pads that stand in for the same field):
-   - `components/GeneralInfo/GeneralInfo.tsx` — name, ancestry, class, subclass, level, unspent, spent, toLvl (`p`)
-   - `components/Stats/Stats.tsx` — str, dex, con, mem, ins, pre
-   - `components/Characteristics/components/capacity/Capacity.tsx` — band value `<p>{value}</p>` only, not `<p className="slash">`
-   - `components/Characteristics/Characteristics.tsx` — Current Emotions cells (filled and pad)
-   - `components/Characteristics/components/socialSuites/components/SocialSuite.tsx` — stat, rank, description value/rank, empty description pads
-   - `components/Characteristics/components/reputation/ReputationDisplay.tsx` — value, rank, empty pads
-   - `components/Characteristics/components/strengthNDiscount/StrengthNDiscount.tsx` — culturalStrength, socialSkillDiscount
-   - `components/Characteristics/components/descriptions/Descriptions.tsx` — value and pads
-   - `components/Characteristics/components/flaws/Flaws.tsx` — flaw and pads
-   - `components/Favor/Favor.tsx` — current, max only
-   - `components/Vitals/Vitals.tsx` — threshold, diePenalty, knockback, damage, damage.threshold, stress, stress.threshold. Do not mark DieRow `<p>`s that wrap `<img>`
-   - `components/Defenses/Defenses.tsx` — initiative, defense, parry, flanks, cover, parryDR, dr, notes. Not `name` (still undrawn)
-   - `components/Attacks/Attacks.tsx` — `h2` name, measure, attack, damage, type, recovery, notes
-2. Same class on existing v2 interpolations not drawn on page type 1 (Q1-B): `.../temperaments/Temperaments.tsx` value `p`s; `.../movement/MovementDisplay.tsx` crawl/walk/jog/run/sprint only (not `ft / sec`); `.../relationships/Relationships.tsx` value/rank and pads.
-3. Do not add the class in `Positions.tsx`. Leave `p.slash`, Favor `<span>/</span>`, Damage/Stress `<span className="slash">`, Anointed box, and die cells unmarked.
-4. Browser: one filled name, one number, one notes string in Kalam; labels still oldClaude/HamletOrNot; Positions and slashes not Kalam. Record `.page` overflow. Do not invent compression.
-done when:
-- `rg 'character-value' app/src/pages/v2/pageTypes/pageType1/components/GeneralInfo/GeneralInfo.tsx` is 7.
-- `rg 'character-value' app/src/pages/v2/pageTypes/pageType1/components/Stats/Stats.tsx` is 6.
-- `rg 'character-value' app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.tsx` is at least 7 (`h2` plus six fields).
-- `rg 'character-value' app/src/pages/v2/pageTypes/pageType1/components/Positions/Positions.tsx` is 0.
-- `rg 'character-value' app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` is 7.
-- `rg 'character-value' app/src/pages/v1/` is 0.
-- `rg 'slash character-value' app/src/pages/v2/` is 0.
-- `rg "className=.slash." app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/capacity/Capacity.tsx` still matches the slash `<p>` without `character-value`.
-depends on: T-025
-open questions: none
-deviations from design: none
+(none)
 
 ## Done
+
+### T-025: Load Kalam Regular and define `.character-value`
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Kalam for character values)
+why: Character-object fill-ins must use Kalam 400. Form chrome stays HamletOrNot / oldClaude / Source Sans 3.
+scope: unindexed `app/src/index.css`; view character adjacency `app/src/pages/View.css`.
+result: Google `@import` includes `family=Kalam:wght@400`. `.v2 .character-value` sets `'Kalam', cursive`. No 300/700, no Fontsource.
+deviations from design: selector is `.v2 .character-value` (Order) so attack-name `h2` is not kept on oldClaude.
+open questions: none
+
+### T-026: Mark interpolated v2 sheet values with `character-value`
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Kalam for character values)
+why: Q4-B: a class on each interpolated node, not all `p`. Q1-B: every v2 sheet page, including existing off-page-1 interpolations.
+scope: view character adjacency under `app/src/pages/v2/pageTypes/pageType1/`.
+result: `character-value` on listed interpolations (including Temperaments, Movement speeds, Relationships). Positions, die `<img>` cells, `p.slash`, slash spans, Anointed, v1, home unmarked. GeneralInfo has 8 fields (name through toLvl), not the Order check’s 7. Browser overflow pending.
+deviations from design: none. Order done-check counted GeneralInfo as 7; steps listed 8 interpolations — implemented 8.
+open questions: none
 
 ### T-024: Draw unlabeled two-line notes under Defense and each Attack
 status: done

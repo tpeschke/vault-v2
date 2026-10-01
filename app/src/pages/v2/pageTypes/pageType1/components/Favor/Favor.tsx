@@ -14,9 +14,9 @@ export default function FavorDisplay({ favor }: Props) {
             <div className="favor-body">
                 <em className="favor-prompt">What is your relationship to the Divine?</em>
                 <div className="favor-track">
-                    <p className="center-text">{current}</p>
+                    <p className="center-text character-value">{current}</p>
                     <span>/</span>
-                    <p className="center-text">{max}</p>
+                    <p className="center-text character-value">{max}</p>
                     <span className="anointed-row">
                         <em>Anointed?</em>
                         <span className={anointed ? 'anointed-box checked' : 'anointed-box'}></span>

@@ -14,33 +14,33 @@ export default function DefensesDisplay({ defenses }: Props) {
                 <h1>Defenses</h1>
                 <span>
                     <em>Initiative</em>
-                    <p className="center-text">{initiative}</p>
+                    <p className="center-text character-value">{initiative}</p>
                 </span>
             </div>
             <div className="def-row">
                 <em>Def (Parry / Flanks)</em>
-                <p className="center-text">{defense}</p>
+                <p className="center-text character-value">{defense}</p>
                 <span>(</span>
-                <p className="center-text">{parry}</p>
+                <p className="center-text character-value">{parry}</p>
                 <span>/</span>
-                <p className="center-text">{flanks}</p>
+                <p className="center-text character-value">{flanks}</p>
                 <span>)</span>
             </div>
             <div className="cover-row">
                 <span>
                     <em>Cover</em>
-                    <p>{cover}</p>
+                    <p className="character-value">{cover}</p>
                 </span>
                 <span>
                     <em>P. DR</em>
-                    <p>{parryDR}</p>
+                    <p className="character-value">{parryDR}</p>
                 </span>
                 <span>
                     <em>DR</em>
-                    <p>{dr}</p>
+                    <p className="character-value">{dr}</p>
                 </span>
             </div>
-            <p>{notes ?? ''}</p>
+            <p className="character-value">{notes ?? ''}</p>
         </div>
     )
 }

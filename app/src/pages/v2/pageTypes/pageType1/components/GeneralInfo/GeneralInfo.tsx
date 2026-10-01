@@ -13,39 +13,39 @@ export default function GeneralInfoDisplay({ generalInfo }: Props) {
         <div className="general-info-v2">
             <span>
                 <strong>Name</strong>
-                <p className="border">{name}</p>
+                <p className="border character-value">{name}</p>
             </span>
             <span>
                 <strong>Ancestry</strong>
-                <p className="border">{ancestry}</p>
+                <p className="border character-value">{ancestry}</p>
             </span>
             <div className='multi-item-line'>
                 <span>
                     <strong>Class</strong>
-                    <p className="border">{primaryClass}</p>
+                    <p className="border character-value">{primaryClass}</p>
                 </span>
                 <span>
                     <strong>Subclass</strong>
-                    <p className="border">{subclass}</p>
+                    <p className="border character-value">{subclass}</p>
                 </span>
                 <span>
                     <strong>Lvl</strong>
-                    <p className="border center-text">{level}</p>
+                    <p className="border center-text character-value">{level}</p>
                 </span>
             </div>
             <div className='multi-item-line'>
                 <strong>CrP</strong>
                 <span>
                     <em>Unspent</em>
-                    <p className='border center-text'>{unspent}</p>
+                    <p className='border center-text character-value'>{unspent}</p>
                 </span>
                 <span>
                     <em>Spent</em>
-                    <p className='border center-text'>{spent}</p>
+                    <p className='border center-text character-value'>{spent}</p>
                 </span>
                 <span>
                     <em>Spent to lvl</em>
-                    <p className='border center-text'>{toLvl}</p>
+                    <p className='border center-text character-value'>{toLvl}</p>
                 </span>
             </div>
         </div>

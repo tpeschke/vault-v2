@@ -22,11 +22,11 @@ export default function VitalsDisplay({ vitals }: Props) {
                 <div className="vitals-split">
                     <span>
                         <h2>Integrity Threshold</h2>
-                        <p className="center-text">{selfDoubt.threshold}</p>
+                        <p className="center-text character-value">{selfDoubt.threshold}</p>
                     </span>
                     <span>
                         <h2>Die Penalty</h2>
-                        <p className="center-text">{selfDoubt.diePenalty}</p>
+                        <p className="center-text character-value">{selfDoubt.diePenalty}</p>
                     </span>
                 </div>
             </section>
@@ -37,20 +37,20 @@ export default function VitalsDisplay({ vitals }: Props) {
                     <em>Trauma</em>
                     <span>
                         <h2>Knock Back</h2>
-                        <p className="center-text">{damage.knockback}</p>
+                        <p className="center-text character-value">{damage.knockback}</p>
                     </span>
-                    <p className="center-text">{damage.damage}</p>
+                    <p className="center-text character-value">{damage.damage}</p>
                     <span className="slash">/</span>
-                    <p className="center-text">{damage.threshold}</p>
+                    <p className="center-text character-value">{damage.threshold}</p>
                 </div>
             </section>
             <section>
                 <h1>Stress</h1>
                 <DieRow dieIndex={stress.dieIndex} />
                 <div className="stress-values">
-                    <p className="center-text">{stress.stress}</p>
+                    <p className="center-text character-value">{stress.stress}</p>
                     <span className="slash">/</span>
-                    <p className="center-text">{stress.threshold}</p>
+                    <p className="center-text character-value">{stress.threshold}</p>
                 </div>
             </section>
         </div>

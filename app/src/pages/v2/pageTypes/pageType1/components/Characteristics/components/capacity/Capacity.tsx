@@ -30,7 +30,7 @@ export default function CapacityDisplay({ capacity }: Props) {
                 {bands.map(({ label, value }, index) => (
                     <Fragment key={label}>
                         {index > 0 && <p className="slash">/</p>}
-                        <p>{value}</p>
+                        <p className="character-value">{value}</p>
                     </Fragment>
                 ))}
             </div>

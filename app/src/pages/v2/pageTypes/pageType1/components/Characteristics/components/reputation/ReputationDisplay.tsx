@@ -13,8 +13,8 @@ export default function ReputationDisplay({ reputations }: Props) {
                 return (
                     <span key={id}>
                         <em>I'm Known For</em>
-                        <p>{value}</p>
-                        <p>{rank}</p>
+                        <p className="character-value">{value}</p>
+                        <p className="character-value">{rank}</p>
                     </span>
                 )
             })}
@@ -22,8 +22,8 @@ export default function ReputationDisplay({ reputations }: Props) {
                 return (
                     <span key={index}>
                         <em>I'm Known For</em>
-                        <p></p>
-                        <p></p>
+                        <p className="character-value"></p>
+                        <p className="character-value"></p>
                     </span>
                 )
             })}

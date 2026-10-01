@@ -21,3 +21,7 @@
 .v2 strong {
     font-size: 14px;
 }
+
+.v2 .character-value {
+    font-family: 'Kalam', cursive;
+}

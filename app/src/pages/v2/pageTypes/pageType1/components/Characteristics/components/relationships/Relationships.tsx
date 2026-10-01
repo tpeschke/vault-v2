@@ -12,15 +12,15 @@ export default function RelationshipsDisplay({ relationships }: Props) {
             {relationships.map(({ id, value, rank }) => {
                 return (
                     <span key={id}>
-                        <p>{value}</p>
-                        <p>{rank}</p>
+                        <p className="character-value">{value}</p>
+                        <p className="character-value">{rank}</p>
                     </span>
                 )
             })}
             {[...Array(3 - relationships.length)].map((_, index) => {
                 return (
                     <span key={index}>
-                        <p></p>
+                        <p className="character-value"></p>
                     </span>
                 )
             })}

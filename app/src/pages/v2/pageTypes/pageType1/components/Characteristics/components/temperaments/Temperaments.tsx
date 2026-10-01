@@ -14,25 +14,25 @@ export default function TemperamentsDisplay({ temperaments }: Props) {
             <div>
                 <span>
                     <em>Affability</em>
-                    <p>{affability}</p>
+                    <p className="character-value">{affability}</p>
                 </span>
                 <span>
                     <em>Openness</em>
-                    <p>{openness}</p>
+                    <p className="character-value">{openness}</p>
                 </span>
                 <span>
                     <em>Outgoingness</em>
-                    <p>{outgoingness}</p>
+                    <p className="character-value">{outgoingness}</p>
                 </span>
             </div>
             <div>
                 <span>
                     <em>Work-ethic</em>
-                    <p>{workEthic}</p>
+                    <p className="character-value">{workEthic}</p>
                 </span>
                 <span>
                     <em>Worry</em>
-                    <p>{worry}</p>
+                    <p className="character-value">{worry}</p>
                 </span>
             </div>
         </div>

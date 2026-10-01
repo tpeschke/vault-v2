@@ -22,10 +22,10 @@ export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
             <h2>Current Emotions</h2>
             <div className="current-emotions-v2">
                 {rows.slice(0, 6).map(({ id, value }) => (
-                    <p key={id}>{value}</p>
+                    <p key={id} className="character-value">{value}</p>
                 ))}
                 {[...Array(Math.max(0, 6 - rows.length))].map((_, index) => (
-                    <p key={index}></p>
+                    <p key={index} className="character-value"></p>
                 ))}
             </div>
 

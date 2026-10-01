@@ -14,14 +14,14 @@ export default function DescriptionsDisplay({ descriptions }: Props) {
             {rows.map(({ id, value }) => {
                 return (
                     <span key={id}>
-                        <p>{value}</p>
+                        <p className="character-value">{value}</p>
                     </span>
                 )
             })}
             {[...Array(Math.max(0, 5 - rows.length))].map((_, index) => {
                 return (
                     <span key={index}>
-                        <p></p>
+                        <p className="character-value"></p>
                     </span>
                 )
             })}
