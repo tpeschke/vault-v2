@@ -1,5 +1,4 @@
 .reputation-display-v2 > span {
-    padding: 2px 1px;
     gap: 1px;
     display: flex;
     align-items: center;
@@ -13,10 +12,17 @@
     min-width: 88px;
 }
 
+.reputation-display-v2 > span > p,
+.reputation-display-v2 > span > input {
+    padding: 2px 1px;
+    box-sizing: border-box;
+    background-clip: content-box;
+    min-height: 17.38px;
+}
+
 .reputation-display-v2 > span > p:first-of-type,
 .reputation-display-v2 > span > input:nth-of-type(1) {
     width: 100%;
-    min-height: 17.38px;
 }
 
 .reputation-display-v2 > span > p:last-of-type,
@@ -40,4 +46,9 @@
 
 .v2 .view-edit .reputation-display-v2 > span:nth-child(odd) input:hover {
     background: rgb(145, 181, 194) !important;
+}
+
+.v2 .view-edit .reputation-display-v2 input,
+.v2 .view-edit .reputation-display-v2 input:hover {
+    background-clip: content-box !important;
 }

@@ -6,7 +6,6 @@
     display: flex;
     align-items: center;
     width: 33%;
-    padding: 2px 1px;
     box-sizing: border-box;
 }
 
@@ -42,25 +41,40 @@
     background: rgb(145, 181, 194) !important;
 }
 
+.v2 .view-edit .attacks-v2 .attack-row input,
+.v2 .view-edit .attacks-v2 .attack-row input:hover,
+.v2 .view-edit .attacks-v2 .attack-notes textarea,
+.v2 .view-edit .attacks-v2 .attack-notes textarea:hover {
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .attacks-v2 .attack-row input,
+.v2 .view-edit .attacks-v2 .attack-row input:hover,
+.v2 .view-edit .attacks-v2 .attack-notes textarea,
+.v2 .view-edit .attacks-v2 .attack-notes textarea:hover {
+    background-clip: content-box !important;
+}
+
 .attacks-v2 .attack-row p,
 .attacks-v2 .attack-row input {
     width: 100%;
     min-width: 0;
     min-height: 17.38px;
-}
-
-.attacks-v2 .attack-notes {
     padding: 2px 1px;
+    box-sizing: border-box;
+    background-clip: content-box;
 }
 
 .attacks-v2 .attack-notes p,
 .attacks-v2 .attack-notes textarea {
     min-height: calc(2 * 17.38px);
+    padding: 2px 1px;
+    box-sizing: border-box;
+    background-clip: content-box;
 }
 
 .attacks-v2 .attack-notes textarea {
     width: 100%;
     height: calc(2 * 17.38px);
     min-width: 0;
-    box-sizing: border-box;
 }

@@ -8,7 +8,6 @@
 
 .characteristics-display-v2 .current-emotions-v2 > span {
     width: calc(33.33% - 8px);
-    padding: 2px 1px;
     box-sizing: border-box;
 }
 
@@ -17,7 +16,9 @@
     min-height: 17.38px;
     width: 100%;
     min-width: 0;
+    padding: 2px 1px;
     box-sizing: border-box;
+    background-clip: content-box;
 }
 
 .characteristics-display-v2 .current-emotions-v2 > span:nth-child(even) {
@@ -30,4 +31,9 @@
 
 .v2 .view-edit .current-emotions-v2 > span:nth-child(even) input:hover {
     background: rgb(145, 181, 194) !important;
+}
+
+.v2 .view-edit .current-emotions-v2 input,
+.v2 .view-edit .current-emotions-v2 input:hover {
+    background-clip: content-box !important;
 }
