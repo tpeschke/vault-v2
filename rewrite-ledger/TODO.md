@@ -13,7 +13,7 @@ status: done
 source: rewrite-ledger/edit-character.md, 2026-10-02 (design: edit Yb; Q1 value only; Q2 `≤` stays chrome; Q3 empty → 0)
 why: Yb is `≤${capacity}` — the stored number. Bands were all text; there is no `updateCapacity`.
 scope: `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/capacity/Capacity.tsx`; `Capacity.css`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` (pass `pageID` / `updates`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `getV2Updates.ts`; `hooks/interfaces/UpdateInterfaces.ts`. Do not change `saveBasicCharacteristics.ts` (already writes `capacity`). Do not swap Na / N / Nb / Y / Ya. Do not add a raw capacity label. Do not edit Trauma or CrP `toLvl`.
-result: `updateCapacity` writes `characteristicsInfo.capacity`. Edit Yb is `≤` chrome plus a number input; view stays one `p` `≤${capacity}`. Empty/invalid → 0. Na/N/Nb/Y/Ya stay text.
+result: `updateCapacity` writes `characteristicsInfo.capacity`. Edit Yb is `≤` chrome plus a number input; view stays one `p` `≤${capacity}`. Empty/invalid → 0. Na/N/Nb/Y/Ya stay text. Browser: 8→10 updates Nb/Y/Ya (≤5 / ≤15 / >15), Na stays `<0`; clear → 0; Revert restores ≤8; capacity row height unchanged.
 deviations from design: none
 open questions: none
 
@@ -22,7 +22,7 @@ status: done
 source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: name under Input; Q7 replace empty h2; Q8 keep header height)
 why: `Defense.name` is assembled and saved (`saveDefenses` already `set name = $1`) but `Defenses.tsx` omits it. The left header span is `<h1>Defenses</h1><h2></h2>`.
 scope: `app/src/pages/v2/pageTypes/pageType1/components/Defenses/Defenses.tsx`; `Defenses.css`. Do not change `saveDefenses.ts`. Do not add a third header row or a visible **Input** `em`. Do not change notes.
-result: Empty `<h2>` replaced with name `p`/`input`. Initiative 23px/border rules narrowed to `span:last-child`. Name 15px Kalam, 17.38px, no extra border. `saveDefenses` unchanged.
+result: Empty `<h2>` replaced with name `p`/`input`. Initiative 23px/border rules narrowed to `span:last-child`. Name 15px Kalam, 17.38px, no extra border. `saveDefenses` unchanged. Browser: name under **Defenses**; header height 43.59 view and edit; Initiative 23px; Revert restores `''`.
 deviations from design: the word **Input** is not drawn as a caption (Q7+Q8: name fills the existing slot, no extra line).
 open questions: none
 
@@ -31,7 +31,7 @@ status: done
 source: rewrite-ledger/edit-character.md, rewrite-ledger/schema-on-boot.md, 2026-10-02 (design: string under Divine prompt; Q4 `divineRelationship`; Q5 varchar 500; Q6 like notes)
 why: The prompt is chrome. There is no stored answer. Favor is `{ anointed, current, max }` only.
 scope: `backend/common/interfaces/v2/page1/favor.ts`; `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page1.sql`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getFavor.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/assemblePageType1.ts` (skeleton default); `backend/server/v2/edit/utilities/pageType1/utilities/saveFavor.ts`; `app/src/pages/v2/pageTypes/pageType1/components/Favor/` (`Favor.tsx`, `Favor.css`). `updateFavor` already takes `Partial<Favor>` — no new hook function. Do not change `addFavor` insert beyond table default. Do not reuse relationships / descriptions / notes. Path sits under existing YAML adjacent `app/src/pages/v2/` and unindexed `ensureSchema` / `backupTables`; no new routing key.
-result: `Favor.divineRelationship` string; `ensureSchema` `ADD COLUMN IF NOT EXISTS` varchar(500) fail-closed on `divinerelationship`; `getFavor` maps pg lowercase; `saveFavor` writes it. Left column: italic prompt plus notes-style `p`/`textarea`.
+result: `Favor.divineRelationship` string; `ensureSchema` `ADD COLUMN IF NOT EXISTS` varchar(500) fail-closed on `divinerelationship`; `getFavor` maps pg lowercase; `saveFavor` writes it. Left column: italic prompt plus notes-style `p`/`textarea`. Browser: empty cell is two lines (34.76px); typed text wraps; Revert restores `''`. `.page-type-one` stayed 1068.
 deviations from design: none
 open questions: none
 
@@ -40,7 +40,7 @@ status: done
 source: rewrite-ledger/edit-character.md, 2026-10-02 (design: edit teal; Q1 all dice; Q2 darker hover; Q3 Anointed same teal)
 why: `.view-edit` fills `input` / `textarea` / `button` / `.fake-button` with `rgba(173, 216, 230)` and hover `rgb(145, 181, 194)`. Die cells are `<p>` and Anointed is a `<span>`, so they stay grey.
 scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (existing `.v2 .view-edit .vitals-v2 .die-row p`); `.../Favor/Favor.css` (existing `.v2 .view-edit .favor-v2 .anointed-box`). Do not change `Vitals.tsx` / `Favor.tsx` structure, die PNGs, `dieIndex` click, or Anointed click. Do not add `fake-button`. Do not wrap dice in `<input>` or `<button>`. Do not `filter` the PNGs. Do not add selectors to `index.css`.
-result: `.view-edit` die `<p>` and unchecked Anointed use teal `rgba(173, 216, 230)` and hover `rgb(145, 181, 194)` with `!important`. Checked Anointed stays black including hover. No `fake-button`. Cursor rules kept.
+result: `.view-edit` die `<p>` and unchecked Anointed use teal `rgba(173, 216, 230)` and hover `rgb(145, 181, 194)` with `!important`. Checked Anointed stays black including hover. No `fake-button`. Cursor rules kept. Browser: 18 die cells teal in edit, transparent in view; selected outline `2px solid black`; die-row tops unchanged on toggle.
 deviations from design: none
 open questions: none
 
