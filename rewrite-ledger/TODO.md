@@ -6,49 +6,27 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-033: Add v2 DisplaySingleArray and DisplayPairArray
-status: proposed
-source: rewrite-ledger/edit-character.md, 2026-10-02 (design: v1 array edit; Q1 everything but attacks; Q7 shared widget)
-why: v1 list edit is leftover pads plus one extra insert row. v2 always maps `[...Array(max)]`. The shared widgets belong on the v2 view slice, not a new feature folder and not an import of v1.
-scope: new `app/src/pages/v2/components/displayArray/` (`DisplaySingleArray.tsx`, `DisplayPairArray.tsx`; optional small CSS only if a class the call site does not already own is required). Do not add files under `app/src/pages/v1/` or `app/src/features/`. Do not import `app/src/pages/v1/components/displayArray`. Path sits under existing YAML adjacent `app/src/pages/v2/`; no new routing key.
-steps:
-1. Copy v1 mechanics only (`app/src/pages/v1/components/displayArray/displaySingle/DisplaySingleArray.tsx`, `.../displayPair/DisplayPairArray.tsx`): `leftOver = max - items.length - (isEditing ? 1 : 0)`; `showEditInputs = isEditing && leftOver > -1`; stored rows via `renderRow`; extra insert via `renderInsert` with v1 `onBlur` commit; leftover via `renderLeftover`. Read `isEditing` from v2 `EditingContext`.
-2. `DisplaySingleArray`: items `{ id?: number, key?: string, value: string }`. Insert: `onBlur`, if `value !== ''`, call `insert({ key: makeTempID(), value })` from `app/src/utilities/makeTempId.ts` and clear the extra input. Update: `onChange` on stored rows calls `update(index, next)`. Empty stored `value` (`=== ''`) calls the same update with an empty value; the hook (T-034) removes the row. Do not copy v1 `- {value}` bullets or `DisplayArray.css` 17px heights.
-3. `DisplayPairArray`: items `{ id?: number, key?: string, value: string, rank: string | number }`. Hold a local draft for the insert pair (v1 `newObject`). `onBlur` on either insert field: if `value !== ''` or rank is a non-empty string or a number the user typed (do not treat an untouched empty number input as `0` for isValid), `insert({ key: makeTempID(), ... })` and reset the draft. Stored-row change with both value and rank empty is a clear (hook removes). Rank `0` with a non-empty value stays.
-4. Both widgets take `max`, `items`, `insert`, `update`, `renderRow`, `renderInsert`, `renderLeftover`. Return a fragment (no extra shell) so existing `flaws-v2` / `descriptions-v2` / `current-emotions-v2` / `reputation-display-v2` / `.description-row` CSS still matches children. Keys: `item.key ?? item.id`.
-5. Inputs in the default path are not hardcoded; call sites pass `className="character-value"` and `placeholder=" "` inside the render props (T-032).
-done when:
-- `app/src/pages/v2/components/displayArray/DisplaySingleArray.tsx` and `DisplayPairArray.tsx` exist.
-- Grep those files for `from '..../v1/` and `from \"..../v1/`: 0 hits.
-- Grep `app/src/features`: still no `edit-character` or `displayArray`.
-- Widgets are unused until T-034 (ok) or T-034 lands in the same Execute.
-depends on: T-032
-open questions: none
-deviations from design: leftover cells are call-site chrome (empty `span` / `p` / `span.description-row`), not v1’s bare leftover `<p>`, so suite grid lines and emotion 3×2 cells stay.
+
+## Done
 
 ### T-034: Insert, update, and clear list rows; wire the widgets
-status: proposed
+status: done
 source: rewrite-ledger/edit-character.md, 2026-10-02 (design: v1 array edit; Q1–Q6)
 why: `padTo` + `[...Array(max)]` writes empty `{ id: 0 }` rows. v1 keeps only real rows, inserts on blur, removes a row whose fields are cleared.
 scope: `backend/common/interfaces/v2/page1/characteristicsInfo.ts` (`Emotion`, `Description`, `Flaw`, `CharacteristicPair`); `backend/common/interfaces/v2/pairInterfaces.ts` (`SkillPair`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` (emotions); `.../descriptions/Descriptions.tsx`; `.../flaws/Flaws.tsx`; `.../reputation/ReputationDisplay.tsx`; `.../socialSuites/components/SocialSuite.tsx`. Do not change Attacks. Do not change backend save SQL (already delete-not-in-ids / update-if-id / insert-if-falsy-id). Caps: emotions 6, descriptions 5, flaws 3, reputations 3, suite description rows 6.
-steps:
-1. Add optional `key?: string` to `Emotion`, `Description`, `Flaw`, `CharacteristicPair`, `SkillPair`. Leave `id: number` (new rows `id: 0` so save inserts).
-2. Replace `padTo` list helpers with v1-shaped functions: `insertEmotion` / `insertDescription` / `insertFlaw` / `insertReputation` / `insertSocialSuiteDescription` append `{ ...newRow, id: 0, key }`. `update*` maps by index; if the row is empty (single: value/`flaw` `=== ''`; reputation: `value === '' && rank === ''`; suite description: `value === ''` and rank is empty/`''`, not `0`), filter that index out. Drop `padTo`.
-3. `PageType1Updates`: add the five `insert*` functions; keep `update*` with the clear-on-empty behavior. Wire them in `getV2Updates`.
-4. Call sites: stop `[...Array(max)]`. Pass stored arrays (`?? []`) into T-033 widgets. `renderRow` keeps each widget’s chrome (`span` + Kalam input/`p`; emotions: bare `p`/`input`; reputation: `em` I'm Known For + value + rank; suite: `span.description-row` + value + number rank). `renderInsert`: same chrome, unbound extra input(s), `onBlur` handled by the widget. `renderLeftover`: empty display chrome so the block still has `max` children (emotions: empty `p.character-value`; flaws/descriptions: empty `span`>`p.character-value`; reputation: `span` with `em` + two empty `p`; suite: `span.description-row` + two empty `p`). React keys `key ?? id`.
-5. Suite title stat/rank inputs stay as they are (not list rows). Attacks unchanged.
-done when:
-- Grep `pageType1Updates.ts` for `padTo`: 0 hits.
-- Grep `Characteristics.tsx`, `Descriptions.tsx`, `Flaws.tsx`, `ReputationDisplay.tsx`, `SocialSuite.tsx` for `[...Array(`: 0 hits (attacks may still use map over the four-slot array).
-- Grep those widgets for `from '../../../components/displayArray` or equivalent: each list uses `DisplaySingleArray` or `DisplayPairArray`.
-- `npx tsc --noEmit` in `app/` (or workspace frontend tsc) passes.
-- Browser, owner sheet: view still shows `max` lines per list (filled rows + empty pads). Edit on: same `max` lines (rows + one insert if under cap + leftover). Blur a non-empty insert adds a row; the extra insert reappears if still under cap. Clear a row’s fields: row gone, leftover grows, `max` lines held. At cap, no insert control. Revert restores the snapshot list. Attacks still four slots, no insert row. `.page-type-one` height 1068 if lists are within cap (same as view).
-depends on: T-033
+result: `padTo` gone. Five `insert*` append `{ id: 0, key }`. `update*` maps by index and filters empty rows. Call sites pass stored arrays into T-033 widgets. Attacks still four indexed slots. Caps 6/5/3/3/6.
+deviations from design: `SkillPair.rank` is `number | ''` so an empty number input is not stored as `0`. Pair `updateReputation` / `updateSocialSuiteDescription` take the full next row (one `apply` per keystroke) instead of `(index, field, value)`.
 open questions: none
-deviations from design: none
 
+### T-033: Add v2 DisplaySingleArray and DisplayPairArray
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design: v1 array edit; Q1 everything but attacks; Q7 shared widget)
+why: v1 list edit is leftover pads plus one extra insert row. v2 always maps `[...Array(max)]`. The shared widgets belong on the v2 view slice, not a new feature folder and not an import of v1.
+scope: new `app/src/pages/v2/components/displayArray/` (`DisplaySingleArray.tsx`, `DisplayPairArray.tsx`; optional small CSS only if a class the call site does not already own is required). Do not add files under `app/src/pages/v1/` or `app/src/features/`. Do not import `app/src/pages/v1/components/displayArray`. Path sits under existing YAML adjacent `app/src/pages/v2/`; no new routing key.
+result: Widgets on the v2 slice copy leftover + insert-row mechanics, read v2 `EditingContext`, use `makeTempID` for insert keys, and return a fragment. Call sites supply chrome via render props. Wired in the same Execute as T-034.
+deviations from design: leftover cells are call-site chrome (empty `span` / `p` / `span.description-row`), not v1’s bare leftover `<p>`, so suite grid lines and emotion 3×2 cells stay. Pair insert remounts via `insertReset` so both uncontrolled fields clear.
+open questions: none
 
-## Done
 
 ### T-032: Restore view boxes; size edit controls only
 status: done

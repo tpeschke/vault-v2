@@ -26,12 +26,11 @@ function getToLvl(level: number): number {
     return spentCrPToLevel[level]
 }
 
-function padTo<T>(items: T[], index: number, empty: () => T): T[] {
-    const next = items.slice()
-    while (next.length <= index) {
-        next.push(empty())
+function mapOrRemove<T>(items: T[], index: number, next: T, isEmpty: (row: T) => boolean): T[] {
+    if (isEmpty(next)) {
+        return items.filter((_, itemIndex) => itemIndex !== index)
     }
-    return next
+    return items.map((row, itemIndex) => itemIndex === index ? next : row)
 }
 
 export function updateGeneralInfoField(character: CharacterVersion2, pageID: number, key: 'name' | 'ancestry' | 'class' | 'subclass' | 'level', value: string | number): CharacterVersion2 {
@@ -77,10 +76,30 @@ export function updateStat(character: CharacterVersion2, pageID: number, key: ke
     }))
 }
 
+export function insertEmotion(character: CharacterVersion2, pageID: number, newRow: { key: string, value: string }): CharacterVersion2 {
+    return mapPage1(character, pageID, page => ({
+        ...page,
+        characteristicsInfo: {
+            ...page.characteristicsInfo,
+            currentEmotions: [
+                ...(page.characteristicsInfo.currentEmotions ?? []),
+                { id: 0, key: newRow.key, value: newRow.value }
+            ]
+        }
+    }))
+}
+
 export function updateEmotion(character: CharacterVersion2, pageID: number, index: number, value: string): CharacterVersion2 {
     return mapPage1(character, pageID, page => {
-        const currentEmotions = padTo<Emotion>(page.characteristicsInfo.currentEmotions ?? [], index, () => ({ id: 0, value: '' }))
-        currentEmotions[index] = { ...currentEmotions[index], value }
+        const current = page.characteristicsInfo.currentEmotions ?? []
+        const currentRow = current[index]
+        if (!currentRow) { return page }
+        const currentEmotions = mapOrRemove<Emotion>(
+            current,
+            index,
+            { ...currentRow, value },
+            row => row.value === ''
+        )
         return {
             ...page,
             characteristicsInfo: {
@@ -107,11 +126,37 @@ export function updateSocialSuiteField(character: CharacterVersion2, pageID: num
     }))
 }
 
-export function updateSocialSuiteDescription(character: CharacterVersion2, pageID: number, suite: keyof SocialSkillSuites, index: number, field: 'value' | 'rank', value: string | number): CharacterVersion2 {
+export function insertSocialSuiteDescription(character: CharacterVersion2, pageID: number, suite: keyof SocialSkillSuites, newRow: { key: string, value: string, rank: SkillPair['rank'] }): CharacterVersion2 {
     return mapPage1(character, pageID, page => {
         const current = page.characteristicsInfo.socialSuites[suite]
-        const descriptions = padTo<SkillPair>(current.descriptions ?? [], index, () => ({ id: 0, value: '', rank: 0 }))
-        descriptions[index] = { ...descriptions[index], [field]: value }
+        return {
+            ...page,
+            characteristicsInfo: {
+                ...page.characteristicsInfo,
+                socialSuites: {
+                    ...page.characteristicsInfo.socialSuites,
+                    [suite]: {
+                        ...current,
+                        descriptions: [
+                            ...(current.descriptions ?? []),
+                            { id: 0, key: newRow.key, value: newRow.value, rank: newRow.rank }
+                        ]
+                    }
+                }
+            }
+        }
+    })
+}
+
+export function updateSocialSuiteDescription(character: CharacterVersion2, pageID: number, suite: keyof SocialSkillSuites, index: number, next: SkillPair): CharacterVersion2 {
+    return mapPage1(character, pageID, page => {
+        const current = page.characteristicsInfo.socialSuites[suite]
+        const descriptions = mapOrRemove<SkillPair>(
+            current.descriptions ?? [],
+            index,
+            next,
+            row => row.value === '' && row.rank === ''
+        )
         return {
             ...page,
             characteristicsInfo: {
@@ -128,10 +173,27 @@ export function updateSocialSuiteDescription(character: CharacterVersion2, pageI
     })
 }
 
-export function updateReputation(character: CharacterVersion2, pageID: number, index: number, field: 'value' | 'rank', value: string): CharacterVersion2 {
+export function insertReputation(character: CharacterVersion2, pageID: number, newRow: { key: string, value: string, rank: string }): CharacterVersion2 {
+    return mapPage1(character, pageID, page => ({
+        ...page,
+        characteristicsInfo: {
+            ...page.characteristicsInfo,
+            reputations: [
+                ...(page.characteristicsInfo.reputations ?? []),
+                { id: 0, key: newRow.key, value: newRow.value, rank: newRow.rank }
+            ]
+        }
+    }))
+}
+
+export function updateReputation(character: CharacterVersion2, pageID: number, index: number, next: CharacteristicPair): CharacterVersion2 {
     return mapPage1(character, pageID, page => {
-        const reputations = padTo<CharacteristicPair>(page.characteristicsInfo.reputations ?? [], index, () => ({ id: 0, value: '', rank: '' }))
-        reputations[index] = { ...reputations[index], [field]: value }
+        const reputations = mapOrRemove<CharacteristicPair>(
+            page.characteristicsInfo.reputations ?? [],
+            index,
+            next,
+            row => row.value === '' && row.rank === ''
+        )
         return {
             ...page,
             characteristicsInfo: {
@@ -162,10 +224,30 @@ export function updateSocialSkillDiscount(character: CharacterVersion2, pageID: 
     }))
 }
 
+export function insertDescription(character: CharacterVersion2, pageID: number, newRow: { key: string, value: string }): CharacterVersion2 {
+    return mapPage1(character, pageID, page => ({
+        ...page,
+        characteristicsInfo: {
+            ...page.characteristicsInfo,
+            descriptions: [
+                ...(page.characteristicsInfo.descriptions ?? []),
+                { id: 0, key: newRow.key, value: newRow.value }
+            ]
+        }
+    }))
+}
+
 export function updateDescription(character: CharacterVersion2, pageID: number, index: number, value: string): CharacterVersion2 {
     return mapPage1(character, pageID, page => {
-        const descriptions = padTo<Description>(page.characteristicsInfo.descriptions ?? [], index, () => ({ id: 0, value: '' }))
-        descriptions[index] = { ...descriptions[index], value }
+        const current = page.characteristicsInfo.descriptions ?? []
+        const currentRow = current[index]
+        if (!currentRow) { return page }
+        const descriptions = mapOrRemove<Description>(
+            current,
+            index,
+            { ...currentRow, value },
+            row => row.value === ''
+        )
         return {
             ...page,
             characteristicsInfo: {
@@ -176,10 +258,30 @@ export function updateDescription(character: CharacterVersion2, pageID: number, 
     })
 }
 
+export function insertFlaw(character: CharacterVersion2, pageID: number, newRow: { key: string, flaw: string }): CharacterVersion2 {
+    return mapPage1(character, pageID, page => ({
+        ...page,
+        characteristicsInfo: {
+            ...page.characteristicsInfo,
+            flaws: [
+                ...(page.characteristicsInfo.flaws ?? []),
+                { id: 0, key: newRow.key, flaw: newRow.flaw }
+            ]
+        }
+    }))
+}
+
 export function updateFlaw(character: CharacterVersion2, pageID: number, index: number, value: string): CharacterVersion2 {
     return mapPage1(character, pageID, page => {
-        const flaws = padTo<Flaw>(page.characteristicsInfo.flaws ?? [], index, () => ({ id: 0, flaw: '' }))
-        flaws[index] = { ...flaws[index], flaw: value }
+        const current = page.characteristicsInfo.flaws ?? []
+        const currentRow = current[index]
+        if (!currentRow) { return page }
+        const flaws = mapOrRemove<Flaw>(
+            current,
+            index,
+            { ...currentRow, flaw: value },
+            row => row.flaw === ''
+        )
         return {
             ...page,
             characteristicsInfo: {

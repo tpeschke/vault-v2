@@ -9,6 +9,11 @@ import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { PageType1Updates } from "../interfaces/UpdateInterfaces"
 import {
+    insertDescription,
+    insertEmotion,
+    insertFlaw,
+    insertReputation,
+    insertSocialSuiteDescription,
     updateAttack,
     updateCrP,
     updateCulturalStrength,
@@ -66,6 +71,10 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateStat(character, pageID, key, value))
         },
+        insertEmotion: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertEmotion(character, pageID, newRow))
+        },
         updateEmotion: (pageID, index, value) => {
             if (!character) { return }
             apply(updateEmotion(character, pageID, index, value))
@@ -74,13 +83,21 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateSocialSuiteField(character, pageID, suite, field, value))
         },
-        updateSocialSuiteDescription: (pageID, suite: keyof SocialSkillSuites, index, field, value) => {
+        insertSocialSuiteDescription: (pageID, suite: keyof SocialSkillSuites, newRow) => {
             if (!character) { return }
-            apply(updateSocialSuiteDescription(character, pageID, suite, index, field, value))
+            apply(insertSocialSuiteDescription(character, pageID, suite, newRow))
         },
-        updateReputation: (pageID, index, field, value) => {
+        updateSocialSuiteDescription: (pageID, suite: keyof SocialSkillSuites, index, next) => {
             if (!character) { return }
-            apply(updateReputation(character, pageID, index, field, value))
+            apply(updateSocialSuiteDescription(character, pageID, suite, index, next))
+        },
+        insertReputation: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertReputation(character, pageID, newRow))
+        },
+        updateReputation: (pageID, index, next) => {
+            if (!character) { return }
+            apply(updateReputation(character, pageID, index, next))
         },
         updateCulturalStrength: (pageID, value) => {
             if (!character) { return }
@@ -90,9 +107,17 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateSocialSkillDiscount(character, pageID, value))
         },
+        insertDescription: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertDescription(character, pageID, newRow))
+        },
         updateDescription: (pageID, index, value) => {
             if (!character) { return }
             apply(updateDescription(character, pageID, index, value))
+        },
+        insertFlaw: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertFlaw(character, pageID, newRow))
         },
         updateFlaw: (pageID, index, value) => {
             if (!character) { return }

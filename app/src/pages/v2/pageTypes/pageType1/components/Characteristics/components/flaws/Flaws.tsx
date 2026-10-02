@@ -3,6 +3,7 @@ import './Flaws.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
+import DisplaySingleArray from '../../../../../../components/displayArray/DisplaySingleArray'
 
 interface Props {
     flaws: Flaw[]
@@ -17,18 +18,31 @@ export default function FlawsDisplay({ flaws, pageID, updates }: Props) {
     return (
         <div className='flaws-v2'>
             <h2>Flaws</h2>
-            {[...Array(3)].map((_, index) => {
-                const row = rows[index]
-                return (
-                    <span key={row?.id ?? index}>
+            <DisplaySingleArray
+                max={3}
+                items={rows.map(row => ({ id: row.id, key: row.key, value: row.flaw }))}
+                insert={row => updates.insertFlaw(pageID, { key: row.key, flaw: row.value })}
+                update={(index, next) => updates.updateFlaw(pageID, index, next.value)}
+                renderRow={(item, _index, onChange) => (
+                    <span>
                         {isEditing ?
-                            <input className="character-value" placeholder=" " value={row?.flaw ?? ''} onChange={event => updates.updateFlaw(pageID, index, event.target.value)} />
+                            <input className="character-value" placeholder=" " value={item.value} onChange={event => onChange({ ...item, value: event.target.value })} />
                             :
-                            <p className="character-value">{row?.flaw ?? ''}</p>
+                            <p className="character-value">{item.value}</p>
                         }
                     </span>
-                )
-            })}
+                )}
+                renderInsert={onBlur => (
+                    <span>
+                        <input className="character-value" placeholder=" " onBlur={onBlur} />
+                    </span>
+                )}
+                renderLeftover={() => (
+                    <span>
+                        <p className="character-value"></p>
+                    </span>
+                )}
+            />
         </div>
     )
 }

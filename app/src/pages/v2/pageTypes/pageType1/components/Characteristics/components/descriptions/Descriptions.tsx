@@ -3,6 +3,7 @@ import './Descriptions.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
 import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
+import DisplaySingleArray from '../../../../../../components/displayArray/DisplaySingleArray'
 
 interface Props {
     descriptions: Description[]
@@ -17,18 +18,31 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
     return (
         <div className='descriptions-v2'>
             <h2>Descriptions</h2>
-            {[...Array(5)].map((_, index) => {
-                const row = rows[index]
-                return (
-                    <span key={row?.id ?? index}>
+            <DisplaySingleArray
+                max={5}
+                items={rows}
+                insert={row => updates.insertDescription(pageID, row)}
+                update={(index, next) => updates.updateDescription(pageID, index, next.value)}
+                renderRow={(item, _index, onChange) => (
+                    <span>
                         {isEditing ?
-                            <input className="character-value" placeholder=" " value={row?.value ?? ''} onChange={event => updates.updateDescription(pageID, index, event.target.value)} />
+                            <input className="character-value" placeholder=" " value={item.value} onChange={event => onChange({ ...item, value: event.target.value })} />
                             :
-                            <p className="character-value">{row?.value ?? ''}</p>
+                            <p className="character-value">{item.value}</p>
                         }
                     </span>
-                )
-            })}
+                )}
+                renderInsert={onBlur => (
+                    <span>
+                        <input className="character-value" placeholder=" " onBlur={onBlur} />
+                    </span>
+                )}
+                renderLeftover={() => (
+                    <span>
+                        <p className="character-value"></p>
+                    </span>
+                )}
+            />
         </div>
     )
 }

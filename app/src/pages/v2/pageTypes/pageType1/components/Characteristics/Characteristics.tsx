@@ -9,6 +9,7 @@ import DescriptionsDisplay from './components/descriptions/Descriptions'
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
+import DisplaySingleArray from '../../../../components/displayArray/DisplaySingleArray'
 
 interface Props {
     characteristicsInfo: Characteristics
@@ -27,19 +28,28 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
 
             <h2>Current Emotions</h2>
             <div className="current-emotions-v2">
-                {[...Array(6)].map((_, index) => {
-                    const value = rows[index]?.value ?? ''
-                    return isEditing ?
+                <DisplaySingleArray
+                    max={6}
+                    items={rows}
+                    insert={row => updates.insertEmotion(pageID, row)}
+                    update={(index, next) => updates.updateEmotion(pageID, index, next.value)}
+                    renderRow={(item, _index, onChange) => isEditing ?
                         <input
-                            key={rows[index]?.id ?? index}
                             className="character-value"
                             placeholder=" "
-                            value={value}
-                            onChange={event => updates.updateEmotion(pageID, index, event.target.value)}
+                            value={item.value}
+                            onChange={event => onChange({ ...item, value: event.target.value })}
                         />
                         :
-                        <p key={rows[index]?.id ?? index} className="character-value">{value}</p>
-                })}
+                        <p className="character-value">{item.value}</p>
+                    }
+                    renderInsert={onBlur => (
+                        <input className="character-value" placeholder=" " onBlur={onBlur} />
+                    )}
+                    renderLeftover={() => (
+                        <p className="character-value"></p>
+                    )}
+                />
             </div>
 
             <SocialSuitesDisplay socialSuites={socialSuites} pageID={pageID} updates={updates} />
