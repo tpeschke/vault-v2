@@ -5,6 +5,7 @@
 
 .social-suites-v2>div {
     width: 50%;
+    box-sizing: border-box;
 }
 
 .social-suites-v2>div:first-child {
@@ -21,7 +22,7 @@
 
 .social-suites-v2>div>span * {
     text-align: center;
-    min-width: 15%;
+    min-width: 0;
     padding: 2px 1px;
     box-sizing: border-box;
     background-clip: content-box;
@@ -31,18 +32,33 @@
 
 .social-suites-v2>div>span *:first-child {
     text-align: left;
-    width: 70%;
+    width: 67%;
     border-left: unset;
 }
 
-.social-suites-v2>div>span input {
+.social-suites-v2>div>span > :nth-child(2) {
     width: 15%;
-    min-width: 0;
-    box-sizing: border-box;
 }
 
-.social-suites-v2 .description-row *:first-child {
-    width: 85%;
+.social-suites-v2>div>span > :nth-child(3) {
+    width: 18%;
+}
+
+.social-suites-v2>div>span input {
+    min-width: 0;
+}
+
+.social-suites-v2 .description-row > :nth-child(1) {
+    width: 82%;
+}
+
+.social-suites-v2 .description-row > :nth-child(2) {
+    width: 18%;
+}
+
+.social-suites-v2>div>span:first-child h2 {
+    padding: 4px;
+    background-clip: border-box;
 }
 
 .social-suites-v2 .suite-title {
