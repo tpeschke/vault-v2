@@ -12,13 +12,20 @@ interface Props {
 
 export default function FavorDisplay({ favor, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
-    const { anointed, current, max } = favor
+    const { anointed, current, max, divineRelationship } = favor
 
     return (
         <div className="favor-v2">
             <h1>Favor</h1>
             <div className="favor-body">
-                <em className="favor-prompt">What is your relationship to the Divine?</em>
+                <div className="favor-left">
+                    <em className="favor-prompt">What is your relationship to the Divine?</em>
+                    {isEditing ?
+                        <textarea className="character-value" placeholder=" " value={divineRelationship ?? ''} onChange={event => updates.updateFavor(pageID, { divineRelationship: event.target.value })} />
+                        :
+                        <p className="character-value">{divineRelationship ?? ''}</p>
+                    }
+                </div>
                 <div className="favor-track">
                     {isEditing ?
                         <input className="center-text character-value" type="number" placeholder=" " value={current} onChange={event => updates.updateFavor(pageID, { current: +event.target.value })} />

@@ -169,7 +169,8 @@ create table
         characterid integer,
         anointed boolean default false,
         current integer default 0,
-        max integer default 0
+        max integer default 0,
+        divineRelationship varchar(500) default ''
     );
 
 create table

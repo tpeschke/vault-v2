@@ -204,6 +204,16 @@ export function updateReputation(character: CharacterVersion2, pageID: number, i
     })
 }
 
+export function updateCapacity(character: CharacterVersion2, pageID: number, value: number): CharacterVersion2 {
+    return mapPage1(character, pageID, page => ({
+        ...page,
+        characteristicsInfo: {
+            ...page.characteristicsInfo,
+            capacity: value
+        }
+    }))
+}
+
 export function updateCulturalStrength(character: CharacterVersion2, pageID: number, value: string): CharacterVersion2 {
     return mapPage1(character, pageID, page => ({
         ...page,

@@ -15,6 +15,7 @@ import {
     insertReputation,
     insertSocialSuiteDescription,
     updateAttack,
+    updateCapacity,
     updateCrP,
     updateCulturalStrength,
     updateDamage,
@@ -98,6 +99,10 @@ export default function getV2Updates(
         updateReputation: (pageID, index, next) => {
             if (!character) { return }
             apply(updateReputation(character, pageID, index, next))
+        },
+        updateCapacity: (pageID, value) => {
+            if (!character) { return }
+            apply(updateCapacity(character, pageID, value))
         },
         updateCulturalStrength: (pageID, value) => {
             if (!character) { return }

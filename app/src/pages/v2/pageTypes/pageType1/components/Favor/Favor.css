@@ -3,12 +3,25 @@
     min-height: 48px;
 }
 
-.favor-v2 .favor-prompt {
+.favor-v2 .favor-left {
     width: 71%;
+}
+
+.favor-v2 .favor-prompt {
     padding: 6px 4px;
     font-family: "Source Sans 3", sans-serif;
     font-style: italic;
     font-size: 13px;
+}
+
+.favor-v2 .favor-left > p,
+.favor-v2 .favor-left > textarea {
+    min-height: calc(2 * 17.38px);
+}
+
+.favor-v2 .favor-left > textarea {
+    width: 100%;
+    height: calc(2 * 17.38px);
 }
 
 .favor-v2 .favor-track {
@@ -59,4 +72,14 @@
 
 .v2 .view-edit .favor-v2 .anointed-box {
     cursor: pointer;
+    background: rgba(173, 216, 230) !important;
+}
+
+.v2 .view-edit .favor-v2 .anointed-box:hover {
+    background: rgb(145, 181, 194) !important;
+}
+
+.v2 .view-edit .favor-v2 .anointed-box.checked,
+.v2 .view-edit .favor-v2 .anointed-box.checked:hover {
+    background: black !important;
 }

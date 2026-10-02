@@ -24,7 +24,7 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
 
     return (
         <div className="characteristics-display-v2">
-            <CapacityDisplay capacity={capacity} />
+            <CapacityDisplay capacity={capacity} pageID={pageID} updates={updates} />
 
             <h2>Current Emotions</h2>
             <div className="current-emotions-v2">

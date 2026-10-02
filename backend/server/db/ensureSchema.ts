@@ -30,6 +30,11 @@ export default async function ensureSchema() {
     await renameTable('v2empathizedescriptions', 'v2influencedescriptions')
     await renameTable('v2lecturedescriptions', 'v2informdescriptions')
     await renameTable('v2temptdescriptions', 'v2inspiredescriptions')
+
+    await query(`alter table v2Favor add column if not exists divineRelationship varchar(500) default ''`)
+    if (!await columnExists('v2favor', 'divinerelationship')) {
+        throw new Error('ensureSchema: v2Favor.divineRelationship missing')
+    }
 }
 
 async function tableExists(tableName: string) {

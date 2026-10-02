@@ -22,17 +22,22 @@
     background: #bdbdbd;
 }
 
-.defenses-v2 .defenses-header span h2 {
+.defenses-v2 .defenses-header span:first-child > p,
+.defenses-v2 .defenses-header span:first-child > input {
     min-height: 17.38px;
+    font-size: 15px;
 }
 
-.defenses-v2 .defenses-header span>p,
-.defenses-v2 .defenses-header span>input {
+.defenses-v2 .defenses-header span:first-child > input {
+    width: 100%;
+}
+
+.defenses-v2 .defenses-header span:last-child > p,
+.defenses-v2 .defenses-header span:last-child > input {
     border: 1px solid #bdbdbd;
     align-items: center;
     justify-content: space-around;
     font-size: 23px;
-
 }
 
 .defenses-v2 .defenses-header em {
@@ -40,13 +45,13 @@
     text-align: right;
 }
 
-.defenses-v2 .defenses-header p,
-.defenses-v2 .defenses-header input {
+.defenses-v2 .defenses-header span:last-child p,
+.defenses-v2 .defenses-header span:last-child input {
     background: white;
     min-height: 17.38px;
 }
 
-.defenses-v2 .defenses-header input {
+.defenses-v2 .defenses-header span:last-child input {
     width: calc(100% - 2px);
 }
 

@@ -16,6 +16,7 @@ export interface PageType1Updates {
     updateSocialSuiteDescription: (pageID: number, suite: keyof SocialSkillSuites, index: number, next: SkillPair) => void
     insertReputation: (pageID: number, newRow: { key: string, value: string, rank: string }) => void
     updateReputation: (pageID: number, index: number, next: CharacteristicPair) => void
+    updateCapacity: (pageID: number, value: number) => void
     updateCulturalStrength: (pageID: number, value: string) => void
     updateSocialSkillDiscount: (pageID: number, value: number) => void
     insertDescription: (pageID: number, newRow: { key: string, value: string }) => void

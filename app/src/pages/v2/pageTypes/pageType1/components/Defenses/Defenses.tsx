@@ -12,14 +12,18 @@ interface Props {
 
 export default function DefensesDisplay({ defenses, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
-    const { initiative, defense, parry, flanks, cover, parryDR, dr, notes } = defenses
+    const { name, initiative, defense, parry, flanks, cover, parryDR, dr, notes } = defenses
 
     return (
         <div className="defenses-v2">
             <div className="defenses-header">
                 <span>
                     <h1>Defenses</h1>
-                    <h2></h2>
+                    {isEditing ?
+                        <input className="character-value" placeholder=" " value={name} onChange={event => updates.updateDefense(pageID, { name: event.target.value })} />
+                        :
+                        <p className="character-value">{name}</p>
+                    }
                 </span>
                 <span>
                     <em>Initiative</em>
