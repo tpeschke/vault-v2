@@ -19,7 +19,7 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
             {attacks.map(({ index, name, measure, attack, damage, type, recovery, notes }) => (
                 <div key={index} className="attack-block">
                     {isEditing ?
-                        <input className="character-value" value={name} onChange={event => updates.updateAttack(pageID, index, { name: event.target.value })} />
+                        <input className="character-value" placeholder=" " value={name} onChange={event => updates.updateAttack(pageID, index, { name: event.target.value })} />
                         :
                         <h2 className="character-value">{name}</h2>
                     }
@@ -27,7 +27,7 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                         <span>
                             <em>Meas/RI</em>
                             {isEditing ?
-                                <input className="center-text character-value" type="number" value={measure} onChange={event => updates.updateAttack(pageID, index, { measure: +event.target.value })} />
+                                <input className="center-text character-value" type="number" placeholder=" " value={measure} onChange={event => updates.updateAttack(pageID, index, { measure: +event.target.value })} />
                                 :
                                 <p className="center-text character-value">{measure}</p>
                             }
@@ -35,7 +35,7 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                         <span>
                             <em>Atk</em>
                             {isEditing ?
-                                <input className="center-text character-value" type="number" value={attack} onChange={event => updates.updateAttack(pageID, index, { attack: +event.target.value })} />
+                                <input className="center-text character-value" type="number" placeholder=" " value={attack} onChange={event => updates.updateAttack(pageID, index, { attack: +event.target.value })} />
                                 :
                                 <p className="center-text character-value">{attack}</p>
                             }
@@ -43,7 +43,7 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                         <span>
                             <em>Damage</em>
                             {isEditing ?
-                                <input className="character-value" value={damage} onChange={event => updates.updateAttack(pageID, index, { damage: event.target.value })} />
+                                <input className="character-value" placeholder=" " value={damage} onChange={event => updates.updateAttack(pageID, index, { damage: event.target.value })} />
                                 :
                                 <p className="character-value">{damage}</p>
                             }
@@ -53,7 +53,7 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                         <span>
                             <em>Type</em>
                             {isEditing ?
-                                <input className="character-value" value={type} onChange={event => updates.updateAttack(pageID, index, { type: event.target.value })} />
+                                <input className="character-value" placeholder=" " value={type} onChange={event => updates.updateAttack(pageID, index, { type: event.target.value })} />
                                 :
                                 <p className="character-value">{type}</p>
                             }
@@ -61,14 +61,14 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                         <span>
                             <em>Rec</em>
                             {isEditing ?
-                                <input className="center-text character-value" type="number" value={recovery} onChange={event => updates.updateAttack(pageID, index, { recovery: +event.target.value })} />
+                                <input className="center-text character-value" type="number" placeholder=" " value={recovery} onChange={event => updates.updateAttack(pageID, index, { recovery: +event.target.value })} />
                                 :
                                 <p className="center-text character-value">{recovery}</p>
                             }
                         </span>
                     </div>
                     {isEditing ?
-                        <textarea className="character-value" value={notes ?? ''} onChange={event => updates.updateAttack(pageID, index, { notes: event.target.value })} />
+                        <textarea className="character-value" placeholder=" " value={notes ?? ''} onChange={event => updates.updateAttack(pageID, index, { notes: event.target.value })} />
                         :
                         <p className="character-value">{notes ?? ''}</p>
                     }

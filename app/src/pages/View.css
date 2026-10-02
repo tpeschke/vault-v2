@@ -37,12 +37,30 @@
 
 .v2 :where(textarea.character-value) {
     resize: none;
+    font-size: 15px;
+    line-height: 1.2;
 }
 
 .v2 :where(input.character-value[type=number]) {
     appearance: textfield;
     -moz-appearance: textfield;
     padding: 0;
+}
+
+.v2 input.character-value::placeholder,
+.v2 textarea.character-value::placeholder {
+    color: transparent;
+    opacity: 1;
+}
+
+.v2 :where(input.character-value:not(.border)) {
+    height: 1.2em;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.v2 :where(input.character-value:not(.border):placeholder-shown) {
+    height: 17.38px;
 }
 
 .v2 input.border {

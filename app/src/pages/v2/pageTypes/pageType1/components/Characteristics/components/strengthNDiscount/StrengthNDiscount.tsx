@@ -18,7 +18,7 @@ export default function StrengthNDiscount({ culturalStrength, socialSkillDiscoun
             <span className='cultural-strength'>
                 <h2>Cultural Strength</h2>
                 {isEditing ?
-                    <input className="character-value" value={culturalStrength} onChange={event => updates.updateCulturalStrength(pageID, event.target.value)} />
+                    <input className="character-value" placeholder=" " value={culturalStrength} onChange={event => updates.updateCulturalStrength(pageID, event.target.value)} />
                     :
                     <p className="character-value">{culturalStrength}</p>
                 }
@@ -26,7 +26,7 @@ export default function StrengthNDiscount({ culturalStrength, socialSkillDiscoun
             <span className='social-skill-discount'>
                 <h2>Social Skill Discount</h2>
                 {isEditing ?
-                    <input className="character-value" type="number" value={socialSkillDiscount} onChange={event => updates.updateSocialSkillDiscount(pageID, +event.target.value)} />
+                    <input className="character-value" type="number" placeholder=" " value={socialSkillDiscount} onChange={event => updates.updateSocialSkillDiscount(pageID, +event.target.value)} />
                     :
                     <p className="character-value">{socialSkillDiscount}</p>
                 }

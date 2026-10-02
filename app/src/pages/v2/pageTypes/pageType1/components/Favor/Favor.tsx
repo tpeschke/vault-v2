@@ -21,13 +21,13 @@ export default function FavorDisplay({ favor, pageID, updates }: Props) {
                 <em className="favor-prompt">What is your relationship to the Divine?</em>
                 <div className="favor-track">
                     {isEditing ?
-                        <input className="center-text character-value" type="number" value={current} onChange={event => updates.updateFavor(pageID, { current: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={current} onChange={event => updates.updateFavor(pageID, { current: +event.target.value })} />
                         :
                         <p className="center-text character-value">{current}</p>
                     }
                     <span>/</span>
                     {isEditing ?
-                        <input className="center-text character-value" type="number" value={max} onChange={event => updates.updateFavor(pageID, { max: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={max} onChange={event => updates.updateFavor(pageID, { max: +event.target.value })} />
                         :
                         <p className="center-text character-value">{max}</p>
                     }

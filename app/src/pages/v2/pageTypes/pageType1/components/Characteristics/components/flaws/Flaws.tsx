@@ -22,7 +22,7 @@ export default function FlawsDisplay({ flaws, pageID, updates }: Props) {
                 return (
                     <span key={row?.id ?? index}>
                         {isEditing ?
-                            <input className="character-value" value={row?.flaw ?? ''} onChange={event => updates.updateFlaw(pageID, index, event.target.value)} />
+                            <input className="character-value" placeholder=" " value={row?.flaw ?? ''} onChange={event => updates.updateFlaw(pageID, index, event.target.value)} />
                             :
                             <p className="character-value">{row?.flaw ?? ''}</p>
                         }

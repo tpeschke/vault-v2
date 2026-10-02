@@ -33,10 +33,7 @@
     border-left: unset;
 }
 
-.social-suites-v2>div>span p,
 .social-suites-v2>div>span input {
-    font-size: 15px;
-    line-height: 1.2;
     width: 15%;
 }
 

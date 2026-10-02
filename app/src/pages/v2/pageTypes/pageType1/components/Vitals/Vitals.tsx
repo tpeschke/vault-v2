@@ -29,7 +29,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                     <span>
                         <h2>Integrity Threshold</h2>
                         {isEditing ?
-                            <input className="center-text character-value" type="number" value={selfDoubt.threshold} onChange={event => updates.updateSelfDoubt(pageID, { threshold: +event.target.value })} />
+                            <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.threshold} onChange={event => updates.updateSelfDoubt(pageID, { threshold: +event.target.value })} />
                             :
                             <p className="center-text character-value">{selfDoubt.threshold}</p>
                         }
@@ -37,7 +37,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                     <span>
                         <h2>Die Penalty</h2>
                         {isEditing ?
-                            <input className="center-text character-value" type="number" value={selfDoubt.diePenalty} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} />
+                            <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.diePenalty} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} />
                             :
                             <p className="center-text character-value">{selfDoubt.diePenalty}</p>
                         }
@@ -55,19 +55,19 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                     <span className='vitals-split'>
                         <h2>Knock Back</h2>
                         {isEditing ?
-                            <input className="center-text character-value" type="number" value={damage.knockback} onChange={event => updates.updateDamage(pageID, { knockback: +event.target.value })} />
+                            <input className="center-text character-value" type="number" placeholder=" " value={damage.knockback} onChange={event => updates.updateDamage(pageID, { knockback: +event.target.value })} />
                             :
                             <p className="center-text character-value">{damage.knockback}</p>
                         }
                     </span>
                     {isEditing ?
-                        <input className="center-text character-value" type="number" value={damage.damage} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={damage.damage} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} />
                         :
                         <p className="center-text character-value">{damage.damage}</p>
                     }
                     <span className="slash">/</span>
                     {isEditing ?
-                        <input className="center-text character-value" type="number" value={damage.threshold} onChange={event => updates.updateDamage(pageID, { threshold: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={damage.threshold} onChange={event => updates.updateDamage(pageID, { threshold: +event.target.value })} />
                         :
                         <p className="center-text character-value">{damage.threshold}</p>
                     }
@@ -78,13 +78,13 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                 <DieRow dieIndex={stress.dieIndex} onSelect={index => updates.updateStress(pageID, { dieIndex: index })} />
                 <div className="stress-values">
                     {isEditing ?
-                        <input className="center-text character-value" type="number" value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} />
                         :
                         <p className="center-text character-value">{stress.stress}</p>
                     }
                     <span className="slash">/</span>
                     {isEditing ?
-                        <input className="center-text character-value" type="number" value={stress.threshold} onChange={event => updates.updateStress(pageID, { threshold: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={stress.threshold} onChange={event => updates.updateStress(pageID, { threshold: +event.target.value })} />
                         :
                         <p className="center-text character-value">{stress.threshold}</p>
                     }

@@ -7,12 +7,7 @@
 .strength-and-discount-v2 input {
     padding: 4px 4px 0;
     border-top: 1px solid #bdbdbd;
-    min-height: 18px;
-    font-size: 15px;
-    line-height: 1.2;
-    width: 100%;
-    min-width: 0;
-    flex: 1;
+    min-height: 17.38px;
 }
 
 .strength-and-discount-v2>span {
@@ -20,7 +15,6 @@
 }
 
 .strength-and-discount-v2 .cultural-strength {
-    width: 58%;
     min-width: 58%;
 }
 
@@ -37,14 +31,16 @@
     min-width: 86%;
 }
 
-.strength-and-discount-v2 .social-skill-discount {
-    width: 42%;
-    min-width: 0;
-}
-
 .strength-and-discount-v2 .social-skill-discount p,
 .strength-and-discount-v2 .social-skill-discount input {
     min-width: 22%;
     text-align: center;
+}
+
+.strength-and-discount-v2 .cultural-strength input,
+.strength-and-discount-v2 .social-skill-discount input {
+    min-width: 0;
     overflow: hidden;
+    flex: 1;
+    width: 100%;
 }

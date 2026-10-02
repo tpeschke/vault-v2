@@ -15,17 +15,15 @@
 .reputation-display-v2 > span > p:first-of-type,
 .reputation-display-v2 > span > input:nth-of-type(1) {
     width: 100%;
-    min-height: 18px;
-    font-size: 15px;
-    line-height: 1.2;
+    min-height: 17.38px;
 }
 
 .reputation-display-v2 > span > p:last-of-type,
 .reputation-display-v2 > span > input:nth-of-type(2) {
     min-width: 28px;
-    width: 28px;
-    min-height: 18px;
     text-align: center;
-    font-size: 15px;
-    line-height: 1.2;
+}
+
+.reputation-display-v2 > span > input:nth-of-type(2) {
+    width: 28px;
 }

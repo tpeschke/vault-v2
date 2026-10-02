@@ -22,7 +22,7 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
                 return (
                     <span key={row?.id ?? index}>
                         {isEditing ?
-                            <input className="character-value" value={row?.value ?? ''} onChange={event => updates.updateDescription(pageID, index, event.target.value)} />
+                            <input className="character-value" placeholder=" " value={row?.value ?? ''} onChange={event => updates.updateDescription(pageID, index, event.target.value)} />
                             :
                             <p className="character-value">{row?.value ?? ''}</p>
                         }

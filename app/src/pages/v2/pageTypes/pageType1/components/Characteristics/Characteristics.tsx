@@ -33,6 +33,7 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
                         <input
                             key={rows[index]?.id ?? index}
                             className="character-value"
+                            placeholder=" "
                             value={value}
                             onChange={event => updates.updateEmotion(pageID, index, event.target.value)}
                         />

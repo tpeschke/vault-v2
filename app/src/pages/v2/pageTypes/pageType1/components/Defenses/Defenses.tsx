@@ -24,7 +24,7 @@ export default function DefensesDisplay({ defenses, pageID, updates }: Props) {
                 <span>
                     <em>Initiative</em>
                     {isEditing ?
-                        <input className="center-text character-value" type="number" value={initiative} onChange={event => updates.updateDefense(pageID, { initiative: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={initiative} onChange={event => updates.updateDefense(pageID, { initiative: +event.target.value })} />
                         :
                         <p className="center-text character-value">{initiative}</p>
                     }
@@ -33,19 +33,19 @@ export default function DefensesDisplay({ defenses, pageID, updates }: Props) {
             <div className="def-row">
                 <em>Def (Parry / Flanks)</em>
                 {isEditing ?
-                    <input className="center-text character-value" type="number" value={defense} onChange={event => updates.updateDefense(pageID, { defense: +event.target.value })} />
+                    <input className="center-text character-value" type="number" placeholder=" " value={defense} onChange={event => updates.updateDefense(pageID, { defense: +event.target.value })} />
                     :
                     <p className="center-text character-value">{defense}</p>
                 }
                 <span>(</span>
                 {isEditing ?
-                    <input className="center-text character-value" type="number" value={parry} onChange={event => updates.updateDefense(pageID, { parry: +event.target.value })} />
+                    <input className="center-text character-value" type="number" placeholder=" " value={parry} onChange={event => updates.updateDefense(pageID, { parry: +event.target.value })} />
                     :
                     <p className="center-text character-value">{parry}</p>
                 }
                 <span>/</span>
                 {isEditing ?
-                    <input className="center-text character-value" type="number" value={flanks} onChange={event => updates.updateDefense(pageID, { flanks: +event.target.value })} />
+                    <input className="center-text character-value" type="number" placeholder=" " value={flanks} onChange={event => updates.updateDefense(pageID, { flanks: +event.target.value })} />
                     :
                     <p className="center-text character-value">{flanks}</p>
                 }
@@ -55,7 +55,7 @@ export default function DefensesDisplay({ defenses, pageID, updates }: Props) {
                 <span>
                     <em>Cover</em>
                     {isEditing ?
-                        <input className="character-value" value={cover} onChange={event => updates.updateDefense(pageID, { cover: event.target.value })} />
+                        <input className="character-value" placeholder=" " value={cover} onChange={event => updates.updateDefense(pageID, { cover: event.target.value })} />
                         :
                         <p className="character-value">{cover}</p>
                     }
@@ -63,7 +63,7 @@ export default function DefensesDisplay({ defenses, pageID, updates }: Props) {
                 <span>
                     <em>P. DR</em>
                     {isEditing ?
-                        <input className="character-value" value={parryDR} onChange={event => updates.updateDefense(pageID, { parryDR: event.target.value })} />
+                        <input className="character-value" placeholder=" " value={parryDR} onChange={event => updates.updateDefense(pageID, { parryDR: event.target.value })} />
                         :
                         <p className="character-value">{parryDR}</p>
                     }
@@ -71,14 +71,14 @@ export default function DefensesDisplay({ defenses, pageID, updates }: Props) {
                 <span>
                     <em>DR</em>
                     {isEditing ?
-                        <input className="character-value" value={dr} onChange={event => updates.updateDefense(pageID, { dr: event.target.value })} />
+                        <input className="character-value" placeholder=" " value={dr} onChange={event => updates.updateDefense(pageID, { dr: event.target.value })} />
                         :
                         <p className="character-value">{dr}</p>
                     }
                 </span>
             </div>
             {isEditing ?
-                <textarea className="character-value" value={notes ?? ''} onChange={event => updates.updateDefense(pageID, { notes: event.target.value })} />
+                <textarea className="character-value" placeholder=" " value={notes ?? ''} onChange={event => updates.updateDefense(pageID, { notes: event.target.value })} />
                 :
                 <p className="character-value">{notes ?? ''}</p>
             }

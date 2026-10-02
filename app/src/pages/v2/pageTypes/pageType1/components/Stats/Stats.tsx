@@ -19,7 +19,7 @@ export default function StatsDisplay({ stats, pageID, updates }: Props) {
             <span>
                 <strong>{label}</strong>
                 {isEditing ?
-                    <input className="character-value" type="number" value={value} onChange={event => updates.updateStat(pageID, key, +event.target.value)} />
+                    <input className="character-value" type="number" placeholder=" " value={value} onChange={event => updates.updateStat(pageID, key, +event.target.value)} />
                     :
                     <p className="character-value">{value}</p>
                 }

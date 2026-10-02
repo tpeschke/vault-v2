@@ -20,7 +20,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
             <span>
                 <strong>Name</strong>
                 {isEditing ?
-                    <input className="border character-value" value={name} onChange={event => updates.updateGeneralInfoField(pageID, 'name', event.target.value)} />
+                    <input className="border character-value" placeholder=" " value={name} onChange={event => updates.updateGeneralInfoField(pageID, 'name', event.target.value)} />
                     :
                     <p className="border character-value">{name}</p>
                 }
@@ -28,7 +28,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
             <span>
                 <strong>Ancestry</strong>
                 {isEditing ?
-                    <input className="border character-value" value={ancestry} onChange={event => updates.updateGeneralInfoField(pageID, 'ancestry', event.target.value)} />
+                    <input className="border character-value" placeholder=" " value={ancestry} onChange={event => updates.updateGeneralInfoField(pageID, 'ancestry', event.target.value)} />
                     :
                     <p className="border character-value">{ancestry}</p>
                 }
@@ -37,7 +37,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
                 <span>
                     <strong>Class</strong>
                     {isEditing ?
-                        <input className="border character-value" value={primaryClass} onChange={event => updates.updateGeneralInfoField(pageID, 'class', event.target.value)} />
+                        <input className="border character-value" placeholder=" " value={primaryClass} onChange={event => updates.updateGeneralInfoField(pageID, 'class', event.target.value)} />
                         :
                         <p className="border character-value">{primaryClass}</p>
                     }
@@ -45,7 +45,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
                 <span>
                     <strong>Subclass</strong>
                     {isEditing ?
-                        <input className="border character-value" value={subclass} onChange={event => updates.updateGeneralInfoField(pageID, 'subclass', event.target.value)} />
+                        <input className="border character-value" placeholder=" " value={subclass} onChange={event => updates.updateGeneralInfoField(pageID, 'subclass', event.target.value)} />
                         :
                         <p className="border character-value">{subclass}</p>
                     }
@@ -53,7 +53,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
                 <span>
                     <strong>Lvl</strong>
                     {isEditing ?
-                        <input className="border center-text character-value" type="number" value={level} onChange={event => updates.updateGeneralInfoField(pageID, 'level', +event.target.value)} />
+                        <input className="border center-text character-value" type="number" placeholder=" " value={level} onChange={event => updates.updateGeneralInfoField(pageID, 'level', +event.target.value)} />
                         :
                         <p className="border center-text character-value">{level}</p>
                     }
@@ -64,7 +64,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
                 <span>
                     <em>Unspent</em>
                     {isEditing ?
-                        <input className='border center-text character-value' type="number" value={unspent} onChange={event => updates.updateCrP(pageID, 'unspent', +event.target.value)} />
+                        <input className='border center-text character-value' type="number" placeholder=" " value={unspent} onChange={event => updates.updateCrP(pageID, 'unspent', +event.target.value)} />
                         :
                         <p className='border center-text character-value'>{unspent}</p>
                     }
@@ -72,7 +72,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
                 <span>
                     <em>Spent</em>
                     {isEditing ?
-                        <input className='border center-text character-value' type="number" value={spent} onChange={event => updates.updateCrP(pageID, 'spent', +event.target.value)} />
+                        <input className='border center-text character-value' type="number" placeholder=" " value={spent} onChange={event => updates.updateCrP(pageID, 'spent', +event.target.value)} />
                         :
                         <p className='border center-text character-value'>{spent}</p>
                     }

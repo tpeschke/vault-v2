@@ -19,12 +19,16 @@
 .attacks-v2 .attack-block h2,
 .attacks-v2 .attack-block > input:first-child {
     min-height: 17.38px;
-    height: 17.38px;
-    padding: 2px 4px 0;
+}
+
+.attacks-v2 .attack-block > input:first-child {
     font-size: 12px;
+    padding: 2px 4px 0;
     letter-spacing: 1px;
     white-space: pre;
     line-height: 1;
+    height: 17.38px;
+    min-height: 17.38px;
     width: 100%;
 }
 
@@ -32,18 +36,14 @@
 .attacks-v2 .attack-row input {
     width: 100%;
     min-height: 17.38px;
-    font-size: 15px;
-    line-height: 1.2;
 }
 
 .attacks-v2 .attack-block > p,
 .attacks-v2 .attack-block > textarea {
     min-height: calc(2 * 17.38px);
-    font-size: 15px;
-    line-height: 1.2;
-    width: 100%;
 }
 
 .attacks-v2 .attack-block > textarea {
+    width: 100%;
     height: calc(2 * 17.38px);
 }
