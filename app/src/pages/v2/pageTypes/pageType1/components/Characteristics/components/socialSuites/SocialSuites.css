@@ -44,6 +44,13 @@
     width: 18%;
 }
 
+.social-suites-v2>div>span p,
+.social-suites-v2>div>span input,
+.social-suites-v2>div>span em {
+    min-height: var(--mapped-row-min-height);
+    height: var(--mapped-row-min-height);
+}
+
 .social-suites-v2>div>span input {
     min-width: 0;
 }

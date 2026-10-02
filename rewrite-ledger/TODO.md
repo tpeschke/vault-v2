@@ -8,6 +8,17 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Done
 
+### T-048: Mapped leftover p/input min-height 19.38 via custom property
+status: done
+source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: a little height on mapped p/input; Q1 +2px → 19.38; Q2 lists only; Q3 custom property; Q4 stop if 1068 exceeded; Q5 suite-title em matches; revision: attack inputs stay T-045)
+why: T-045 locked leftover `p`/`input` at 17.38 border-box. Designer wants +2px on list leftover controls. Attack Meas/Atk/Damage/Type/Rec stay 17.38. View.css `:placeholder-shown { height: 17.38px }` keeps empty insert short unless the widget restates height.
+scope: `PageType1.css` (define `--mapped-row-min-height`); `Descriptions.css`; `Flaws.css`; `ReputationDisplay.css`; `Characteristics.css` (emotions); `SocialSuites.css` (`p`/`input`/`em`, not header `h2`). Do not change TSX, `View.css`, `index.css`, Stats, dice, `Attacks.css`, Capacity.
+result: `--mapped-row-min-height: 19.38px` on `.page-type-one`. List leftover `p`/`input` and suite-title `em` compute 19.375 (island kept). Leftover p vs insert input delta 0. Header h2 still padding 4px / 21px. `Attacks.css` unchanged (row min 17.38, notes 34.75, name `padding: 2px 4px 0`). Browser: `.page-type-one` offsetHeight 1068 view and edit. View scrollHeight 1084 (16px into card padding); edit scroll 1068.
+deviations from design: none beyond Order. 1068 stop is offsetHeight; it stayed 1068 so the bump was kept.
+open questions: none
+
+
+
 ### T-047: Current Emotions cells fill the heading; restore grid lines
 status: done
 source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: gaps look terrible; Q1 Current Emotions only; Q3 drop -8px and restore `#bdbdbd` lines; Q4 keep inset)

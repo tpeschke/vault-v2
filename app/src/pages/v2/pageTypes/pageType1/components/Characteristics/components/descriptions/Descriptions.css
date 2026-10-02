@@ -37,7 +37,8 @@
 .descriptions-v2 > span > :nth-child(2),
 .descriptions-v2 > span > :nth-child(3),
 .descriptions-v2 > span > :nth-child(4) {
-    min-height: 17.38px;
+    min-height: var(--mapped-row-min-height);
+    height: var(--mapped-row-min-height);
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
@@ -45,7 +46,8 @@
 
 .descriptions-v2 > span > p,
 .descriptions-v2 > span > input {
-    min-height: 17.38px;
+    min-height: var(--mapped-row-min-height);
+    height: var(--mapped-row-min-height);
     padding: 2px 1px;
     box-sizing: border-box;
     background-clip: content-box;
