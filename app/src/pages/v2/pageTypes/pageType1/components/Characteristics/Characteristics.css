@@ -10,7 +10,8 @@
 
 .characteristics-display-v2 .current-emotions-v2 > span p,
 .characteristics-display-v2 .current-emotions-v2 > span input {
-    min-height: 17.38px;
+    min-height: var(--mapped-row-min-height);
+    height: var(--mapped-row-min-height);
     width: 100%;
     min-width: 0;
     padding: 2px 1px;
