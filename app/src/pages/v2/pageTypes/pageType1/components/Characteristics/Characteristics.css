@@ -1,6 +1,9 @@
 .characteristics-display-v2 .current-emotions-v2 {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 44.38px;
 }
 
 .characteristics-display-v2 .current-emotions-v2 p,
@@ -10,14 +13,14 @@
     width: calc(33.33% - 8px);
 }
 
-.characteristics-display-v2 .current-emotions-v2 > :nth-child(even) {
+.characteristics-display-v2 .current-emotions-v2> :nth-child(even) {
     background: #f3f3f3;
 }
 
-.v2 .view-edit .current-emotions-v2 > input:nth-child(even) {
+.v2 .view-edit .current-emotions-v2>input:nth-child(even) {
     background: rgb(159, 199, 212) !important;
 }
 
-.v2 .view-edit .current-emotions-v2 > input:nth-child(even):hover {
+.v2 .view-edit .current-emotions-v2>input:nth-child(even):hover {
     background: rgb(145, 181, 194) !important;
 }
