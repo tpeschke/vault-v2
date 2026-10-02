@@ -47,4 +47,4 @@ Rejected:
 - Edit-only input margin that shrinks the control vs view `p`. Restyling Stats to 2px/1px. Inset on dice or attack name. Dropping Social Suite `#bdbdbd` grid lines for this frame. Wrapper `padding`/`gap` outside suite borders (T-044 overflow). Stacking inner `padding: 4px` / `4px 4px 0` on leftover `p` on top of 17.38px content-box. Raising attack Meas/Atk/Damage/Type/Rec or notes to 19.38. Locking view attack-row `p` to filled-edit 18 / `1.2em`. Setting widget `height` on `.attack-row input`. Dropping the island on those view `p`.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-048 (done); attack-row view p 17.38: T-049 (proposed)
+TODOs: T-027–T-049 (done)
