@@ -15,6 +15,7 @@ Constraints it imposes:
 - Save: POST the full `CharacterVersion2` to `/v2/edit/:characterID`, then replace local state with the reassembled response (v1 clears, posts, then `setCharacterInfo(data)`). Owner mismatch: refuse, same idea as v1.
 - Persist every field on the payload, including page-type-1 values not drawn on this page (capacity, temperaments, goals, relationships, movement, defense `name`), so unshown stores are not wiped.
 - Editable on page type 1: stored cells that are already drawn. Inputs keep `className="character-value"` (Kalam). Controlled values so Revert repaints.
+- Edit toggle must not move sheet cells. Each swapped control copies the corresponding display tag’s box: width, height, min-height, padding, font-size, line-height, letter-spacing, text-align, display. Attack name is `h2.character-value` in view; the input keeps Kalam and that h2 box (right-column h2 is 12px / `padding: 2px 4px 0`, plus `letter-spacing: 1px` and `white-space: pre`). Do not copy oldClaude or `#bdbdbd` onto the input — `.view-edit` already paints edit fill. Strip UA inner padding on text and number inputs (`padding: 0`, `appearance: none` / `textfield`). Do not set a global input `font-size`, `width`, or `min-height` in `View.css`; pair widget selectors so `p`/`h2` and `input`/`textarea` share the cell metrics. Notes textareas keep `min-height: calc(2 * 17.38px)`. No `field-sizing: content`. No contenteditable. Sidebar Save/Revert chrome is out of this box rule.
 - Not editable: computed cells (CrP `toLvl`, Emotional Capacity bands, Damage Trauma `threshold * 2`); undrawn defense `name`; Positions; wordmark; slashes; Anointed stays a clickable box, not a new chrome. Die cells: click sets `dieIndex` to `index + 1`; click selected sets `0`.
 - Raw `capacity` is stored but not drawn; do not add a cell. Band values stay text.
 - List pads (emotions 6, descriptions 5, flaws 3, reputations 3, social-suite description rows 6) become inputs. First change on an empty pad inserts a local row (temp id). Save: delete rows not in the posted list, update rows with ids, insert the rest — v1 list save shape, new SQL keyed like current v2 view/add/delete (`pageID`, not the stale `backupTables` `characterid`).
@@ -29,6 +30,9 @@ Rejected:
 - Per-field click-to-edit or always-visible inputs.
 - Turning computed cells into inputs.
 - Drawing defense `name` or a raw capacity cell to make them editable.
+- Global `.v2 input.character-value` `font-size: 15px` / `width: 100%` / `min-height: 17.38px` (fights Favor 28px/60×40, Defenses 23px, Vitals 22px, attack-name h2).
+- Matching attack-name input to oldClaude or grey h2 fill.
+- `field-sizing: content` or contenteditable.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-030
+TODOs: T-027–T-030 (done); T-031
