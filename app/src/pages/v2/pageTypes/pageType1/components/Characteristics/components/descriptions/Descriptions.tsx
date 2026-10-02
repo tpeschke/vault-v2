@@ -58,9 +58,9 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
         <div className='descriptions-v2'>
             <div className="descriptions-header">
                 <h2>Descriptions</h2>
-                <em>Attack</em>
-                <em>Defense</em>
-                <em>Rank</em>
+                <h2 className="minor-heading">Attack</h2>
+                <h2 className="minor-heading">Defense</h2>
+                <h2 className="minor-heading">Rank</h2>
             </div>
             {rows.map((item, index) => (
                 <Fragment key={item.key ?? item.id ?? index}>
