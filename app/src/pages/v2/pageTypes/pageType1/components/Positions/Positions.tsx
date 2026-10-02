@@ -5,7 +5,7 @@ const POSITION_ROWS: { position: string, abr: string, explanation: string, outli
     { position: 'Strong 3', abr: 'S3', explanation: '3 dice, take lowest' },
     { position: 'Strong 2', abr: 'S2', explanation: '2 smallest dice, take lowest' },
     { position: 'Strong 1', abr: 'S1', explanation: 'Smallest die' },
-    { position: 'Neutral', abr: 'N', explanation: 'Middle-sized die', outlined: true },
+    { position: 'Neutral', abr: 'N', explanation: 'Middle-sized die' },
     { position: 'Weak 1', abr: 'W1', explanation: 'Largest die', outlined: true },
     { position: 'Weak 2', abr: 'W2', explanation: '2 largest die, take highest' },
     { position: 'Weak 3', abr: 'W3', explanation: '3 dice, take highest' },

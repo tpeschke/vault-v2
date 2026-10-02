@@ -1,11 +1,3 @@
-.attacks-v2 {
-    margin-top: 4px;
-}
-
-.attacks-v2 .attack-block {
-    margin-top: 2px;
-}
-
 .attacks-v2 .attack-row {
     display: flex;
 }
@@ -18,6 +10,10 @@
 
 .attacks-v2 .attack-row em {
     padding-right: 4px;
+}
+
+.attacks-v2 .attack-block > div:nth-child(odd) {
+    background: #f3f3f3;
 }
 
 .attacks-v2 .attack-block h2 {

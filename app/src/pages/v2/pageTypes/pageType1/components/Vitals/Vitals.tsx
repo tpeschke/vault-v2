@@ -34,8 +34,11 @@ export default function VitalsDisplay({ vitals }: Props) {
                 <h1>Damage</h1>
                 <DieRow dieIndex={damage.dieIndex} />
                 <div className="damage-values">
-                    <em>Trauma</em>
-                    <span>
+                    <span className='vitals-split'>
+                        <h2>Trauma</h2>
+                        <p className="center-text character-value">{damage.threshold * 2}</p>
+                    </span>
+                    <span className='vitals-split'>
                         <h2>Knock Back</h2>
                         <p className="center-text character-value">{damage.knockback}</p>
                     </span>

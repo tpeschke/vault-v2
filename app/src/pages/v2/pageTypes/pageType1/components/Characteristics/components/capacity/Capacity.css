@@ -8,22 +8,30 @@
     align-items: stretch;
 }
 
+.capacity-v2 .capacity-values {
+    border-bottom: 1px solid white;
+}
+
 .capacity-v2 .capacity-headings h1:first-child,
 .capacity-v2 .capacity-values h2 {
     width: 38%;
 }
 
 .capacity-v2 h1.minor-heading {
-    font-size: 12px;
+    font-size: 10px;
     font-family: 'oldClaude';
     width: 10.3%;
-    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
 }
 
 .capacity-v2 .capacity-values p {
     width: 10.3%;
-    text-align: center;
     min-height: 17.38px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
 }
 
 .capacity-v2 .capacity-values p.slash {

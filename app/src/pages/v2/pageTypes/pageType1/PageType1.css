@@ -8,14 +8,9 @@
 
 .page-type-one-wordmark {
     display: block;
-    width: 100%;
+    width: 61%;
     height: auto;
-    margin-bottom: 4px;
-}
-
-.page-type-one .right-column h1 {
-    padding: 2px 4px;
-    min-height: 14px;
+    margin: 0 auto 4px;
 }
 
 .page-type-one .right-column h2 {

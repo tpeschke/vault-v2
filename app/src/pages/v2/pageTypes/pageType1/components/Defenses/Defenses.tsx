@@ -11,7 +11,10 @@ export default function DefensesDisplay({ defenses }: Props) {
     return (
         <div className="defenses-v2">
             <div className="defenses-header">
-                <h1>Defenses</h1>
+                <span>
+                    <h1>Defenses</h1>
+                    <h2></h2>
+                </span>
                 <span>
                     <em>Initiative</em>
                     <p className="center-text character-value">{initiative}</p>

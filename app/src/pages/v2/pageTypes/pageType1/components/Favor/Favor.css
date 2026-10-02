@@ -1,14 +1,10 @@
-.favor-v2 {
-    margin-top: 8px;
-}
-
 .favor-v2 .favor-body {
     display: flex;
     min-height: 48px;
 }
 
 .favor-v2 .favor-prompt {
-    width: 62%;
+    width: 71%;
     padding: 6px 4px;
     font-family: "Source Sans 3", sans-serif;
     font-style: italic;
@@ -16,18 +12,25 @@
 }
 
 .favor-v2 .favor-track {
-    width: 38%;
+    width: 31%;
     border-left: 1px solid black;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    padding: 4px;
 }
 
 .favor-v2 .favor-track > p {
-    width: 28%;
-    min-height: 17.38px;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 28px;
+}
+
+.favor-v2 .favor-track > :nth-child(3) {
+    background: #f3f3f3;
 }
 
 .favor-v2 .favor-track > span:not(.anointed-row) {
