@@ -6,6 +6,22 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-049: Lock attack-row view p to empty-edit 17.38
+status: proposed
+source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: shrink view Meas/RI and Type rows to edit; Q1 all five values; Q2 empty-edit 17.38; Q3 keep island; Q4 name and notes stay)
+why: T-045 island on `.attack-row p` is `min-height: 17.38` only. Filled 15px `p` line-height 1.2 (18px) plus `padding: 2px` grows the box to ~22px. Empty edit input is `:placeholder-shown { height: 17.38px }`. Designer wants the view row to match that empty-edit box. Do not change the input (filled stays `1.2em` / 18).
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` (`.attack-row p` only). Do not change TSX, `View.css`, `index.css`, attack **name**, notes, `.attack-row input`, Defenses, mapped lists.
+steps:
+1. On `.attacks-v2 .attack-row p` only (not the shared `p, input` rule): `height: 17.38px` in addition to existing `min-height: 17.38px`. Keep island `padding: 2px 1px`, `box-sizing: border-box`, `background-clip: content-box`.
+2. Do not add `height` on `.attack-row input` — widget `height` would beat `View.css` `:where` and change filled/empty inputs.
+3. Leave `.attack-block h2` / name input and `.attack-notes` as they are.
+4. Measure `.page-type-one` offsetHeight in view and edit. Must stay **1068**. Do not compress other blocks.
+done when: grep `.attack-row p` has `height: 17.38px`; `.attack-row input` has no widget `height`. Browser: view Meas/Atk/Damage/Type/Rec `p` compute height 17.38; empty edit input on those fields 17.38 (within 1px of the view `p`); filled edit input still ~18 (`1.2em`); name still `padding: 2px 4px 0`; notes still `calc(2 * 17.38px)` / ~34.76. `.page-type-one` offsetHeight **1068** view and edit.
+depends on: T-045, T-048
+open questions: none
+deviations from design: `height` only on `p` so shared `p, input` rule does not restyle inputs. Local exception to T-032 (view copies empty-edit here).
+result:
+
 ## Done
 
 ### T-048: Mapped leftover p/input min-height 19.38 via custom property
