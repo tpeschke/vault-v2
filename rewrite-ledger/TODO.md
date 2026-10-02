@@ -6,6 +6,17 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
+### T-042: Draw and edit four-field Description rows
+status: done
+source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: Q5 header Descriptions | Attack | Defense | Rank; Q6 one line; Q7 insert on any field; Q9 cap 5; Q10 record overflow)
+why: Descriptions is one `value` cell via `DisplaySingleArray`. That widget cannot draft four fields. Header is a lone `h2`.
+scope: `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx`; `.../descriptions/Descriptions.css`. Do not change `DisplaySingleArray` / `DisplayPairArray`. Do not add a new shared array widget. Do not import v1 `displayArray`. Do not change Flaws, Current Emotions, Reputation, or social-suite rows. Do not change `index.css`.
+result: Header Descriptions | Attack | Defense | Rank. One line of four cells; leftover + insert in `Descriptions.tsx`. Insert from any field; clear all four removes the row. Odd-span inputs mid teal; even default. Browser: empty 5 leftovers; insert label and attack; Revert restores; `.page-type-one` 1068.
+deviations from design: none
+open questions: none
+
 ### T-041: Persist Description label, emotions, and player rank
 status: done
 source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: Descriptions four fields; Q1 names `label` / `attackEmotion` / `defenseEmotion` / `rank`; Q2 copy `value` → `label`; Q3 player-facing rank; Q4/Q8 emotions varchar(25) free text; label varchar(500))
@@ -14,17 +25,6 @@ scope: `backend/common/interfaces/v2/page1/characteristicsInfo.ts` (`Description
 result: `Description` is `label` / `attackEmotion` / `defenseEmotion` / `rank`. `ensureSchema` copies `value` → `label` then drops `value`; emotions varchar(25). get maps pg lowercase; save writes player rank (empty → NULL), never the array index.
 deviations from design: Drop `value` after copy (same pattern as `currentEmotions` on basic characteristics). Empty rank persists as NULL, not 0.
 open questions: none
-
-### T-042: Draw and edit four-field Description rows
-status: in-progress
-source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: Q5 header Descriptions | Attack | Defense | Rank; Q6 one line; Q7 insert on any field; Q9 cap 5; Q10 record overflow)
-why: Descriptions is one `value` cell via `DisplaySingleArray`. That widget cannot draft four fields. Header is a lone `h2`.
-scope: `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx`; `.../descriptions/Descriptions.css`. Do not change `DisplaySingleArray` / `DisplayPairArray`. Do not add a new shared array widget. Do not import v1 `displayArray`. Do not change Flaws, Current Emotions, Reputation, or social-suite rows. Do not change `index.css`.
-depends on: T-041
-open questions: none
-deviations from design: none
-
-## Done
 
 ### T-040: Stripe odd die cells with the darker teal
 status: done

@@ -45,4 +45,4 @@ Rejected:
 - A shared `DisplayQuadArray`. Using `DisplaySingleArray` / `DisplayPairArray` for Descriptions. Writing the array index into Description `rank`. Keeping payload `value` as the drawn text.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-040 (done); Descriptions four-field: T-041–T-042
+TODOs: T-027–T-042 (done)
