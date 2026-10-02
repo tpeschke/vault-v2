@@ -6,6 +6,51 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-050: Coerce empty name to New Character on persist
+status: proposed
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design Q2)
+why: Empty name is blocked on the client. If a request still arrives with missing or whitespace name, persist `'New Character'` (same string as `v2GeneralInfo.name` default).
+scope: edit character primary `backend/server/v2/edit/utilities/pageType1/utilities/saveGeneralInfo.ts` (`saveGeneralInfo`).
+steps:
+1. Before the UPDATE, treat missing / whitespace-only `generalInfo.name` as `'New Character'`. Do not coerce ancestry/class/subclass.
+2. Keep the existing `pageID` UPDATE. Do not change `ensureSchema` or `addGeneralInfo`.
+done when: `npx tsc -p backend/server --noEmit` passes. A grep of `saveGeneralInfo.ts` shows `'New Character'`. Sending `name: ''` and `name: '   '` writes `New Character`; a non-empty name is unchanged (script or documented query against the UPDATE args).
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-051: Toast failed or blocked Save; restore draft
+status: proposed
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design Q2, Q5)
+why: Save click currently sets `isEditing` false and `character` null before POST. Empty name still posts. A thrown axios error leaves the sheet on loading. Failed save is a toast.
+scope: root `package.json` (`react-toastify`, same slot as `react-tooltip`); unindexed `app/src/App.tsx` (and `main.tsx` only if CSS import belongs there); edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/V2View.tsx`. Do not change the sidebar button enablement (Q4: v1 — Save stays clickable while editing). Do not add `features/`.
+steps:
+1. Add `react-toastify` to the root workspace `package.json`. Import its CSS. Mount `ToastContainer` in `App.tsx` beside `Tooltip`.
+2. `saveCharacterToBackend` returns whether persist succeeded. If first page-type-1 `generalInfo.name` (fallback `character.name`) is missing or whitespace: do not POST, `toast.error` with `Name cannot be empty`, keep the draft, return false.
+3. On POST throw or a body with `data.message` and no reassembled character: restore the draft (`setCharacter(characterToSend)`), `toast.error` (`Save failed` or `data.message`), return false. Do not leave `character` null.
+4. On success: `captureLoaded(data)`; `dispatch(cacheCharacterV2({ id, version: 2, characterInfo: Promise.resolve(data) }))`; return true.
+5. `V2View.saveCharacter`: await the hook; `setIsEditing(false)` only on true. Do not disable the Save button.
+done when: `npx tsc -p app --noEmit` (or repo `npm run build` frontend) passes. `package.json` lists `react-toastify`. Grep `app/src` for `toast.error` has hits in the v2 hook. Empty-name Save does not call axios (breakpoint or by reading the guard). Failed POST restores the name input and leaves Edit on; successful POST exits edit.
+depends on: none (T-050 is independent belt-and-suspenders)
+open questions: none
+deviations from design: v1 exits edit on Save click without awaiting POST; v2 waits for success so a failed save can toast and stay in edit.
+
+### T-052: Warn before leaving unsaved edits
+status: proposed
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design Q3)
+why: Catalog already updates on general-info keystroke. Leaving without Save would keep that draft name in redux while the DB is old. Warn, then restore catalog from the snapshot if they still leave.
+scope: edit adjacency `app/src/pages/v2/V2View.tsx` and/or `app/src/pages/v2/hooks/characterHook.tsx`. Catalog reducer already exists (`updateCatalogInfo`, `index: 1`). Do not add a custom modal. Do not warn on Revert.
+steps:
+1. Dirty when `character` and `revertedCharacter` are both set and `character !== revertedCharacter`.
+2. Register `beforeunload` while dirty.
+3. `useBlocker` (react-router 7) while dirty so Header / in-app navigation warns (`window.confirm` or the blocker dialog).
+4. If the user confirms leave: `updateCatalogInfo` from the first page-type-1 `generalInfo` on `revertedCharacter` (`index: 1`), then proceed. If they cancel, stay on the sheet in edit.
+5. Revert still just restores snapshot and exits edit — no warn.
+done when: `npx tsc -p app --noEmit` passes. Dirty edit + Home click shows a warn; cancel keeps the draft; confirm then home catalog shows the snapshot name not the unsaved name. Reload/close while dirty hits `beforeunload`. Revert does not warn.
+depends on: none
+open questions: none
+deviations from design: none
+
 ## Done
 
 ### T-049: Lock attack-row view p to empty-edit 17.38
