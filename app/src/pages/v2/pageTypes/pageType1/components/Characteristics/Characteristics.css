@@ -1,14 +1,11 @@
 .characteristics-display-v2 .current-emotions-v2 {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 44.38px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .characteristics-display-v2 .current-emotions-v2 > span {
-    width: calc(33.33% - 8px);
     box-sizing: border-box;
+    border: 1px solid #bdbdbd;
 }
 
 .characteristics-display-v2 .current-emotions-v2 > span p,
