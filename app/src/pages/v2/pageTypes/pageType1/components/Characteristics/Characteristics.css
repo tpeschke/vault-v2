@@ -27,10 +27,12 @@
 
 .v2 .view-edit .current-emotions-v2 > span:nth-child(even) input {
     background: rgb(159, 199, 212) !important;
+    background-clip: content-box !important;
 }
 
 .v2 .view-edit .current-emotions-v2 > span:nth-child(even) input:hover {
     background: rgb(145, 181, 194) !important;
+    background-clip: content-box !important;
 }
 
 .v2 .view-edit .current-emotions-v2 input,

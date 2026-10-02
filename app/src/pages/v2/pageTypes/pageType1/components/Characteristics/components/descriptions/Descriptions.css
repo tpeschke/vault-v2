@@ -57,10 +57,12 @@
 
 .v2 .view-edit .descriptions-v2 > span:nth-child(odd) input {
     background: rgb(159, 199, 212) !important;
+    background-clip: content-box !important;
 }
 
 .v2 .view-edit .descriptions-v2 > span:nth-child(odd) input:hover {
     background: rgb(145, 181, 194) !important;
+    background-clip: content-box !important;
 }
 
 .v2 .view-edit .descriptions-v2 input,

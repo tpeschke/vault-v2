@@ -6,25 +6,17 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-045: Flush suite borders; island on the control; slim leftover p
-status: proposed
+status: done
 source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: remove T-044 overflow; Q1 everywhere T-044 applied; Q2 gap between input fill and zebra, no gaps between borders; Q3 keep gap between inputs; Q4/Q5 slim leftover p bloat, Descriptions inner padding consistent)
 why: T-044 put `padding: 2px 1px` and `gap: 1px` on the **wrapper**. Suite leftover rows show holes in `#bdbdbd` verticals (padding/gap sit outside the bordered children). Wrapper padding plus child `padding: 4px 4px 0` / Descriptions `padding: 4px` adds to `min-height: 17.38px` (content-box) and overflows `.page-type-one` 1068.
-scope: same T-044 widgets, CSS (and no new wrap): `Characteristics.css` (emotions); `Descriptions.css`; `Flaws.css`; `ReputationDisplay.css`; `SocialSuites.css`; `Attacks.css`. Do not change TSX. Do not change Stats, dice, attack **name**, Capacity, `index.css`, `View.css`. Do not add a shared class.
-steps:
-1. **Island on the control, not the wrapper.** On leftover `p` and matching `input`/`textarea` in those widgets: `padding: 2px 1px; box-sizing: border-box; min-height: 17.38px; background-clip: content-box`. Teal/white fill is the content box; the 2px/1px band is transparent so the zebra (or row) shows around the fill. View and edit use the same box. Notes keep `min-height` / `height: calc(2 * 17.38px)` as border-box including that padding.
-2. **No wrapper frame.** Remove `padding: 2px 1px` from Descriptions data `span`, Flaws `span`, Reputation `span`, Social Suite `span`, emotion `span`, `attack-row span`, `attack-notes`. Wrappers still own zebra.
-3. **Gap between inputs, not between borders.** Keep `gap: 1px` on Descriptions and Reputation spans (no cell borders). **Drop `gap` on Social Suite spans** so `#bdbdbd` child borders abut. Between suite input *fills*, the 1px side padding on each control is the gutter. Do not add flex `gap` on Flaws / emotion / attack-row (single control per cell).
-4. **Slim leftover `p`.** Remove stacked inner padding that added to 17.38: Social Suite `span *` `padding: 4px 4px 0` → the 2px 1px island only; Descriptions value `p`/`input` `padding: 4px` → `2px 1px` (heading `h2` padding 4px unchanged). Keep suite `border-left` / title top-bottom lines.
-5. Restate `background-clip: content-box` on the existing `.view-edit` … `input` teal selectors (odd/even) so `!important` fill still clips. Attack name selector unchanged (`padding: 2px 4px 0`, no clip island).
-6. Target `.page-type-one` **1068** in view and edit. Do not compress other blocks.
-done when: grep SocialSuites.css for `gap:` is 0 hits; grep Descriptions.css `padding: 2px 1px` is on `p`/`input` not the data `span`; suite leftover verticals meet (no 1px hole in `#bdbdbd`). Browser: empty leftover `p` vs insert `input` width/height within 1px; suite leftover grid lines continuous; Descriptions sibling input fills have a visible gutter; zebra visible in the 2px/1px band around teal; attack name still `calc(100% - 8px)`; `.page-type-one` 1068 view and edit.
-depends on: T-044
+scope: view character adjacency `Characteristics.css` (emotions); `Descriptions.css`; `Flaws.css`; `ReputationDisplay.css`; `SocialSuites.css`; `Attacks.css`. Do not change TSX. Do not change Stats, dice, attack **name**, Capacity, `index.css`, `View.css`. Do not add a shared class.
+result: Wrapper padding removed. Island is `padding: 2px 1px` + `background-clip: content-box` (restated `!important` next to mid-teal `background`) on leftover `p`/`input`/`textarea`. Suite `gap` gone; Descriptions/Reputation keep `gap: 1px`. Browser: leftover desc p/input width 168.58, height 17.38 vs 18; suite cells abut; odd-suite clip content-box; attack name `padding: 2px 4px 0` / 326.31 (`calc(100% - 8px)`); `.page-type-one` 1068 view and edit.
+deviations from design: none beyond Order (`background-clip: content-box !important` on restated teal so the fill shorthand does not reset clip).
 open questions: none
-deviations from design: Island is `padding` + `background-clip: content-box` on the control so padding is inside 17.38 and does not sit outside suite borders (wrapper padding cannot do both). Suite uses no flex `gap`; unbordered multi-input rows keep `gap: 1px`. Descriptions T-043 inner `padding: 4px` replaced by `2px 1px` so leftover lines match suites.
-result:
 
-## Done
 
 
 ### T-044: Inset mapped and attack non-name controls 2px / 1px
