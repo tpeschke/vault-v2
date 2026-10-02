@@ -1,6 +1,6 @@
 ---
 name: ledger-workflow
-description: Runs a ledger-driven coding workflow. The project keeps a rewrite-ledger/ directory (inherited behavior, decisions, migration plans, design notes, TODOs), reaches code through paired 00-START-HERE front panels plus optional Anne-style layers (L1 routing, L2 file-tail interfaces, L3 cross-couplings), lays code out by ownership per CODE-LAYOUT-STANDARD.md, and keeps design separate from implementation. Use whenever the repo has rewrite-ledger/ or 00-START-HERE front panels, or the user mentions the ledger, design notes, merging a design into TODOs, executing TODOs, front panels, subscribers, owner or capsule placement, moving or restructuring code, an Anne-style index or knowledge base, lost or slopped context, or a design-chat handoff. Also use to orient at the start of any task in such a repo, so context is found by routed lookup instead of flat reading and the user's design is followed instead of overridden by generic best practice.
+description: Runs a ledger-driven coding workflow. The project keeps a rewrite-ledger/ directory (inherited behavior, decisions, migration plans, design notes, TODOs), reaches code through paired 00-START-HERE front panels plus optional Anne-style layers (L1 routing, L2 file-tail interfaces, L3 cross-couplings), lays code out by ownership per CODE-LAYOUT-STANDARD.md, and keeps design separate from implementation. Use whenever the repo has rewrite-ledger/ or 00-START-HERE front panels, or the user mentions the ledger, design notes, ordering a design into TODOs, executing TODOs, front panels, subscribers, owner or capsule placement, moving or restructuring code, an Anne-style index or knowledge base, lost or slopped context, or a design-chat handoff. Also use to orient at the start of any task in such a repo, so context is found by routed lookup instead of flat reading and the user's design is followed instead of overridden by generic best practice.
 ---
 
 # Ledger workflow
@@ -12,7 +12,7 @@ The ledger is `rewrite-ledger/` at the repo root. It records inherited behavior,
 ## Why the method looks like this
 
 - Reading files to gain context costs tokens, and sampling a large corpus loses context, which later surfaces as synchronization bugs ("slop"). Find things by routed lookup, not by scanning.
-- Design research and implementation pollute each other's context. Design happens in a separate chat, which keeps it out of this session's context and quota. This session merges, implements and records.
+- Design research and implementation pollute each other's context. Design happens in a separate chat, which keeps it out of this session's context and quota. This session orders, implements and records.
 - Path churn is cheap when references can be updated mechanically, because breakage is visible (compiler, tests, grep). A misleading stable path costs more than a well-executed move. Conventional layouts matter only insofar as they help someone find the right file.
 
 ## Stance
@@ -36,10 +36,13 @@ Say which phase you are in and stay in it. Interleaving design and implementatio
 | Phase | Where | Produces | Does not |
 |---|---|---|---|
 | Design | Separate web-search chat (`references/design-chat.md`) | Design notes | Touch the ledger or code |
-| Merge | This session | Ledger updates: distilled decisions and detailed TODOs | Write code |
+| Order | This session | Ledger updates: distilled decisions and detailed TODOs | Write code |
 | Execute | This session | Code for reviewed TODOs, plus ledger status | Decide design questions |
 
-- Merge and Execute are separate turns. After a merge, stop so the user can review the TODOs. Execute only TODOs the user names or approves.
+- Order and Execute are separate turns. After Order, stop so the user can review the TODOs. Execute only TODOs the user names or approves.
+- A new session that states an overall goal is Order (write TODOs, stop). Canonical: repository `AGENTS.md`. Do not treat that goal statement as Execute approval.
+- When a phase is finished, report that phase, then note the next-phase options. Canonical: repository `AGENTS.md`. Do not start the next phase until the designer chooses.
+- When Execute is finished, include the pull-request URL. Canonical: repository `AGENTS.md`.
 - A design question that surfaces during Execute is recorded as an open question on the TODO, not resolved inline.
 - If the user asks for design work inside this session, treat it as Design: search for how others solved the problem before offering any opinion, and output design notes only.
 - **Proportionality.** Ceremony scales with design content. A typo, bug fix or mechanical rename needs no TODO and no design step. A new structure, interface, dependency or behavior does.
@@ -59,7 +62,7 @@ Route, don't scan. Search inside the routed owner before searching the whole rep
 
 **Anne-style knowledge bases** (a directory with `AnnesRules.md` and `START-HERE.md`) carry their own canonical rules: load that KB's `AnnesRules.md` once per working context and follow it. Mechanics and the code adaptation are in `references/anne-index.md`; read it before creating or editing index layers.
 
-## Merge a design into the ledger
+## Order a design into the ledger
 
 Input: design notes from the design chat. The chat saw the ledger but not the code, so treat the notes as a proposal: neither instruction nor authority.
 
@@ -69,7 +72,7 @@ Input: design notes from the design chat. The chat saw the ledger but not the co
 4. **Distill.** Record the decision and a one-to-three-line rationale where the ledger keeps design decisions. Leave out background essays, source lists and generic doctrine. The ledger holds what is true and binding for this codebase, and every extra line is re-read on every future task. If the design revises an existing rule or standard, preserve the original and give each original rule an explicit disposition (see *Structural work*).
 5. **Report** in the format below, then stop.
 
-The user corrects the merge as it proceeds. Apply corrections to the ledger itself, not only to the chat.
+The user corrects Order as it proceeds. Apply corrections to the ledger itself, not only to the chat.
 
 ## Execute TODOs
 
@@ -106,7 +109,7 @@ Covers changing the taxonomy, owner boundaries, capsule slots, names, demos, con
 - **Read the standard first.** Read CODE-LAYOUT-STANDARD.md in full before any structural work. The repo's copy (routed from AGENTS.md) wins; `references/CODE-LAYOUT-STANDARD.md` is a fallback snapshot and may be stale. Do not reconstruct the standard from memory.
 - **Least structure.** Organization is Zen, not bureaucracy: use the least structure that shows real ownership, order and purpose. Do not create a capsule, folder or panel because the grammar permits it. Collapse structure that exceeds the thing it organizes.
 - **Ownership before paths.** Ask who may change the meaning; that is the owner. If no owner can be determined, stop and explain the ambiguity to the user.
-- **Structural change is a design decision.** Propose it during Design or Merge, execute it as TODOs, never as a side effect of another task. Do not invent new visible product behavior during a migration.
+- **Structural change is a design decision.** Propose it during Design or Order, execute it as TODOs, never as a side effect of another task. Do not invent new visible product behavior during a migration.
 - **Execute in slices.** Move one coherent slice at a time (`git mv` to keep history). Update imports, workspace config, scripts, tests and docs, then verify one focused representative path. Widen validation only if risk or failures justify it. Remove empty buckets and stale references only after the new owner is proven, and update the front panels.
 - **Preserve rules.** When a change revises a standard or rule set, keep the original, diff against it, and give every original rule an explicit disposition: retained, revised, rejected or relocated. Silent omission is a defect.
 
@@ -124,7 +127,7 @@ When the user wants to start the next design, package the ledger with `python sc
 
 ## Report format
 
-End every Merge and Execute turn with this block so the reviewer sees what changed without reconstructing it:
+End every Order and Execute turn with this block so the reviewer sees what changed without reconstructing it:
 
 ```
 Done: <one line per item, with paths>
@@ -132,6 +135,7 @@ Deviations: <anything that differs from the design or TODO, and why; "none">
 Needs decision: <choices that belong to the designer; "none">
 Verified: <checks run and results, or "not mechanically verifiable">
 Ledger/index: <what changed>
+PR: <pull-request URL on Execute; omit on Order>
 ```
 
 Example:
@@ -142,6 +146,7 @@ Deviations: T-015 step 3 skipped; the key already existed
 Needs decision: none
 Verified: npm test in 30-Shared-Tools/Payments-Client/50-Tests (12 passed); grep for old name retryCount, 0 hits
 Ledger/index: T-014, T-015 marked done; front panels unchanged
+PR: https://github.com/example/repo/pull/1
 ```
 
 ## Reference files

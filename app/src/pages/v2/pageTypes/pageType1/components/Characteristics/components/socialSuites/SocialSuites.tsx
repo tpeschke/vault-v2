@@ -7,27 +7,27 @@ interface Props {
 }
 
 export default function SocialSuitesDisplay({ socialSuites }: Props) {
-    const { empathize, lecture, intimidate, tempt } = socialSuites
+    const { influence, inform, intimidate, inspire } = socialSuites
 
     return (
         <div className="social-suites-v2">
             <div>
                 <span>
-                    <h2>Social Suite</h2>
+                    <h2>Social Suites</h2>
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>
-                <SocialSuiteDisplay suiteName='Empathize' socialSuite={empathize} />
-                <SocialSuiteDisplay suiteName='Lecture' socialSuite={lecture} />
+                <SocialSuiteDisplay suiteName='Influence' socialSuite={influence} />
+                <SocialSuiteDisplay suiteName='Inform' socialSuite={inform} />
             </div>
             <div>
                 <span>
-                    <h2>Social Suite</h2>
+                    <h2>Social Suites</h2>
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>
+                <SocialSuiteDisplay suiteName='Inspire' socialSuite={inspire} />
                 <SocialSuiteDisplay suiteName='Intimidate' socialSuite={intimidate} />
-                <SocialSuiteDisplay suiteName='Tempt' socialSuite={tempt} />
             </div>
 
         </div>

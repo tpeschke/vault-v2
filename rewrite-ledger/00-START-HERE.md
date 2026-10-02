@@ -14,7 +14,7 @@ Canonical: repository `00-START-HERE.md` § Designer vocabulary. Unmarked **char
 
 ## Who owns changes to its meaning
 
-The designer (the human directing this session). Agents merge, execute, and record; they do not invent design.
+The designer (the human directing this session). Agents order, execute, and record; they do not invent design.
 
 ## What it provides
 
@@ -53,6 +53,8 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Feature index (L1) | `../00-START-HERE.yaml` |
 | L2/L3 | `l2-l3-deferred.md` |
 | FSD colocation | `fsd-colocation.md` |
+| Page type 1 first-page view | `page1-view.md` |
+| Schema on boot | `schema-on-boot.md` |
 | Code | `../00-START-HERE.yaml` `routing` |
 | Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 

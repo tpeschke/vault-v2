@@ -1,0 +1,87 @@
+.vitals-v2 {
+    margin-top: 4px;
+}
+
+.vitals-v2 .die-row {
+    display: flex;
+    align-items: stretch;
+}
+
+.vitals-v2 .die-row h2 {
+    display: flex;
+    align-items: center;
+}
+
+.vitals-v2 .die-row p {
+    width: 14.3%;
+    padding: 1px 4px;
+}
+
+.vitals-v2 .die-row p img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.vitals-v2 .die-row p.selected {
+    outline: 2px solid black;
+    outline-offset: -1px;
+}
+
+.vitals-v2 .vitals-split {
+    display: flex;
+}
+
+.vitals-v2 .vitals-split span {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vitals-v2 .vitals-split p {
+    min-height: 17.38px;
+    border: 1px solid #bdbdbd;
+}
+
+.vitals-v2 .damage-values,
+.vitals-v2 .stress-values {
+    display: flex;
+    align-items: stretch;
+}
+
+.vitals-v2 .damage-values em {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    width: 22%;
+}
+
+.vitals-v2 .damage-values span:not(.slash) {
+    width: 32%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vitals-v2 .damage-values>p,
+.vitals-v2 .stress-values>p {
+    width: 18%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 22px;
+}
+
+.vitals-v2 .damage-values>:last-child,
+.vitals-v2 .stress-values>:last-child {
+    background: #f3f3f3;
+}
+
+.vitals-v2 .slash {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+}
+
+.vitals-v2 .stress-values {
+    justify-content: flex-end;
+}

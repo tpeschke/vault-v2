@@ -12,14 +12,14 @@ export default function FlawsDisplay({ flaws }: Props) {
             {flaws.map(({ id, flaw }) => {
                 return (
                     <span key={id}>
-                        <p>{flaw}</p>
+                        <p className="character-value">{flaw}</p>
                     </span>
                 )
             })}
             {[...Array(3 - flaws.length)].map((_, index) => {
                 return (
                     <span key={index}>
-                        <p></p>
+                        <p className="character-value"></p>
                     </span>
                 )
             })}

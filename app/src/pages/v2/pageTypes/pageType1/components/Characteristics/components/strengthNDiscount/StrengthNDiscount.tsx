@@ -10,11 +10,11 @@ export default function StrengthNDiscount({ culturalStrength, socialSkillDiscoun
         <div className="strength-and-discount-v2">
             <span className='cultural-strength'>
                 <h2>Cultural Strength</h2>
-                <p>{culturalStrength}</p>
+                <p className="character-value">{culturalStrength}</p>
             </span>
             <span className='social-skill-discount'>
                 <h2>Social Skill Discount</h2>
-                <p>{socialSkillDiscount}</p>
+                <p className="character-value">{socialSkillDiscount}</p>
             </span>
         </div>
     )

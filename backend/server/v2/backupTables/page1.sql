@@ -38,6 +38,14 @@ create table
     );
 
 create table
+    v2currentEmotions (
+        id serial primary key,
+        pageID integer,
+        value varchar(500),
+        rank integer
+    );
+
+create table
     v2goals (
         id serial primary key,
         characterid integer,
@@ -53,7 +61,7 @@ create table
     );
 
 create table
-    v2convictions (
+    v2Relationships (
         id serial primary key,
         characterid integer,
         value varchar(500),
@@ -61,7 +69,7 @@ create table
     );
 
 create table
-    v2Relationships (
+    v2descriptions (
         id serial primary key,
         characterid integer,
         value varchar(500),
@@ -85,7 +93,7 @@ create table
     );
 
 create table
-    v2empathizeDescriptions (
+    v2influenceDescriptions (
         id serial primary key,
         characterid integer,
         value varchar(500) default '',
@@ -101,7 +109,7 @@ create table
     );
 
 create table
-    v2lectureDescriptions (
+    v2informDescriptions (
         id serial primary key,
         characterid integer,
         value varchar(500) default '',
@@ -109,7 +117,7 @@ create table
     );
 
 create table
-    v2temptDescriptions (
+    v2inspireDescriptions (
         id serial primary key,
         characterid integer,
         value varchar(500) default '',

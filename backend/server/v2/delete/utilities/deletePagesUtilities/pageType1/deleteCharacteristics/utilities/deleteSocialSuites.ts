@@ -2,17 +2,17 @@ import query from "../../../../../../../db/database"
 
 const deleteSocialSuiteSQL = `delete from v2SocialSkillSuites where pageID = $1`
 
-const deleteEmpathizeDescriptionsSQL = `delete from v2EmpathizeDescriptions where pageID = $1`
-const deleteIntimidateDescriptionsSQL = `delete from v2IntimidateDescriptions where pageID = $1`
-const deleteLectureDescriptionsSQL = `delete from v2LectureDescriptions where pageID = $1`
-const deleteTemptDescriptionsSQL = `delete from v2TemptDescriptions where pageID = $1`
+const deleteInfluenceDescriptionsSQL = `delete from v2influenceDescriptions where pageID = $1`
+const deleteIntimidateDescriptionsSQL = `delete from v2intimidateDescriptions where pageID = $1`
+const deleteInformDescriptionsSQL = `delete from v2informDescriptions where pageID = $1`
+const deleteInspireDescriptionsSQL = `delete from v2inspireDescriptions where pageID = $1`
 
 export default async function deleteSocialSuites(pageID: number) {
     return Promise.all([
         query(deleteSocialSuiteSQL, pageID),
-        query(deleteEmpathizeDescriptionsSQL, pageID),
+        query(deleteInfluenceDescriptionsSQL, pageID),
         query(deleteIntimidateDescriptionsSQL, pageID),
-        query(deleteLectureDescriptionsSQL, pageID),
-        query(deleteTemptDescriptionsSQL, pageID),
+        query(deleteInformDescriptionsSQL, pageID),
+        query(deleteInspireDescriptionsSQL, pageID),
     ])
 }

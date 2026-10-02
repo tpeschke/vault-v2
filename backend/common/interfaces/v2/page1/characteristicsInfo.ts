@@ -5,8 +5,9 @@ export interface Characteristics {
     goals: Goal[],
     culturalStrength: string,
     socialSkillDiscount: number,
+    currentEmotions: Emotion[],
     reputations: CharacteristicPair[],
-    convictions: CharacteristicPair[],
+    descriptions: Description[],
     relationships: CharacteristicPair[],
     flaws: Flaw[],
     temperaments: Temperaments,
@@ -16,6 +17,16 @@ export interface Characteristics {
 export interface Goal {
     id: number,
     goal: string
+}
+
+export interface Description {
+    id: number,
+    value: string
+}
+
+export interface Emotion {
+    id: number,
+    value: string
 }
 
 export interface Flaw {
@@ -38,10 +49,10 @@ export interface Temperaments {
 }
 
 export interface SocialSkillSuites {
-    empathize: SkillSuiteInfo,
+    influence: SkillSuiteInfo,
     intimidate: SkillSuiteInfo,
-    lecture: SkillSuiteInfo,
-    tempt: SkillSuiteInfo,
+    inform: SkillSuiteInfo,
+    inspire: SkillSuiteInfo,
 }
 
 export interface SkillSuiteInfo {

@@ -15,27 +15,27 @@ export default function MovementDisplay({ movement }: Props) {
             </div>
             <div className='movement-category-row'>
                 <strong>Crawl</strong>
-                <p>{crawl}</p>
+                <p className="character-value">{crawl}</p>
                 <strong>∞</strong>
             </div>
             <div className='movement-category-row'>
                 <strong>Walk</strong>
-                <p>{walk}</p>
+                <p className="character-value">{walk}</p>
                 <strong>∞</strong>
             </div>
             <div className='movement-category-row'>
                 <strong>Jog</strong>
-                <p>{jog}</p>
+                <p className="character-value">{jog}</p>
                 <strong>∞</strong>
             </div>
             <div className='movement-category-row'>
                 <strong>Run</strong>
-                <p>{run}</p>
+                <p className="character-value">{run}</p>
                 <strong>10 Second Interval</strong>
             </div>
             <div className='movement-category-row'>
                 <strong>Sprint</strong>
-                <p>{sprint}</p>
+                <p className="character-value">{sprint}</p>
                 <strong>5 Second Interval</strong>
             </div>
         </div>

@@ -8,21 +8,22 @@ interface Props {
 export default function ReputationDisplay({ reputations }: Props) {
     return (
         <div className="reputation-display-v2">
-            <h2>Reputations</h2>
+            <h2>Reputation</h2>
             {reputations.map(({id, value, rank}) => {
                 return (
                     <span key={id}>
                         <em>I'm Known For</em>
-                        <p>{value}</p>
-                        <p>{rank}</p>
+                        <p className="character-value">{value}</p>
+                        <p className="character-value">{rank}</p>
                     </span>
                 )
             })}
-            {[...Array(3 - reputations.length)].map((_, index) =>{
+            {[...Array(Math.max(0, 3 - reputations.length))].map((_, index) =>{
                 return (
                     <span key={index}>
                         <em>I'm Known For</em>
-                        <p></p>
+                        <p className="character-value"></p>
+                        <p className="character-value"></p>
                     </span>
                 )
             })}

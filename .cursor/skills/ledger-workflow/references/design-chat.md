@@ -2,7 +2,7 @@
 
 Contents: Steps, Prompt, Design-note template
 
-The design chat is a separate conversation with an LLM that can search the web. It gets the zipped ledger as background, researches prior art, screens the design and writes design notes. It never edits the ledger and never sees the code, which is why the merge step exists.
+The design chat is a separate conversation with an LLM that can search the web. It gets the zipped ledger as background, researches prior art, screens the design and writes design notes. It never edits the ledger and never sees the code, which is why the Order step exists.
 
 ## Steps
 
@@ -10,7 +10,7 @@ The design chat is a separate conversation with an LLM that can search the web. 
 2. Start a chat with a web-search-capable LLM and attach the zip. If the design touches a topic covered by an Anne-style knowledge base, attach that too.
 3. Paste the prompt below, filling in the task.
 4. Iterate until the design notes are solid.
-5. Bring the notes into the coding session and ask for a merge (see *Merge a design into the ledger* in SKILL.md).
+5. Bring the notes into the coding session and ask for Order (see *Order a design into the ledger* in SKILL.md).
 
 ## Prompt
 
@@ -59,11 +59,11 @@ date: <YYYY-MM-DD>
 <each error checked: the finding, or "no issue found" and why>
 
 ## Assumptions about the code
-<each assumption the merge step must verify>
+<each assumption the Order step must verify>
 
 ## Open questions
 <decisions for the designer>
 
 ## TODO outline
-<coarse ordered steps; the coding agent makes them detailed at merge>
+<coarse ordered steps; the coding agent makes them detailed at Order>
 ```

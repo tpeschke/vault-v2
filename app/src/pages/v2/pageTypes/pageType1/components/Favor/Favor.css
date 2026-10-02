@@ -1,0 +1,57 @@
+.favor-v2 .favor-body {
+    display: flex;
+    min-height: 48px;
+}
+
+.favor-v2 .favor-prompt {
+    width: 71%;
+    padding: 6px 4px;
+    font-family: "Source Sans 3", sans-serif;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.favor-v2 .favor-track {
+    width: 31%;
+    border-left: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.favor-v2 .favor-track > p {
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 28px;
+}
+
+.favor-v2 .favor-track > :nth-child(3) {
+    background: #f3f3f3;
+}
+
+.favor-v2 .favor-track > span:not(.anointed-row) {
+    padding: 0 4px;
+}
+
+.favor-v2 .anointed-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.favor-v2 .anointed-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 6px;
+}
+
+.favor-v2 .anointed-box.checked {
+    background: black;
+}

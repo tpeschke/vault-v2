@@ -1,0 +1,30 @@
+.attacks-v2 .attack-row {
+    display: flex;
+}
+
+.attacks-v2 .attack-row span {
+    display: flex;
+    align-items: center;
+    width: 33%;
+}
+
+.attacks-v2 .attack-row em {
+    padding-right: 4px;
+}
+
+.attacks-v2 .attack-block > div:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.attacks-v2 .attack-block h2 {
+    min-height: 17.38px;
+}
+
+.attacks-v2 .attack-row p {
+    width: 100%;
+    min-height: 17.38px;
+}
+
+.attacks-v2 .attack-block > p {
+    min-height: calc(2 * 17.38px);
+}

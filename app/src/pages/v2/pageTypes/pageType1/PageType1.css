@@ -1,7 +1,19 @@
 .page-type-one .left-column {
-    width: 59%;
+    width: 56%;
 }
 
 .page-type-one .right-column {
-    width: 39%;
+    width: 42%;
+}
+
+.page-type-one-wordmark {
+    display: block;
+    width: 61%;
+    height: auto;
+    margin: 0 auto 4px;
+}
+
+.page-type-one .right-column h2 {
+    padding: 2px 4px 0;
+    font-size: 12px;
 }

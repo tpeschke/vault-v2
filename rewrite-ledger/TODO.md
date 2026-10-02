@@ -2,13 +2,179 @@
 
 status: active   date: 2026-09-30
 
-Merge writes `proposed`. The user's instruction to execute counts as approval. Keep finished entries in Done and prune old ones so the active list stays short.
+Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
 
 (none)
 
 ## Done
+
+### T-025: Load Kalam Regular and define `.character-value`
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Kalam for character values)
+why: Character-object fill-ins must use Kalam 400. Form chrome stays HamletOrNot / oldClaude / Source Sans 3.
+scope: unindexed `app/src/index.css`; view character adjacency `app/src/pages/View.css`.
+result: Google `@import` includes `family=Kalam:wght@400`. `.v2 .character-value` sets `'Kalam', cursive`. No 300/700, no Fontsource.
+deviations from design: selector is `.v2 .character-value` (Order) so attack-name `h2` is not kept on oldClaude.
+open questions: none
+
+### T-026: Mark interpolated v2 sheet values with `character-value`
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Kalam for character values)
+why: Q4-B: a class on each interpolated node, not all `p`. Q1-B: every v2 sheet page, including existing off-page-1 interpolations.
+scope: view character adjacency under `app/src/pages/v2/pageTypes/pageType1/`.
+result: `character-value` on listed interpolations (including Temperaments, Movement speeds, Relationships). Positions, die `<img>` cells, `p.slash`, slash spans, Anointed, v1, home unmarked. GeneralInfo has 8 fields (name through toLvl). Browser: name/stat/attackName/notes `Kalam, cursive`; labels `oldClaude`; slash/Positions/dieCell Source Sans 3; `kalamLoaded=true`. `.page-type-one` height=1068 scroll=1073 `overflow=true` (5px). No compression.
+deviations from design: none. Order done-check counted GeneralInfo as 7; steps listed 8 interpolations — implemented 8.
+open questions: none
+
+### T-024: Draw unlabeled two-line notes under Defense and each Attack
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: attack and defense special info)
+why: `notes` is already on the payload. The view omits it. Design: unlabeled string below each block’s stats, two value-cell lines minimum, wrap and grow.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Defenses/` (`Defenses.tsx`, `Defenses.css`) and `.../Attacks/` (`Attacks.tsx`, `Attacks.css`).
+result: Unlabeled `notes` under Defense and each of four Attacks. `min-height: calc(2 * 17.38px)` (browser 34.76px). Wrap and grow. Defense `name` still hidden. Empty sheet `.page-type-one` 1068px, `overflow=false`.
+deviations from design: none
+open questions: none
+
+### T-022: Store Current Emotions as a six-slot child table
+status: done
+source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, 2026-10-01 (design: Current Emotions six-cell grid)
+why: T-013 stored one varchar on `v2BasicCharacteristics`. Design: child table of `{ id, value }` rows, old string in rank 0.
+scope: view character `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `getCharacteristicsInfo.ts`; `getBasicCharacteristics.ts`; `assemblePageType1.ts` skeleton; new `getCurrentEmotions.ts` beside `getDescriptions.ts`; delete character `deleteCharacteristics.ts` + new `deleteCurrentEmotions.ts`; boot `backend/server/db/ensureSchema.ts`; unindexed `backupTables/page1.sql`.
+result: Payload is `Emotion[]`. Table `v2currentEmotions`. Assemble via `getCurrentEmotions` ordered by rank. Old varchar copied to rank 0 then dropped. Delete path added. Live postgres still needs a server restart for `ensureSchema`.
+deviations from design: none beyond Order (`rank` as slot; empty varchars not inserted; `pageID` not `characterid`).
+open questions: none
+
+### T-023: Draw Current Emotions as a 3×2 Social Suite–style grid
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: Current Emotions six-cell grid)
+why: The view still paints one string in `.line-shell`. Design: six unlabeled cells, 3 columns × 2 rows, Social Suite grid lines.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/` (`Characteristics.tsx`, `Characteristics.css`).
+result: Heading Current Emotions. Six unlabeled `p`s in `repeat(3, 1fr)`, padded from `currentEmotions ?? []`. `#bdbdbd` 1px borders, min-height 17.38px. `.line-shell` removed. Browser: empty and filled 3×2 grids; `.page-type-one` 1068px, `overflow=false`; Favor stays on the card.
+deviations from design: none
+open questions: none
+
+### T-021: Replace Vitals Die labels with polyhedral PNGs
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (design: vitals die glyphs)
+why: Self Doubt, Damage, and Stress still paint `d4`…`d20` text. Design: those six cells show the attached die PNGs.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/` (`Vitals.tsx` `DieRow`; `Vitals.css`); unindexed `app/src/assets/images/` (same slot as `bonfire-wordmark.png`). Do not change `dieIndex` storage, assemble, or v1 Integrity `d4!` copy.
+result: Die cells are `d4.png`…`d20.png` with `alt` d4–d20. Grey boxes kept. Selected is Positions outline, not fill. `dieIndex` 0 still draws all six. v1 `d4!` untouched. Browser: `.page-type-one` 1068px (1036 + card padding), `overflow=false`; Attacks stay on the card.
+deviations from design: none beyond Order (Positions 2px outline; no glyph shrink).
+open questions: none
+
+### T-019: Remove extra Favor boxes and Attack/Defense underlines
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Those decorations are not on the blank sheet.
+scope: `Attacks.css`, `Defenses.css`, `Favor.css`
+result: Attack and Defense value underlines removed. Favor number and anointed outline boxes removed. Anointed checked fill and Favor left divider kept.
+deviations from design: none
+open questions: none
+
+### T-020: Give page-type-1 value cells a one-line min-height
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Empty value cells collapse. Height must come from min-height, not from T-019 chrome.
+scope: page-type-1 component CSS value cells
+result: Value `p`s and empty attack `h2` names use `min-height: 17.38px`. Capacity slash unset. `PageType1.css` heading `h1` still 14px.
+deviations from design: unused `Relationships.css` still has `min-height: 14px` (Relationships is not on this page).
+open questions: none
+
+
+### T-016: Treat missing descriptions as an empty list
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01 (view crash)
+why: `DescriptionsDisplay` calls `descriptions.map`. A viewed character can omit the key.
+scope: `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx`
+result: Maps and pads from `const rows = descriptions ?? []`. No convictions fallback.
+deviations from design: none
+open questions: none
+
+### T-017: Apply schema on boot and rename convictions to descriptions
+status: done
+source: rewrite-ledger/schema-on-boot.md, rewrite-ledger/page1-view.md, 2026-10-01
+why: Live DB never received T-013/T-014 DDL. Descriptions is the convictions store renamed.
+scope: `backend/server/db/ensureSchema.ts`; `vault.ts`; `backupTables/page1.sql`; v2 characteristics assemble/delete; `characteristicsInfo.ts`.
+result: `start()` awaits `ensureSchema` before listen. `currentEmotions` added if missing. `v2convictions` renamed to `v2descriptions` (drop empty T-014 table if both exist). v2 payload has `descriptions` only. `getConvictions` / `deleteConvictions` removed.
+deviations from design: `query()` swallows errors; script verifies `information_schema` and throws if a patch did not land.
+open questions: none
+
+### T-018: Rename v2 social-suite keys and description tables
+status: done
+source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, 2026-10-01
+why: Labels already changed (T-012). Storage keys and description tables were still empathize / lecture / tempt.
+scope: `ensureSchema.ts`; `getSocialSuites.ts`; `deleteSocialSuites.ts`; `SocialSuites.tsx`; assemble skeletons; `backupTables/page1.sql`.
+result: Keys and tables are influence / inform / inspire / intimidate. `suiteID` 1–4 unchanged.
+deviations from design: none
+open questions: none
+
+
+### T-012: Relabel and reorder page-type-1 social suites
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Sheet labels are Influence / Inform / Inspire / Intimidate. The view still draws Empathize / Lecture / Intimidate / Tempt.
+scope: view character sheet adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/socialSuites/SocialSuites.tsx`. Do not rename `SocialSkillSuites` keys, `suiteID` values, or `v2*Descriptions` tables.
+result: Labels are Influence / Inform then Inspire / Intimidate. Payload keys and suiteIDs unchanged.
+deviations from design: none
+open questions: none
+
+### T-013: Bind Current Emotions to a new basic-characteristics string
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Current Emotions is three empty lines. Design: new stored field, one string.
+scope: view character `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/` (`getBasicCharacteristics.ts`, `getCharacteristicsInfo.ts`); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `assemblePageType1.ts` skeleton; view adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx`; unindexed schema snapshot `backend/server/v2/backupTables/page1.sql`.
+result: `currentEmotions` is on the interface, assemble path, and one bound line in the view. Column recorded in `backupTables/page1.sql`.
+deviations from design: live ALTER not applied; this environment has no `server-config` / postgres.
+open questions: none
+
+### T-014: Bind Descriptions to a new stored list
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Descriptions currently maps `convictions`. Design: a new stored field, not convictions, goals, or relationships.
+scope: view character `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `getCharacteristicsInfo.ts`; `getDescriptions.ts`; `assemblePageType1.ts`; `Descriptions.tsx`; `Characteristics.tsx`; delete character `deleteDescriptions.ts`; `backupTables/page1.sql`.
+result: Descriptions bind `descriptions`. `getDescriptions` / `deleteDescriptions` added. Convictions stay on the payload and are not drawn. Table recorded in `backupTables/page1.sql`.
+deviations from design: list shape `{ id, value }[]` padded to 5 taken from the existing widget. Live CREATE not applied; no postgres in this environment.
+open questions: none
+
+### T-015: Draw no die selection when dieIndex is 0
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: `DieRow` treats `dieIndex` 0 as d4 (`index === dieIndex`). Design: 0 is no selection. Defaults and empty vitals already store 0.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` (`DieRow` only).
+result: `selected` only when `dieIndex > 0 && (dieIndex - 1) === index`. Defaults stay 0.
+deviations from design: 1–6 → d4–d20 as recorded on `page1-view.md`.
+open questions: none
+
+
+### T-009: Lay out page-type-1 left column to match the blank sheet
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Left column was a partial stack (general info, stats, characteristics including Goals/Temperaments/Relationships, movement). The sheet’s left column is Name through Favor.
+scope: `app/src/pages/v2/pageTypes/pageType1/` (view character sheet adjacency): `PageType1.tsx`, `GeneralInfo/`, `Stats/`, `Characteristics/` (capacity, social suites, reputation, strengthNDiscount, descriptions, flaws), `Favor/`.
+result: Left column order is Name through Favor. Cultural Strength kept. Goals/Temperaments/Relationships/Movement not imported on this page. Current Emotions is empty lines; Descriptions bind to convictions. Suite names left as Empathize/Lecture/Intimidate/Tempt.
+deviations from design: none (verified the premature execute against the steps)
+open questions: Social suite display names; Current Emotions vs goals; Descriptions vs convictions.
+
+### T-010: Lay out page-type-1 right column to match the blank sheet
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: Right column was a placeholder (`Right`). The sheet’s right column is Positions, Self Doubt, Damage, Stress, Defenses, Attacks. The designer added a Bonfire wordmark at the top of that column, which the blank PDF does not have.
+scope: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/assets/images/bonfire-wordmark.png`.
+result: Wordmark mounted first in the right column. Positions, vitals, defenses, and four attacks follow. Spacing tightened. Measured `.page-type-one` at 1068px (1036 content + 16px card padding); right-column content ended at ~788px, no overflow.
+deviations from design: none
+open questions: dieIndex 0 as d4 vs unset; whether to draw defense name/notes and attack notes.
+
+### T-011: Assign basic characteristics onto the page-type-1 payload
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-01
+why: `getCharacteristicsInfo` discarded `getBasicCharacteristics`’s return, so capacity, Cultural Strength, social skill discount, and temperaments never reached the view.
+scope: `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/getCharacteristicsInfo.ts`
+result: Assigns capacity, culturalStrength, socialSkillDiscount, and temperaments in place. Spread-return pattern has 0 hits.
+deviations from design: none
+open questions: none
+
 
 ### T-008: Split nested view folder into two FSD page slices
 status: done

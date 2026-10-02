@@ -35,6 +35,7 @@ export default async function assemblePageType1(pageID: number): Promise<Page1> 
             capacity: 0,
             culturalStrength: '',
             socialSkillDiscount: 0,
+            currentEmotions: [],
             temperaments: {
                 affability: '',
                 openness: '',
@@ -44,11 +45,11 @@ export default async function assemblePageType1(pageID: number): Promise<Page1> 
             },
             goals: [],
             reputations: [],
-            convictions: [],
+            descriptions: [],
             relationships: [],
             flaws: [],
             socialSuites: {
-                empathize: {
+                influence: {
                     stat: 0,
                     rank: 0,
                     descriptions: []
@@ -58,12 +59,12 @@ export default async function assemblePageType1(pageID: number): Promise<Page1> 
                     rank: 0,
                     descriptions: []
                 },
-                lecture: {
+                inform: {
                     stat: 0,
                     rank: 0,
                     descriptions: []
                 },
-                tempt: {
+                inspire: {
                     stat: 0,
                     rank: 0,
                     descriptions: []
