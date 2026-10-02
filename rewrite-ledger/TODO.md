@@ -6,51 +6,26 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-039: Darker teal on attack name and striped map inputs
-status: proposed
-source: rewrite-ledger/edit-character.md, 2026-10-02 (design: darker attack-name and odd-row fills; Q1 mid teal `rgb(159, 199, 212)`; Q2 all maps; Q3 include emotions even; Q4 attack name only; Q5 even-row default teal stays)
-why: Global `.view-edit input` teal `rgba(173, 216, 230)` is too light on the attack-name slot and on `#f3f3f3` zebra rows.
-scope: view character adjacency, widget CSS only: `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css`; `.../descriptions/Descriptions.css`; `.../flaws/Flaws.css`; `.../reputation/ReputationDisplay.css`; `.../socialSuites/SocialSuites.css`; `.../Stats/Stats.css`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.css` (emotions). Do not change TSX. Do not change `index.css`. Do not change view `#f3f3f3` / `#bdbdbd`. Do not restyle attack Meas/Atk/Damage/Type/Rec/notes. Do not touch Anointed or die CSS (T-040).
-steps:
-1. Darker rest fill `rgb(159, 199, 212) !important` (between default teal and hover `rgb(145, 181, 194)`). Hover on these controls stays `rgb(145, 181, 194) !important`. Restating hover on the same selectors is required: a more specific rest `!important` would otherwise beat `.view-edit input:hover`.
-2. Attack name: `.v2 .view-edit .attacks-v2 .attack-block > input:first-child`. Keep existing 12px / padding / letter-spacing box. Do not set background `#bdbdbd`.
-3. Map inputs: paint the control inside the **existing** `#f3f3f3` wrappers (do not invent new parity). Descriptions/flaws/reputation have an `h2` first child, so `span:nth-child(odd)` greys the 2nd/4th/… lines, not 1/3/5. Stats `div:nth-child(odd)` is the Mem/Ins/Pre row (h1 is child 1). Emotions grey is `nth-child(even)` on the cell itself. Selectors:
-   - `.descriptions-v2 > span:nth-child(odd) input`
-   - `.flaws-v2 > span:nth-child(odd) input`
-   - `.reputation-display-v2 > span:nth-child(odd) input`
-   - `.social-suites-v2 > div > span:nth-child(odd) input` (odd suite titles and odd description rows; header span has no inputs)
-   - `.stats-display-v2 > div:nth-child(odd) input`
-   - `.current-emotions-v2 > input:nth-child(even)` (leftover even cells stay `p`)
-   Insert-row inputs that land on those slots get the darker fill too.
-4. Even / white-row inputs stay `rgba(173, 216, 230)` from `index.css`.
-done when:
-- Grep `rgb(159, 199, 212)` in the scoped CSS files: hits on attack name and the listed map selectors.
-- Grep `Attacks.css` for `#bdbdbd` on the name input: 0 (view h2 grey is global `.v2 h2`, not this rule).
-- Grep attack-row / notes selectors for `159, 199, 212`: 0.
-- Browser, Edit: attack names darker teal; grey-row map inputs darker; white-row map inputs default teal; hover still `rgb(145, 181, 194)`; view stripes unchanged; cells do not move.
-depends on: none
-open questions: none
-deviations from design: none (parity follows live `#f3f3f3` selectors, including h2 offset).
+## Done
 
 ### T-040: Stripe odd die cells with the darker teal
-status: proposed
+status: done
 source: rewrite-ledger/edit-character.md, 2026-10-02 (design: Q6 stripe die color, do not touch Anointed)
 why: T-035 filled every edit die `<p>` with the same teal. Odd dice should use the darker mid teal; even dice stay default.
 scope: `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (existing `.v2 .view-edit .vitals-v2 .die-row p`). Do not change `Vitals.tsx`, die PNGs, `dieIndex` click, selected outline. Do not change `Favor.css` / Anointed. Do not add selectors to `index.css`.
-steps:
-1. Keep even dice on `rgba(173, 216, 230) !important` (existing `.die-row p` rule).
-2. Odd dice: `.v2 .view-edit .vitals-v2 .die-row p:nth-of-type(odd)` → `rgb(159, 199, 212) !important`. `nth-of-type` so the leading `h2` does not shift parity (d4, d8, d12). Not `p:nth-child(odd)` (that would be d6, d10, d20).
-3. Hover on **all** die `p` stays `rgb(145, 181, 194) !important`. Place the hover rule so it wins over the odd rest (equal specificity: put `:hover` after, or add `p:nth-of-type(odd):hover`).
-4. View (no `.view-edit`) stays untinted. Selected outline unchanged. Cursor rule stays.
-done when:
-- Grep `Vitals.css` for `nth-of-type(odd)` and `159, 199, 212`: hits.
-- Grep `Favor.css` Anointed block vs T-035: unchanged (teal / hover / checked black).
-- Browser: 9 odd dice darker, 9 even default teal; hover darker on both; selected outline black on either fill; Anointed still default teal; view dice not teal; die-row tops unchanged.
-depends on: none
+result: Odd die `p:nth-of-type(odd)` rest `rgb(159, 199, 212)`; even keep default teal; hover on all `rgb(145, 181, 194)`. Anointed CSS unchanged.
+deviations from design: `nth-of-type(odd)` instead of `nth-child(odd)` because the Die h2 is the first child.
 open questions: none
-deviations from design: `nth-of-type(odd)` instead of `nth-child(odd)` because the Die `h2` is the first child.
 
-## Done
+### T-039: Darker teal on attack name and striped map inputs
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design: darker attack-name and odd-row fills; Q1 mid teal `rgb(159, 199, 212)`; Q2 all maps; Q3 include emotions even; Q4 attack name only; Q5 even-row default teal stays)
+why: Global `.view-edit input` teal `rgba(173, 216, 230)` is too light on the attack-name slot and on `#f3f3f3` zebra rows.
+scope: view character adjacency, widget CSS only: `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css`; `.../descriptions/Descriptions.css`; `.../flaws/Flaws.css`; `.../reputation/ReputationDisplay.css`; `.../socialSuites/SocialSuites.css`; `.../Stats/Stats.css`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.css` (emotions). Do not change TSX. Do not change `index.css`. Do not change view `#f3f3f3` / `#bdbdbd`. Do not restyle attack Meas/Atk/Damage/Type/Rec/notes. Do not touch Anointed or die CSS (T-040).
+result: Attack name and `#f3f3f3` map-slot inputs rest `rgb(159, 199, 212)` with hover restated `rgb(145, 181, 194)`. Even/white-row inputs stay default teal. Attack non-name fields untouched.
+deviations from design: none (parity follows live `#f3f3f3` selectors, including h2 offset).
+open questions: none
+
 
 ### T-038: Edit Emotional Capacity through the Yb cell
 status: done

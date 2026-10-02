@@ -44,4 +44,4 @@ Rejected:
 - Shared list kit under `app/src/features/` or import of v1 `DisplaySingleArray` / `DisplayPairArray`.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-038 (done); T-039, T-040
+TODOs: T-027–T-040 (done)

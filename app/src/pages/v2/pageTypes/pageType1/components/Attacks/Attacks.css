@@ -32,6 +32,14 @@
     width: calc(100% - 8px);
 }
 
+.v2 .view-edit .attacks-v2 .attack-block > input:first-child {
+    background: rgb(159, 199, 212) !important;
+}
+
+.v2 .view-edit .attacks-v2 .attack-block > input:first-child:hover {
+    background: rgb(145, 181, 194) !important;
+}
+
 .attacks-v2 .attack-row p,
 .attacks-v2 .attack-row input {
     width: 100%;
