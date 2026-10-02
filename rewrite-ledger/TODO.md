@@ -6,7 +6,24 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-047: Current Emotions cells fill the heading; restore grid lines
+status: proposed
+source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: gaps look terrible; Q1 Current Emotions only; Q3 drop -8px and restore `#bdbdbd` lines; Q4 keep inset)
+why: Emotion cells are `width: calc(33.33% - 8px)` in a column-wrap flex with no borders. The heading is full width; leftover cells are invisible white; the T-045 island sits as a short teal chip. T-023 was `repeat(3, 1fr)` with `#bdbdbd` 1px lines.
+scope: view character adjacency `Characteristics.css` only. Do not change TSX. Do not change Social Suites, Descriptions, Flaws, Reputation, Attacks, Capacity, `index.css`, `View.css`.
+steps:
+1. Restore T-023 layout: `.current-emotions-v2 { display: grid; grid-template-columns: repeat(3, 1fr); }`. Drop `flex` / `flex-wrap` / `flex-direction: column` / `justify-content: space-between` / `height: 44.38px` / `width: calc(33.33% - 8px)`.
+2. Grid lines on the **span** (`border: 1px solid #bdbdbd; box-sizing: border-box`). Keep even-span `#f3f3f3`. Do not add flex `gap` or wrapper padding (T-045).
+3. Keep island on leftover `p` / `input`: `padding: 2px 1px; box-sizing: border-box; min-height: 17.38px; background-clip: content-box` (and existing `.view-edit` clip restates).
+4. Target `.page-type-one` **1068**. Do not compress other blocks; record overflow if borders add height.
+done when: grep `Characteristics.css` for `33.33% - 8px` is 0 hits; `repeat(3, 1fr)` present. Browser, view and edit: three cells’ combined width matches the Current Emotions `h2` within 1px; leftover spans show `#bdbdbd`; first insert `input` padding 2px 1px and `background-clip: content-box`; `.page-type-one` 1068 (or recorded).
+depends on: T-023, T-045
+open questions: none
+deviations from design: Q2 (suite header shrink) is out of scope — Q1 is Current Emotions only. Grid restore is T-023, not a new layout.
+result:
+
 ## Done
+
 
 ### T-046: Social Suites Stat/Rank tracks and solid header bar
 status: done
