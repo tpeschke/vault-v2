@@ -47,4 +47,4 @@ Rejected:
 - Edit-only input margin that shrinks the control vs view `p`. Restyling Stats to 2px/1px. Inset on dice or attack name. Dropping Social Suite `#bdbdbd` grid lines for this frame. Wrapper `padding`/`gap` outside suite borders (T-044 overflow). Stacking inner `padding: 4px` / `4px 4px 0` on leftover `p` on top of 17.38px content-box.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-045 (done); suite Stat/Rank tracks: T-046 (proposed)
+TODOs: T-027–T-046 (done)

@@ -6,23 +6,17 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-046: Social Suites Stat/Rank tracks and solid header bar
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: Stat/Rank headers misaligned; heading gap not solid; Q1 both header-to-values and left-pane-to-right-pane; Q2 no island on header h2s; Q3 restore h2 padding 4px; Q4 suite-title em keep island; Q5 widen Rank a bit)
 why: Header Stat/Rank use `span *` `min-width: 15%` with no `width`, so “Rank” grows and misses the 15% value cells. Left pane `width: 50%` + `border-right: 1px` is content-box, so left/right 15% tracks miss. T-045 `span *` `padding: 2px 1px` + `background-clip: content-box` punches the `#bdbdbd` header bar.
 scope: view character adjacency `SocialSuites.css` only. Do not change TSX. Do not change Descriptions, Capacity, Flaws, Reputation, Emotions, Attacks, `index.css`, `View.css`. Do not add a class or shared heading widget.
-steps:
-1. **Panes.** `.social-suites-v2 > div { width: 50%; box-sizing: border-box; }`. Keep left `border-right`.
-2. **Tracks (border-box `width`, not `min-width` alone).** Header and `.suite-title`: first 67%, Stat 15%, Rank **18%**. `.description-row`: first 82%, Rank 18%. Override `span *` `min-width: 15%` and `span input { width: 15% }` so description Rank is 18% (not 15%). First-child name/em stays 67% except description first 82%.
-3. **Solid headers.** `.social-suites-v2 > div > span:first-child h2`: `padding: 4px` (global h2), `background-clip: border-box` (or unset clip), no T-045 island. Adjacent heading cells fill 67+15+18 with no flex `gap`. Suite-title `em` / leftover `p` / `input` keep `padding: 2px 1px` and `background-clip: content-box`.
-4. Target `.page-type-one` **1068**. Suite `#bdbdbd` grid on title and description rows stays.
-done when: grep `SocialSuites.css` for `width: 18%` on Rank tracks; header `h2` computed `padding-top` 4px and `background-clip` not `content-box`. Browser, view and edit: within one pane, header Stat left/right vs suite-title Stat, and header Rank vs title Rank vs description Rank, within 1px; left-pane Stat width = right-pane Stat width and left Rank width = right Rank width within 1px; header bar has no 1px hole between Social Suites / Stat / Rank greys; leftover island and 1068 unchanged.
-depends on: T-045
+result: Panes 50% border-box. Tracks 67/15/18 (description 82/18). Header h2 padding 4px, background-clip border-box. Browser view and edit: header Stat/Rank vs title and description Rank within 1px; left Stat/Rank widths match right within 1px; header cells abut; leftover island kept; `.page-type-one` 1068.
+deviations from design: none beyond Order (`min-width: 0` on `span *` so 18% Rank is not a floor of 15%).
 open questions: none
-deviations from design: Rank **18%** (Stat 15%, name 67%, description 82/18) is Order’s reading of “widen Rank just a bit” from 15%. Header is `span:first-child` (no new class).
-result:
 
-## Done
 
 
 ### T-045: Flush suite borders; island on the control; slim leftover p
