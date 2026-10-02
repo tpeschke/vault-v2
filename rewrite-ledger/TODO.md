@@ -8,19 +8,19 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ### T-048: Mapped leftover p/input min-height 19.38 via custom property
 status: proposed
-source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: a little height on mapped p/input; Q1 +2px → 19.38; Q2 lists plus attack non-name, not notes; Q3 custom property; Q4 stop if 1068 exceeded; Q5 suite-title em matches)
-why: T-045 locked leftover `p`/`input` at 17.38 border-box. Designer wants +2px on those controls. View.css `:placeholder-shown { height: 17.38px }` keeps empty insert short unless the widget restates height.
-scope: `PageType1.css` (define `--mapped-row-min-height`); `Descriptions.css`; `Flaws.css`; `ReputationDisplay.css`; `Characteristics.css` (emotions); `SocialSuites.css` (`p`/`input`/`em`, not header `h2`); `Attacks.css` (`.attack-row p`/`input` only). Do not change TSX, `View.css`, `index.css`, Stats, dice, attack **name**, notes textarea, Capacity.
+source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: a little height on mapped p/input; Q1 +2px → 19.38; Q2 lists only; Q3 custom property; Q4 stop if 1068 exceeded; Q5 suite-title em matches; revision: attack inputs stay T-045)
+why: T-045 locked leftover `p`/`input` at 17.38 border-box. Designer wants +2px on list leftover controls. Attack Meas/Atk/Damage/Type/Rec stay 17.38. View.css `:placeholder-shown { height: 17.38px }` keeps empty insert short unless the widget restates height.
+scope: `PageType1.css` (define `--mapped-row-min-height`); `Descriptions.css`; `Flaws.css`; `ReputationDisplay.css`; `Characteristics.css` (emotions); `SocialSuites.css` (`p`/`input`/`em`, not header `h2`). Do not change TSX, `View.css`, `index.css`, Stats, dice, `Attacks.css`, Capacity.
 steps:
 1. On `.page-type-one` in `PageType1.css`: `--mapped-row-min-height: 19.38px`. First custom property in this CSS; do not add a shared class or `app/src/shared/`.
 2. On leftover `p` and matching `input` in the listed widgets: `min-height` and `height` = `var(--mapped-row-min-height)` (border-box). Keep island `padding: 2px 1px` and `background-clip: content-box`.
 3. Social Suite `em` (suite-title) uses the same min-height/height. Header `h2` stays T-046 (padding 4px, unclipped, no 19.38).
-4. Attack notes stay `min-height` / `height: calc(2 * 17.38px)`. Attack name stays 17.38 / `padding: 2px 4px 0`.
+4. Do not edit `Attacks.css`. Attack row `p`/`input` stay `min-height: 17.38px`. Notes stay `min-height` / `height: calc(2 * 17.38px)`. Attack name stays 17.38 / `padding: 2px 4px 0`.
 5. **1068 stop.** After the bump, measure `.page-type-one` offsetHeight in view and edit. If either is **> 1068**, revert the height change (leave the custom property unused or delete it) and mark this TODO **blocked** with the measured heights. Do not compress other blocks.
-done when: grep `--mapped-row-min-height` in `PageType1.css`; widget `p`/`input` (and suite `em`) compute height 19.38; leftover `p` vs insert `input` within 1px; notes still `calc(2 * 17.38px)`; attack name still `padding: 2px 4px 0`. Browser: `.page-type-one` **1068** view and edit, or TODO blocked with the overflow number.
+done when: grep `--mapped-row-min-height` in `PageType1.css`; listed widget `p`/`input` (and suite `em`) compute height 19.38; leftover `p` vs insert `input` within 1px; `Attacks.css` unchanged (row 17.38, notes `calc(2 * 17.38px)`, name `padding: 2px 4px 0`). Browser: `.page-type-one` **1068** view and edit, or TODO blocked with the overflow number.
 depends on: T-045, T-046
 open questions: none
-deviations from design: Property lives on `.page-type-one` in `PageType1.css` (page-type-1 only; no new file). Both `min-height` and `height` set so `:placeholder-shown` 17.38 and filled `1.2em` do not undercut 19.38.
+deviations from design: Property lives on `.page-type-one` in `PageType1.css` (page-type-1 only; no new file). Both `min-height` and `height` set so `:placeholder-shown` 17.38 and filled `1.2em` do not undercut 19.38. Attacks dropped after designer revision.
 result:
 
 ## Done
