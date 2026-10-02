@@ -1,5 +1,5 @@
 # Feature inventory
-status: accepted   date: 2026-09-30
+status: accepted   date: 2026-10-02
 
 Unmarked **character** means v2. v1 rows are marked. Sheet widgets are not features.
 
@@ -15,11 +15,14 @@ Home is one page; list objectives stay split by version. Create character stays 
 - List characters
 - Create character
 - View character sheet
+- Edit character sheet
 - Delete character
 
 Create character: home footer → `UsersCharactersHook.addCharacter` → `backend/server/v2/add/`. Slot limit (Patreon/owner) is a constraint, not a feature.
 
-Not present: edit, quick-edit, download PDF.
+Edit character sheet: v2 view sidebar → new v2 edit owner. Canonical: `edit-character.md`.
+
+Not present: quick-edit, download PDF.
 
 ## v1 (ancient)
 

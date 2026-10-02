@@ -2,7 +2,9 @@
 
 Read `00-START-HERE.md` and `00-START-HERE.yaml` first. That pair is L1. Route the task; do not scan the tree.
 
-A new session that states an overall goal is Order: write ledger TODOs and stop. That goal statement is not Execute approval. Execute only TODOs the designer names or approves.
+A new session that states an overall goal is Design: search prior art, write design notes, and stop. That goal statement is not Order and not Execute approval. Order only after the designer answers Design open questions or asks for Order. Execute only TODOs the designer names or approves.
+
+Canonical: `rewrite-ledger/phases.md`.
 
 When a phase is finished, report that phase, then note the next-phase options. Do not start the next phase until the designer chooses.
 

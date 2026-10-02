@@ -23,6 +23,8 @@ routing:
   fsd-colocation: fsd-colocation.md
   L2-L3: l2-l3-deferred.md
   page1-view: page1-view.md
+  edit-character: edit-character.md
+  session-phases: phases.md
   schema-on-boot: schema-on-boot.md
   observed_code_paths:
     app: ../app
