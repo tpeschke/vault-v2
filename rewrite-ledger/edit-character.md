@@ -13,11 +13,13 @@ Constraints it imposes:
 - `isEditing` default false. Toggle via Edit. Save and Revert both exit edit. Page shell gets `view-edit` while editing (existing `app/src/index.css` rules).
 - Local edits update character state. Snapshot for Revert is set on load and after a successful save only — not on each keystroke. v1’s `setCharacterInfo` overwrites the snapshot on every edit (`app/src/pages/v1/hooks/characterHook.tsx`); that is not copied.
 - Save: POST the full `CharacterVersion2` to `/v2/edit/:characterID`, then replace local state with the reassembled response (v1 clears, posts, then `setCharacterInfo(data)`). Owner mismatch: refuse, same idea as v1.
-- Persist every field on the payload, including page-type-1 values not drawn on this page (capacity, temperaments, goals, relationships, movement, defense `name`), so unshown stores are not wiped.
-- Editable on page type 1: stored cells that are already drawn. Inputs keep `className="character-value"` (Kalam). Controlled values so Revert repaints.
+- Persist every field on the payload, including page-type-1 values not drawn on this page (temperaments, goals, relationships, movement), so unshown stores are not wiped. `capacity` is edited through the Yb band. Defense `name` is drawn. Favor `divineRelationship` is drawn.
+- Editable on page type 1: stored cells that are already drawn, plus `divineRelationship` (new under the Divine prompt) and defense `name` (replaces the empty Defenses `h2`). Inputs keep `className="character-value"` (Kalam). Controlled values so Revert repaints.
 - Edit toggle must not move sheet cells. Display `p`/`h2` and layout wrappers keep their pre-edit (T-020 / T-029) metrics. Only the replacing `input`/`textarea` is sized to that display box. Do not raise empty `p` min-height to 18px or lock column widths to make the input fit. Attack name **input** keeps Kalam and the h2 box (12px, `padding: 2px 4px 0`, `letter-spacing: 1px`, `white-space: pre`); do not copy oldClaude or `#bdbdbd`. Strip UA padding (`padding: 0`, `appearance: none` / `textfield`) via `:where` in `View.css`; do not set a global input `font-size`, `width`, or `min-height`. Empty 15px `p` is 17.38px; filled is 18px (line-height 1.2). Edit text inputs use `placeholder=" "` (invisible `::placeholder`) and `:placeholder-shown { height: 17.38px }` vs filled `height: 1.2em` so both states match. Notes textarea `height: calc(2 * 17.38px)` on the control only. Flex number inputs that would grow a row get `min-width: 0` / `overflow: hidden` on the **input**, not the wrapper. No `field-sizing: content`. No contenteditable. Sidebar Save/Revert chrome is out of this box rule.
-- Not editable: computed cells (CrP `toLvl`, Emotional Capacity bands, Damage Trauma `threshold * 2`); undrawn defense `name`; Positions; wordmark; slashes; Anointed stays a clickable box, not a new chrome. Die cells: click sets `dieIndex` to `index + 1`; click selected sets `0`.
-- Raw `capacity` is stored but not drawn; do not add a cell. Band values stay text.
+- Not editable: computed cells (CrP `toLvl`, Emotional Capacity Na / N / Nb / Y / Ya, Damage Trauma `threshold * 2`); Positions; wordmark; slashes. Anointed stays a clickable box, not a new chrome; in edit the box uses the same teal fill/hover as inputs (`rgba(173, 216, 230)` / `rgb(145, 181, 194)`); checked fill stays black. Die cells: click sets `dieIndex` to `index + 1`; click selected sets `0`. In edit every die `<p>` gets that same teal fill and darker hover; view stays grey; PNGs and selected outline unchanged.
+- Raw `capacity` is not a separate cell. The **Yb** value is `≤${capacity}`: in edit, `≤` stays non-editable chrome and the number is a controlled input that writes `capacity` (empty/invalid → `0`). Na / N / Nb / Y / Ya stay text and recompute. No extra capacity label.
+- Favor `divineRelationship` (`varchar(500)`) sits under the static prompt “What is your relationship to the Divine?” Notes-style: `min-height: calc(2 * 17.38px)`, wrap and grow, textarea in edit. Column via `ensureSchema`. Overflow past `.page-type-one` 1068 is recorded, not compressed.
+- Defense `name` replaces the empty `<h2>` under **Defenses**. Header stays two rows (h1 + 17.38px name). No extra **Input** caption row. 15px Kalam, not Initiative’s 23px. Save already writes `name`.
 - List arrays on page type 1 except attacks (emotions, descriptions, flaws, reputations, social-suite description rows) use the v1 edit setup, copied onto the v2 slice: array holds only real rows; view leftover empty cells pad to `max`; while editing and `length < max`, one extra unbound insert control; insert on `onBlur` if non-empty; `makeTempID()` as client `key` for React; emptying a row’s stored fields removes it from the array (v1 `alterCharacteristicArray`). Caps stay 6 / 5 / 3 / 3 / 6. Shared widgets: `app/src/pages/v2/components/displayArray/` (`DisplaySingleArray`, `DisplayPairArray`). Do not import v1 `displayArray` or v1 hooks. Attacks stay four indexed slots. Save stays v1 list SQL (already on `backend/server/v2/edit/`). New rows: `id` 0 or omitted so save inserts; React key is `key`, not `id`.
 - Catalog: on general-info local change, `updateCatalogInfo` with `index: 1` (v2 slot).
 - L1 route and `00-START-HERE.yaml` update in the same change that adds `backend/server/v2/edit/`.
@@ -28,8 +30,11 @@ Rejected:
 - `app/src/features/edit-character`.
 - v2 Quick Edit or PDF as part of this feature.
 - Per-field click-to-edit or always-visible inputs.
-- Turning computed cells into inputs.
-- Drawing defense `name` or a raw capacity cell to make them editable.
+- Turning computed cells into inputs (Yb is the stored `capacity`, not a derived band).
+- Drawing a separate raw capacity cell. Editing Na / N / Nb / Y / Ya.
+- An extra Defenses header line for an **Input** caption (name occupies the existing empty `h2` slot).
+- Tint by wrapping dice in `<input>`/`<button>`, `fake-button`, PNG `filter` / second asset, or a layout-affecting overlay.
+- `node-pg-migrate` for `divineRelationship`.
 - Global `.v2 input.character-value` `font-size: 15px` / `width: 100%` / `min-height: 17.38px` (fights Favor 28px/60×40, Defenses 23px, Vitals 22px, attack-name h2).
 - Matching attack-name input to oldClaude or grey h2 fill.
 - `field-sizing: content` or contenteditable.
@@ -38,4 +43,4 @@ Rejected:
 - Shared list kit under `app/src/features/` or import of v1 `DisplaySingleArray` / `DisplayPairArray`.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-034 (done)
+TODOs: T-027–T-034 (done); T-035–T-038

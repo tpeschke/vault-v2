@@ -6,6 +6,77 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-035: Teal-tint die cells and Anointed in edit
+status: proposed
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design: edit teal; Q1 all dice; Q2 darker hover; Q3 Anointed same teal)
+why: `.view-edit` fills `input` / `textarea` / `button` / `.fake-button` with `rgba(173, 216, 230)` and hover `rgb(145, 181, 194)`. Die cells are `<p>` and Anointed is a `<span>`, so they stay grey.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (existing `.v2 .view-edit .vitals-v2 .die-row p`); `.../Favor/Favor.css` (existing `.v2 .view-edit .favor-v2 .anointed-box`). Do not change `Vitals.tsx` / `Favor.tsx` structure, die PNGs, `dieIndex` click, or Anointed click. Do not add `fake-button`. Do not wrap dice in `<input>` or `<button>`. Do not `filter` the PNGs. Do not add selectors to `index.css`.
+steps:
+1. On `.v2 .view-edit .vitals-v2 .die-row p`, set `background: rgba(173, 216, 230)` (match `index.css` `.view-edit input`). `:hover` `rgb(145, 181, 194)`. Use `!important` if the grey die-cell background otherwise wins. View (no `.view-edit`) stays grey. Selected outline stays `2px solid black`.
+2. On `.v2 .view-edit .favor-v2 .anointed-box`, same fill and hover. `.anointed-box.checked` stays `background: black` in edit (higher specificity / `!important` so teal does not cover checked). Hover on checked stays black.
+3. Cursor rules already on those selectors stay.
+done when:
+- Grep `app/src/pages/v2` for `fake-button`: 0 hits.
+- Browser, owner sheet: view dice grey, Anointed unchecked empty / checked black. Edit: all 18 die cells teal; hover darker teal; selected outline still black on teal. Unchecked Anointed teal; hover darker; checked black. Toggle Edit does not move die-row or Favor boxes. `.page-type-one` height 1068 if no other T-036 growth.
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-036: Persist and draw Favor divineRelationship
+status: proposed
+source: rewrite-ledger/edit-character.md, rewrite-ledger/schema-on-boot.md, 2026-10-02 (design: string under Divine prompt; Q4 `divineRelationship`; Q5 varchar 500; Q6 like notes)
+why: The prompt is chrome. There is no stored answer. Favor is `{ anointed, current, max }` only.
+scope: `backend/common/interfaces/v2/page1/favor.ts`; `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page1.sql`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getFavor.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/assemblePageType1.ts` (skeleton default); `backend/server/v2/edit/utilities/pageType1/utilities/saveFavor.ts`; `app/src/pages/v2/pageTypes/pageType1/components/Favor/` (`Favor.tsx`, `Favor.css`). `updateFavor` already takes `Partial<Favor>` — no new hook function. Do not change `addFavor` insert beyond table default. Do not reuse relationships / descriptions / notes. Path sits under existing YAML adjacent `app/src/pages/v2/` and unindexed `ensureSchema` / `backupTables`; no new routing key.
+steps:
+1. Add `divineRelationship: string` to `Favor`. Skeleton and missing-row fallback `''`.
+2. `ensureSchema`: `alter table v2Favor add column if not exists divineRelationship varchar(500) default ''`; fail closed if the column is missing after (information_schema name is lowercase `divinerelationship`). Snapshot the column on `v2Favor` in `backupTables/page1.sql`.
+3. `getFavor` / `saveFavor` read and write the column (`update v2Favor set … divineRelationship = $n`). Default `''` if the assembled row omits it.
+4. Favor left column: keep the italic prompt; under it draw `divineRelationship` as `p.character-value` (view) / `textarea.character-value` with `placeholder=" "` (edit), `onChange` → `updates.updateFavor(pageID, { divineRelationship })`. Notes metrics: `min-height: calc(2 * 17.38px)`; textarea `height: calc(2 * 17.38px)` crushing UA `rows`; wrap and grow. Prompt stays Source Sans / italic, not Kalam. Track (current / max / Anointed) stays the right column. Do not compress other blocks if height exceeds 1068 — record it.
+done when:
+- Grep `Favor` interface and `saveFavor.ts` for `divineRelationship`: hits.
+- Grep `ensureSchema.ts` for `divineRelationship` or `divinerelationship`: hit.
+- `npx tsc --noEmit` in `app/` and `backend/server` passes.
+- Browser: empty string shows a two-line cell under the prompt; typing wraps and grows; Revert restores snapshot. Prompt is not an input.
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-037: Draw defense name in the empty header h2 slot
+status: proposed
+source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: name under Input; Q7 replace empty h2; Q8 keep header height)
+why: `Defense.name` is assembled and saved (`saveDefenses` already `set name = $1`) but `Defenses.tsx` omits it. The left header span is `<h1>Defenses</h1><h2></h2>`.
+scope: `app/src/pages/v2/pageTypes/pageType1/components/Defenses/Defenses.tsx`; `Defenses.css`. Do not change `saveDefenses.ts`. Do not add a third header row or a visible **Input** `em`. Do not change notes.
+steps:
+1. Destructure `name`. Replace the empty `<h2>` with view `p.character-value` / edit controlled `input.character-value` `placeholder=" "` bound to `name` via `updates.updateDefense(pageID, { name })`.
+2. Header stays two rows: h1 + one 17.38px value line (the old `h2` min-height). Do not insert an Input caption above the name.
+3. CSS: Initiative 23px / border rules on `.defenses-header span>p` / `span>input` currently apply to any header `p`/`input`. After this change they would hit the name. Narrow those 23px/border rules to `span:last-child` (Initiative). Name keeps 15px Kalam and 17.38px min-height; no extra border the empty `h2` did not have. Input-only T-032 sizing so the header does not grow.
+done when:
+- Grep `Defenses.tsx` for `<h2></h2>`: 0 hits.
+- Grep `Defenses.tsx` for `name`: the drawn cell uses `defenses.name`.
+- Grep `saveDefenses.ts` for `set name`: unchanged.
+- Browser, view and edit: name sits under **Defenses**, one line, header height matches pre-change (h1 + 17.38px). Initiative still 23px. Revert restores name. `.page-type-one` header of Defenses does not grow.
+depends on: none
+open questions: none
+deviations from design: the word **Input** is not drawn as a caption (Q7+Q8: name fills the existing slot, no extra line).
+
+### T-038: Edit Emotional Capacity through the Yb cell
+status: proposed
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design: edit Yb; Q1 value only; Q2 `≤` stays chrome; Q3 empty → 0)
+why: Yb is `≤${capacity}` — the stored number. Bands were all text; there is no `updateCapacity`.
+scope: `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/capacity/Capacity.tsx`; `Capacity.css`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` (pass `pageID` / `updates`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `getV2Updates.ts`; `hooks/interfaces/UpdateInterfaces.ts`. Do not change `saveBasicCharacteristics.ts` (already writes `capacity`). Do not swap Na / N / Nb / Y / Ya. Do not add a raw capacity label. Do not edit Trauma or CrP `toLvl`.
+steps:
+1. Add `updateCapacity(character, pageID, value: number)` that sets `characteristicsInfo.capacity`. Wire `PageType1Updates.updateCapacity` and `getV2Updates`.
+2. `CapacityDisplay` takes `pageID` and `updates`. Read `isEditing`. Headings unchanged. For the Yb band only: view stays one `p.character-value` with `≤${capacity}` (do not split the view node). Edit: replace that `p` with a wrapper in the same 10.3% slot — non-editable `≤` chrome plus `input type="number"` `className="character-value"` `placeholder=" "` bound to `capacity`. `onChange`: `const n = +event.target.value; updates.updateCapacity(pageID, Number.isFinite(n) ? n : 0)` (empty string is `0`).
+3. Wrapper copies `.capacity-values p` box (width 10.3%, flex, align flex-end). Input `min-width: 0` so it cannot grow the row. T-032 height rules. Slashes stay `p.slash`. Na / N / Nb / Y / Ya stay `<p>{value}</p>` and recompute from the new `capacity`.
+done when:
+- Grep `Capacity.tsx` for `updateCapacity`: hit on the Yb input only.
+- Grep `Capacity.tsx` for `updateCapacity` on Na/N/Nb/Y/Ya: 0 (those labels have no input).
+- `npx tsc --noEmit` in `app/` passes.
+- Browser: Edit Yb shows `≤` plus a teal number; other bands stay text. Change Yb from 8 to 10: N/Nb/Y/Ya update; Na stays `<0`. Clear Yb → 0 and bands follow. Revert restores. Toggle does not move the capacity row.
+depends on: none
+open questions: none
+deviations from design: none
+
 
 ## Done
 
