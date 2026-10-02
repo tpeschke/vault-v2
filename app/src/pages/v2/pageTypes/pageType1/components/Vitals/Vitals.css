@@ -49,7 +49,7 @@
 }
 
 .vitals-v2 .vitals-split input {
-    width: 100%;
+    width: calc(100% - 2px);
 }
 
 .vitals-v2 .damage-values,
@@ -80,6 +80,11 @@
     justify-content: space-around;
     align-items: center;
     font-size: 22px;
+}
+
+.vitals-v2 .damage-values>input,
+.vitals-v2 .stress-values>input {
+    height: auto;
 }
 
 .vitals-v2 .damage-values>:last-child,

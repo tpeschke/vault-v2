@@ -36,4 +36,4 @@ Rejected:
 - Changing view-mode `p`/`h2` or column wrappers to meet the input (T-031 min-height 18px, rank `width: 28px`, suite `p` `width: 15%`, Discount `width: 42%`).
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-031 (done); T-032
+TODOs: T-027–T-032 (done)

@@ -47,7 +47,7 @@
 }
 
 .defenses-v2 .defenses-header input {
-    width: 100%;
+    width: calc(100% - 2px);
 }
 
 .defenses-v2 .def-row,

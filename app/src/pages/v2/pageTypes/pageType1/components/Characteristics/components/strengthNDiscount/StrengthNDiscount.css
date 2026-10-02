@@ -39,8 +39,7 @@
 
 .strength-and-discount-v2 .cultural-strength input,
 .strength-and-discount-v2 .social-skill-discount input {
-    min-width: 0;
     overflow: hidden;
-    flex: 1;
-    width: 100%;
+    width: 0;
+    flex: 0 0 auto;
 }

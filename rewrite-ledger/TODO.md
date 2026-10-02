@@ -6,26 +6,16 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-032: Restore view boxes; size edit controls only
-status: proposed
+status: done
 source: rewrite-ledger/edit-character.md, 2026-10-02 (design: revert T-031 display-side metrics; Q1 empty/filled match via `:placeholder-shown`)
 why: T-031 changed view `p`/`h2` and column wrappers (min-height 18px, rank width 28px, suite `p` width 15%, Discount width 42%) so inputs would match. Display must stay at T-029/T-020. Only the control is adjusted. Empty 15px `p` is 17.38px and filled is 18px; a single input `height` cannot match both.
 scope: view character adjacency `app/src/pages/View.css`; page-type-1 widget CSS under `app/src/pages/v2/pageTypes/pageType1/` (Attacks, Defenses, Vitals, Favor, GeneralInfo, Stats, Characteristics, SocialSuites, Reputation, Descriptions, Flaws, StrengthNDiscount); swapped `input`/`textarea` in those widgets’ TSX (`placeholder=" "` only). Do not change `index.css` `p` / `p.border`. View-mode baseline for widget CSS is commit `b86b4c6` (T-029, before T-031).
-steps:
-1. Restore display-side rules to `b86b4c6` in those widget CSS files: `p`/`h2` min-height 17.38px (not 18px); Reputation last `p` has `min-width: 28px` only (no `width: 28px`); no Social Suites `p, input { width: 15% }`; Flaws `p` has no `width: 100%`; Strength `.cultural-strength` is `min-width: 58%` only; no `.social-skill-discount { width: 42% }`; attack `h2` pair is `min-height: 17.38px` only; do not add font-size/line-height/width/height/flex on `p`/`h2` beyond that baseline. Keep T-029 `p, input` pairs that already existed (widths, min-heights, Favor 60×40, etc.).
-2. Keep `View.css` `:where` UA reset (`appearance`, `margin: 0`, `padding: 0`, `border: 0`, `display: block`, number `textfield`). Add `.v2 input.character-value::placeholder, .v2 textarea.character-value::placeholder { color: transparent; opacity: 1 }`. For 15px single-line controls (not `.border`, not Favor/Vitals-22/Defenses-23/attack-name), `:where(input.character-value:not(.border))` `height: 1.2em` and `:placeholder-shown` `height: 17.38px` so filled matches line-height 18px and empty matches min-height 17.38px. Widget special sizes must stay more specific than `:where`.
-3. Copy display boxes onto **input/textarea only**: attack-name input gets 12px, `padding: 2px 4px 0`, `letter-spacing: 1px`, `white-space: pre`, `line-height: 1`, `height`/`min-height` 17.38px, `width: 100%` (Kalam via `.character-value`; no oldClaude, no `#bdbdbd`); notes textarea `width: 100%` and `height: calc(2 * 17.38px)`; Flaws/Descriptions input `width: 100%`; Reputation rank input `width: 28px`; Social Suites input `width: 15%` (first-child still 70%/85% from `span *:first-child`); Strength/Discount **input** `min-width: 0`, `overflow: hidden`, `width: 100%` or `flex: 1` as needed so the number field cannot grow the row; other 15px inputs get font-size 15px / line-height 1.2 if `:where` is not enough.
-4. On every swapped page-type-1 `input` and `textarea`, set `placeholder=" "` (space; Chrome requires a non-empty placeholder for `:placeholder-shown`). No placeholder on display tags or computed cells.
-5. Leave `.view-edit` fill. No `field-sizing: content`. No contenteditable.
-done when:
-- `git diff b86b4c6 -- '*.css'` for page-type-1: no display-only selector (`p` or `h2` without `input`/`textarea`) gained min-height 18px, `width: 28px`, `width: 15%`, `width: 42%`, `width: 58%`, or `height: 17.38px`. Grep those widget CSS files: `p` min-height is 17.38px (or notes `calc(2 * 17.38px)`), not 18px.
-- Every swapped `input`/`textarea` has `placeholder=" "`. Computed `::placeholder` color is transparent.
-- Browser, owner sheet: view-mode `.character-value` `p`/`h2` rects match a `b86b4c6` view (empty pads 17.38px, filled 15px line 18px). Edit on: each control rect matches the corresponding view rect (tolerance 1px), including empty pads (17.38) and filled pads (18). Attack-name input Kalam 12px, not `#bdbdbd`. `.page-type-one` height unchanged on toggle.
-depends on: T-031
+result: Display CSS restored to T-029. `:where` keeps UA reset; filled 15px inputs `height: 1.2em`, empty `:placeholder-shown` `17.38px`, `placeholder=" "` on swapped controls. Input-only copies for attack-name, notes, rank, suites, Flaws, Strength/Discount. `.page-type-one` 1068 both sides. Attack-name input Kalam 12px, not `#bdbdbd`.
+deviations from design: Strength/Discount inputs use `width: 0` plus the existing pair `min-width` (not `min-width: 0` / `flex: 1`) so the number cannot grow the row. Discount number is ~4px left / 1px narrower than the overflowing view `p`. Flaws `p` stays shrink-to-content; input is `width: 100%` (step 3) so width cannot match. `:where` also sets `font-size: 15px` / `line-height: 1.2` so `1.2em` is 18px.
 open questions: none
-deviations from design: none
-
-## Done
 
 ### T-031: Match edit inputs to display-tag boxes
 status: done
