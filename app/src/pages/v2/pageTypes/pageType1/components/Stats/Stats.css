@@ -24,7 +24,8 @@
     width: 25%;
 }
 
-.stats-display-v2>div p {
+.stats-display-v2>div p,
+.stats-display-v2>div input {
     width: 75%;
     text-align: center;
     min-height: 17.38px;

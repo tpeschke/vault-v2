@@ -1,11 +1,17 @@
 import './GeneralInfo.css'
 import { GeneralInfo } from "@vault/common/interfaces/v2/page1/generalInfoInterfaces";
+import { useContext } from 'react'
+import EditingContext from '../../../../contexts/EditingContext'
+import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
     generalInfo: GeneralInfo
+    pageID: number
+    updates: PageType1Updates
 }
 
-export default function GeneralInfoDisplay({ generalInfo }: Props) {
+export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Props) {
+    const isEditing = useContext(EditingContext)
     const { name, ancestry, class: primaryClass, subclass, level, crp } = generalInfo
     const { unspent, spent, toLvl } = crp
 
@@ -13,35 +19,63 @@ export default function GeneralInfoDisplay({ generalInfo }: Props) {
         <div className="general-info-v2">
             <span>
                 <strong>Name</strong>
-                <p className="border character-value">{name}</p>
+                {isEditing ?
+                    <input className="border character-value" value={name} onChange={event => updates.updateGeneralInfoField(pageID, 'name', event.target.value)} />
+                    :
+                    <p className="border character-value">{name}</p>
+                }
             </span>
             <span>
                 <strong>Ancestry</strong>
-                <p className="border character-value">{ancestry}</p>
+                {isEditing ?
+                    <input className="border character-value" value={ancestry} onChange={event => updates.updateGeneralInfoField(pageID, 'ancestry', event.target.value)} />
+                    :
+                    <p className="border character-value">{ancestry}</p>
+                }
             </span>
             <div className='multi-item-line'>
                 <span>
                     <strong>Class</strong>
-                    <p className="border character-value">{primaryClass}</p>
+                    {isEditing ?
+                        <input className="border character-value" value={primaryClass} onChange={event => updates.updateGeneralInfoField(pageID, 'class', event.target.value)} />
+                        :
+                        <p className="border character-value">{primaryClass}</p>
+                    }
                 </span>
                 <span>
                     <strong>Subclass</strong>
-                    <p className="border character-value">{subclass}</p>
+                    {isEditing ?
+                        <input className="border character-value" value={subclass} onChange={event => updates.updateGeneralInfoField(pageID, 'subclass', event.target.value)} />
+                        :
+                        <p className="border character-value">{subclass}</p>
+                    }
                 </span>
                 <span>
                     <strong>Lvl</strong>
-                    <p className="border center-text character-value">{level}</p>
+                    {isEditing ?
+                        <input className="border center-text character-value" type="number" value={level} onChange={event => updates.updateGeneralInfoField(pageID, 'level', +event.target.value)} />
+                        :
+                        <p className="border center-text character-value">{level}</p>
+                    }
                 </span>
             </div>
             <div className='multi-item-line'>
                 <strong>CrP</strong>
                 <span>
                     <em>Unspent</em>
-                    <p className='border center-text character-value'>{unspent}</p>
+                    {isEditing ?
+                        <input className='border center-text character-value' type="number" value={unspent} onChange={event => updates.updateCrP(pageID, 'unspent', +event.target.value)} />
+                        :
+                        <p className='border center-text character-value'>{unspent}</p>
+                    }
                 </span>
                 <span>
                     <em>Spent</em>
-                    <p className='border center-text character-value'>{spent}</p>
+                    {isEditing ?
+                        <input className='border center-text character-value' type="number" value={spent} onChange={event => updates.updateCrP(pageID, 'spent', +event.target.value)} />
+                        :
+                        <p className='border center-text character-value'>{spent}</p>
+                    }
                 </span>
                 <span>
                     <em>Spent to lvl</em>

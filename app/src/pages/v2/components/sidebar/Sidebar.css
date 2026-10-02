@@ -1,0 +1,19 @@
+.version-two-shell {
+    display: flex;
+}
+
+.version-two-shell .sidebar-shell {
+    position: sticky;
+    top: 15px;
+    height: 150px;
+    width: 100%;
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.version-two-shell .sidebar-shell button {
+    text-align: left;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 6px 3px rgba(0, 0, 0, 0.2), 0px 2px 6px 3px rgba(0, 0, 0, 0.14), 0px 2px 6px 3px rgba(0, 0, 0, 0.12);
+}

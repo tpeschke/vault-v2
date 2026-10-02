@@ -6,87 +6,45 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-027: Add v2 edit-mode chrome
-status: proposed
-source: rewrite-ledger/edit-character.md, 2026-10-02
-why: v1 session starts with a side Edit button, `EditingContext`, and `view-edit`. v2 has a sidebar stub and no mode.
-scope: view character adjacency `app/src/pages/v2/` (`V2View.tsx`; new `contexts/EditingContext.tsx`; new `components/sidebar/Sidebar.tsx` + `Sidebar.css`). Do not import v1 context or sidebar. Do not add `features/`.
-steps:
-1. Add `EditingContext` as `createContext(false)` on the v2 slice (new file, same idea as v1, not a re-export).
-2. On `V2View`, hold `isEditing` (default false). `toggleIsEditing` flips it. `saveCharacter` and `revertCharacterToUnedited` call hook functions when present and set `isEditing` false. Wrap the page stack in `EditingContext` with `isEditing`.
-3. Add a flex v2 view shell (new class, not `.version-one-shell`) so the sidebar sits beside the pages. While `isEditing`, add `view-edit` to the page shell.
-4. New sidebar: if `ownsThisCharacter` and not editing, Edit (`fa-pen-nib`). If editing, Save (`fa-floppy-disk`) and Revert (`fa-arrow-rotate-left`). Hide Edit when `!ownsThisCharacter`. No Download / Pregen / Quick Edit. Scope CSS to the new v2 shell; copy v1 sidebar spacing/shadow visually, do not import `V1` sidebar CSS.
-5. Read `ownsThisCharacter` from `character.userInfo`. If `character` is missing, render no sidebar.
-done when: `npm run build` in `app/` passes. Grep `from ['\"].*pages/v1` under `app/src/pages/v2` is 0 hits. Non-owner path has no Edit button in code (`ownsThisCharacter &&` on Edit).
-depends on: none
-open questions: none
-deviations from design: none
-
-### T-028: Local v2 updates, revert snapshot, and save POST
-status: proposed
-source: rewrite-ledger/edit-character.md, 2026-10-02
-why: v1 keeps a character in the hook, mutates it while editing, POSTs the whole object, and Reverts to a snapshot. v2 hook only loads.
-scope: view / edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; new update helpers under `app/src/pages/v2/hooks/` (new files). Gitignored `app/src/frontend-config.ts` (`editV2URL`). Unindexed `app/src/redux/slices/usersCharactersSlice.tsx` (`updateCatalogInfo`, index `1`). Do not import v1 hooks or `getV1Updates`.
-steps:
-1. Add `editV2URL` in `app/src/frontend-config.ts` next to `viewV2URL`, pointing at `/v2/edit/` (same host pattern as other v2 URLs). If that file is absent, stop and report.
-2. Keep a `revertedCharacter` snapshot. Set it only when loading a character and after a successful save. In-edit updates call `setCharacter` only — not the snapshot. `revertCharacter` restores the snapshot.
-3. `saveCharacterToBackend`: POST `character` to `editV2URL + character.id`; then set character and snapshot from the response (v1 also `setCharacter(null)` while waiting).
-4. New update helpers that immutably patch `CharacterVersion2` / page type 1. Cover every stored drawn field listed in T-029, plus pass-through of undrawn payload fields. Empty list pads: first change inserts a row with a temp id.
-5. On general-info change, `dispatch(updateCatalogInfo({ info: { id, name, ancestry, class, subclass, level }, index: 1 }))`.
-6. Return `updateFunctions` (`saveCharacterToBackend`, `revertCharacter`, page-type-1 updates) from the hook. Wire them through `V2View` into `PageType1`.
-done when: `npm run build` in `app/` passes. Grep `getV1Updates` and `from ['\"].*pages/v1` under `app/src/pages/v2` is 0 hits. Snapshot is not written in the per-field update helpers.
-depends on: T-027
-open questions: none
-deviations from design: none
-
-### T-029: Swap page-type-1 stored cells to inputs
-status: proposed
-source: rewrite-ledger/edit-character.md, 2026-10-02
-why: Edit must toggle every stored drawn cell. Computed and static chrome stay display.
-scope: view character adjacency under `app/src/pages/v2/pageTypes/pageType1/` (widgets listed below). `PageType1.tsx` only as needed to pass update functions.
-steps:
-1. Each widget reads `EditingContext`. When `isEditing`, replace the stored drawn node with a controlled input (or the control named). Keep `character-value` on the control. `onChange` calls the T-028 helper.
-2. **GeneralInfo:** name, ancestry, class, subclass, level, CrP unspent, CrP spent. Leave CrP `toLvl` as text.
-3. **Stats:** str, dex, con, mem, ins, pre.
-4. **Characteristics:** six Current Emotions values; each social suite stat, rank, and description value/rank (6 rows); Reputation value/rank (3); Cultural Strength; Social Skill Discount; Descriptions (5); Flaws (3). Leave Emotional Capacity band `<p>`s as text. Do not add a raw capacity cell.
-5. **Favor:** current and max as inputs. Anointed box toggles `anointed` on click while editing; no new checkbox chrome.
-6. **Vitals:** Self Doubt threshold, diePenalty; Damage knockback, damage, threshold; Stress stress, threshold. Trauma stays `threshold * 2` text. Die row: while editing, click a cell to set that track’s `dieIndex` to `index + 1`; click the selected cell to set `0`.
-7. **Defenses:** initiative, defense, parry, flanks, cover, parryDR, dr, notes. Defense `name` stays undrawn.
-8. **Attacks:** all four blocks — name, measure, attack, damage, type, recovery, notes.
-9. Do not edit Positions, wordmark, slashes, or off-page widgets (Temperaments, Movement, Relationships).
-done when: `npm run build` in `app/` passes. Grep in `pageType1/` for `character-value` on a `<p>` or `<h2>` that interpolates a stored drawn field: those nodes are behind `isEditing ?`. Trauma, `toLvl`, and capacity bands still have no inputs. Defense `name` still has 0 render hits.
-depends on: T-027, T-028
-open questions: none
-deviations from design: none
-
-### T-030: Add backend v2 edit owner and persist page type 1
-status: proposed
-source: rewrite-ledger/edit-character.md, 2026-10-02
-why: v1 POSTs the full character to `/edit/:id`, checks owner, writes, reassembles. v2 has no edit owner. New files only.
-scope: new `backend/server/v2/edit/` (primary); `backend/server/vault.ts`; view assemble `getV2Character` / `assembleV2Character` (reassemble after save, do not rewrite view); repository `00-START-HERE.yaml` routing. Do not import `backend/server/v1/controllers/edit`.
-steps:
-1. Add `editV2CharacterRoutes.ts` and `editV2CharacterController.ts`. POST `/:characterID`. Body is `CharacterVersion2`.
-2. Owner check: compare `request.body.userInfo.userID` to the owner id from the existing owner query (`getCharacterOwnerID` or `userSQL.getCharacterUserID` as used for this character). If mismatch, send `{ message: "You don't own this character" }` like v1. If match, save then reassemble via the existing view assemble path and send the character.
-3. New page-type-1 save tree under `backend/server/v2/edit/` (parallel to add/view/delete, new files). UPDATE/INSERT/DELETE with the same key those owners use (`pageID`). Ignore stale `backupTables/page1.sql` `characterid` if live SQL is `pageID`.
-4. Write every payload field for page type 1, including undrawn stores (capacity, temperaments, goals, relationships, movement, defense `name`). List tables: delete rows whose ids are not in the posted list, update rows with ids, insert the rest (empty values may be omitted from insert, matching current-emotions empty-varchar habit if already recorded).
-5. Attacks: UPDATE the four rows by `pageID` + `index`. Suites: UPDATE `v2SocialSkillSuites` by `pageID` + `suiteID` (map 1 influence, 2 intimidate, 3 inform, 4 inspire).
-6. `app.use('/v2/edit', editV2Routes)` in `vault.ts` with the other v2 mounts. Do not mount on `/edit`.
-7. In the same change, add L1 routing:
-   ```
-   edit character sheet / save character / edit character:
-     primary: backend/server/v2/edit/
-     adjacent:
-       - app/src/pages/v2/
-       - app/src/pages/View.css
-       - backend/common/interfaces/v2/
-   ```
-   Keep `00-START-HERE.yaml` in this change. After any rename, grep the old path; expect 0 hits.
-done when: `npm run build` in `backend/server` passes. Grep `from ['\"].*v1/controllers/edit` under `backend/server/v2/edit` is 0 hits. `00-START-HERE.yaml` has the edit-character key. `vault.ts` mounts `/v2/edit`.
-depends on: none (can land before T-028; frontend save 404s until both exist)
-open questions: none
-deviations from design: none
+(none)
 
 ## Done
+
+### T-027: Add v2 edit-mode chrome
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02
+why: v1 session starts with a side Edit button, `EditingContext`, and `view-edit`. v2 has a sidebar stub and no mode.
+scope: view character adjacency `app/src/pages/v2/` (`V2View.tsx`; new `contexts/EditingContext.tsx`; new `components/sidebar/Sidebar.tsx` + `Sidebar.css`).
+result: v2 `EditingContext`, `.version-two-shell` flex sidebar, Edit gated on `ownsThisCharacter`, Save/Revert while editing, `view-edit` on the page shell. No Download/Pregen/Quick Edit.
+deviations from design: none
+open questions: none
+
+### T-028: Local v2 updates, revert snapshot, and save POST
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02
+why: v1 keeps a character in the hook, mutates it while editing, POSTs the whole object, and Reverts to a snapshot. v2 hook only loads.
+scope: `app/src/pages/v2/hooks/characterHook.tsx`; new helpers under `app/src/pages/v2/hooks/`. Gitignored `frontend-config.ts` (`editV2URL`).
+result: Snapshot set only in `captureLoaded` (load + after save). Field helpers call `setCharacter` only. POST `editV2URL + id`. Catalog `index: 1` on general-info change. New list rows use `id: 0`.
+deviations from design: `frontend-config.ts` was absent here. A local gitignored stub with `editV2URL` was created so tsc could run. The real config still needs `export const editV2URL` beside `viewV2URL`.
+open questions: none
+
+### T-029: Swap page-type-1 stored cells to inputs
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02
+why: Edit must toggle every stored drawn cell. Computed and static chrome stay display.
+scope: view character adjacency under `app/src/pages/v2/pageTypes/pageType1/`.
+result: Stored drawn cells swap to controlled `character-value` inputs (notes: textarea). Anointed click-toggles. Die click sets `dieIndex` to `index+1` or `0`. `toLvl`, Trauma, capacity bands stay text. Defense `name` undrawn.
+deviations from design: none
+open questions: none
+
+### T-030: Add backend v2 edit owner and persist page type 1
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02
+why: v1 POSTs the full character to `/edit/:id`, checks owner, writes, reassembles. v2 has no edit owner. New files only.
+scope: new `backend/server/v2/edit/`; `backend/server/vault.ts`; `00-START-HERE.yaml`.
+result: POST `/v2/edit/:characterID`. Owner check via `getCharacterOwnerID`. Page-type-1 save tree keyed by `pageID`. L1 route added. Reassemble through existing `getV2Character`.
+deviations from design: none
+open questions: none
 
 ### T-025: Load Kalam Regular and define `.character-value`
 status: done

@@ -20,7 +20,8 @@
     justify-content: flex-end;
 }
 
-.favor-v2 .favor-track > p {
+.favor-v2 .favor-track > p,
+.favor-v2 .favor-track > input {
     width: 60px;
     height: 40px;
     display: flex;
@@ -54,4 +55,8 @@
 
 .favor-v2 .anointed-box.checked {
     background: black;
+}
+
+.v2 .view-edit .favor-v2 .anointed-box {
+    cursor: pointer;
 }

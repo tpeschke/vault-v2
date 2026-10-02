@@ -6,12 +6,18 @@ import StrengthNDiscount from './components/strengthNDiscount/StrengthNDiscount'
 import ReputationDisplay from './components/reputation/ReputationDisplay'
 import FlawsDisplay from './components/flaws/Flaws'
 import DescriptionsDisplay from './components/descriptions/Descriptions'
+import { useContext } from 'react'
+import EditingContext from '../../../../contexts/EditingContext'
+import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
     characteristicsInfo: Characteristics
+    pageID: number
+    updates: PageType1Updates
 }
 
-export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
+export default function CharacteristicsDisplay({ characteristicsInfo, pageID, updates }: Props) {
+    const isEditing = useContext(EditingContext)
     const { capacity, socialSuites, culturalStrength, socialSkillDiscount, currentEmotions, reputations, descriptions, flaws } = characteristicsInfo
     const rows = currentEmotions ?? []
 
@@ -21,19 +27,25 @@ export default function CharacteristicsDisplay({ characteristicsInfo }: Props) {
 
             <h2>Current Emotions</h2>
             <div className="current-emotions-v2">
-                {rows.slice(0, 6).map(({ id, value }) => (
-                    <p key={id} className="character-value">{value}</p>
-                ))}
-                {[...Array(Math.max(0, 6 - rows.length))].map((_, index) => (
-                    <p key={index} className="character-value"></p>
-                ))}
+                {[...Array(6)].map((_, index) => {
+                    const value = rows[index]?.value ?? ''
+                    return isEditing ?
+                        <input
+                            key={rows[index]?.id ?? index}
+                            className="character-value"
+                            value={value}
+                            onChange={event => updates.updateEmotion(pageID, index, event.target.value)}
+                        />
+                        :
+                        <p key={rows[index]?.id ?? index} className="character-value">{value}</p>
+                })}
             </div>
 
-            <SocialSuitesDisplay socialSuites={socialSuites} />
-            <ReputationDisplay reputations={reputations} />
-            <StrengthNDiscount culturalStrength={culturalStrength} socialSkillDiscount={socialSkillDiscount} />
-            <DescriptionsDisplay descriptions={descriptions} />
-            <FlawsDisplay flaws={flaws} />
+            <SocialSuitesDisplay socialSuites={socialSuites} pageID={pageID} updates={updates} />
+            <ReputationDisplay reputations={reputations} pageID={pageID} updates={updates} />
+            <StrengthNDiscount culturalStrength={culturalStrength} socialSkillDiscount={socialSkillDiscount} pageID={pageID} updates={updates} />
+            <DescriptionsDisplay descriptions={descriptions} pageID={pageID} updates={updates} />
+            <FlawsDisplay flaws={flaws} pageID={pageID} updates={updates} />
         </div>
     )
 }

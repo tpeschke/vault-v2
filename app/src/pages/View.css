@@ -25,3 +25,19 @@
 .v2 .character-value {
     font-family: 'Kalam', cursive;
 }
+
+.v2 input.character-value,
+.v2 textarea.character-value {
+    font-family: 'Kalam', cursive;
+    font-size: 15px;
+    width: 100%;
+    min-height: 17.38px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.v2 input.border {
+    border-bottom: 1px solid black;
+    line-height: 1.1;
+    min-height: 16.58px;
+}

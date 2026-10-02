@@ -1,27 +1,31 @@
 import { Description } from '@vault/common/interfaces/v2/page1/characteristicsInfo'
 import './Descriptions.css'
+import { useContext } from 'react'
+import EditingContext from '../../../../../../contexts/EditingContext'
+import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
     descriptions: Description[]
+    pageID: number
+    updates: PageType1Updates
 }
 
-export default function DescriptionsDisplay({ descriptions }: Props) {
+export default function DescriptionsDisplay({ descriptions, pageID, updates }: Props) {
+    const isEditing = useContext(EditingContext)
     const rows = descriptions ?? []
 
     return (
         <div className='descriptions-v2'>
             <h2>Descriptions</h2>
-            {rows.map(({ id, value }) => {
+            {[...Array(5)].map((_, index) => {
+                const row = rows[index]
                 return (
-                    <span key={id}>
-                        <p className="character-value">{value}</p>
-                    </span>
-                )
-            })}
-            {[...Array(Math.max(0, 5 - rows.length))].map((_, index) => {
-                return (
-                    <span key={index}>
-                        <p className="character-value"></p>
+                    <span key={row?.id ?? index}>
+                        {isEditing ?
+                            <input className="character-value" value={row?.value ?? ''} onChange={event => updates.updateDescription(pageID, index, event.target.value)} />
+                            :
+                            <p className="character-value">{row?.value ?? ''}</p>
+                        }
                     </span>
                 )
             })}
