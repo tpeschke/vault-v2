@@ -10,9 +10,6 @@
 .flaws-v2 > span > p,
 .flaws-v2 > span > input {
     min-height: 17.38px;
-}
-
-.flaws-v2 > span > input {
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
