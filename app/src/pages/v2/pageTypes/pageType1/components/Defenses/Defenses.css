@@ -102,3 +102,7 @@
     line-height: 1.2;
     width: 100%;
 }
+
+.defenses-v2>textarea {
+    height: calc(2 * 17.38px);
+}

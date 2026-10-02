@@ -19,6 +19,7 @@
 .attacks-v2 .attack-block h2,
 .attacks-v2 .attack-block > input:first-child {
     min-height: 17.38px;
+    height: 17.38px;
     padding: 2px 4px 0;
     font-size: 12px;
     letter-spacing: 1px;
@@ -41,4 +42,8 @@
     font-size: 15px;
     line-height: 1.2;
     width: 100%;
+}
+
+.attacks-v2 .attack-block > textarea {
+    height: calc(2 * 17.38px);
 }

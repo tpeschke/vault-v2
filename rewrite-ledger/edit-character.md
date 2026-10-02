@@ -35,4 +35,4 @@ Rejected:
 - `field-sizing: content` or contenteditable.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-030 (done); T-031
+TODOs: T-027–T-031 (done)

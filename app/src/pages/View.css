@@ -26,20 +26,20 @@
     font-family: 'Kalam', cursive;
 }
 
-.v2 input.character-value,
-.v2 textarea.character-value {
+.v2 :where(input.character-value, textarea.character-value) {
     appearance: none;
     -webkit-appearance: none;
     margin: 0;
     padding: 0;
+    border: 0;
     display: block;
 }
 
-.v2 textarea.character-value {
+.v2 :where(textarea.character-value) {
     resize: none;
 }
 
-.v2 input.character-value[type=number] {
+.v2 :where(input.character-value[type=number]) {
     appearance: textfield;
     -moz-appearance: textfield;
     padding: 0;

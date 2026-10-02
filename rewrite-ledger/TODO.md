@@ -6,27 +6,18 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+(none)
+
+## Done
+
 ### T-031: Match edit inputs to display-tag boxes
-status: proposed
+status: done
 source: rewrite-ledger/edit-character.md, 2026-10-02 (design: inputs match display tags; Q1 everything / no move on toggle; Q2 attack name Kalam; Q3 strip number UA padding)
 why: T-029 swapped stored cells to inputs. Global `.v2 input.character-value` `font-size: 15px`, `width: 100%`, `min-height: 17.38px` plus UA input padding reflow the sheet on Edit.
 scope: view character adjacency `app/src/pages/View.css`; page-type-1 widget CSS under `app/src/pages/v2/pageTypes/pageType1/` that sizes swapped `p`/`h2` (Attacks, Defenses, Vitals, Favor, GeneralInfo, Stats, Characteristics, SocialSuites, Reputation, Descriptions, Flaws, StrengthNDiscount). Do not change TSX structure, computed cells, or `index.css` `p` / `p.border` display metrics.
-steps:
-1. In `View.css`, replace the size rules on `.v2 input.character-value, .v2 textarea.character-value` (`font-size: 15px`, `width: 100%`, `min-height: 17.38px`) with a UA reset only: `appearance: none`, `margin: 0`, `padding: 0`, `display: block`, `resize: none` on textarea. Keep Kalam via existing `.v2 .character-value`. Do not set global input `font-size`, `width`, `min-height`, or `field-sizing`.
-2. Keep `.v2 input.border` matched to `p.border` in `index.css` (`border-bottom: 1px solid black`, `line-height: 1.1`, `min-height: 16.58px`) and add `font-size: 15px` so GeneralInfo borders still match after the global 15px is gone.
-3. Strip number-input UA inner padding: `.v2 input.character-value[type=number]` `padding: 0` and `appearance: textfield` (spinners already gone in `index.css`).
-4. Pair every swapped display-tag selector with its control. Copy the computed box of that tag (width, height, min-height, padding, font-size, line-height, letter-spacing, text-align, display). Widget files that already list `p, input` or `p, textarea` stay; add any missing pair. Attack name: `.attacks-v2 .attack-block > h2` and the replacing `input` share the right-column h2 box (`font-size: 12px`, `padding: 2px 4px 0` from `.page-type-one .right-column h2`, `letter-spacing: 1px`, `white-space: pre`, `min-height: 17.38px`). Do not copy `font-family: oldClaude` or `background: #bdbdbd`. Notes textareas keep `min-height: calc(2 * 17.38px)`.
-5. Leave `.view-edit` fill in `index.css`. Do not use contenteditable.
-done when:
-- `View.css` has no `font-size: 15px`, `width: 100%`, or `min-height: 17.38px` on `.v2 input.character-value` / `textarea.character-value`. Those selectors set `padding: 0` and `appearance: none`. Number character-value inputs have `padding: 0`.
-- Grep of page-type-1 CSS: every selector that sets box metrics on a swapped `p` or attack `h2` also lists the replacing `input` or `textarea`.
-- Attack-name input computed `font-family` includes Kalam; computed `font-size` matches the view `h2` (12px); computed `background-color` is not `#bdbdbd`.
-- Browser: owner sheet, Edit off then on. For each swapped cell, `getBoundingClientRect` x/y/width/height matches the view tag (tolerance 1px). `.page-type-one` height unchanged. Sidebar Save/Revert excluded from the rect check.
-depends on: T-029
+result: View.css input UA reset via `:where` (no global 15px/100%/17.38px). Widget pairs copy display boxes. Attack name Kalam 12px, not grey fill. 144 `.character-value` rects match within 1px on Edit; `.page-type-one` height 1068 both sides.
+deviations from design: Empty 15px pads use min-height 18px (line-height 1.2) so empty `p` matches the input line box. Notes textarea sets `height: calc(2 * 17.38px)` to crush UA `rows`. Discount column width 42% so number min-content cannot grow the row.
 open questions: none
-deviations from design: none
-
-## Done
 
 ### T-027: Add v2 edit-mode chrome
 status: done
