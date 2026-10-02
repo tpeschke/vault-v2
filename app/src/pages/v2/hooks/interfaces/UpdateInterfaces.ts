@@ -19,8 +19,8 @@ export interface PageType1Updates {
     updateCapacity: (pageID: number, value: number) => void
     updateCulturalStrength: (pageID: number, value: string) => void
     updateSocialSkillDiscount: (pageID: number, value: number) => void
-    insertDescription: (pageID: number, newRow: { key: string, value: string }) => void
-    updateDescription: (pageID: number, index: number, value: string) => void
+    insertDescription: (pageID: number, newRow: { key: string, label: string, attackEmotion: string, defenseEmotion: string, rank: Description['rank'] }) => void
+    updateDescription: (pageID: number, index: number, next: Description) => void
     insertFlaw: (pageID: number, newRow: { key: string, flaw: string }) => void
     updateFlaw: (pageID: number, index: number, value: string) => void
     updateFavor: (pageID: number, patch: Partial<Favor>) => void

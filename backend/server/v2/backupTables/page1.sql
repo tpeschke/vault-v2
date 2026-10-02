@@ -71,8 +71,10 @@ create table
 create table
     v2descriptions (
         id serial primary key,
-        characterid integer,
-        value varchar(500),
+        pageID integer,
+        label varchar(500) default '',
+        attackEmotion varchar(25) default '',
+        defenseEmotion varchar(25) default '',
         rank integer
     );
 

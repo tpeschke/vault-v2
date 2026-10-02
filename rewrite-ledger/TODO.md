@@ -7,31 +7,19 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 ## Active
 
 ### T-041: Persist Description label, emotions, and player rank
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, rewrite-ledger/schema-on-boot.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: Descriptions four fields; Q1 names `label` / `attackEmotion` / `defenseEmotion` / `rank`; Q2 copy `value` → `label`; Q3 player-facing rank; Q4/Q8 emotions varchar(25) free text; label varchar(500))
 why: `Description` is `{ id, value }`. `saveDescriptions` writes the array index into `rank`. The row is four stored fields; `rank` is the drawn number.
 scope: `backend/common/interfaces/v2/page1/characteristicsInfo.ts` (`Description`); `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page1.sql`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/utilities/getCharacteristics/utilities/getDescriptions.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveDescriptions.ts`. Do not change `addCharacteristics` (no description rows on create). Do not change delete. Do not change Current Emotions, suite description tables, Flaws, or v1 `cvdescriptions`. Path sits under existing YAML view/edit adjacent `backend/common/interfaces/v2/` and unindexed `ensureSchema` / `backupTables`; no new routing key.
-steps:
-1. Change `Description` to `{ id: number, key?: string, label: string, attackEmotion: string, defenseEmotion: string, rank: number | '' }`. Remove `value`.
-2. In `ensureSchema`: `ADD COLUMN IF NOT EXISTS` `label varchar(500) default ''`, `attackEmotion varchar(25) default ''`, `defenseEmotion varchar(25) default ''`. Copy nonempty `value` into empty `label`. Drop `value`. Fail closed if `label` / `attackemotion` / `defenseemotion` missing or `value` still present. Do not drop `rank`.
-3. Update `backupTables/page1.sql` `v2descriptions` to `pageID`, `label`, `attackEmotion`, `defenseEmotion`, `rank` (match live save column names, not the stale `characterid` snapshot style).
-4. `getDescriptions`: map pg lowercase (`label`, `attackemotion`, `defenseemotion`, `rank`). Null rank → `''`.
-5. `saveDescriptions`: update/insert `label`, `attackEmotion`, `defenseEmotion`, `rank`. Write player `rank` (empty → NULL), never the array index. Insert when `id` is falsy and any of the four fields is non-empty (`rank === 0` counts as present).
-done when: `grep -n "value" backend/common/interfaces/v2/page1/characteristicsInfo.ts` shows no `value` on `Description`. `grep -n "set value" backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveDescriptions.ts` is 0 hits. `grep -n "attackEmotion" backend/server/db/ensureSchema.ts backend/server/v2/backupTables/page1.sql` has hits. `npx tsc -p backend/common --noEmit` and `npx tsc -p backend/server --noEmit` pass once T-042 updates the frontend consumers (Execute T-041–T-042 together).
-depends on: none
-open questions: none
+result: `Description` is `label` / `attackEmotion` / `defenseEmotion` / `rank`. `ensureSchema` copies `value` → `label` then drops `value`; emotions varchar(25). get maps pg lowercase; save writes player rank (empty → NULL), never the array index.
 deviations from design: Drop `value` after copy (same pattern as `currentEmotions` on basic characteristics). Empty rank persists as NULL, not 0.
+open questions: none
 
 ### T-042: Draw and edit four-field Description rows
-status: proposed
+status: in-progress
 source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: Q5 header Descriptions | Attack | Defense | Rank; Q6 one line; Q7 insert on any field; Q9 cap 5; Q10 record overflow)
 why: Descriptions is one `value` cell via `DisplaySingleArray`. That widget cannot draft four fields. Header is a lone `h2`.
 scope: `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx`; `.../descriptions/Descriptions.css`. Do not change `DisplaySingleArray` / `DisplayPairArray`. Do not add a new shared array widget. Do not import v1 `displayArray`. Do not change Flaws, Current Emotions, Reputation, or social-suite rows. Do not change `index.css`.
-steps:
-1. `insertDescription` takes `{ key, label, attackEmotion, defenseEmotion, rank }`. `updateDescription` takes `(pageID, index, next: Description)`. `mapOrRemove` drops a row when `label`, `attackEmotion`, `defenseEmotion` are `''` and `rank` is `''`.
-2. Replace `DisplaySingleArray` in `Descriptions.tsx` with leftover + insert owned in that file (copy `DisplayPairArray` `draft` / `insertReset` / `makeTempID`). Cap 5. Header row (not a data `span`): `h2` Descriptions, `em` Attack, `em` Defense, `em` Rank. Each data/insert/leftover row is one `span` with four cells (label, attack emotion, defense emotion, rank) on one line. View `p.character-value`; edit controlled `input.character-value` `placeholder=" "`. Emotion inputs `maxLength={25}`. Rank `type="number"`; empty stays `''`. Insert on blur if any of the four fields is non-empty.
-3. CSS: header wrapper is child 1 so `> span:nth-child(odd)` still greys the 2nd/4th/… data lines. Label cell grows; rank narrow (~28px, Reputation). Restate odd-span input mid teal `rgb(159, 199, 212)` and hover `rgb(145, 181, 194)`. Do not paint the header with `#f3f3f3`. Do not compress other blocks if `.page-type-one` exceeds 1068 — record the height.
-done when: `grep -n "DisplaySingleArray" app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx` is 0 hits. `grep -n "next.value" app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx` is 0 hits. `grep -n "updateDescription(pageID, index, value)" app/src/pages/v2/hooks` is 0 hits. Browser: header four cells; empty sheet five leftover lines; insert from any field; edit each field; clear all four removes the row; odd data-row inputs mid teal, even default teal; Revert restores; `.page-type-one` height recorded if > 1068. `npx tsc` in `backend/common`, `backend/server`, and `app` passes.
 depends on: T-041
 open questions: none
 deviations from design: none

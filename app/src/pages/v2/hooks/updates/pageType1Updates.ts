@@ -234,20 +234,27 @@ export function updateSocialSkillDiscount(character: CharacterVersion2, pageID: 
     }))
 }
 
-export function insertDescription(character: CharacterVersion2, pageID: number, newRow: { key: string, value: string }): CharacterVersion2 {
+export function insertDescription(character: CharacterVersion2, pageID: number, newRow: { key: string, label: string, attackEmotion: string, defenseEmotion: string, rank: Description['rank'] }): CharacterVersion2 {
     return mapPage1(character, pageID, page => ({
         ...page,
         characteristicsInfo: {
             ...page.characteristicsInfo,
             descriptions: [
                 ...(page.characteristicsInfo.descriptions ?? []),
-                { id: 0, key: newRow.key, value: newRow.value }
+                {
+                    id: 0,
+                    key: newRow.key,
+                    label: newRow.label,
+                    attackEmotion: newRow.attackEmotion,
+                    defenseEmotion: newRow.defenseEmotion,
+                    rank: newRow.rank
+                }
             ]
         }
     }))
 }
 
-export function updateDescription(character: CharacterVersion2, pageID: number, index: number, value: string): CharacterVersion2 {
+export function updateDescription(character: CharacterVersion2, pageID: number, index: number, next: Description): CharacterVersion2 {
     return mapPage1(character, pageID, page => {
         const current = page.characteristicsInfo.descriptions ?? []
         const currentRow = current[index]
@@ -255,8 +262,8 @@ export function updateDescription(character: CharacterVersion2, pageID: number, 
         const descriptions = mapOrRemove<Description>(
             current,
             index,
-            { ...currentRow, value },
-            row => row.value === ''
+            next,
+            row => row.label === '' && row.attackEmotion === '' && row.defenseEmotion === '' && row.rank === ''
         )
         return {
             ...page,

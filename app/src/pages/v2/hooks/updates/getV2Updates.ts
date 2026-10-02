@@ -116,9 +116,9 @@ export default function getV2Updates(
             if (!character) { return }
             apply(insertDescription(character, pageID, newRow))
         },
-        updateDescription: (pageID, index, value) => {
+        updateDescription: (pageID, index, next) => {
             if (!character) { return }
-            apply(updateDescription(character, pageID, index, value))
+            apply(updateDescription(character, pageID, index, next))
         },
         insertFlaw: (pageID, newRow) => {
             if (!character) { return }

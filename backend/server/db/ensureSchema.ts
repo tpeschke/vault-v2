@@ -35,6 +35,27 @@ export default async function ensureSchema() {
     if (!await columnExists('v2favor', 'divinerelationship')) {
         throw new Error('ensureSchema: v2Favor.divineRelationship missing')
     }
+
+    await query(`alter table v2descriptions add column if not exists label varchar(500) default ''`)
+    await query(`alter table v2descriptions add column if not exists attackEmotion varchar(25) default ''`)
+    await query(`alter table v2descriptions add column if not exists defenseEmotion varchar(25) default ''`)
+    if (await columnExists('v2descriptions', 'value')) {
+        await query(`update v2descriptions set label = value
+            where (label is null or label = '') and value is not null and value <> ''`)
+        await query(`alter table v2descriptions drop column if exists value`)
+    }
+    if (await columnExists('v2descriptions', 'value')) {
+        throw new Error('ensureSchema: value still on v2descriptions')
+    }
+    if (!await columnExists('v2descriptions', 'label')) {
+        throw new Error('ensureSchema: v2descriptions.label missing')
+    }
+    if (!await columnExists('v2descriptions', 'attackemotion')) {
+        throw new Error('ensureSchema: v2descriptions.attackEmotion missing')
+    }
+    if (!await columnExists('v2descriptions', 'defenseemotion')) {
+        throw new Error('ensureSchema: v2descriptions.defenseEmotion missing')
+    }
 }
 
 async function tableExists(tableName: string) {

@@ -22,7 +22,10 @@ export interface Goal {
 export interface Description {
     id: number,
     key?: string,
-    value: string
+    label: string,
+    attackEmotion: string,
+    defenseEmotion: string,
+    rank: number | ''
 }
 
 export interface Emotion {
