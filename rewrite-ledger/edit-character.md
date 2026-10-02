@@ -47,4 +47,4 @@ Rejected:
 - Edit-only input margin that shrinks the control vs view `p`. Restyling Stats to 2px/1px. Inset on dice or attack name. Dropping Social Suite `#bdbdbd` grid lines for this frame.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-043 (done); mapped/attack inset: T-044 (proposed)
+TODOs: T-027–T-044 (done)

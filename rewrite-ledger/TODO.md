@@ -6,36 +6,17 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-044: Inset mapped and attack non-name controls 2px / 1px
-status: proposed
+status: done
 source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: Stats-style island; Q1 2px top/bottom 1px sides; Q2 wrapper in view and edit so p and input match; Q3 attack notes inset; Q4 wrap emotions; Q5 suite title inset; Q6 keep suite grid lines; Q7 leftover p too)
 why: Mapped list inputs and attack Meas/Atk/Damage/Type/Rec fill the zebra so teal abuts and hides the stripe. Stats already frames the control with wrapper padding. Emotions paint the stripe on the control itself.
-scope: view character adjacency
-- `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` (emotion wrap only)
-- `.../Characteristics/Characteristics.css`
-- `.../descriptions/Descriptions.css` (CSS only)
-- `.../flaws/Flaws.css`
-- `.../reputation/ReputationDisplay.css`
-- `.../socialSuites/SocialSuites.css`
-- `.../Attacks/Attacks.tsx` (notes wrap only)
-- `.../Attacks/Attacks.css`
-Do not change Stats (keep 3px analog). Do not change dice, attack **name**, Capacity, Defenses, Vitals, Favor, Strength/Discount, GeneralInfo. Do not change `DisplaySingleArray` / `DisplayPairArray`. Do not change `index.css` or `View.css`. Do not add a shared inset class.
-steps:
-1. Frame rule (all listed wrappers, view and edit): `padding: 2px 1px` on the zebra/row wrapper that contains the control. Multi-control wrappers also `gap: 1px` (matches the 1px side). Same padding/gap on leftover rows. `p` and `input`/`textarea` in a pair share that box so Edit does not change the cell size. Inputs `min-width: 0`; `box-sizing: border-box` where `%` widths remain.
-2. Current Emotions: wrap every `renderRow` / `renderInsert` / `renderLeftover` `p`/`input` in a `<span>`. Move `width: calc(33.33% - 8px)` and even-child `#f3f3f3` to `> span`. Inner `p`/`input` fill the span after `padding: 2px 1px`. Retarget mid teal to `.v2 .view-edit .current-emotions-v2 > span:nth-child(even) input` (hover restated). Inner control keeps `min-height: 17.38px`.
-3. Flaws: replace `padding: 4px 4px 0` on `> span` with `padding: 2px 1px`. Input still fills the span.
-4. Reputation: `> span` `padding: 2px 1px; gap: 1px`. Keep `em` chrome. Value and rank stay sibling controls with the 1px gap.
-5. Social suites: keep `#bdbdbd` borders / title top-bottom lines. `> div > span` (title and `description-row`) get `padding: 2px 1px; gap: 1px`. Inset title stat/rank and description value/rank. Do not drop `border-left` on children.
-6. Descriptions: do not pad `.descriptions-header`. Data / insert / leftover `span` get `padding: 2px 1px; gap: 1px`. Heading tracks stay 38 / 20.6. Value `p` and `input` stay in those tracks but sit inside the frame (they will be narrower than the heading cells). Keep inner value `padding: 4px` (T-043 Q6). Keep odd-span mid teal.
-7. Attacks: `attack-row span` `padding: 2px 1px` (Meas/Atk/Damage/Type/Rec). Do not change `.attack-block > input:first-child` (name). Wrap notes `p`/`textarea` in a `<span>` (e.g. `attack-notes`) with `padding: 2px 1px`; keep notes `min-height: calc(2 * 17.38px)` and textarea height on the control.
-8. Teal / hover `!important` restatements stay on the existing odd/even wrappers (updated for emotion `span`). Record `.page-type-one` height vs 1068; do not compress.
-done when: grep for emotion `renderLeftover` shows a wrapping `<span>`. Attack name selector still `> input:first-child` with `calc(100% - 8px)`. No dice CSS changes. Browser: for Flaws, Reputation, Descriptions, suite title, suite description-row, emotions, and attack-row, the zebra/row color is visible 2px above/below and 1px left/right of each `p`/`input`; sibling inputs in one row have a 1px gap; leftover `p` matches that frame. Toggle Edit: paired leftover `p` and insert `input` widths/heights within 1px. Attack name unchanged (no new 2px/1px on the name). Dice untinted in view. Odd-slot map inputs still `rgb(159, 199, 212)`. Record 1068.
-depends on: T-039, T-043
+scope: view character adjacency `Characteristics.tsx`/`Characteristics.css` (emotion wrap); `Descriptions.css`; `Flaws.css`; `ReputationDisplay.css`; `SocialSuites.css`; `Attacks.tsx`/`Attacks.css` (notes wrap). Stats, dice, attack name unchanged.
+result: Wrapper `padding: 2px 1px` and multi-cell `gap: 1px` on maps, leftover `p`, suite title, attack-row, and notes wrap. Emotions cells wrapped in `span`; even-span mid teal. Attack name still `calc(100% - 8px)`. Browser: 2px/1px computed on all listed wrappers; description sibling gaps 1px; leftover desc p/input width 167.80; `.page-type-one` 1068.
+deviations from design: none beyond Order.
 open questions: none
-deviations from design: Inter-input gap is `1px` to match the side inset (design said “space between” without a px). Frame is wrapper padding in **both** modes (Q2: keep p and input the same size), not edit-only. Attack notes get a wrap `span` so padding matches leftover `p` without `width: 100%` overflow. Stats stays 3px and is not restyled to 2px/1px.
-result:
 
-## Done
 
 
 ### T-043: Descriptions heading as Capacity-at-h2 with matching column widths
