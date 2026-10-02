@@ -65,6 +65,10 @@
     background-clip: content-box;
 }
 
+.attacks-v2 .attack-row p {
+    height: 17.38px;
+}
+
 .attacks-v2 .attack-notes p,
 .attacks-v2 .attack-notes textarea {
     min-height: calc(2 * 17.38px);

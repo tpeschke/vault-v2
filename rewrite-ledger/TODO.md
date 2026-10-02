@@ -8,6 +8,16 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Done
 
+### T-049: Lock attack-row view p to empty-edit 17.38
+status: done
+source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: shrink view Meas/RI and Type rows to edit; Q1 all five values; Q2 empty-edit 17.38; Q3 keep island; Q4 name and notes stay)
+why: T-045 island on `.attack-row p` is `min-height: 17.38` only. Filled 15px `p` line-height 1.2 (18px) plus `padding: 2px` grows the box to ~22px. Empty edit input is `:placeholder-shown { height: 17.38px }`. Designer wants the view row to match that empty-edit box. Do not change the input (filled stays `1.2em` / 18).
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` (`.attack-row p` only). Do not change TSX, `View.css`, `index.css`, attack **name**, notes, `.attack-row input`, Defenses, mapped lists.
+result: `.attack-row p { height: 17.38px }` only. Island kept. Inputs have no widget height. Browser: view p 17.375; empty edit input 17.375 (delta 0); filled edit 18; name `padding: 2px 4px 0`; notes 34.75. `.page-type-one` offsetHeight and scrollHeight 1068 view and edit.
+deviations from design: none beyond Order.
+open questions: none
+
+
 ### T-048: Mapped leftover p/input min-height 19.38 via custom property
 status: done
 source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: a little height on mapped p/input; Q1 +2px → 19.38; Q2 lists only; Q3 custom property; Q4 stop if 1068 exceeded; Q5 suite-title em matches; revision: attack inputs stay T-045)
