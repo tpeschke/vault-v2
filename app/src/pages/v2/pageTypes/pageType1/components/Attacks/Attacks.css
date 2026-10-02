@@ -6,6 +6,8 @@
     display: flex;
     align-items: center;
     width: 33%;
+    padding: 2px 1px;
+    box-sizing: border-box;
 }
 
 .attacks-v2 .attack-row em {
@@ -43,15 +45,22 @@
 .attacks-v2 .attack-row p,
 .attacks-v2 .attack-row input {
     width: 100%;
+    min-width: 0;
     min-height: 17.38px;
 }
 
-.attacks-v2 .attack-block > p,
-.attacks-v2 .attack-block > textarea {
+.attacks-v2 .attack-notes {
+    padding: 2px 1px;
+}
+
+.attacks-v2 .attack-notes p,
+.attacks-v2 .attack-notes textarea {
     min-height: calc(2 * 17.38px);
 }
 
-.attacks-v2 .attack-block > textarea {
+.attacks-v2 .attack-notes textarea {
     width: 100%;
     height: calc(2 * 17.38px);
+    min-width: 0;
+    box-sizing: border-box;
 }

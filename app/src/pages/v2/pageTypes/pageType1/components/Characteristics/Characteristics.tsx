@@ -33,21 +33,29 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
                     items={rows}
                     insert={row => updates.insertEmotion(pageID, row)}
                     update={(index, next) => updates.updateEmotion(pageID, index, next.value)}
-                    renderRow={(item, _index, onChange) => isEditing ?
-                        <input
-                            className="character-value"
-                            placeholder=" "
-                            value={item.value}
-                            onChange={event => onChange({ ...item, value: event.target.value })}
-                        />
-                        :
-                        <p className="character-value">{item.value}</p>
-                    }
+                    renderRow={(item, _index, onChange) => (
+                        <span>
+                            {isEditing ?
+                                <input
+                                    className="character-value"
+                                    placeholder=" "
+                                    value={item.value}
+                                    onChange={event => onChange({ ...item, value: event.target.value })}
+                                />
+                                :
+                                <p className="character-value">{item.value}</p>
+                            }
+                        </span>
+                    )}
                     renderInsert={onBlur => (
-                        <input className="character-value" placeholder=" " onBlur={onBlur} />
+                        <span>
+                            <input className="character-value" placeholder=" " onBlur={onBlur} />
+                        </span>
                     )}
                     renderLeftover={() => (
-                        <p className="character-value"></p>
+                        <span>
+                            <p className="character-value"></p>
+                        </span>
                     )}
                 />
             </div>

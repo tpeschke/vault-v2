@@ -1,5 +1,5 @@
 .flaws-v2 > span {
-    padding: 4px 4px 0;
+    padding: 2px 1px;
     display: flex;
 }
 
@@ -14,6 +14,8 @@
 
 .flaws-v2 > span > input {
     width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .v2 .view-edit .flaws-v2 > span:nth-child(odd) input {

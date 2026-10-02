@@ -13,6 +13,8 @@
 
 .social-suites-v2>div>span {
     display: flex;
+    padding: 2px 1px;
+    gap: 1px;
 }
 
 .social-suites-v2>div>span:nth-child(odd) {
@@ -35,6 +37,8 @@
 
 .social-suites-v2>div>span input {
     width: 15%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .social-suites-v2 .description-row *:first-child {

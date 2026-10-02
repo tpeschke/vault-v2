@@ -67,11 +67,13 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                             }
                         </span>
                     </div>
-                    {isEditing ?
-                        <textarea className="character-value" placeholder=" " value={notes ?? ''} onChange={event => updates.updateAttack(pageID, index, { notes: event.target.value })} />
-                        :
-                        <p className="character-value">{notes ?? ''}</p>
-                    }
+                    <span className="attack-notes">
+                        {isEditing ?
+                            <textarea className="character-value" placeholder=" " value={notes ?? ''} onChange={event => updates.updateAttack(pageID, index, { notes: event.target.value })} />
+                            :
+                            <p className="character-value">{notes ?? ''}</p>
+                        }
+                    </span>
                 </div>
             ))}
         </div>
