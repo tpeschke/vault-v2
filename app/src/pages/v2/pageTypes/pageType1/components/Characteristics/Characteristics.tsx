@@ -29,7 +29,7 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
             <h2>Current Emotions</h2>
             <div className="current-emotions-v2">
                 <DisplaySingleArray
-                    max={6}
+                    max={9}
                     items={rows}
                     insert={row => updates.insertEmotion(pageID, row)}
                     update={(index, next) => updates.updateEmotion(pageID, index, next.value)}

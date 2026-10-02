@@ -41,9 +41,12 @@ export default function FavorDisplay({ favor, pageID, updates }: Props) {
                     <span className="anointed-row">
                         <em>Anointed?</em>
                         <span
-                            className={anointed ? 'anointed-box checked' : 'anointed-box'}
+                            className='anointed-box'
                             onClick={isEditing ? () => updates.updateFavor(pageID, { anointed: !anointed }) : undefined}
-                        ></span>
+
+                        >
+                            {anointed && <i className="fa-solid fa-check"></i>}
+                        </span>
                     </span>
                 </div>
             </div>

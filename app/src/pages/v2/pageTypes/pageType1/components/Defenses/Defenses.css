@@ -26,6 +26,7 @@
 .defenses-v2 .defenses-header span:first-child > input {
     min-height: 17.38px;
     font-size: 15px;
+    background: #f3f3f3
 }
 
 .defenses-v2 .defenses-header span:first-child > input {

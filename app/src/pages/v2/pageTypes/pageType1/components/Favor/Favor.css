@@ -14,12 +14,12 @@
     font-size: 13px;
 }
 
-.favor-v2 .favor-left > p,
-.favor-v2 .favor-left > textarea {
+.favor-v2 .favor-left>p,
+.favor-v2 .favor-left>textarea {
     min-height: calc(2 * 17.38px);
 }
 
-.favor-v2 .favor-left > textarea {
+.favor-v2 .favor-left>textarea {
     width: 100%;
     height: calc(2 * 17.38px);
 }
@@ -33,8 +33,8 @@
     justify-content: flex-end;
 }
 
-.favor-v2 .favor-track > p,
-.favor-v2 .favor-track > input {
+.favor-v2 .favor-track>p,
+.favor-v2 .favor-track>input {
     width: 60px;
     height: 40px;
     display: flex;
@@ -43,11 +43,11 @@
     font-size: 28px;
 }
 
-.favor-v2 .favor-track > :nth-child(3) {
+.favor-v2 .favor-track> :nth-child(3) {
     background: #f3f3f3;
 }
 
-.favor-v2 .favor-track > span:not(.anointed-row) {
+.favor-v2 .favor-track>span:not(.anointed-row) {
     padding: 0 4px;
 }
 
@@ -64,10 +64,15 @@
     width: 12px;
     height: 12px;
     margin-left: 6px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    position: relative;
 }
 
-.favor-v2 .anointed-box.checked {
-    background: black;
+.favor-v2 .anointed-box i {
+    font-size: 20px;
+    position: absolute;
+    top: -4px;
 }
 
 .v2 .view-edit .favor-v2 .anointed-box {

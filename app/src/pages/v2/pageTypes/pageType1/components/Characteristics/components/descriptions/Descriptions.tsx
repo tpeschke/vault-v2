@@ -33,7 +33,7 @@ function hasContent(row: Pick<Description, 'label' | 'attackEmotion' | 'defenseE
 export default function DescriptionsDisplay({ descriptions, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
     const rows = descriptions ?? []
-    const max = 5
+    const max = 7
     const leftOver = max - rows.length - (isEditing ? 1 : 0)
     const showEditInputs = isEditing && leftOver > -1
 
