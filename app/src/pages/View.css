@@ -28,16 +28,26 @@
 
 .v2 input.character-value,
 .v2 textarea.character-value {
-    font-family: 'Kalam', cursive;
-    font-size: 15px;
-    width: 100%;
-    min-height: 17.38px;
-    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+.v2 textarea.character-value {
     resize: none;
+}
+
+.v2 input.character-value[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+    padding: 0;
 }
 
 .v2 input.border {
     border-bottom: 1px solid black;
     line-height: 1.1;
     min-height: 16.58px;
+    font-size: 15px;
 }

@@ -32,7 +32,7 @@
     align-items: center;
     justify-content: space-around;
     font-size: 23px;
-
+    line-height: 1.2;
 }
 
 .defenses-v2 .defenses-header em {
@@ -44,6 +44,7 @@
 .defenses-v2 .defenses-header input {
     background: white;
     min-height: 17.38px;
+    width: 100%;
 }
 
 .defenses-v2 .def-row,
@@ -68,6 +69,8 @@
 .defenses-v2 .def-row input {
     width: 14%;
     min-height: 17.38px;
+    font-size: 15px;
+    line-height: 1.2;
 }
 
 .defenses-v2 .def-row span {
@@ -88,9 +91,14 @@
 .defenses-v2 .cover-row input {
     width: 100%;
     min-height: 17.38px;
+    font-size: 15px;
+    line-height: 1.2;
 }
 
 .defenses-v2>p,
 .defenses-v2>textarea {
     min-height: calc(2 * 17.38px);
+    font-size: 15px;
+    line-height: 1.2;
+    width: 100%;
 }

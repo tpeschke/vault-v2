@@ -46,6 +46,9 @@
 .vitals-v2 .vitals-split input {
     min-height: 17.38px;
     border: 1px solid #bdbdbd;
+    font-size: 15px;
+    line-height: 1.2;
+    width: 100%;
 }
 
 .vitals-v2 .damage-values,
@@ -76,6 +79,7 @@
     justify-content: space-around;
     align-items: center;
     font-size: 22px;
+    line-height: 1.2;
 }
 
 .vitals-v2 .damage-values>:last-child,

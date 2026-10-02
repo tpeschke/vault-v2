@@ -11,4 +11,6 @@
 .descriptions-v2 > span > input {
     min-height: 17.38px;
     width: 100%;
+    font-size: 15px;
+    line-height: 1.2;
 }

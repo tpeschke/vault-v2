@@ -8,6 +8,9 @@
     padding: 4px 4px 0;
     border-top: 1px solid #bdbdbd;
     min-height: 17.38px;
+    font-size: 15px;
+    line-height: 1.2;
+    width: 100%;
 }
 
 .strength-and-discount-v2>span {
