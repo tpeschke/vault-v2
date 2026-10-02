@@ -30,4 +30,4 @@ Rejected:
 - Current Emotions as one string (T-013), a `text[]` column, or six named columns. Named labels on emotion cells. Heading shortened to Emotions.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/pages/View.css`; unindexed `app/src/index.css` (Google `@import`); `app/src/assets/images/` (unindexed; wordmark and die PNGs); `backend/common/interfaces/v2/page1/characteristicsInfo.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType1/`; `backend/server/v2/add/pageType1/`; `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/deleteCharacteristics/`; `backend/server/v2/backupTables/page1.sql` (unindexed schema snapshot); boot script `schema-on-boot.md`
-TODOs: T-009–T-026 (done); name/Favor string: T-036, T-037 (done); Descriptions four-field: T-041–T-042 (done); Descriptions heading/widths: T-043 (proposed)
+TODOs: T-009–T-026 (done); name/Favor string: T-036, T-037 (done); Descriptions four-field: T-041–T-042 (done); Descriptions heading/widths: T-043 (done)

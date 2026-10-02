@@ -6,25 +6,17 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-043: Descriptions heading as Capacity-at-h2 with matching column widths
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-02 (design: Descriptions heading like Characteristics but h2; inputs match heading widths; Q1 Descriptions `h2` + Attack/Defense/Rank `h2.minor-heading`; Q2 10px; Q3 first 38%, remaining split equally; Q4 center minors; Q5 copy Capacity flex + % widths; Q6 keep h2 padding 4px and match it on value cells)
 why: T-042 header is `h2` Descriptions plus `em` Attack/Defense/Rank with `flex: 1` / `6em` / `28px`. Grey bar eats the Label slot; column labels are not heading cells; value `p`/`input` do not share those tracks (UA input min-width and `width: auto` on the first data cell).
 scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx`; `.../descriptions/Descriptions.css`. Do not change hooks, payload, cap, insert/remove, leftover count, or zebra selector. Do not import `Capacity.css` or Capacity classes. Do not add a global `h2.minor-heading`. Do not change `index.css` or `View.css`. Do not change Flaws, Reputation, Social Suites, Current Emotions, Attacks, or Capacity.
-steps:
-1. Header markup: keep `<h2>Descriptions</h2>`. Replace the three `<em>` with `<h2 className="minor-heading">Attack</h2>`, `Defense`, `Rank`. Data / insert / leftover rows stay one `span` of four `p`/`input` cells.
-2. Copy Capacity’s heading/value flex onto this widget only. `.descriptions-header` and `.descriptions-v2 > span`: `display: flex; align-items: stretch`. Drop row `padding: 4px 4px 0`, `align-items: center`, `flex: 1`, `6em`, `28px`, and first-data `width: auto`.
-3. Shared tracks (Capacity 38% + remainder split equally, same 99.8% convention as `38 + 6×10.3`): first heading (`h2:first-child`) and first value cell `width: 38%`. `h2.minor-heading` and value cells 2–4 `width: 20.6%`.
-4. `.descriptions-v2 h2.minor-heading`: `font-size: 10px; font-family: 'oldClaude'; display: flex; justify-content: space-around; align-items: flex-end` (Capacity `h1.minor-heading`). Grey fill stays global `.v2 h2` (`#bdbdbd`). First Descriptions `h2` stays 13px. Value cells 2–4 (view `p` and edit `input`): same `display: flex; justify-content: space-around; align-items: flex-end` as Capacity band values. First value cell is not centered.
-5. Keep global h2 `padding: 4px`. Delete `.descriptions-header > h2 { padding: 0 }`. Set `padding: 4px` on the four value `p`/`input` cells. Set `box-sizing: border-box` on the four heading cells and the four value cells so the % tracks are outer widths (h2 defaults content-box; `input` is often UA border-box). Value `p`/`input` keep `min-height: 17.38px`. Inputs in this widget: `min-width: 0` so they shrink to the track. Do not set a global input `width`.
-6. Keep `> span:nth-child(odd)` `#f3f3f3` and `.v2 .view-edit .descriptions-v2 > span:nth-child(odd) input` mid teal `rgb(159, 199, 212)` with hover restated `rgb(145, 181, 194)`.
-done when: `grep -n '<em' app/src/pages/v2/pageTypes/pageType1/components/Characteristics/components/descriptions/Descriptions.tsx` is 0 hits. `grep -nE '6em|28px|flex:\\s*1' .../Descriptions.css` is 0 hits. CSS has `width: 38%` and `width: 20.6%` on both header and value selectors; `h2.minor-heading` is `font-size: 10px`. Browser: for each of the four columns, heading cell `getBoundingClientRect().width` matches the first leftover (or first data) value cell within 1px, in view and in edit. Attack/Defense/Rank are grey h2 bars, 10px, centered. Odd-span inputs stay mid teal. Record `.page-type-one` height vs 1068 (do not compress).
-depends on: T-042
+result: Header is `h2` Descriptions plus `h2.minor-heading` Attack/Defense/Rank (10px, centered grey bars). Flex tracks 38/20.6/20.6/20.6; heading vs first leftover/data cell widths match within 0px in view and edit. Odd-span inputs mid teal; `.page-type-one` 1068.
+deviations from design: none beyond Order (value-cell padding 4px + border-box; written 20.6%; no row padding).
 open questions: none
-deviations from design: Capacity band `p`s have no padding; value cells here get `padding: 4px` and `border-box` because Q6 keeps h2 padding and the boxes must share outer width. Remainder is written `20.6%`, not `calc()`, to match Capacity’s explicit percents. Header/span row padding `4px 4px 0` is removed so the % tracks are the row (Capacity rows have no wrapper padding).
-result:
 
-## Done
 
 
 ### T-042: Draw and edit four-field Description rows

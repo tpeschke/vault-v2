@@ -46,4 +46,4 @@ Rejected:
 - Descriptions column labels as `em`. Mixing `flex: 1` / `6em` / `28px` heading tracks with different value-cell widths. CSS grid, subgrid, `<table>`, or `display: contents` for Descriptions columns. Importing Capacity CSS.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-027–T-042 (done); Descriptions heading/widths: T-043 (proposed)
+TODOs: T-027–T-043 (done)
