@@ -9,7 +9,8 @@
     margin-right: 5px;
 }
 
-.general-info-v2 p {
+.general-info-v2 p,
+.general-info-v2 input {
     width: 100%;
 }
 

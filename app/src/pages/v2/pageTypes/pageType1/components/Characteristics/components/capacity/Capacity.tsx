@@ -1,8 +1,12 @@
-import { Fragment } from 'react'
+import { Fragment, useContext } from 'react'
 import './Capacity.css'
+import EditingContext from '../../../../../../contexts/EditingContext'
+import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
     capacity: number
+    pageID: number
+    updates: PageType1Updates
 }
 
 const BANDS = (capacity: number) => [
@@ -14,7 +18,8 @@ const BANDS = (capacity: number) => [
     { label: 'Ya', value: `>${capacity * 1.5}` },
 ]
 
-export default function CapacityDisplay({ capacity }: Props) {
+export default function CapacityDisplay({ capacity, pageID, updates }: Props) {
+    const isEditing = useContext(EditingContext)
     const bands = BANDS(capacity)
 
     return (
@@ -30,7 +35,23 @@ export default function CapacityDisplay({ capacity }: Props) {
                 {bands.map(({ label, value }, index) => (
                     <Fragment key={label}>
                         {index > 0 && <p className="slash">/</p>}
-                        <p className="character-value">{value}</p>
+                        {label === 'Yb' && isEditing ?
+                            <span className="capacity-yb character-value">
+                                <span>≤</span>
+                                <input
+                                    className="character-value"
+                                    type="number"
+                                    placeholder=" "
+                                    value={capacity}
+                                    onChange={event => {
+                                        const n = +event.target.value
+                                        updates.updateCapacity(pageID, Number.isFinite(n) ? n : 0)
+                                    }}
+                                />
+                            </span>
+                            :
+                            <p className="character-value">{value}</p>
+                        }
                     </Fragment>
                 ))}
             </div>

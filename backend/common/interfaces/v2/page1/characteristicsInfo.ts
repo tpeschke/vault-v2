@@ -21,21 +21,28 @@ export interface Goal {
 
 export interface Description {
     id: number,
-    value: string
+    key?: string,
+    label: string,
+    attackEmotion: string,
+    defenseEmotion: string,
+    rank: number | ''
 }
 
 export interface Emotion {
     id: number,
+    key?: string,
     value: string
 }
 
 export interface Flaw {
     id: number,
+    key?: string,
     flaw: string
 }
 
 export interface CharacteristicPair {
     id: number,
+    key?: string,
     value: string,
     rank: string
 }

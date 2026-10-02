@@ -10,30 +10,32 @@ import DefensesDisplay from './components/Defenses/Defenses';
 import AttacksDisplay from './components/Attacks/Attacks';
 import FavorDisplay from './components/Favor/Favor';
 import wordmark from '../../../../assets/images/bonfire-wordmark.png'
+import { PageType1Updates } from '../../hooks/interfaces/UpdateInterfaces';
 
 interface Props {
     pageInfo: Page1,
-    index: number
+    index: number,
+    updates: PageType1Updates
 }
 
-export default function PageType1({ pageInfo, index }: Props) {
-    const { generalInfo, stats, characteristicsInfo, vitalsInfo, favor, combatInfo } = pageInfo
+export default function PageType1({ pageInfo, index, updates }: Props) {
+    const { pageID, generalInfo, stats, characteristicsInfo, vitalsInfo, favor, combatInfo } = pageInfo
 
     return (
         <div className='page-shell page card page-type-one' id={'page-' + index}>
             <DoubleColumn>
                 <>
-                    <GeneralInfoDisplay generalInfo={generalInfo} />
-                    <StatsDisplay stats={stats} />
-                    <CharacteristicsDisplay characteristicsInfo={characteristicsInfo} />
-                    <FavorDisplay favor={favor} />
+                    <GeneralInfoDisplay generalInfo={generalInfo} pageID={pageID} updates={updates} />
+                    <StatsDisplay stats={stats} pageID={pageID} updates={updates} />
+                    <CharacteristicsDisplay characteristicsInfo={characteristicsInfo} pageID={pageID} updates={updates} />
+                    <FavorDisplay favor={favor} pageID={pageID} updates={updates} />
                 </>
                 <>
                     <img className="page-type-one-wordmark" src={wordmark} alt="Bonfire The Roleplaying Game" />
                     <PositionsDisplay />
-                    <VitalsDisplay vitals={vitalsInfo} />
-                    <DefensesDisplay defenses={combatInfo.defenses} />
-                    <AttacksDisplay attacks={combatInfo.attacks} />
+                    <VitalsDisplay vitals={vitalsInfo} pageID={pageID} updates={updates} />
+                    <DefensesDisplay defenses={combatInfo.defenses} pageID={pageID} updates={updates} />
+                    <AttacksDisplay attacks={combatInfo.attacks} pageID={pageID} updates={updates} />
                 </>
             </DoubleColumn>
         </div>

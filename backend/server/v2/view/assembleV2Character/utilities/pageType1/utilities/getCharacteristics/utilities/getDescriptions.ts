@@ -4,7 +4,10 @@ import query from "../../../../../../../../db/database"
 interface DescriptionReturn {
     id: number,
     pageid: number,
-    value: string
+    label?: string | null,
+    attackemotion?: string | null,
+    defenseemotion?: string | null,
+    rank?: number | null
 }
 
 const getDescriptionsSQL = `select * from v2descriptions where pageID = $1`
@@ -13,9 +16,13 @@ export default async function getDescriptions(pageID: number): Promise<Descripti
     const info: DescriptionReturn[] = await query(getDescriptionsSQL, pageID)
 
     if (info.length > 0) {
-        return info.map(({ id, value }) => {
+        return info.map(({ id, label, attackemotion, defenseemotion, rank }) => {
             return {
-                id, value
+                id,
+                label: label ?? '',
+                attackEmotion: attackemotion ?? '',
+                defenseEmotion: defenseemotion ?? '',
+                rank: rank === null || rank === undefined ? '' : rank
             }
         })
     }

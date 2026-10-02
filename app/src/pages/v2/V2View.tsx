@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
+import EditingContext from './contexts/EditingContext'
+import Sidebar from './components/sidebar/Sidebar'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -11,8 +13,10 @@ interface Props {
 
 export default function V2View({ setLoading, pathname }: Props) {
     const [isInitialLoad, setIsInitialLoad] = useState(true)
+    const [isEditing, setIsEditing] = useState(false)
 
-    const { character } = characterHook(pathname)
+    const { character, updateFunctions } = characterHook(pathname)
+    const { saveCharacterToBackend, revertCharacter, pageType1Updates } = updateFunctions
 
     useEffect(() => {
         if (character && isInitialLoad) {
@@ -27,19 +31,44 @@ export default function V2View({ setLoading, pathname }: Props) {
         }
     }, [character])
 
+    const toggleIsEditing = () => {
+        setIsEditing(!isEditing)
+    }
+
+    const saveCharacter = () => {
+        saveCharacterToBackend()
+        setIsEditing(false)
+    }
+
+    const revertCharacterToUnedited = () => {
+        revertCharacter()
+        setIsEditing(false)
+    }
+
     return (
         <div className="home-shell v2">
-            <div className='page-shell'>
-                {character && character.pages.map((page, index) => {
-                    switch (page.type) {
-                        case 1:
-                            return <PageType1 key={page.pageID} pageInfo={page} index={index} />
-                        default:
-                            return <></>
+            <EditingContext value={isEditing}>
+                <div className="version-two-shell">
+                    <div className={`page-shell ${isEditing ? 'view-edit' : ''}`}>
+                        {character && character.pages.map((page, index) => {
+                            switch (page.type) {
+                                case 1:
+                                    return <PageType1 key={page.pageID} pageInfo={page} index={index} updates={pageType1Updates} />
+                                default:
+                                    return <></>
+                            }
+                        })}
+                    </div>
+                    {character &&
+                        <Sidebar
+                            toggleIsEditing={toggleIsEditing}
+                            saveCharacter={saveCharacter}
+                            revertCharacterToUnedited={revertCharacterToUnedited}
+                            ownsThisCharacter={character.userInfo.ownsThisCharacter}
+                        />
                     }
-                })}
-            </div>
-            {/* Sidebar */}
+                </div>
+            </EditingContext>
         </div>
     )
 }

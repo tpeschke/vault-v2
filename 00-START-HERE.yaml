@@ -49,6 +49,12 @@ routing:
       - app/src/pages/View.css
       - app/src/routes/AllRoutes.tsx
       - backend/common/interfaces/v2/
+  edit character sheet / save character / edit character:
+    primary: backend/server/v2/edit/
+    adjacent:
+      - app/src/pages/v2/
+      - app/src/pages/View.css
+      - backend/common/interfaces/v2/
   delete character / remove character:
     primary: backend/server/v2/delete/
     adjacent:

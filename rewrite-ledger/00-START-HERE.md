@@ -54,6 +54,8 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | L2/L3 | `l2-l3-deferred.md` |
 | FSD colocation | `fsd-colocation.md` |
 | Page type 1 first-page view | `page1-view.md` |
+| Edit character sheet | `edit-character.md` |
+| Session phases | `phases.md` |
 | Schema on boot | `schema-on-boot.md` |
 | Code | `../00-START-HERE.yaml` `routing` |
 | Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |

@@ -99,7 +99,8 @@ export default async function assemblePageType1(pageID: number): Promise<Page1> 
         favor: {
             anointed: false,
             current: 0,
-            max: 0
+            max: 0,
+            divineRelationship: ''
         },
         combatInfo: {
             defenses: {

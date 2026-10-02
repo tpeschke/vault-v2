@@ -1,12 +1,15 @@
 import SocialSuiteDisplay from './components/SocialSuite'
 import './SocialSuites.css'
 import { SocialSkillSuites } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
+import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
     socialSuites: SocialSkillSuites
+    pageID: number
+    updates: PageType1Updates
 }
 
-export default function SocialSuitesDisplay({ socialSuites }: Props) {
+export default function SocialSuitesDisplay({ socialSuites, pageID, updates }: Props) {
     const { influence, inform, intimidate, inspire } = socialSuites
 
     return (
@@ -17,8 +20,8 @@ export default function SocialSuitesDisplay({ socialSuites }: Props) {
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>
-                <SocialSuiteDisplay suiteName='Influence' socialSuite={influence} />
-                <SocialSuiteDisplay suiteName='Inform' socialSuite={inform} />
+                <SocialSuiteDisplay suiteName='Influence' suiteKey='influence' socialSuite={influence} pageID={pageID} updates={updates} />
+                <SocialSuiteDisplay suiteName='Inform' suiteKey='inform' socialSuite={inform} pageID={pageID} updates={updates} />
             </div>
             <div>
                 <span>
@@ -26,8 +29,8 @@ export default function SocialSuitesDisplay({ socialSuites }: Props) {
                     <h2>Stat</h2>
                     <h2>Rank</h2>
                 </span>
-                <SocialSuiteDisplay suiteName='Inspire' socialSuite={inspire} />
-                <SocialSuiteDisplay suiteName='Intimidate' socialSuite={intimidate} />
+                <SocialSuiteDisplay suiteName='Inspire' suiteKey='inspire' socialSuite={inspire} pageID={pageID} updates={updates} />
+                <SocialSuiteDisplay suiteName='Intimidate' suiteKey='intimidate' socialSuite={intimidate} pageID={pageID} updates={updates} />
             </div>
 
         </div>

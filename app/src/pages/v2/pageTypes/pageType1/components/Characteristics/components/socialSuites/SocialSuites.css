@@ -5,6 +5,7 @@
 
 .social-suites-v2>div {
     width: 50%;
+    box-sizing: border-box;
 }
 
 .social-suites-v2>div:first-child {
@@ -21,23 +22,68 @@
 
 .social-suites-v2>div>span * {
     text-align: center;
-    min-width: 15%;
-    padding: 4px 4px 0;
+    min-width: 0;
+    padding: 2px 1px;
+    box-sizing: border-box;
+    background-clip: content-box;
     border-left: 1px solid #bdbdbd;
     min-height: 17.38px;
 }
 
 .social-suites-v2>div>span *:first-child {
     text-align: left;
-    width: 70%;
+    width: 67%;
     border-left: unset;
 }
 
-.social-suites-v2 .description-row *:first-child {
-    width: 85%;
+.social-suites-v2>div>span > :nth-child(2) {
+    width: 15%;
+}
+
+.social-suites-v2>div>span > :nth-child(3) {
+    width: 18%;
+}
+
+.social-suites-v2>div>span p,
+.social-suites-v2>div>span input,
+.social-suites-v2>div>span em {
+    min-height: var(--mapped-row-min-height);
+    height: var(--mapped-row-min-height);
+}
+
+.social-suites-v2>div>span input {
+    min-width: 0;
+}
+
+.social-suites-v2 .description-row > :nth-child(1) {
+    width: 82%;
+}
+
+.social-suites-v2 .description-row > :nth-child(2) {
+    width: 18%;
+}
+
+.social-suites-v2>div>span:first-child h2 {
+    padding: 4px;
+    background-clip: border-box;
 }
 
 .social-suites-v2 .suite-title {
     border-bottom: 1px solid #bdbdbd;
     border-top: 1px solid #bdbdbd;
+}
+
+.v2 .view-edit .social-suites-v2 > div > span:nth-child(odd) input {
+    background: rgb(159, 199, 212) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .social-suites-v2 > div > span:nth-child(odd) input:hover {
+    background: rgb(145, 181, 194) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .social-suites-v2 input,
+.v2 .view-edit .social-suites-v2 input:hover {
+    background-clip: content-box !important;
 }

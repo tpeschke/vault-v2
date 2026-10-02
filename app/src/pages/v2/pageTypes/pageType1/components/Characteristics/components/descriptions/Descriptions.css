@@ -1,13 +1,73 @@
+.descriptions-v2 > .descriptions-header,
 .descriptions-v2 > span {
-    padding: 4px 4px 0;
     display: flex;
+    align-items: stretch;
+}
+
+.descriptions-v2 > span {
+    gap: 1px;
 }
 
 .descriptions-v2 > span:nth-child(odd) {
     background: #f3f3f3;
 }
 
-.descriptions-v2 > span > p {
-    min-height: 17.38px;
-    width: 100%;
+.descriptions-v2 > .descriptions-header > h2:first-child,
+.descriptions-v2 > span > :nth-child(1) {
+    width: 38%;
+    box-sizing: border-box;
+}
+
+.descriptions-v2 h2.minor-heading,
+.descriptions-v2 > span > :nth-child(2),
+.descriptions-v2 > span > :nth-child(3),
+.descriptions-v2 > span > :nth-child(4) {
+    width: 20.6%;
+    box-sizing: border-box;
+}
+
+.descriptions-v2 h2.minor-heading {
+    font-size: 10px;
+    font-family: 'oldClaude';
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.descriptions-v2 > span > :nth-child(2),
+.descriptions-v2 > span > :nth-child(3),
+.descriptions-v2 > span > :nth-child(4) {
+    min-height: var(--mapped-row-min-height);
+    height: var(--mapped-row-min-height);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.descriptions-v2 > span > p,
+.descriptions-v2 > span > input {
+    min-height: var(--mapped-row-min-height);
+    height: var(--mapped-row-min-height);
+    padding: 2px 1px;
+    box-sizing: border-box;
+    background-clip: content-box;
+}
+
+.descriptions-v2 > span > input {
+    min-width: 0;
+}
+
+.v2 .view-edit .descriptions-v2 > span:nth-child(odd) input {
+    background: rgb(159, 199, 212) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .descriptions-v2 > span:nth-child(odd) input:hover {
+    background: rgb(145, 181, 194) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .descriptions-v2 input,
+.v2 .view-edit .descriptions-v2 input:hover {
+    background-clip: content-box !important;
 }

@@ -34,6 +34,18 @@
     justify-content: space-around;
 }
 
+.capacity-v2 .capacity-values .capacity-yb {
+    width: 10.3%;
+    min-height: 17.38px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+}
+
+.capacity-v2 .capacity-values .capacity-yb input {
+    min-width: 0;
+}
+
 .capacity-v2 .capacity-values p.slash {
     width: 2.5%;
     min-height: unset;
