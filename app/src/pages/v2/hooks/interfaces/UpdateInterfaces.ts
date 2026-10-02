@@ -32,7 +32,7 @@ export interface PageType1Updates {
 }
 
 export interface V2UpdateFunctions {
-    saveCharacterToBackend: () => void
+    saveCharacterToBackend: () => Promise<boolean>
     revertCharacter: () => void
     pageType1Updates: PageType1Updates
 }

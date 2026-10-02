@@ -5,5 +5,6 @@ const saveGeneralInfoSQL = `update v2GeneralInfo set name = $1, ancestry = $2, c
 
 export default async function saveGeneralInfo(pageID: number, generalInfo: GeneralInfo) {
     const { name, ancestry, class: primaryClass, subclass, level, crp } = generalInfo
-    return query(saveGeneralInfoSQL, [name, ancestry, primaryClass, subclass, level, crp.unspent, crp.spent, pageID])
+    const persistedName = name?.trim() ? name : 'New Character'
+    return query(saveGeneralInfoSQL, [persistedName, ancestry, primaryClass, subclass, level, crp.unspent, crp.spent, pageID])
 }
