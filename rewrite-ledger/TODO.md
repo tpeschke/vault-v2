@@ -8,6 +8,100 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Done
 
+### T-073: Keep extra names on catalog cache; write them on Save
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (Q8 confirm)
+why: Home uses redux and skips GET when the cache exists. `updateCatalogInfo` replaces the whole `CharacterHomeInfo`, so a first-page name patch drops extras and hides the icon.
+scope: unindexed `app/src/redux/slices/usersCharactersSlice.tsx` (`updateCatalogInfo`); edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`saveCharacterToBackend` success only). Optional helper next to `firstPage1` in `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (export; do not invent a new owner). Do not change `dispatchCatalog` / `restoreCatalogFromSnapshot` payloads beyond what the reducer merge covers. Do not write extras on keystroke or Revert. Do not refetch `/allOfUsersCharacter` on Save. Do not add `features/`.
+result: `updateCatalogInfo` keeps extras when the key is omitted. Successful Save writes `otherPageType1Names` from type-1s after the first. `otherPageType1Names()` exported next to `firstPage1`.
+deviations from design: none
+open questions: none
+
+### T-072: Catalog `fa-user` slot and extra-name tooltip
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (Q2 separate slot; Q3 inherit; Q4 empty → New Character; Q5 one line; Q6 reuse `my-tooltip`; Q7 row click)
+why: Extra names are on the payload. The row still shows only the first name.
+scope: list adjacency `app/src/pages/home/components/charactersRowDisplay/component/CharacterRow.tsx`; `.../charactersRowDisplay/CharacterRowsDisplay.css`. Unindexed `app/src/App.tsx` only if the shared `Tooltip` needs `white-space: pre-line` so `\n` breaks. Do not add a tooltip package. Do not add a Font Awesome kit. Do not change v1 display except that shared `CharacterRow` stays quiet when the array is missing/empty. Do not add `features/`.
+result: Name+icon share the 25% name column. `fa-user` only when extras exist. `my-tooltip` lists extras, `\n` + `pre-line` on the shared Tooltip. Empty → `New Character`.
+deviations from design: none beyond Order (shared 25% column).
+open questions: none
+
+### T-071: Put extra type-1 names on the v2 home list payload
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (catalog icon; Q1 fold)
+why: Home SQL returns only the first type-1. The catalog icon needs the other names without a sheet GET.
+scope: list-characters primary `backend/server/controllers/home/v2/getCharacters.ts`; list adjacency `backend/common/interfaces/characterInterfaces.ts` (`CharacterHomeInfo`). Do not change v1 `getCharacters` or `HomeController` assembly. Do not add a route. Do not add `features/`.
+result: `CharacterHomeInfo.otherPageType1Names` optional. v2 SQL `array_agg` of later type-1 names, quoted alias, `'{}'` when none. v1 SQL unchanged.
+deviations from design: none
+open questions: none
+
+
+### T-070: Refuse Save 200 when stored type-1 count is short
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; do not 200 a shorter list)
+why: Client `captureLoaded`s any 200 that has `pages`. A silent missed INSERT looks like a successful Save and drops the extra cards.
+scope: edit character primary `backend/server/v2/edit/editV2CharacterController.ts` (`editV2Character` after `savePages`). Existing `checkForContentTypeBeforeSending`. Do not change `getV2Character` / `assembleV2Character` to return-without-send. Do not change `characterHook` or add a frontend count check.
+result: After `savePages`, stored type-1 count vs posted type-1 count. Short → `{ message: 'Could not save all sheets' }` with no `pages`. Else `getV2Character`.
+deviations from design: stored row count, not a split reassemble (Order).
+open questions: none
+
+### T-069: Persist page-type-1 by row existence; fail closed on mint
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; Q1 extras gone, Q2 no server errors)
+why: `persistPageType1` UPDATEs whenever `pageID > 0`. UPDATE of a missing id writes nothing. `query()` hides `rowCount`. Save then 200s the old one-page assemble.
+scope: edit character primary `backend/server/v2/edit/utilities/persistPageType1.ts`. Same T-055 pattern as `saveBasicCharacteristics` (SELECT then UPDATE or INSERT). Do not change `savePages` switch, `addV2CharacterController`, `/v2/edit/:characterID/field`, or `query()`.
+result: SELECT `id`+`characterID` before UPDATE. No row or `pageID <= 0` → INSERT. Throw if minted id is not a number `> 0`.
+deviations from design: none
+open questions: none
+
+### T-068: Allow several v2CharacterPages rows per character
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; Q1+Q2 landmine, not the live miss)
+why: A unique on `v2CharacterPages.characterid` alone would block a second sheet. Snapshot `basicData.sql` has `id` PK only. Live postgres is not in this repo.
+scope: unindexed `backend/server/db/ensureSchema.ts`. Verify `backend/server/v2/backupTables/basicData.sql` (`v2characterpages` only). Do not change `page1.sql`. Do not unique `(characterid, index)`. Do not rewrite `query()`.
+result: `ensureSchema` drops characterid-only uniques/indexes on `v2characterpages` and throws if one remains. `basicData.sql` left unchanged (no unique `characterid`). Restart to apply.
+deviations from design: none
+open questions: none
+
+
+### T-067: Insert new page-type-1 rows on Save
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q1: persist on character Save)
+why: `savePages` / `savePageType1` / `saveGeneralInfo` only UPDATE by `pageID`. A temp `pageID <= 0` writes nothing. There is no `v2CharacterPages` insert on edit.
+scope: edit character primary `backend/server/v2/edit/editV2CharacterController.ts`; `backend/server/v2/edit/utilities/savePages.ts`; new helper under `backend/server/v2/edit/utilities/` (name as needed). Reuse `backend/server/v2/add/pageType1/addPageType1.ts`. Do not add a route. Do not change `addV2CharacterController` or `/v2/edit/:characterID/field`.
+result: `savePages(characterID, pages)` walks array order. Existing type-1: update `index` then `savePageType1`. `pageID <= 0`: INSERT `v2CharacterPages`, `addPageType1`, then save. No new route.
+deviations from design: none
+open questions: none
+
+### T-066: Assemble v2 pages in stored index order
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q8: page order is stored)
+why: `v2CharacterPages.index` exists and create writes `0`. `getCharacterPages` is `select *` with no `ORDER BY`, so insert-after cannot round-trip.
+scope: view character primary `backend/server/v2/view/viewV2CharacterController.ts` (`getCharacterPages`). Do not change assemble mapping or `CharacterPageReturns` unless a new column is read.
+result: `getCharacterPages` is `select * from v2CharacterPages where characterID = $1 order by index`.
+deviations from design: none
+open questions: none
+
+### T-065: Keep catalog identity on the first page-type-1
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q4 first page only)
+why: `getV2Characters` joins every `v2GeneralInfo` row. A second page-type-1 would list the same character twice. `updateGeneralInfoField` also writes `character.name` and `dispatchCatalog` from any page.
+scope: list-characters primary `backend/server/controllers/home/v2/getCharacters.ts`; edit adjacency `app/src/pages/v2/hooks/updates/getV2Updates.ts` (`dispatchCatalog`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (`updateGeneralInfoField` `character.name` write). Do not change `restoreCatalogFromSnapshot` / `sheetName` (already `firstPage1`). Do not change create-character slot limit.
+result: Home SQL keeps one row per character (lowest type-1 `index`). `dispatchCatalog` and `character.name` only follow the first type-1 in `pages`.
+deviations from design: none beyond Order (home SQL).
+open questions: none
+
+### T-064: Insert a blank page-type-1 locally from an edit-only +
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q1 local-until-Save; Q3 edit-only; Q5 `+` quieter; Q6 unbounded; Q7 no scroll)
+why: V2View already maps every page. There is no control to add another type-1 instance. The add must stay local so Revert and leave-warn match the edit session.
+scope: view/edit adjacency `app/src/pages/v2/V2View.tsx`; new `app/src/pages/v2/V2View.css` (or equivalent view-slice chrome CSS — not `PageType1.css`, not `index.css`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. New helper on the v2 slice for the empty `Page1` skeleton and `addPageType1After` (e.g. next to `pageType1Updates.ts`). Do not change `PageType1.tsx`. Do not import v1. Do not add `features/`. Same change: root `00-START-HERE.yaml` routing key for this objective (primary `backend/server/v2/edit/`; adjacent `app/src/pages/v2/`, `backend/server/v2/add/pageType1/`, `backend/common/interfaces/v2/`, `backend/server/controllers/home/v2/getCharacters.ts`).
+result: Edit-only `+` under each type-1 card. `addPageType1After` splices `emptyPageType1` with a unique `pageID <= 0`. L1 key added. Revert still drops unsaved pages.
+deviations from design: none
+open questions: none
+
+
+
 ### T-063: Reveal view-input locations (v1 eye button)
 status: done
 source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: location highlight; Q1 exact v1 copy; Q2 as v1 who-sees; Q3 no blank gate; Q4 default off; Q5 highlight; Q6 face hover off only while shown; Q7 die cell teal fills; Q8 session-only; Q9 selected flame stays)

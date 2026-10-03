@@ -10,6 +10,7 @@ import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { PageType1Updates } from "../interfaces/UpdateInterfaces"
 import {
+    addPageType1After as insertPageAfter,
     insertDescription,
     insertEmotion,
     insertFlaw,
@@ -40,6 +41,8 @@ function findPage1(character: CharacterVersion2, pageID: number): Page1 | undefi
 }
 
 function dispatchCatalog(character: CharacterVersion2, pageID: number, dispatch: Dispatch) {
+    const first = character.pages.find((page): page is Page1 => page.type === 1)
+    if (!first || first.pageID !== pageID) { return }
     const page = findPage1(character, pageID)
     if (!page) { return }
     const { name, ancestry, class: primaryClass, subclass, level } = page.generalInfo
@@ -154,6 +157,10 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateAttack(character, pageID, index, patch))
         },
-        persistViewField
+        persistViewField,
+        addPageType1After: (afterIndex) => {
+            if (!character) { return }
+            apply(insertPageAfter(character, afterIndex))
+        }
     }
 }

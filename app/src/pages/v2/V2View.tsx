@@ -1,5 +1,6 @@
 import '../View.css'
-import { useEffect, useState } from "react"
+import './V2View.css'
+import { Fragment, useEffect, useState } from "react"
 import { useBlocker } from "react-router-dom"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
@@ -88,7 +89,18 @@ export default function V2View({ setLoading, pathname }: Props) {
                         {character && character.pages.map((page, index) => {
                             switch (page.type) {
                                 case 1:
-                                    return <PageType1 key={page.pageID} pageInfo={page} index={index} updates={pageType1Updates} />
+                                    return (
+                                        <Fragment key={page.pageID}>
+                                            <PageType1 pageInfo={page} index={index} updates={pageType1Updates} />
+                                            {isEditing &&
+                                                <button
+                                                    type="button"
+                                                    className="add-page-type-1"
+                                                    onClick={() => pageType1Updates.addPageType1After(index)}
+                                                ><i className="fa-solid fa-plus"></i></button>
+                                            }
+                                        </Fragment>
+                                    )
                                 default:
                                     return <></>
                             }

@@ -10,7 +10,7 @@ export interface ViewRequest extends Request {
     }
 }
 
-const getCharacterPages = `select * from v2CharacterPages where characterID = $1`
+const getCharacterPages = `select * from v2CharacterPages where characterID = $1 order by index`
 
 export async function getV2Character(request: ViewRequest, response: Response) {
     const characterID = +request.params.characterID

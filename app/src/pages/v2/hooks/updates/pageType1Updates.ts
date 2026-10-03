@@ -7,6 +7,18 @@ import { Stats } from "@vault/common/interfaces/v2/page1/statsInterface"
 import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vitals"
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
+import emptyPageType1 from "./emptyPageType1"
+
+function firstPage1(character: CharacterVersion2): Page1 | undefined {
+    return character.pages.find((page): page is Page1 => page.type === 1)
+}
+
+export function otherPageType1Names(character: CharacterVersion2): string[] {
+    return character.pages
+        .filter((page): page is Page1 => page.type === 1)
+        .slice(1)
+        .map(page => page.generalInfo.name)
+}
 
 export function mapPage1(character: CharacterVersion2, pageID: number, updater: (page: Page1) => Page1): CharacterVersion2 {
     return {
@@ -47,10 +59,20 @@ export function updateGeneralInfoField(character: CharacterVersion2, pageID: num
         }
         return { ...page, generalInfo }
     })
-    if (key === 'name') {
+    if (key === 'name' && firstPage1(character)?.pageID === pageID) {
         return { ...next, name: String(value) }
     }
     return next
+}
+
+export function addPageType1After(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
+    const existingIds = character.pages
+        .filter((page): page is Page1 => page.type === 1)
+        .map(page => page.pageID)
+    const pageID = Math.min(0, ...existingIds) - 1
+    const pages = [...character.pages]
+    pages.splice(afterIndex + 1, 0, emptyPageType1(pageID))
+    return { ...character, pages }
 }
 
 export function updateCrP(character: CharacterVersion2, pageID: number, key: 'unspent' | 'spent', value: number): CharacterVersion2 {

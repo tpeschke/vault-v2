@@ -11,7 +11,7 @@ import { V2CharacterCacheInfo, cacheCharacterV2 } from "../../../redux/slices/ch
 import { updateCatalogInfo } from "../../../redux/slices/usersCharactersSlice"
 import { V2UpdateFunctions } from "./interfaces/UpdateInterfaces"
 import getV2Updates from "./updates/getV2Updates"
-import { updateCrP, updateDamage, updateFavor, updateSelfDoubt, updateStress } from "./updates/pageType1Updates"
+import { otherPageType1Names, updateCrP, updateDamage, updateFavor, updateSelfDoubt, updateStress } from "./updates/pageType1Updates"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -146,6 +146,19 @@ export default function characterHook(pathname: string, isEditing: boolean) {
                 id: data.id,
                 version: 2,
                 characterInfo: Promise.resolve(data)
+            }))
+            const page = firstPage1(data)
+            dispatch(updateCatalogInfo({
+                info: {
+                    id: data.id,
+                    name: page?.generalInfo.name ?? data.name,
+                    ancestry: page?.generalInfo.ancestry ?? '',
+                    class: page?.generalInfo.class ?? '',
+                    subclass: page?.generalInfo.subclass ?? '',
+                    level: page?.generalInfo.level ?? 0,
+                    otherPageType1Names: otherPageType1Names(data)
+                },
+                index: 1
             }))
             return true
         } catch (error) {

@@ -31,6 +31,7 @@ export interface PageType1Updates {
     updateDefense: (pageID: number, patch: Partial<Defense>) => void
     updateAttack: (pageID: number, index: number, patch: Partial<Attack>) => void
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number) => void
+    addPageType1After: (afterIndex: number) => void
 }
 
 export interface V2UpdateFunctions {

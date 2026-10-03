@@ -28,7 +28,8 @@ export interface CharacterHomeInfo {
     level: number,
     ancestry: string,
     class: string,
-    subclass: string
+    subclass: string,
+    otherPageType1Names?: string[]
 }
 
 export interface CharacterVersion2 extends CharacterBase {

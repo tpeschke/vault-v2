@@ -55,6 +55,13 @@ routing:
       - app/src/pages/v2/
       - app/src/pages/View.css
       - backend/common/interfaces/v2/
+  add page-type-1 sheet / add page / add another sheet / add sheet page:
+    primary: backend/server/v2/edit/
+    adjacent:
+      - app/src/pages/v2/
+      - backend/server/v2/add/pageType1/
+      - backend/common/interfaces/v2/
+      - backend/server/controllers/home/v2/getCharacters.ts
   delete character / remove character:
     primary: backend/server/v2/delete/
     adjacent:

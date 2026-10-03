@@ -26,6 +26,7 @@ routing:
   new page type / additional page type / page type N / page-type playbook: v2-page-type.md
   page1-view: page1-view.md
   edit-character: edit-character.md
+  add-page-type-1 / add another page-type-1 / add sheet page: add-page-type-1.md
   quick-view-inputs: quick-view-inputs.md
   session-phases: phases.md
   schema-on-boot: schema-on-boot.md

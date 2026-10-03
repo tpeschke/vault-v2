@@ -28,7 +28,12 @@ export const usersCharactersSlice = createSlice({
             if (state.usersCharactersCache && state.usersCharactersCache[index]) {
                 state.usersCharactersCache[index] = state.usersCharactersCache[index].map(character => {
                     if (character.id === info.id) {
-                        return info
+                        return {
+                            ...info,
+                            otherPageType1Names: info.otherPageType1Names !== undefined
+                                ? info.otherPageType1Names
+                                : character.otherPageType1Names
+                        }
                     }
                     return character
                 })
