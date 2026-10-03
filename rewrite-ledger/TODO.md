@@ -8,6 +8,24 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Done
 
+### T-075: Refuse full Save unless `request.user` is the owner
+status: done
+source: rewrite-ledger/page-reorder.md, 2026-10-03 (Q4 API-direct saves); rewrite-ledger/edit-character.md (owner check revised)
+why: `editV2Character` compares `ownerID` to `body.userInfo.userID`. Field POST already uses `request.user?.id`. A forged body can persist a reorder (and the rest of the sheet).
+scope: edit character primary `backend/server/v2/edit/editV2CharacterController.ts` (`editV2Character` owner `if` only). Do not change `savePages`, `persistPageType1`, the type-1 count gate, or `/v2/edit/:characterID/field`. Do not change v1 edit.
+result: Owner `if` is `ownerID === request.user?.id`. Posted `userInfo.userID` is unused. Refuse message unchanged.
+deviations from design: none
+open questions: none
+
+### T-074: Add edit-only swap / top / bottom left of `+`
+status: done
+source: rewrite-ledger/page-reorder.md, 2026-10-03 (Q1 reorder; Q2 first has swap; Q3 local until Save; Q4 isEditing; Q5 no empty slots; Q6 tooltip drafts; Q7 swap | top | bottom | add)
+why: Extra page-type-1 sheets can be added but not reordered. Save already writes `v2CharacterPages.index` from array order. The designer wants the three controls on the existing gutter row.
+scope: view/edit adjacency `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/V2View.css`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. Do not change `PageType1.tsx`. Do not change `persistPageType1` / `savePages` / `getCharacterPages`. Do not implement add-page. Do not import v1. Do not add `features/`.
+result: Gutter row is swap | top | bottom | `+`. Helpers no-op at the ends. First-type-1 change updates `character.name` and catalog extras. Scroll uses `sheet-${pageID}`.
+deviations from design: 8px gap between gutter buttons so shadows do not stack.
+open questions: none
+
 ### T-073: Keep extra names on catalog cache; write them on Save
 status: done
 source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (Q8 confirm)

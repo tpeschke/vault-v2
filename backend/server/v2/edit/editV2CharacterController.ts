@@ -17,11 +17,11 @@ interface EditRequest extends Request {
 
 export async function editV2Character(request: EditRequest, response: Response) {
     const characterID = +request.params.characterID
-    const { userInfo, pages } = request.body
+    const { pages } = request.body
 
     const ownerID = await getCharacterOwnerID(characterID)
 
-    if (ownerID === userInfo.userID) {
+    if (ownerID === request.user?.id) {
         await savePages(characterID, pages)
         const storedType1 = await query(countType1PagesSQL, characterID)
         const postedType1 = pages.filter(page => page.type === 1).length

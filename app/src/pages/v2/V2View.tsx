@@ -81,6 +81,14 @@ export default function V2View({ setLoading, pathname }: Props) {
         setIsEditing(false)
     }
 
+    const scrollSheetIntoView = (pageID: number) => {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                document.getElementById('sheet-' + pageID)?.scrollIntoView({ block: 'nearest' })
+            })
+        })
+    }
+
     return (
         <div className="home-shell v2">
             <EditingContext value={isEditing}>
@@ -91,13 +99,53 @@ export default function V2View({ setLoading, pathname }: Props) {
                                 case 1:
                                     return (
                                         <Fragment key={page.pageID}>
-                                            <PageType1 pageInfo={page} index={index} updates={pageType1Updates} />
+                                            <div id={'sheet-' + page.pageID}>
+                                                <PageType1 pageInfo={page} index={index} updates={pageType1Updates} />
+                                            </div>
                                             {isEditing &&
-                                                <button
-                                                    type="button"
-                                                    className="add-page-type-1"
-                                                    onClick={() => pageType1Updates.addPageType1After(index)}
-                                                ><i className="fa-solid fa-plus"></i></button>
+                                                <div className="page-gutter">
+                                                    {index < character.pages.length - 1 &&
+                                                        <button
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Swap the above sheet with the sheet below"
+                                                            onClick={() => {
+                                                                pageType1Updates.swapPageWithNext(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-arrow-up-arrow-down"></i></button>
+                                                    }
+                                                    {index > 0 &&
+                                                        <button
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Move the above sheet to the top"
+                                                            onClick={() => {
+                                                                pageType1Updates.movePageToTop(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-up-to-line"></i></button>
+                                                    }
+                                                    {index < character.pages.length - 1 &&
+                                                        <button
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Move above sheet to the bottom"
+                                                            onClick={() => {
+                                                                pageType1Updates.movePageToBottom(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-down-to-line"></i></button>
+                                                    }
+                                                    <button
+                                                        type="button"
+                                                        className="bottom-buttons add-page-type-1"
+                                                        onClick={() => pageType1Updates.addPageType1After(index)}
+                                                    ><i className="fa-solid fa-plus"></i></button>
+                                                </div>
                                             }
                                         </Fragment>
                                     )
