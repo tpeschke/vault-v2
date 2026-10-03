@@ -7,7 +7,7 @@ Why: The designer asked for another copy of page type 1 on the same character, n
 
 Constraints it imposes:
 - Edit mode only (`isEditing`). Owners reach it through the existing Edit button. No `+` on the view. No persist on click. No new HTTP route.
-- Place the `+` immediately under each rendered page-type-1 card, outside `.page` / `.page-type-one`. One control per type-1 instance, including pages added this session. Not in the sidebar. Not inside `PageType1.tsx`. Not on other page types.
+- Place the `+` immediately under each rendered page-type-1 card, outside `.page` / `.page-type-one`. One control per type-1 instance, including pages added this session. Not in the sidebar. Not inside `PageType1.tsx`. Not on other page types. The `+` is last in that gutter row; reorder buttons sit to its left (`page-reorder.md`).
 - Label `+`. Color `#bdbdbd`. No edit-teal fill (override `.view-edit button` in `index.css`). No sidebar box-shadow. No scroll-into-view. No cap.
 - Insert a blank page-type-1 after the clicked card (array splice). Skeleton matches `assemblePageType1` empty defaults. Do not clone the current page. Temp `pageID` is a unique number `<= 0` (`makeTempID` is a string; do not use it).
 - Posted `pages` order is the stored `v2CharacterPages.index`. View assemble must `ORDER BY index`. Save writes `index` from array position for every posted type-1 page. UPDATE + `savePageType1` only when a `v2CharacterPages` row exists for that `id` **and** `characterID`. Otherwise `INSERT v2CharacterPages` + existing `addPageType1` + `savePageType1`. Temp `pageID <= 0` always takes the INSERT path. Fail closed if INSERT yields no numeric `id > 0` (throw; do not reassemble). Reuse `backend/server/v2/add/pageType1/`; do not copy that tree. Do not create a character. Do not delete unknown page types. Do not rewrite `query()`. Do not use `if (pageID)` / `if (page.pageID)` truthiness (`-1` is truthy).
@@ -16,7 +16,7 @@ Constraints it imposes:
 - Catalog Name / ancestry / class / subclass / level: first page-type-1 only (`order by index`, same as `assembleV2Character` `getCharacterName`). Home list is one row per character. `updateCatalogInfo` and `character.name` do not follow later pages. Slot limit unchanged. When two or more type-1s are **persisted**, a `fa-solid fa-user` icon sits in its own slot beside the catalog name (not inside the name `<strong>`). Hover lists the other type-1 names (first omitted, `index` order), one per line, on the existing `Tooltip id="my-tooltip"`. Empty extra names display as `New Character`. Icon color/size inherit the name column. Icon click is the row click (open the character). v1: no icon. Unsaved local `+` pages do not appear. No second catalog row. No new tooltip package. No `data-tooltip-html` with unsanitized names. Extra names ride the v2 home payload as `otherPageType1Names`. `updateCatalogInfo` keeps that field when a first-page identity patch omits it. A successful full Save writes it from reassembled type-1s after the first.
 - Empty-name Save gate stays the first page-type-1. A new page’s empty name still becomes `'New Character'` on persist (`saveGeneralInfo`).
 - Sheet-wide card/session contract: `v2-page-type.md`. Play-time view controls on each instance: `quick-view-inputs.md` (they stay skipped while `isEditing`).
-- Do not add `features/`. Do not add delete, reorder, type picker, or page type N.
+- Do not add `features/`. Do not add delete, a type picker, or page type N. Reorder: `page-reorder.md`.
 
 Rejected:
 - Persist on click / a new add-page route.
@@ -34,6 +34,10 @@ Revised 2026-10-03 (new sheets not saved; Q1 extras gone after Save; Q2 no serve
 
 Revised 2026-10-03 (catalog extra-name icon; Q1 fold; Q2 separate slot; Q3 inherit; Q4 empty → `New Character`; Q5 one line each; Q6 reuse `my-tooltip`; Q7 row click; Q8 keep extras on the cached row):
 - “Home list is one row per character” — **retained**. Extra type-1 names are a tooltip on that row, not a second character.
+
+Revised 2026-10-03 (`page-reorder.md`):
+- “Do not add delete, reorder, type picker, or page type N” — **revised**: reorder is `page-reorder.md`. Delete, type picker, and page type N stay rejected.
+- “Place the `+` immediately under each rendered page-type-1 card” — **revised**: `+` stays last in that gutter row.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/`; `backend/server/v2/add/pageType1/` (reuse); `backend/server/v2/view/viewV2CharacterController.ts`; `backend/server/controllers/home/v2/getCharacters.ts`; `app/src/pages/home/components/charactersRowDisplay/`; `backend/common/interfaces/characterInterfaces.ts`; unindexed `app/src/redux/slices/usersCharactersSlice.tsx`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/basicData.sql` (verify only); `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
 TODOs: T-064–T-067 (done); persist miss: T-068–T-070 (done); catalog extra names: T-071–T-073 (done)
