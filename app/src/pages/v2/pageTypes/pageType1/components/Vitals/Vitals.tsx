@@ -24,7 +24,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
         <div className="vitals-v2">
             <section>
                 <h1>Self Doubt</h1>
-                <DieRow dieIndex={selfDoubt.dieIndex} onSelect={index => updates.updateSelfDoubt(pageID, { dieIndex: index })} />
+                <DieRow dieIndex={selfDoubt.dieIndex} onSelect={index => { updates.updateSelfDoubt(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'selfDoubtDieIndex', index) }} />
                 <div className="vitals-split">
                     <span>
                         <h2>Integrity Threshold</h2>
@@ -42,7 +42,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
             </section>
             <section>
                 <h1>Damage</h1>
-                <DieRow dieIndex={damage.dieIndex} onSelect={index => updates.updateDamage(pageID, { dieIndex: index })} />
+                <DieRow dieIndex={damage.dieIndex} onSelect={index => { updates.updateDamage(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'damageDieIndex', index) }} />
                 <div className="damage-values">
                     <span className='vitals-split'>
                         <h2>Trauma</h2>
@@ -67,7 +67,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
             </section>
             <section>
                 <h1>Stress</h1>
-                <DieRow dieIndex={stress.dieIndex} onSelect={index => updates.updateStress(pageID, { dieIndex: index })} />
+                <DieRow dieIndex={stress.dieIndex} onSelect={index => { updates.updateStress(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'stressDieIndex', index) }} />
                 <div className="stress-values">
                     <input className="center-text character-value" type="number" placeholder=" " value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'stress', +event.target.value)} />
                     <span className="slash">/</span>

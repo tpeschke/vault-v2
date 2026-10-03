@@ -32,4 +32,4 @@ Rejected:
 - Wiring the Edit visibility toggle in this phase.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/components/GeneralInfo/GeneralInfo.tsx`; `.../Favor/Favor.tsx`; `.../Vitals/Vitals.tsx`; `.../Vitals/Vitals.css`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/`; `app/src/pages/v2/components/sidebar/`; `backend/server/v2/edit/`; `backend/common/interfaces/v2/`
-TODOs: T-058 (done); die hover face: T-059 (done); view persist: T-060, T-061 (done); die persist: T-062
+TODOs: T-058 (done); die hover face: T-059 (done); view persist: T-060, T-061 (done); die persist: T-062 (done)

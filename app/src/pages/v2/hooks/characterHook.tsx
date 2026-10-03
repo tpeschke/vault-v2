@@ -37,6 +37,12 @@ function viewFieldValue(character: CharacterVersion2 | null, pageID: number, att
             return page.vitalsInfo.damage.damage
         case 'stress':
             return page.vitalsInfo.stress.stress
+        case 'selfDoubtDieIndex':
+            return page.vitalsInfo.selfDoubt.dieIndex
+        case 'damageDieIndex':
+            return page.vitalsInfo.damage.dieIndex
+        case 'stressDieIndex':
+            return page.vitalsInfo.stress.dieIndex
     }
 }
 
@@ -52,6 +58,12 @@ function patchViewField(character: CharacterVersion2, pageID: number, attribute:
             return updateDamage(character, pageID, { damage: value })
         case 'stress':
             return updateStress(character, pageID, { stress: value })
+        case 'selfDoubtDieIndex':
+            return updateSelfDoubt(character, pageID, { dieIndex: value })
+        case 'damageDieIndex':
+            return updateDamage(character, pageID, { dieIndex: value })
+        case 'stressDieIndex':
+            return updateStress(character, pageID, { dieIndex: value })
     }
 }
 

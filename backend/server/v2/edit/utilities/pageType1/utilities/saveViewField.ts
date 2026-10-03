@@ -6,6 +6,9 @@ const saveCurrentFavorSQL = `update v2Favor set current = $1 where pageID = $2`
 const saveDiePenaltySQL = `update v2SelfDoubt set diePenalty = $1 where pageID = $2`
 const saveDamageSQL = `update v2Damage set damage = $1 where pageID = $2`
 const saveStressSQL = `update v2Stress set stress = $1 where pageID = $2`
+const saveSelfDoubtDieIndexSQL = `update v2SelfDoubt set dieIndex = $1 where pageID = $2`
+const saveDamageDieIndexSQL = `update v2Damage set dieIndex = $1 where pageID = $2`
+const saveStressDieIndexSQL = `update v2Stress set dieIndex = $1 where pageID = $2`
 
 export default async function saveViewField(pageID: number, attribute: ViewPersistAttribute, value: number) {
     switch (attribute) {
@@ -19,5 +22,11 @@ export default async function saveViewField(pageID: number, attribute: ViewPersi
             return query(saveDamageSQL, [value, pageID])
         case 'stress':
             return query(saveStressSQL, [value, pageID])
+        case 'selfDoubtDieIndex':
+            return query(saveSelfDoubtDieIndexSQL, [value, pageID])
+        case 'damageDieIndex':
+            return query(saveDamageDieIndexSQL, [value, pageID])
+        case 'stressDieIndex':
+            return query(saveStressDieIndexSQL, [value, pageID])
     }
 }

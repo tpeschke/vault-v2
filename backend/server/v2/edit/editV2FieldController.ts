@@ -4,7 +4,7 @@ import { Response, Request } from '../../interfaces/apiInterfaces'
 import { getCharacterOwnerID } from '../view/assembleV2Character/utilities/ownerInfo'
 import saveViewField from './utilities/pageType1/utilities/saveViewField'
 
-const attributes: ViewPersistAttribute[] = ['unspent', 'currentFavor', 'diePenalty', 'damage', 'stress']
+const attributes: ViewPersistAttribute[] = ['unspent', 'currentFavor', 'diePenalty', 'damage', 'stress', 'selfDoubtDieIndex', 'damageDieIndex', 'stressDieIndex']
 
 interface FieldRequest extends Request {
     params: {
