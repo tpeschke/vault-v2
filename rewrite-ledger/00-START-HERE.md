@@ -53,6 +53,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Feature index (L1) | `../00-START-HERE.yaml` |
 | L2/L3 | `l2-l3-deferred.md` |
 | FSD colocation | `fsd-colocation.md` |
+| v2 page-type contract | `v2-page-type.md` |
 | Page type 1 first-page view | `page1-view.md` |
 | Edit character sheet | `edit-character.md` |
 | Quick view inputs (page type 1) | `quick-view-inputs.md` |
