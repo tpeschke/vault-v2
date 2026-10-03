@@ -36,11 +36,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                     </span>
                     <span>
                         <h2>Die Penalty</h2>
-                        {isEditing ?
-                            <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.diePenalty} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} />
-                            :
-                            <p className="center-text character-value">{selfDoubt.diePenalty}</p>
-                        }
+                        <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.diePenalty} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} />
                     </span>
                 </div>
             </section>
@@ -60,11 +56,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                             <p className="center-text character-value">{damage.knockback}</p>
                         }
                     </span>
-                    {isEditing ?
-                        <input className="center-text character-value" type="number" placeholder=" " value={damage.damage} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} />
-                        :
-                        <p className="center-text character-value">{damage.damage}</p>
-                    }
+                    <input className="center-text character-value" type="number" placeholder=" " value={damage.damage} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} />
                     <span className="slash">/</span>
                     {isEditing ?
                         <input className="center-text character-value" type="number" placeholder=" " value={damage.threshold} onChange={event => updates.updateDamage(pageID, { threshold: +event.target.value })} />
@@ -77,11 +69,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                 <h1>Stress</h1>
                 <DieRow dieIndex={stress.dieIndex} onSelect={index => updates.updateStress(pageID, { dieIndex: index })} />
                 <div className="stress-values">
-                    {isEditing ?
-                        <input className="center-text character-value" type="number" placeholder=" " value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} />
-                        :
-                        <p className="center-text character-value">{stress.stress}</p>
-                    }
+                    <input className="center-text character-value" type="number" placeholder=" " value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} />
                     <span className="slash">/</span>
                     {isEditing ?
                         <input className="center-text character-value" type="number" placeholder=" " value={stress.threshold} onChange={event => updates.updateStress(pageID, { threshold: +event.target.value })} />
@@ -95,7 +83,6 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
 }
 
 function DieRow({ dieIndex, onSelect }: { dieIndex: number, onSelect: (dieIndex: number) => void }) {
-    const isEditing = useContext(EditingContext)
     const cellClass = (index: number) => dieIndex > 0 && (dieIndex - 1) === index ? 'selected center-text' : 'center-text'
     const dice = [d4, d6, d8, d10, d12, d20]
     const names = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20']
@@ -107,7 +94,7 @@ function DieRow({ dieIndex, onSelect }: { dieIndex: number, onSelect: (dieIndex:
                 <p
                     key={names[index]}
                     className={cellClass(index)}
-                    onClick={isEditing ? () => onSelect(dieIndex === index + 1 ? 0 : index + 1) : undefined}
+                    onClick={() => onSelect(dieIndex === index + 1 ? 0 : index + 1)}
                 >
                     <img src={src} alt={names[index]} />
                 </p>

@@ -18,6 +18,7 @@ export default function V2View({ setLoading, pathname }: Props) {
 
     const { character, isDirty, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname)
     const { saveCharacterToBackend, revertCharacter, pageType1Updates } = updateFunctions
+    const warnOnLeave = isDirty && isEditing
 
     useEffect(() => {
         if (character && isInitialLoad) {
@@ -33,7 +34,7 @@ export default function V2View({ setLoading, pathname }: Props) {
     }, [character])
 
     useEffect(() => {
-        if (!isDirty) {
+        if (!warnOnLeave) {
             return
         }
         const onBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -42,9 +43,9 @@ export default function V2View({ setLoading, pathname }: Props) {
         }
         window.addEventListener('beforeunload', onBeforeUnload)
         return () => window.removeEventListener('beforeunload', onBeforeUnload)
-    }, [isDirty])
+    }, [warnOnLeave])
 
-    const blocker = useBlocker(isDirty)
+    const blocker = useBlocker(warnOnLeave)
 
     useEffect(() => {
         if (blocker.state !== 'blocked') {
