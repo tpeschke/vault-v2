@@ -59,8 +59,8 @@ Rejected:
 Revised 2026-10-03 (`quick-view-inputs.md`):
 - “Per-field click-to-edit or always-visible inputs” — **revised**: a named play-time subset is always visible on the view. All other stored cells stay `isEditing`-gated.
 - “v2 Quick Edit or PDF as part of this feature” — **retained**. No `/quickEdit`, no `viewQuickEdit`.
-- Die click only while editing — **revised**: the three die rows use the existing `dieIndex` click on the view. `.view-edit` die tint — **retained** (view stays untinted).
+- Die click only while editing — **revised**: the three die rows use the existing `dieIndex` click on the view. `.view-edit` **cell** tint — **retained** (view cells stay untinted). Unselected view hover tints the **face** teal (`quick-view-inputs.md`, T-059).
 - Unsaved-leave dirty — **revised**: warn only while `isEditing`. View play-time changes do not warn.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; `backend/server/db/ensureSchema.ts`; `app/src/redux/slices/characterCacheSlice.tsx`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; unindexed `app/src/App.tsx` / `package.json` (`react-toastify`)
-TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058 (done)
+TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058 (done); die hover face: T-059
