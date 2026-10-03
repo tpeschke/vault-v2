@@ -75,6 +75,45 @@ export function addPageType1After(character: CharacterVersion2, afterIndex: numb
     return { ...character, pages }
 }
 
+function withFirstPage1Name(character: CharacterVersion2): CharacterVersion2 {
+    const first = firstPage1(character)
+    if (!first) {
+        return character
+    }
+    return { ...character, name: first.generalInfo.name }
+}
+
+export function swapPageWithNext(character: CharacterVersion2, index: number): CharacterVersion2 {
+    if (index < 0 || index >= character.pages.length - 1) {
+        return character
+    }
+    const pages = [...character.pages]
+    const current = pages[index]
+    pages[index] = pages[index + 1]
+    pages[index + 1] = current
+    return withFirstPage1Name({ ...character, pages })
+}
+
+export function movePageToTop(character: CharacterVersion2, index: number): CharacterVersion2 {
+    if (index <= 0 || index >= character.pages.length) {
+        return character
+    }
+    const pages = [...character.pages]
+    const [page] = pages.splice(index, 1)
+    pages.unshift(page)
+    return withFirstPage1Name({ ...character, pages })
+}
+
+export function movePageToBottom(character: CharacterVersion2, index: number): CharacterVersion2 {
+    if (index < 0 || index >= character.pages.length - 1) {
+        return character
+    }
+    const pages = [...character.pages]
+    const [page] = pages.splice(index, 1)
+    pages.push(page)
+    return withFirstPage1Name({ ...character, pages })
+}
+
 export function updateCrP(character: CharacterVersion2, pageID: number, key: 'unspent' | 'spent', value: number): CharacterVersion2 {
     return mapPage1(character, pageID, page => ({
         ...page,

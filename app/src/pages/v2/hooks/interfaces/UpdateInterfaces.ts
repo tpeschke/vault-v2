@@ -32,6 +32,9 @@ export interface PageType1Updates {
     updateAttack: (pageID: number, index: number, patch: Partial<Attack>) => void
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number) => void
     addPageType1After: (afterIndex: number) => void
+    swapPageWithNext: (index: number) => void
+    movePageToTop: (index: number) => void
+    movePageToBottom: (index: number) => void
 }
 
 export interface V2UpdateFunctions {

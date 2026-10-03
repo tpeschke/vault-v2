@@ -11,6 +11,10 @@ import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { PageType1Updates } from "../interfaces/UpdateInterfaces"
 import {
     addPageType1After as insertPageAfter,
+    movePageToBottom as moveToBottom,
+    movePageToTop as moveToTop,
+    otherPageType1Names,
+    swapPageWithNext as swapWithNext,
     insertDescription,
     insertEmotion,
     insertFlaw,
@@ -161,6 +165,45 @@ export default function getV2Updates(
         addPageType1After: (afterIndex) => {
             if (!character) { return }
             apply(insertPageAfter(character, afterIndex))
+        },
+        swapPageWithNext: (index) => {
+            if (!character) { return }
+            applyReorder(character, swapWithNext(character, index), dispatch, apply)
+        },
+        movePageToTop: (index) => {
+            if (!character) { return }
+            applyReorder(character, moveToTop(character, index), dispatch, apply)
+        },
+        movePageToBottom: (index) => {
+            if (!character) { return }
+            applyReorder(character, moveToBottom(character, index), dispatch, apply)
         }
     }
+}
+
+function applyReorder(
+    previous: CharacterVersion2,
+    next: CharacterVersion2,
+    dispatch: Dispatch,
+    apply: (character: CharacterVersion2) => CharacterVersion2
+) {
+    const applied = apply(next)
+    const wasFirst = previous.pages.find((page): page is Page1 => page.type === 1)
+    const nowFirst = applied.pages.find((page): page is Page1 => page.type === 1)
+    if (!nowFirst || nowFirst.pageID === wasFirst?.pageID) {
+        return
+    }
+    const { name, ancestry, class: primaryClass, subclass, level } = nowFirst.generalInfo
+    dispatch(updateCatalogInfo({
+        info: {
+            id: applied.id,
+            name,
+            ancestry,
+            class: primaryClass,
+            subclass,
+            level,
+            otherPageType1Names: otherPageType1Names(applied)
+        },
+        index: 1
+    }))
 }
