@@ -6,6 +6,34 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-053: Move attack Damage value onto the Type/Rec row
+status: proposed
+source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Damage value down; Q1 label stays; Q2 leftover on Type/Rec row)
+why: Row 1 is Meas/Atk/Damage. Row 2 is Type/Rec plus an empty 33%. The designer wants only the Damage value on that leftover. The **Damage** `em` stays on row 1. Meas/Atk stay 33%.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.tsx` and `Attacks.css`. Do not change hooks, payload, `varchar`, notes (T-054), name, Defenses, or `index.css` / `View.css`.
+steps:
+1. First `.attack-row`: keep Meas/RI and Atk spans. Third span is `<em>Damage</em>` only — no `p`/`input`.
+2. Second `.attack-row`: Type, Rec, then a span with the Damage view `p` / edit `input` (`character-value`, same `updateAttack` `damage` wiring).
+3. CSS: Meas/Atk/Type/Rec/label spans stay `width: 33%`. Damage value span `flex: 1; min-width: 0` (override the 33% rule). Island and T-049 `height: 17.38px` stay on that `p`. Edit input stays default teal, not attack-name mid teal. No third `.attack-row`.
+4. View and edit share that geometry.
+done when: Browser — **Damage** `em` is on the Meas/Atk row; value `p` and input sit on the Type/Rec row and use the leftover width; Meas/Atk still 33%; no value on row 1. Grep: first `.attack-row` has no `damage` `p`/`input`. `.page-type-one` offsetHeight 1068 view and edit. `npx tsc -p app --noEmit` passes.
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-054: Set attack notes to 12px
+status: proposed
+source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Attack Info same size as name input; Q3 font only; Q4 keep box)
+why: Notes use the global 15px `character-value`. The attack-name input is 12px. Designer wants Info text at that size only.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` (`.attack-notes p` and `textarea`). Do not change `Attacks.tsx`, name input letter-spacing/padding, notes `min-height`/`height` `calc(2 * 17.38px)`, Defenses notes, or `View.css`.
+steps:
+1. Set `font-size: 12px` on `.attacks-v2 .attack-notes p` and `.attacks-v2 .attack-notes textarea`.
+2. Keep Kalam (`character-value`), unlabeled, wrap/grow, island padding, two-line box.
+done when: Browser computed `font-size` on notes `p` and textarea is 12px; name input still 12px; notes box still ~34.76px (`calc(2 * 17.38px)`). Grep `Attacks.css` for notes `font-size: 12px`. `npx tsc -p app --noEmit` passes (no TS change expected).
+depends on: none
+open questions: none
+deviations from design: none
+
 ### T-055: Upsert v2BasicCharacteristics by pageID
 status: proposed
 source: rewrite-ledger/edit-character.md, rewrite-ledger/schema-on-boot.md, 2026-10-03 (design: Yb / Cultural Strength / Discount not saving; Q3 upsert only)
