@@ -7,6 +7,8 @@ interface Props {
     saveCharacter: () => void,
     revertCharacterToUnedited: () => void,
     toggleIsEditing: () => void,
+    toggleViewQuickEdit: () => void,
+    viewQuickEdit: boolean,
     ownsThisCharacter: boolean
     isViewSaving: boolean
 }
@@ -15,6 +17,8 @@ export default function Sidebar({
     saveCharacter,
     revertCharacterToUnedited,
     toggleIsEditing,
+    toggleViewQuickEdit,
+    viewQuickEdit,
     ownsThisCharacter,
     isViewSaving
 }: Props) {
@@ -39,6 +43,11 @@ export default function Sidebar({
             {!isEditing &&
                 <>
                     {ownsThisCharacter && <button onClick={toggleIsEditing}><i className="fa-solid fa-pen-nib"></i> Edit</button>}
+                    {viewQuickEdit ?
+                        <button onClick={toggleViewQuickEdit}><i className="fa-solid fa-eye-slash"></i> Hide Quick Edit Locations</button>
+                        :
+                        <button onClick={toggleViewQuickEdit}><i className="fa-solid fa-eye"></i> Show Quick Edit Locations</button>
+                    }
                 </>
             }
         </div>

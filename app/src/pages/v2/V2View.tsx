@@ -15,6 +15,7 @@ interface Props {
 export default function V2View({ setLoading, pathname }: Props) {
     const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
+    const [viewQuickEdit, setViewQuickEdit] = useState(false)
 
     const { character, isDirty, isViewSaving, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing)
     const { saveCharacterToBackend, revertCharacter, pageType1Updates } = updateFunctions
@@ -63,6 +64,10 @@ export default function V2View({ setLoading, pathname }: Props) {
         setIsEditing(!isEditing)
     }
 
+    const toggleViewQuickEdit = () => {
+        setViewQuickEdit(!viewQuickEdit)
+    }
+
     const saveCharacter = async () => {
         const saved = await saveCharacterToBackend()
         if (saved) {
@@ -79,7 +84,7 @@ export default function V2View({ setLoading, pathname }: Props) {
         <div className="home-shell v2">
             <EditingContext value={isEditing}>
                 <div className="version-two-shell">
-                    <div className={`page-shell ${isEditing ? 'view-edit' : ''}`}>
+                    <div className={`page-shell ${isEditing ? 'view-edit' : viewQuickEdit ? 'view-quick-edit' : ''}`}>
                         {character && character.pages.map((page, index) => {
                             switch (page.type) {
                                 case 1:
@@ -92,6 +97,8 @@ export default function V2View({ setLoading, pathname }: Props) {
                     {character &&
                         <Sidebar
                             toggleIsEditing={toggleIsEditing}
+                            toggleViewQuickEdit={toggleViewQuickEdit}
+                            viewQuickEdit={viewQuickEdit}
                             saveCharacter={saveCharacter}
                             revertCharacterToUnedited={revertCharacterToUnedited}
                             ownsThisCharacter={character.userInfo.ownsThisCharacter}
