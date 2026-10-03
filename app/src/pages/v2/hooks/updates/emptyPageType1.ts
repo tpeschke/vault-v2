@@ -1,0 +1,154 @@
+import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
+
+export default function emptyPageType1(pageID: number): Page1 {
+    return {
+        type: 1,
+        pageID,
+        generalInfo: {
+            name: '',
+            ancestry: '',
+            class: '',
+            subclass: '',
+            level: 0,
+            crp: {
+                unspent: 0,
+                spent: 0,
+                toLvl: 0
+            }
+        },
+        stats: {
+            str: 0,
+            dex: 0,
+            con: 0,
+            mem: 0,
+            ins: 0,
+            pre: 0
+        },
+        characteristicsInfo: {
+            capacity: 0,
+            culturalStrength: '',
+            socialSkillDiscount: 0,
+            currentEmotions: [],
+            temperaments: {
+                affability: '',
+                openness: '',
+                outgoingness: '',
+                workEthic: '',
+                worry: '',
+            },
+            goals: [],
+            reputations: [],
+            descriptions: [],
+            relationships: [],
+            flaws: [],
+            socialSuites: {
+                influence: {
+                    stat: 0,
+                    rank: 0,
+                    descriptions: []
+                },
+                intimidate: {
+                    stat: 0,
+                    rank: 0,
+                    descriptions: []
+                },
+                inform: {
+                    stat: 0,
+                    rank: 0,
+                    descriptions: []
+                },
+                inspire: {
+                    stat: 0,
+                    rank: 0,
+                    descriptions: []
+                },
+            }
+        },
+        movement: {
+            crawl: 0,
+            walk: 0,
+            jog: 0,
+            run: 0,
+            sprint: 0
+        },
+        vitalsInfo: {
+            selfDoubt: {
+                dieIndex: 0,
+                threshold: 0,
+                diePenalty: 0
+            },
+            damage: {
+                dieIndex: 0,
+                knockback: 0,
+                damage: 0,
+                threshold: 0
+            },
+            stress: {
+                dieIndex: 0,
+                stress: 0,
+                threshold: 0
+            }
+        },
+        favor: {
+            anointed: false,
+            current: 0,
+            max: 0,
+            divineRelationship: ''
+        },
+        combatInfo: {
+            defenses: {
+                name: '',
+                initiative: 0,
+                defense: 0,
+                parry: 0,
+                flanks: 0,
+                cover: '',
+                parryDR: '',
+                dr: '',
+                notes: ''
+            },
+            attacks: [
+                {
+                    index: 0,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                },
+                {
+                    index: 1,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                },
+                {
+                    index: 2,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                },
+                {
+                    index: 3,
+                    name: '',
+                    measure: 0,
+                    attack: 0,
+                    damage: '',
+                    type: '',
+                    recovery: 0,
+                    notes: '',
+                }
+            ]
+        }
+    }
+}

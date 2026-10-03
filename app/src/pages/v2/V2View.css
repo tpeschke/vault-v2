@@ -1,0 +1,19 @@
+.v2 .page-shell .add-page-type-1 {
+    display: block;
+    width: 796px;
+    margin: 15px 0;
+    padding: 0;
+    border: 0;
+    background: transparent !important;
+    color: #bdbdbd;
+    box-shadow: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.v2 .view-edit .add-page-type-1,
+.v2 .view-edit .add-page-type-1:hover {
+    background: transparent !important;
+    color: #bdbdbd;
+    box-shadow: none;
+}

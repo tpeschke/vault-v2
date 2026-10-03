@@ -19,7 +19,7 @@ export async function editV2Character(request: EditRequest, response: Response) 
     const ownerID = await getCharacterOwnerID(characterID)
 
     if (ownerID === userInfo.userID) {
-        await savePages(pages)
+        await savePages(characterID, pages)
         getV2Character(request as ViewRequest, response)
     } else {
         checkForContentTypeBeforeSending(response, { message: "You don't own this character" })

@@ -6,65 +6,45 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-064: Insert a blank page-type-1 locally from an edit-only +
-status: proposed
-source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q1 local-until-Save; Q3 edit-only; Q5 `+` quieter; Q6 unbounded; Q7 no scroll)
-why: V2View already maps every page. There is no control to add another type-1 instance. The add must stay local so Revert and leave-warn match the edit session.
-scope: view/edit adjacency `app/src/pages/v2/V2View.tsx`; new `app/src/pages/v2/V2View.css` (or equivalent view-slice chrome CSS — not `PageType1.css`, not `index.css`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. New helper on the v2 slice for the empty `Page1` skeleton and `addPageType1After` (e.g. next to `pageType1Updates.ts`). Do not change `PageType1.tsx`. Do not import v1. Do not add `features/`. Same change: root `00-START-HERE.yaml` routing key for this objective (primary `backend/server/v2/edit/`; adjacent `app/src/pages/v2/`, `backend/server/v2/add/pageType1/`, `backend/common/interfaces/v2/`, `backend/server/controllers/home/v2/getCharacters.ts`).
-steps:
-1. Copy the empty `Page1` defaults from `assemblePageType1` into a frontend helper `emptyPageType1(pageID: number): Page1`. Do not import the backend assemble module.
-2. `addPageType1After(character, afterIndex)`: temp `pageID` = `Math.min(0, ...existing type-1 pageIDs) - 1`; splice that blank page immediately after `afterIndex`; return a new `character` object. No cap. Do not clone the clicked page. Do not use `makeTempID` (it is a string).
-3. Wire `addPageType1After` through `PageType1Updates` / `getV2Updates` / `setCharacter`.
-4. In `V2View`, after each `page.type === 1` card, while `isEditing`, render `<button type="button" className="add-page-type-1">+</button>` that calls `addPageType1After(index)`. Use a fragment so the button is a sibling of `PageType1`, not a child of `.page-type-one`. Hide the button when `!isEditing`.
-5. CSS: sit in the gap under the card (v1 uses 15px page gutters). Color `#bdbdbd`. Transparent background. Override `.view-edit button` teal (`!important` is required). No sidebar box-shadow. Do not call `scrollTo` / `scrollIntoView`. Do not change `.page` 1036 or `.page-type-one` 1068.
-6. React `key` stays `page.pageID` (temps are unique negatives).
-done when: app type-check passes. Edit shows one `+` under each type-1 card; view and non-edit show none. One click adds a second `.page-type-one` after that card; each card `offsetHeight` stays 1068. Revert removes the extra page. `grep` for `app/src/features` stays 0. YAML has the new routing key. `grep` `scrollIntoView` on the new control is 0.
-depends on: none
-open questions: none
-deviations from design: none
-
-### T-065: Keep catalog identity on the first page-type-1
-status: proposed
-source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q4 first page only)
-why: `getV2Characters` joins every `v2GeneralInfo` row. A second page-type-1 would list the same character twice. `updateGeneralInfoField` also writes `character.name` and `dispatchCatalog` from any page.
-scope: list-characters primary `backend/server/controllers/home/v2/getCharacters.ts`; edit adjacency `app/src/pages/v2/hooks/updates/getV2Updates.ts` (`dispatchCatalog`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (`updateGeneralInfoField` `character.name` write). Do not change `restoreCatalogFromSnapshot` / `sheetName` (already `firstPage1`). Do not change create-character slot limit.
-steps:
-1. Restrict `allUsersCharacters` to one row per character: the page-type-1 with the lowest `v2CharacterPages.index` (same rule as `assembleV2Character` `getCharacterName`).
-2. `dispatchCatalog` only when the edited `pageID` is the first type-1 in `character.pages`.
-3. `updateGeneralInfoField` writes `character.name` only when that page is the first type-1.
-done when: two page-type-1 rows with different names yield one home-list row whose name is the lowest-`index` page. Editing a later page’s Name does not change catalog or `character.name`. Editing the first page’s Name still updates both. backend type-check passes.
-depends on: T-064 (frontend catalog gate needs a second page to verify)
-open questions: none
-deviations from design: home SQL was not in the design notes; Order added it because the join would duplicate catalog rows.
-
-### T-066: Assemble v2 pages in stored index order
-status: proposed
-source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q8: page order is stored)
-why: `v2CharacterPages.index` exists and create writes `0`. `getCharacterPages` is `select *` with no `ORDER BY`, so insert-after cannot round-trip.
-scope: view character primary `backend/server/v2/view/viewV2CharacterController.ts` (`getCharacterPages`). Do not change assemble mapping or `CharacterPageReturns` unless a new column is read.
-steps:
-1. Change `getCharacterPages` to `select * from v2CharacterPages where characterID = $1 order by index`.
-done when: `grep` that query in `viewV2CharacterController.ts` includes `order by index`. Two pages with index 0 then 1 render in that order after reload (verify with T-067).
-depends on: none
-open questions: none
-deviations from design: none
+## Done
 
 ### T-067: Insert new page-type-1 rows on Save
-status: proposed
+status: done
 source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q1: persist on character Save)
 why: `savePages` / `savePageType1` / `saveGeneralInfo` only UPDATE by `pageID`. A temp `pageID <= 0` writes nothing. There is no `v2CharacterPages` insert on edit.
 scope: edit character primary `backend/server/v2/edit/editV2CharacterController.ts`; `backend/server/v2/edit/utilities/savePages.ts`; new helper under `backend/server/v2/edit/utilities/` (name as needed). Reuse `backend/server/v2/add/pageType1/addPageType1.ts`. Do not add a route. Do not change `addV2CharacterController` or `/v2/edit/:characterID/field`.
-steps:
-1. Pass `characterID` from `editV2Character` into `savePages`.
-2. Walk posted `pages` in array order. For `type === 1` and `pageID > 0`: `UPDATE v2CharacterPages SET index = $arrayIndex WHERE id = $pageID`; then `savePageType1`. For `type === 1` and `pageID <= 0`: `INSERT INTO v2CharacterPages (index, pageTypeID, characterID) VALUES ($arrayIndex, 1, $characterID) RETURNING id`; `addPageType1(newId)`; `savePageType1({ ...page, pageID: newId })`. Other types: no-op (do not delete).
-3. Keep the existing reassemble-after-Save path. Failed POST still restores the draft (temp pages stay local). Revert before Save must leave the DB at one page.
-4. Confirm delete-character still removes every `v2CharacterPages` row and page-type-1 children (existing `deletePages` / `deleteFromCharacterPages`; no change unless a gap appears).
-done when: add locally → Save → reload shows two type-1 pages with distinct positive `pageID`s and child rows (generalInfo, four attacks, basics). Add locally → Revert → reload still one page. First-page empty name still blocks POST. New-page empty name persists as `New Character`. Delete character leaves no leftover page-type-1 rows. backend type-check passes. `grep` for a new `/add-page` or `/v2/add-page` route is 0.
-depends on: T-064, T-066
-open questions: none
+result: `savePages(characterID, pages)` walks array order. Existing type-1: update `index` then `savePageType1`. `pageID <= 0`: INSERT `v2CharacterPages`, `addPageType1`, then save. No new route.
 deviations from design: none
+open questions: none
 
-## Done
+### T-066: Assemble v2 pages in stored index order
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q8: page order is stored)
+why: `v2CharacterPages.index` exists and create writes `0`. `getCharacterPages` is `select *` with no `ORDER BY`, so insert-after cannot round-trip.
+scope: view character primary `backend/server/v2/view/viewV2CharacterController.ts` (`getCharacterPages`). Do not change assemble mapping or `CharacterPageReturns` unless a new column is read.
+result: `getCharacterPages` is `select * from v2CharacterPages where characterID = $1 order by index`.
+deviations from design: none
+open questions: none
+
+### T-065: Keep catalog identity on the first page-type-1
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q4 first page only)
+why: `getV2Characters` joins every `v2GeneralInfo` row. A second page-type-1 would list the same character twice. `updateGeneralInfoField` also writes `character.name` and `dispatchCatalog` from any page.
+scope: list-characters primary `backend/server/controllers/home/v2/getCharacters.ts`; edit adjacency `app/src/pages/v2/hooks/updates/getV2Updates.ts` (`dispatchCatalog`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (`updateGeneralInfoField` `character.name` write). Do not change `restoreCatalogFromSnapshot` / `sheetName` (already `firstPage1`). Do not change create-character slot limit.
+result: Home SQL keeps one row per character (lowest type-1 `index`). `dispatchCatalog` and `character.name` only follow the first type-1 in `pages`.
+deviations from design: none beyond Order (home SQL).
+open questions: none
+
+### T-064: Insert a blank page-type-1 locally from an edit-only +
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (design Q1 local-until-Save; Q3 edit-only; Q5 `+` quieter; Q6 unbounded; Q7 no scroll)
+why: V2View already maps every page. There is no control to add another type-1 instance. The add must stay local so Revert and leave-warn match the edit session.
+scope: view/edit adjacency `app/src/pages/v2/V2View.tsx`; new `app/src/pages/v2/V2View.css` (or equivalent view-slice chrome CSS — not `PageType1.css`, not `index.css`); `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. New helper on the v2 slice for the empty `Page1` skeleton and `addPageType1After` (e.g. next to `pageType1Updates.ts`). Do not change `PageType1.tsx`. Do not import v1. Do not add `features/`. Same change: root `00-START-HERE.yaml` routing key for this objective (primary `backend/server/v2/edit/`; adjacent `app/src/pages/v2/`, `backend/server/v2/add/pageType1/`, `backend/common/interfaces/v2/`, `backend/server/controllers/home/v2/getCharacters.ts`).
+result: Edit-only `+` under each type-1 card. `addPageType1After` splices `emptyPageType1` with a unique `pageID <= 0`. L1 key added. Revert still drops unsaved pages.
+deviations from design: none
+open questions: none
+
+
 
 ### T-063: Reveal view-input locations (v1 eye button)
 status: done
