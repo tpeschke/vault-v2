@@ -12,6 +12,10 @@
     background: #f3f3f3;
 }
 
+.descriptions-v2 > span > input:not(:first-child) {
+    text-align: center;
+}
+
 .descriptions-v2 > .descriptions-header > h2:first-child,
 .descriptions-v2 > span > :nth-child(1) {
     width: 38%;
