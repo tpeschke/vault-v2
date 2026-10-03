@@ -24,7 +24,7 @@ Edit character sheet: v2 view sidebar → new v2 edit owner. Canonical: `edit-ch
 
 Not present: quick-edit, download PDF.
 
-Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current Damage, Current Stress) are page-type-1 view controls, not a feature. View inputs persist on blur; view die clicks persist `dieIndex`. Canonical: `quick-view-inputs.md`.
+Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current Damage, Current Stress) are page-type-1 view controls, not a feature. View inputs persist on blur; view die clicks persist `dieIndex`. A v1-matched sidebar button highlights those locations. Canonical: `quick-view-inputs.md`.
 
 ## v1 (ancient)
 

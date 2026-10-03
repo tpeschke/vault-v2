@@ -6,6 +6,28 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-063: Reveal view-input locations (v1 eye button)
+status: proposed
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: location highlight; Q1 exact v1 copy; Q2 as v1 who-sees; Q3 no blank gate; Q4 default off; Q5 highlight; Q6 face hover off only while shown; Q7 die cell teal fills; Q8 session-only; Q9 selected flame stays)
+why: Phase-1 inputs are always on the view and transparent. v1 shows where they are with a sidebar eye button and `view-quick-edit`. The designer wants that working on v2, under Edit.
+scope: edit adjacency `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/components/sidebar/Sidebar.tsx`; `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css`. Unindexed `app/src/index.css` (reuse `.view-quick-edit input` — do not edit unless a view input misses the paint). Do not change persist, leave-warn, DieRow markup, die PNGs, T-057 selected filter, the unscoped T-059 face-hover rule, `saveCharacterToBackend`, or Edit Save / Revert. Do not import v1. Do not add `features/`. Do not add `IsBlankContext`. Do not persist the flag.
+steps:
+1. `V2View`: `const [viewQuickEdit, setViewQuickEdit] = useState(false)` and `toggleViewQuickEdit`. Session only. No `localStorage` / `sessionStorage`.
+2. `page-shell` class: `view-quick-edit` when `viewQuickEdit && !isEditing`; `view-edit` when `isEditing`. Do not put `view-edit` on the view for this toggle.
+3. `Sidebar`: props `viewQuickEdit` and `toggleViewQuickEdit`. Place the button under Edit, **outside** the `ownsThisCharacter` Edit condition. Exact v1 markup: off `<i className="fa-solid fa-eye"></i> Show Quick Edit Locations`; on `fa-eye-slash` + `Hide Quick Edit Locations`. Hidden while `isEditing` (Save / Revert) and while `isViewSaving` (spinner already replaces the sidebar). No blank gate.
+4. Inputs: highlight only. Do not swap `p`↔`input`. Global `.view-quick-edit input` already matches Edit fill / hover.
+5. `Vitals.css`: add the existing `.view-edit` die-row cell fill / hover selectors onto `.view-quick-edit` (even `rgba(173, 216, 230)`, odd `rgb(159, 199, 212)`, hover `rgb(145, 181, 194)`). Add a `.view-quick-edit`-only rule so unselected `p:hover:not(.selected) img` has `filter: none` (T-059 face hover off only while locations are shown). `.selected img` flame stays. Do not change the unscoped T-059 rule (locations off keep face hover).
+done when:
+- Grep `Show Quick Edit Locations` / `Hide Quick Edit Locations` hits `app/src/pages/v2/components/sidebar/Sidebar.tsx`.
+- Grep `view-quick-edit` hits `V2View.tsx` and `Vitals.css`.
+- Grep `pages/v1` in `V2View.tsx` and v2 `Sidebar.tsx` is 0 hits.
+- Grep `localStorage` / `sessionStorage` / `isBlank` / `IsBlank` in those two files is 0 hits.
+- Grep `ownsThisCharacter &&` in v2 `Sidebar.tsx` still wraps **only** the Edit button.
+- `npx tsc --noEmit -p app` from repo root exits 0.
+depends on: T-058, T-059
+open questions: none
+deviations from design: `view-quick-edit` is applied only when `!isEditing` (v1 can set both classes). Edit-session die face hover stays as today if the flag is still true. Local state is named `viewQuickEdit` to match v1; that is not a `/quickEdit` route.
+
 
 ## Done
 
