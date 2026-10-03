@@ -6,7 +6,68 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+
 ## Done
+
+### T-063: Reveal view-input locations (v1 eye button)
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: location highlight; Q1 exact v1 copy; Q2 as v1 who-sees; Q3 no blank gate; Q4 default off; Q5 highlight; Q6 face hover off only while shown; Q7 die cell teal fills; Q8 session-only; Q9 selected flame stays)
+why: Phase-1 inputs are always on the view and transparent. v1 shows where they are with a sidebar eye button and `view-quick-edit`. The designer wants that working on v2, under Edit.
+scope: edit adjacency `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/components/sidebar/Sidebar.tsx`; `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css`.
+result: Session `viewQuickEdit` default off. Sidebar eye button under Edit, exact v1 copy, not owner-gated. `view-quick-edit` on `page-shell` when on and not editing. Die cells get Edit teal fills; unselected hover face filter is none. T-059 rule and selected flame unchanged.
+deviations from design: `view-quick-edit` is applied only when `!isEditing` (v1 can set both classes). Local state is named `viewQuickEdit` to match v1; that is not a `/quickEdit` route.
+open questions: none
+
+
+
+### T-062: Persist Self Doubt / Damage / Stress dieIndex on click
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: selected dice must persist; Q1 persist clear-to-0; Q2 Edit session unchanged)
+why: T-061 persists view inputs on blur. Die cells are `<p>` clicks, so `dieIndex` stays local. The designer wants the selected die written too.
+scope: edit primary `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `.../utilities/pageType1/utilities/saveViewField.ts`; edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`viewFieldValue`, `patchViewField` only); `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` (the three `DieRow` `onSelect`s).
+result: Allowlist adds `selfDoubtDieIndex` / `damageDieIndex` / `stressDieIndex`. One-column `dieIndex` UPDATEs. DieRow `onSelect` calls `persistViewField` with the next index including `0`. Edit session still skips POST. No DieRow markup or CSS change.
+deviations from design: Attribute names locked at Order so they do not collide with current-total `'damage'` / `'stress'`.
+open questions: none
+
+
+
+### T-061: Blur view inputs to persist; spinner on the sidebar
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design phase 2; Q1–Q8)
+why: Persist is on blur of view inputs, owner-only. v1 replaces sidebar buttons with `LoadingIndicator` `secondary` while that POST is in flight. Full `saveCharacterToBackend` nulls the sheet.
+scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; `.../hooks/interfaces/UpdateInterfaces.ts`; `.../V2View.tsx`; `.../components/sidebar/Sidebar.tsx`; view widgets `.../pageType1/components/GeneralInfo/GeneralInfo.tsx` (Unspent only); `.../Favor/Favor.tsx` (Current Favor only); `.../Vitals/Vitals.tsx` (Die Penalty, Current Damage, Current Stress). Unindexed `app/src/components/loading/components/LoadingIndicator.tsx` (reuse).
+result: `persistViewField` on the five view-input `onBlur`s. No-op when editing, non-owner, or snapshot already matches. In-flight count drives `isViewSaving`; sidebar shows `LoadingIndicator` `secondary`. Success patches snapshot + cache. Failure toasts. `setCharacter(null)` still only on full Save. Die click unchanged.
+deviations from design: Die rows are not inputs; no persist (Q7). Skip POST when the blurred value equals the snapshot. Overlapping blurs patch through `revertedRef` so the second success does not wipe the first.
+open questions: none
+
+### T-060: Persist one view-input column under `/v2/edit/:characterID/field`
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design phase 2; Q1 onBlur; Q2 field-only; Q3 skip non-owner POST; Q4 toast on client)
+why: View play-time inputs are local only. A full-character POST would rewrite sibling columns. v1 `/quickEdit` is rejected as a v2 route.
+scope: edit character primary `backend/server/v2/edit/editV2CharacterRoutes.ts`; new `backend/server/v2/edit/editV2FieldController.ts`; new `.../utilities/pageType1/utilities/saveViewField.ts`; new `backend/common/interfaces/v2/page1/viewPersist.ts`.
+result: `POST /:characterID/field` on the existing router. Owner is `request.user?.id`. One-column UPDATEs for `unspent` / `currentFavor` / `diePenalty` / `damage` / `stress`. Unknown attribute and non-owner refuse with no write. Existing full-row savers unchanged. No `/quickEdit`.
+deviations from design: none
+open questions: none
+
+
+### T-059: Teal-tint unselected die faces on hover
+status: done
+source: rewrite-ledger/quick-view-inputs.md, rewrite-ledger/page1-view.md, 2026-10-03 (design: hover teal + cursor; Q1 default teal on the white face)
+why: T-058 made die cells clickable on the view. Hover teal and `cursor: pointer` exist only under `.view-edit`, and that paints the **cell**. The designer wants the **white face** tinted default teal and the cursor changed.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (`.die-row p` and `img` only). Do not change `Vitals.tsx`, die PNGs, `dieIndex` click, Anointed, `index.css`, selected T-057 filter, or `.view-edit` cell fills / hover.
+result: View `.die-row p` is `cursor: pointer`. Unselected hover `img` uses `invert(1) invert(30%) sepia(1) saturate(0.8) hue-rotate(165deg) brightness(2.2) contrast(1)` (face near `#ADD8E6`, ink near-white). Selected hover stays the T-057 flame string. View cell hover background stays transparent. Edit even/odd fills and `rgb(145, 181, 194)` hover unchanged. No `mix-blend-mode`. No TSX change.
+deviations from design: Face is near `#ADD8E6` (sampled ~`#b1d2ec`); exact hex not required. Chrome serializes `invert(25%)` as `invert(0.25)`.
+open questions: none
+
+
+### T-058: Show page-type-1 quick view inputs
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: phase 1 inputs only; named set)
+why: Those play-time cells already swap behind `isEditing`. The view (`isEditing` false) still shows `p`, and die clicks are gated. Phase 1 is the view controls. No persist, no Edit toggle.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/GeneralInfo/GeneralInfo.tsx` (Unspent CrP only); `.../Favor/Favor.tsx` (Current Favor only); `.../Vitals/Vitals.tsx` (`DieRow` click, Die Penalty, Current Damage, Current Stress); `app/src/pages/v2/V2View.tsx` (`beforeunload` / `useBlocker` gate only). Do not change `characterHook` `isDirty`. Do not change CSS, sidebar, backend, or any other widget. Do not import v1. Do not add `features/`.
+result: Unspent, Current Favor, Die Penalty, Current Damage, and Current Stress are always the existing number inputs. DieRow click is ungated and no longer reads `isEditing`. `V2View` leave-warn is `isDirty && isEditing`. Spent / max / thresholds stay gated. No POST.
+deviations from design: none beyond Order (Q4/Q5 readings already on the TODO).
+open questions: none
 
 ### T-057: Recolor selected die face to flame; ink white
 status: done

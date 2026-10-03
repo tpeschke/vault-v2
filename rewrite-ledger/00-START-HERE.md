@@ -55,6 +55,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | FSD colocation | `fsd-colocation.md` |
 | Page type 1 first-page view | `page1-view.md` |
 | Edit character sheet | `edit-character.md` |
+| Quick view inputs (page type 1) | `quick-view-inputs.md` |
 | Session phases | `phases.md` |
 | Schema on boot | `schema-on-boot.md` |
 | Code | `../00-START-HERE.yaml` `routing` |

@@ -27,11 +27,7 @@ export default function FavorDisplay({ favor, pageID, updates }: Props) {
                     }
                 </div>
                 <div className="favor-track">
-                    {isEditing ?
-                        <input className="center-text character-value" type="number" placeholder=" " value={current} onChange={event => updates.updateFavor(pageID, { current: +event.target.value })} />
-                        :
-                        <p className="center-text character-value">{current}</p>
-                    }
+                    <input className="center-text character-value" type="number" placeholder=" " value={current} onChange={event => updates.updateFavor(pageID, { current: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'currentFavor', +event.target.value)} />
                     <span>/</span>
                     {isEditing ?
                         <input className="center-text character-value" type="number" placeholder=" " value={max} onChange={event => updates.updateFavor(pageID, { max: +event.target.value })} />
