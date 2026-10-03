@@ -6,6 +6,27 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-058: Show page-type-1 quick view inputs
+status: proposed
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: phase 1 inputs only; named set)
+why: Those play-time cells already swap behind `isEditing`. The view (`isEditing` false) still shows `p`, and die clicks are gated. Phase 1 is the view controls. No persist, no Edit toggle.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/GeneralInfo/GeneralInfo.tsx` (Unspent CrP only); `.../Favor/Favor.tsx` (Current Favor only); `.../Vitals/Vitals.tsx` (`DieRow` click, Die Penalty, Current Damage, Current Stress). Do not change hooks, CSS, sidebar, `V2View`, backend, or any other widget. Do not import v1. Do not add `features/`.
+steps:
+1. `GeneralInfo.tsx`: Unspent CrP is always the existing number `input` (`updateCrP(pageID, 'unspent', +event.target.value)`). Spent and toLvl stay as they are (`isEditing` swap / `p`).
+2. `Favor.tsx`: Current Favor (`favor.current`, left of `/`) is always the existing number `input` (`updateFavor(pageID, { current })`). Max, divine relationship, and Anointed stay `isEditing`-gated.
+3. `Vitals.tsx`: Die Penalty is always the existing number `input` (`updateSelfDoubt(pageID, { diePenalty })`). Integrity Threshold stays gated.
+4. `Vitals.tsx`: Current Damage (`damage.damage`, left of `/`) and Current Stress (`stress.stress`, left of `/`) are always the existing number inputs. Trauma, Knock Back, both thresholds, and slashes stay as they are.
+5. `DieRow`: call `onSelect` on click with no `isEditing` gate (`dieIndex === index + 1 ? 0 : index + 1`). Keep `p` + PNG. If `isEditing` is unused in `DieRow` after that, drop the hook. Do not change `Vitals.css` or selected-img filter (T-057).
+6. Do not POST. Do not add an owner gate. Do not wrap the page shell in `view-edit` or `view-quick-edit`.
+done when:
+- View (`isEditing` false): Unspent, Current Favor, Die Penalty, Current Damage, and Current Stress are `input[type=number].character-value`. Three die rows change `dieIndex` on click (selected → `0`).
+- View still uses `p` for Spent CrP, toLvl, Favor max, Integrity Threshold, Trauma, Knock Back, Damage threshold, Stress threshold.
+- `DieRow` has no `isEditing` reference. No new fetch/POST in the five `onChange` handlers.
+- `npx tsc --noEmit` in `app/` (or the workspace command already used for v2 view) exits 0.
+depends on: none
+open questions: T-052 dirty is `character !== revertedCharacter`. View typing will trip leave-warn with no Save visible. Leave T-052 as-is, or exclude these fields from dirty until persist exists?
+deviations from design: none
+
 ## Done
 
 ### T-057: Recolor selected die face to flame; ink white

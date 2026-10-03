@@ -24,6 +24,8 @@ Edit character sheet: v2 view sidebar → new v2 edit owner. Canonical: `edit-ch
 
 Not present: quick-edit, download PDF.
 
+Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current Damage, Current Stress) are page-type-1 view controls, not a feature. Canonical: `quick-view-inputs.md`.
+
 ## v1 (ancient)
 
 - List v1 characters

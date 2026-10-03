@@ -56,5 +56,10 @@ Rejected:
 - Descriptions column labels as `em`. Mixing `flex: 1` / `6em` / `28px` heading tracks with different value-cell widths. CSS grid, subgrid, `<table>`, or `display: contents` for Descriptions columns. Importing Capacity CSS.
 - Edit-only input margin that shrinks the control vs view `p`. Restyling Stats to 2px/1px. Inset on dice or attack name. Dropping Social Suite `#bdbdbd` grid lines for this frame. Wrapper `padding`/`gap` outside suite borders (T-044 overflow). Stacking inner `padding: 4px` / `4px 4px 0` on leftover `p` on top of 17.38px content-box. Raising attack Meas/Atk/Damage/Type/Rec or notes to 19.38. Locking view attack-row `p` to filled-edit 18 / `1.2em`. Setting widget `height` on `.attack-row input`. Dropping the island on those view `p`.
 
+Revised 2026-10-03 (`quick-view-inputs.md`):
+- “Per-field click-to-edit or always-visible inputs” — **revised**: a named play-time subset is always visible on the view. All other stored cells stay `isEditing`-gated.
+- “v2 Quick Edit or PDF as part of this feature” — **retained**. No `/quickEdit`, no `viewQuickEdit`.
+- Die click only while editing — **revised**: the three die rows use the existing `dieIndex` click on the view. `.view-edit` die tint — **retained** (view stays untinted).
+
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; `backend/server/db/ensureSchema.ts`; `app/src/redux/slices/characterCacheSlice.tsx`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; unindexed `app/src/App.tsx` / `package.json` (`react-toastify`)
-TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done)
+TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058
