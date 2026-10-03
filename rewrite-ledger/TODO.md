@@ -6,7 +6,46 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-(none)
+### T-055: Upsert v2BasicCharacteristics by pageID
+status: proposed
+source: rewrite-ledger/edit-character.md, rewrite-ledger/schema-on-boot.md, 2026-10-03 (design: Yb / Cultural Strength / Discount not saving; Q3 upsert only)
+why: Those three drawn fields live only on `v2BasicCharacteristics`. Add/get/save/delete use `pageID`. The snapshot still has `characterid`. `ensureSchema` never adds `pageID`. Save is UPDATE only. `query()` swallows errors and hides `rowCount`, so a missing column or row looks like success and assemble returns `0` / `''` / `0`.
+scope: unindexed `backend/server/db/ensureSchema.ts`; unindexed `backend/server/v2/backupTables/page1.sql` (`v2BasicCharacteristics` only); edit primary `backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveBasicCharacteristics.ts`. Do not change `query()`. Do not change frontend updates, Capacity, StrengthNDiscount, or other tables’ `characterid` snapshot columns. Do not fail Save on a missed write.
+steps:
+1. `ensureSchema`: `ALTER TABLE v2BasicCharacteristics ADD COLUMN IF NOT EXISTS pageID integer`. If `characterid` exists, `UPDATE … SET pageID = characterid WHERE pageID IS NULL AND characterid IS NOT NULL`. Unique index on `pageID` (`IF NOT EXISTS`). If duplicates block the index, keep one row per `pageID` (highest `id`) then create the index. `INSERT` `(pageID)` for each `v2CharacterPages` row with `pageTypeID = 1` that has no basics row. Throw if `pageid` is still missing (`columnExists('v2basiccharacteristics', 'pageid')`).
+2. `saveBasicCharacteristics`: `SELECT id … WHERE pageID = $1`. If a row exists, keep the current UPDATE of capacity, culturalStrength, socialSkillDiscount, and temperaments. If none, INSERT those posted values plus `pageID`. Do not use `ON CONFLICT` unless the unique index from step 1 is in place.
+3. `page1.sql`: `v2BasicCharacteristics` uses `pageID integer`, not `characterid`. Leave other snapshot tables alone.
+done when: Grep add/get/save/delete basics for `characterid` — 0 hits. `page1.sql` `v2BasicCharacteristics` has `pageID` and no `characterid`. `saveBasicCharacteristics.ts` has both UPDATE and INSERT. `ensureSchema.ts` fail-closed on `pageid`. `npx tsc -p backend/server --noEmit` (ignore missing `server-config` only). Browser if postgres is up: edit Yb / Cultural Strength / Discount, Save, hard reload — values remain. If no postgres, say so; do not claim live persist.
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-056: Replace v2 sheet cache after successful Save
+status: proposed
+source: rewrite-ledger/edit-character.md, 2026-10-03 (design Q2: other fields persist; Redux cache must update)
+why: `characterCache[2][id]` keeps the first view GET. Save only `captureLoaded`s. Home hover skips GET when the slot exists, so a revisit shows the pre-Save sheet.
+scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`saveCharacterToBackend`). Existing `cacheCharacterV2` in `app/src/redux/slices/characterCacheSlice.tsx`. Do not add a reducer. Do not write the cache on keystroke. Do not change `updateCatalogInfo`. Do not import v1 hooks. Do not change v1 cache.
+steps:
+1. After a successful POST, once `data` is the reassembled character (same place as `captureLoaded(data)`), `dispatch(cacheCharacterV2({ id: data.id, version: 2, characterInfo: Promise.resolve(data) }))`.
+2. If that dispatch is already on the successful-save path (T-051 on this branch), do not add a second dispatch; mark this TODO done.
+done when: Grep `saveCharacterToBackend` for one `cacheCharacterV2` + `Promise.resolve`. Save-failure / empty-name paths (if present) do not replace the cache with the failed body. `npx tsc -p app --noEmit`. Browser: Save Yb / Strength / Discount, go home, open the same character — those values match the Save. Hard reload (fresh GET) is T-055, not this check.
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-057: Recolor selected die face to flame; ink white
+status: proposed
+source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-03 (design: drop outline; Q1 white face → orange, black → white)
+why: Selected is `outline: 2px solid black` on the cell. Designer wants CSS-only glyph recolor: face `#b45f06` (vault flame / `index.css`), ink white. Cell grey / edit teal stay.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (`.die-row p.selected` and `img`). Do not change `Vitals.tsx`, die PNGs, `dieIndex` click, Anointed, `index.css`, or unselected dice.
+steps:
+1. Remove `.vitals-v2 .die-row p.selected` `outline` and `outline-offset`.
+2. On `.vitals-v2 .die-row p.selected img` only: `filter` that starts with `invert(1)` then a black-to-`#b45f06` stack (sepia / saturate / hue-rotate / brightness / contrast; no second invert). Face reads as flame orange; ink reads as white. Do not set orange `background` on the `<p>`.
+3. Edit teal / mid-teal / hover on the cell stay. View unselected cells stay untinted. Unselected `img` have no `filter`.
+done when: Grep `Vitals.css` — no `outline` on `.die-row p.selected`; `filter` exists on `.die-row p.selected img`. Browser view and edit: selected d6 face near `#b45f06`, ink near white, cell background not orange (grey in view; teal / mid-teal in edit). Unselected dice unchanged. Click selected still clears `dieIndex`. `.page-type-one` offsetHeight 1068 view and edit. `npx tsc -p app --noEmit` (no TS change expected).
+depends on: none
+open questions: none
+deviations from design: none
 
 ## Done
 
