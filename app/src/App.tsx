@@ -7,6 +7,8 @@ import { isUserLoggedOn, setUser } from './redux/slices/userSlice'
 import AllRoutes from './routes/AllRoutes'
 import { accessURL } from './frontend-config'
 import { Tooltip } from 'react-tooltip'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import LocationHook from './hooks/LocationHook'
 import Footer from './components/footer/Footer'
 
@@ -30,6 +32,7 @@ function App() {
         <Header />
         <AllRoutes pathname={pathname} />
         <Tooltip id="my-tooltip" place="bottom" />
+        <ToastContainer />
         <Footer />
       </div>
     </div>

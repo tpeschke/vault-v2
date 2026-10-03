@@ -8,6 +8,78 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Done
 
+### T-057: Recolor selected die face to flame; ink white
+status: done
+source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-03 (design: drop outline; Q1 white face → orange, black → white)
+why: Selected is `outline: 2px solid black` on the cell. Designer wants CSS-only glyph recolor: face `#b45f06` (vault flame / `index.css`), ink white. Cell grey / edit teal stay.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (`.die-row p.selected` and `img`). Do not change `Vitals.tsx`, die PNGs, `dieIndex` click, Anointed, `index.css`, or unselected dice.
+result: Outline removed. `.die-row p.selected img` uses `invert(1) invert(25%) sepia(1) saturate(2) hue-rotate(-10deg) brightness(1.6) contrast(1.3)`. Cell fills unchanged.
+deviations from design: Black-to-`#b45f06` after `invert(1)` needs a partial second invert; without it the face stays black. Face is near-flame, ink near-white.
+open questions: none
+
+### T-056: Replace v2 sheet cache after successful Save
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-03 (design Q2: other fields persist; Redux cache must update)
+why: `characterCache[2][id]` keeps the first view GET. Save only `captureLoaded`s. Home hover skips GET when the slot exists, so a revisit shows the pre-Save sheet.
+scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`saveCharacterToBackend`). Existing `cacheCharacterV2` in `app/src/redux/slices/characterCacheSlice.tsx`. Do not add a reducer. Do not write the cache on keystroke. Do not change `updateCatalogInfo`. Do not import v1 hooks. Do not change v1 cache.
+result: T-051 already dispatches `cacheCharacterV2` with `Promise.resolve(data)` after successful Save. Empty-name and failed POST do not. No second dispatch added.
+deviations from design: none (step 2 skip).
+open questions: none
+
+### T-055: Upsert v2BasicCharacteristics by pageID
+status: done
+source: rewrite-ledger/edit-character.md, rewrite-ledger/schema-on-boot.md, 2026-10-03 (design: Yb / Cultural Strength / Discount not saving; Q3 upsert only)
+why: Those three drawn fields live only on `v2BasicCharacteristics`. Add/get/save/delete use `pageID`. The snapshot still has `characterid`. `ensureSchema` never adds `pageID`. Save is UPDATE only. `query()` swallows errors and hides `rowCount`, so a missing column or row looks like success and assemble returns `0` / `''` / `0`.
+scope: unindexed `backend/server/db/ensureSchema.ts`; unindexed `backend/server/v2/backupTables/page1.sql` (`v2BasicCharacteristics` only); edit primary `backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveBasicCharacteristics.ts`. Do not change `query()`. Do not change frontend updates, Capacity, StrengthNDiscount, or other tables’ `characterid` snapshot columns. Do not fail Save on a missed write.
+result: `ensureSchema` adds `pageID`, backfills from `characterid`, unique index, inserts missing page-type-1 rows, fail-closed. Save SELECTs then UPDATE or INSERT. `page1.sql` `v2BasicCharacteristics` uses `pageID`.
+deviations from design: none
+open questions: none
+
+### T-054: Set attack notes to 12px
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Attack Info same size as name input; Q3 font only; Q4 keep box)
+why: Notes use the global 15px `character-value`. The attack-name input is 12px. Designer wants Info text at that size only.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` (`.attack-notes p` and `textarea`). Do not change `Attacks.tsx`, name input letter-spacing/padding, notes `min-height`/`height` `calc(2 * 17.38px)`, Defenses notes, or `View.css`.
+result: `.attacks-v2 .attack-notes p` and `textarea` `font-size: 12px`. Two-line box kept.
+deviations from design: none
+open questions: none
+
+### T-053: Move attack Damage value onto the Type/Rec row
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Damage value down; Q1 label stays; Q2 leftover on Type/Rec row)
+why: Row 1 is Meas/Atk/Damage. Row 2 is Type/Rec plus an empty 33%. The designer wants only the Damage value on that leftover. The **Damage** `em` stays on row 1. Meas/Atk stay 33%.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.tsx` and `Attacks.css`. Do not change hooks, payload, `varchar`, notes (T-054), name, Defenses, or `index.css` / `View.css`.
+result: First `.attack-row` Damage is `<em>` only. Value `p`/`input` sit in `.attack-damage-value` on the Type/Rec row (`flex: 1; min-width: 0`).
+deviations from design: none
+open questions: none
+
+### T-052: Warn before leaving unsaved edits
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design Q3)
+why: Catalog already updates on general-info keystroke. Leaving without Save would keep that draft name in redux while the DB is old. Warn, then restore catalog from the snapshot if they still leave.
+scope: edit adjacency `app/src/pages/v2/V2View.tsx` and/or `app/src/pages/v2/hooks/characterHook.tsx`. Catalog reducer already exists (`updateCatalogInfo`, `index: 1`). Do not add a custom modal. Do not warn on Revert.
+result: Dirty is `character !== revertedCharacter`. `beforeunload` while dirty. `useBlocker` + `window.confirm`; confirm restores catalog from the revert snapshot (`index: 1`) then proceeds. Revert does not warn.
+deviations from design: `app/src/main.tsx` uses `createBrowserRouter` (`path: '*'`) instead of `BrowserRouter` so `useBlocker` has a data router. Nested `AllRoutes` unchanged.
+open questions: none
+
+### T-051: Toast failed or blocked Save; restore draft
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design Q2, Q5)
+why: Save click currently sets `isEditing` false and `character` null before POST. Empty name still posts. A thrown axios error leaves the sheet on loading. Failed save is a toast.
+scope: root `package.json` (`react-toastify`, same slot as `react-tooltip`); unindexed `app/src/App.tsx` (and `main.tsx` only if CSS import belongs there); edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/V2View.tsx`. Do not change the sidebar button enablement (Q4: v1 — Save stays clickable while editing). Do not add `features/`.
+result: `react-toastify` ^11.1.0; `ToastContainer` in `App.tsx`. Empty/whitespace name: no POST, `Name cannot be empty`, stay in edit. POST `data.message` without `pages`, or throw: restore draft, toast, stay in edit. Success: `captureLoaded`, replace v2 `characterCache`, exit edit.
+deviations from design: none beyond Order (await success before exiting edit).
+open questions: none
+
+### T-050: Coerce empty name to New Character on persist
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-02 (design Q2)
+why: Empty name is blocked on the client. If a request still arrives with missing or whitespace name, persist `'New Character'` (same string as `v2GeneralInfo.name` default).
+scope: edit character primary `backend/server/v2/edit/utilities/pageType1/utilities/saveGeneralInfo.ts` (`saveGeneralInfo`).
+result: `name?.trim() ? name : 'New Character'` before the existing `pageID` UPDATE. Ancestry/class/subclass unchanged.
+deviations from design: none
+open questions: none
+
 ### T-049: Lock attack-row view p to empty-edit 17.38
 status: done
 source: rewrite-ledger/edit-character.md, rewrite-ledger/page1-view.md, 2026-10-02 (design: shrink view Meas/RI and Type rows to edit; Q1 all five values; Q2 empty-edit 17.38; Q3 keep island; Q4 name and notes stay)

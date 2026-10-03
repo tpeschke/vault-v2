@@ -26,7 +26,7 @@ create table
 create table
     v2BasicCharacteristics (
         id serial primary key,
-        characterid integer,
+        pageID integer,
         capacity integer default 0,
         culturalStrength varchar(250) default '',
         socialSkillDiscount integer default 0,

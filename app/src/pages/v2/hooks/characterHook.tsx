@@ -1,12 +1,23 @@
 import { CharacterVersion2 } from "@vault/common/interfaces/characterInterfaces"
+import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import axios from "axios"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { editV2URL, viewV2URL } from "../../../frontend-config"
 import { V2CharacterCacheInfo, cacheCharacterV2 } from "../../../redux/slices/characterCacheSlice"
+import { updateCatalogInfo } from "../../../redux/slices/usersCharactersSlice"
 import { V2UpdateFunctions } from "./interfaces/UpdateInterfaces"
 import getV2Updates from "./updates/getV2Updates"
+
+function firstPage1(character: CharacterVersion2): Page1 | undefined {
+    return character.pages.find((page): page is Page1 => page.type === 1)
+}
+
+function sheetName(character: CharacterVersion2): string {
+    return (firstPage1(character)?.generalInfo.name ?? character.name ?? '').trim()
+}
 
 export default function characterHook(pathname: string) {
     const [character, setCharacter] = useState<CharacterVersion2 | null>(null)
@@ -49,12 +60,50 @@ export default function characterHook(pathname: string) {
         setCharacter(revertedCharacter)
     }
 
-    async function saveCharacterToBackend() {
-        if (character) {
-            const characterToSend = character
-            setCharacter(null)
+    const restoreCatalogFromSnapshot = useCallback(() => {
+        if (!revertedCharacter) { return }
+        const page = firstPage1(revertedCharacter)
+        if (!page) { return }
+        const { name, ancestry, class: primaryClass, subclass, level } = page.generalInfo
+        dispatch(updateCatalogInfo({
+            info: { id: revertedCharacter.id, name, ancestry, class: primaryClass, subclass, level },
+            index: 1
+        }))
+    }, [dispatch, revertedCharacter])
+
+    async function saveCharacterToBackend(): Promise<boolean> {
+        if (!character) {
+            return false
+        }
+
+        if (!sheetName(character)) {
+            toast.error('Name cannot be empty')
+            return false
+        }
+
+        const characterToSend = character
+        setCharacter(null)
+        try {
             const { data } = await axios.post(editV2URL + characterToSend.id, characterToSend)
+            if (data.message && !data.pages) {
+                setCharacter(characterToSend)
+                toast.error(data.message)
+                return false
+            }
             captureLoaded(data)
+            dispatch(cacheCharacterV2({
+                id: data.id,
+                version: 2,
+                characterInfo: Promise.resolve(data)
+            }))
+            return true
+        } catch (error) {
+            setCharacter(characterToSend)
+            const message = axios.isAxiosError(error) && typeof error.response?.data?.message === 'string'
+                ? error.response.data.message
+                : 'Save failed'
+            toast.error(message)
+            return false
         }
     }
 
@@ -72,6 +121,8 @@ export default function characterHook(pathname: string) {
 
     return {
         character,
+        isDirty: !!(character && revertedCharacter && character !== revertedCharacter),
+        restoreCatalogFromSnapshot,
         updateFunctions
     }
 }

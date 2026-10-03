@@ -1,5 +1,6 @@
 import '../View.css'
 import { useEffect, useState } from "react"
+import { useBlocker } from "react-router-dom"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
@@ -15,7 +16,7 @@ export default function V2View({ setLoading, pathname }: Props) {
     const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
 
-    const { character, updateFunctions } = characterHook(pathname)
+    const { character, isDirty, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname)
     const { saveCharacterToBackend, revertCharacter, pageType1Updates } = updateFunctions
 
     useEffect(() => {
@@ -31,13 +32,41 @@ export default function V2View({ setLoading, pathname }: Props) {
         }
     }, [character])
 
+    useEffect(() => {
+        if (!isDirty) {
+            return
+        }
+        const onBeforeUnload = (event: BeforeUnloadEvent) => {
+            event.preventDefault()
+            event.returnValue = ''
+        }
+        window.addEventListener('beforeunload', onBeforeUnload)
+        return () => window.removeEventListener('beforeunload', onBeforeUnload)
+    }, [isDirty])
+
+    const blocker = useBlocker(isDirty)
+
+    useEffect(() => {
+        if (blocker.state !== 'blocked') {
+            return
+        }
+        if (window.confirm('Leave without saving? Changes you made may not be saved.')) {
+            restoreCatalogFromSnapshot()
+            blocker.proceed()
+        } else {
+            blocker.reset()
+        }
+    }, [blocker, restoreCatalogFromSnapshot])
+
     const toggleIsEditing = () => {
         setIsEditing(!isEditing)
     }
 
-    const saveCharacter = () => {
-        saveCharacterToBackend()
-        setIsEditing(false)
+    const saveCharacter = async () => {
+        const saved = await saveCharacterToBackend()
+        if (saved) {
+            setIsEditing(false)
+        }
     }
 
     const revertCharacterToUnedited = () => {
