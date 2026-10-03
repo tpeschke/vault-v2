@@ -25,7 +25,7 @@ Constraints it imposes:
 - Attack Damage **label** stays on the Meas/Atk row. The Damage view `p` / edit `input` sit on the Type/Rec row and fill leftover. Attack notes `font-size: 12px` only (match name input; no name letter-spacing or padding). Notes box stays `calc(2 * 17.38px)`. Canonical layout: `page1-view.md`.
 - Catalog: on general-info local change, `updateCatalogInfo` with `index: 1` (v2 slot). That is the home-list slice, not the sheet cache. If the user leaves with unsaved edits after the warn, restore catalog identity fields from the revert snapshot (same `updateCatalogInfo`, `index: 1`).
 - Empty / whitespace-only name: frontend Save does not POST; stay in edit; `toast.error`. Backend `saveGeneralInfo` writes `'New Character'` if the submitted name is missing or whitespace (column default on `v2GeneralInfo.name`).
-- Unsaved leave: warn. Dirty is `character !== revertedCharacter`. `beforeunload` plus in-app `useBlocker` (react-router 7). Browser dialog / `window.confirm` — no custom modal. Revert is not a leave and does not warn. `useBlocker` needs a data router: `app/src/main.tsx` is `createBrowserRouter` (`path: '*'`), not `BrowserRouter`.
+- Unsaved leave: warn only while `isEditing`. Dirty for `beforeunload` / `useBlocker` is `isDirty && isEditing`. Hook `isDirty` stays `character !== revertedCharacter`. View play-time changes do not warn (`quick-view-inputs.md`). `beforeunload` plus in-app `useBlocker` (react-router 7). Browser dialog / `window.confirm` — no custom modal. Revert is not a leave and does not warn. `useBlocker` needs a data router: `app/src/main.tsx` is `createBrowserRouter` (`path: '*'`), not `BrowserRouter`. (Revised: T-052 warned on any snapshot mismatch.)
 - Failed-save UI is `react-toastify` (`toast.error`). `ToastContainer` in `App.tsx` beside `Tooltip`. Add the package on the root workspace `package.json` (same place as `react-tooltip`). No success toast. Do not add `features/` or a toast owner.
 - L1 route and `00-START-HERE.yaml` update in the same change that adds `backend/server/v2/edit/`.
 - `frontend-config.ts` is gitignored. Add `editV2URL` beside `viewV2URL` / `editURL`. Mount `app.use('/v2/edit', …)` in `vault.ts`. Do not reuse `/edit`.
@@ -36,7 +36,7 @@ Rejected:
 - v2 Quick Edit or PDF as part of this feature.
 - Autosave. Mixing autosave with Save.
 - Empty name allowed. Frontend-only or backend-only empty-name handling.
-- Leaving the page with unsaved edits with no warn.
+- Leaving the page with unsaved **edit-session** edits with no warn. (Revised: view play-time changes leave with no warn; `quick-view-inputs.md`.)
 - Disabling Save when clean (Q4: follow v1 — Save stays clickable while editing).
 - A toast library other than `react-toastify`. Success toasts. Toasts for Revert.
 - Concurrent-edit locking.
@@ -60,6 +60,7 @@ Revised 2026-10-03 (`quick-view-inputs.md`):
 - “Per-field click-to-edit or always-visible inputs” — **revised**: a named play-time subset is always visible on the view. All other stored cells stay `isEditing`-gated.
 - “v2 Quick Edit or PDF as part of this feature” — **retained**. No `/quickEdit`, no `viewQuickEdit`.
 - Die click only while editing — **revised**: the three die rows use the existing `dieIndex` click on the view. `.view-edit` die tint — **retained** (view stays untinted).
+- Unsaved-leave dirty — **revised**: warn only while `isEditing`. View play-time changes do not warn.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; `backend/server/db/ensureSchema.ts`; `app/src/redux/slices/characterCacheSlice.tsx`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; unindexed `app/src/App.tsx` / `package.json` (`react-toastify`)
 TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058
