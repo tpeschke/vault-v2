@@ -23,9 +23,8 @@
     height: auto;
 }
 
-.vitals-v2 .die-row p.selected {
-    outline: 2px solid black;
-    outline-offset: -1px;
+.vitals-v2 .die-row p.selected img {
+    filter: invert(1) invert(25%) sepia(1) saturate(2) hue-rotate(-10deg) brightness(1.6) contrast(1.3);
 }
 
 .v2 .view-edit .vitals-v2 .die-row p {

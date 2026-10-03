@@ -6,76 +6,52 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-053: Move attack Damage value onto the Type/Rec row
-status: proposed
-source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Damage value down; Q1 label stays; Q2 leftover on Type/Rec row)
-why: Row 1 is Meas/Atk/Damage. Row 2 is Type/Rec plus an empty 33%. The designer wants only the Damage value on that leftover. The **Damage** `em` stays on row 1. Meas/Atk stay 33%.
-scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.tsx` and `Attacks.css`. Do not change hooks, payload, `varchar`, notes (T-054), name, Defenses, or `index.css` / `View.css`.
-steps:
-1. First `.attack-row`: keep Meas/RI and Atk spans. Third span is `<em>Damage</em>` only — no `p`/`input`.
-2. Second `.attack-row`: Type, Rec, then a span with the Damage view `p` / edit `input` (`character-value`, same `updateAttack` `damage` wiring).
-3. CSS: Meas/Atk/Type/Rec/label spans stay `width: 33%`. Damage value span `flex: 1; min-width: 0` (override the 33% rule). Island and T-049 `height: 17.38px` stay on that `p`. Edit input stays default teal, not attack-name mid teal. No third `.attack-row`.
-4. View and edit share that geometry.
-done when: Browser — **Damage** `em` is on the Meas/Atk row; value `p` and input sit on the Type/Rec row and use the leftover width; Meas/Atk still 33%; no value on row 1. Grep: first `.attack-row` has no `damage` `p`/`input`. `.page-type-one` offsetHeight 1068 view and edit. `npx tsc -p app --noEmit` passes.
-depends on: none
-open questions: none
-deviations from design: none
-
-### T-054: Set attack notes to 12px
-status: proposed
-source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Attack Info same size as name input; Q3 font only; Q4 keep box)
-why: Notes use the global 15px `character-value`. The attack-name input is 12px. Designer wants Info text at that size only.
-scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` (`.attack-notes p` and `textarea`). Do not change `Attacks.tsx`, name input letter-spacing/padding, notes `min-height`/`height` `calc(2 * 17.38px)`, Defenses notes, or `View.css`.
-steps:
-1. Set `font-size: 12px` on `.attacks-v2 .attack-notes p` and `.attacks-v2 .attack-notes textarea`.
-2. Keep Kalam (`character-value`), unlabeled, wrap/grow, island padding, two-line box.
-done when: Browser computed `font-size` on notes `p` and textarea is 12px; name input still 12px; notes box still ~34.76px (`calc(2 * 17.38px)`). Grep `Attacks.css` for notes `font-size: 12px`. `npx tsc -p app --noEmit` passes (no TS change expected).
-depends on: none
-open questions: none
-deviations from design: none
-
-### T-055: Upsert v2BasicCharacteristics by pageID
-status: proposed
-source: rewrite-ledger/edit-character.md, rewrite-ledger/schema-on-boot.md, 2026-10-03 (design: Yb / Cultural Strength / Discount not saving; Q3 upsert only)
-why: Those three drawn fields live only on `v2BasicCharacteristics`. Add/get/save/delete use `pageID`. The snapshot still has `characterid`. `ensureSchema` never adds `pageID`. Save is UPDATE only. `query()` swallows errors and hides `rowCount`, so a missing column or row looks like success and assemble returns `0` / `''` / `0`.
-scope: unindexed `backend/server/db/ensureSchema.ts`; unindexed `backend/server/v2/backupTables/page1.sql` (`v2BasicCharacteristics` only); edit primary `backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveBasicCharacteristics.ts`. Do not change `query()`. Do not change frontend updates, Capacity, StrengthNDiscount, or other tables’ `characterid` snapshot columns. Do not fail Save on a missed write.
-steps:
-1. `ensureSchema`: `ALTER TABLE v2BasicCharacteristics ADD COLUMN IF NOT EXISTS pageID integer`. If `characterid` exists, `UPDATE … SET pageID = characterid WHERE pageID IS NULL AND characterid IS NOT NULL`. Unique index on `pageID` (`IF NOT EXISTS`). If duplicates block the index, keep one row per `pageID` (highest `id`) then create the index. `INSERT` `(pageID)` for each `v2CharacterPages` row with `pageTypeID = 1` that has no basics row. Throw if `pageid` is still missing (`columnExists('v2basiccharacteristics', 'pageid')`).
-2. `saveBasicCharacteristics`: `SELECT id … WHERE pageID = $1`. If a row exists, keep the current UPDATE of capacity, culturalStrength, socialSkillDiscount, and temperaments. If none, INSERT those posted values plus `pageID`. Do not use `ON CONFLICT` unless the unique index from step 1 is in place.
-3. `page1.sql`: `v2BasicCharacteristics` uses `pageID integer`, not `characterid`. Leave other snapshot tables alone.
-done when: Grep add/get/save/delete basics for `characterid` — 0 hits. `page1.sql` `v2BasicCharacteristics` has `pageID` and no `characterid`. `saveBasicCharacteristics.ts` has both UPDATE and INSERT. `ensureSchema.ts` fail-closed on `pageid`. `npx tsc -p backend/server --noEmit` (ignore missing `server-config` only). Browser if postgres is up: edit Yb / Cultural Strength / Discount, Save, hard reload — values remain. If no postgres, say so; do not claim live persist.
-depends on: none
-open questions: none
-deviations from design: none
-
-### T-056: Replace v2 sheet cache after successful Save
-status: proposed
-source: rewrite-ledger/edit-character.md, 2026-10-03 (design Q2: other fields persist; Redux cache must update)
-why: `characterCache[2][id]` keeps the first view GET. Save only `captureLoaded`s. Home hover skips GET when the slot exists, so a revisit shows the pre-Save sheet.
-scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`saveCharacterToBackend`). Existing `cacheCharacterV2` in `app/src/redux/slices/characterCacheSlice.tsx`. Do not add a reducer. Do not write the cache on keystroke. Do not change `updateCatalogInfo`. Do not import v1 hooks. Do not change v1 cache.
-steps:
-1. After a successful POST, once `data` is the reassembled character (same place as `captureLoaded(data)`), `dispatch(cacheCharacterV2({ id: data.id, version: 2, characterInfo: Promise.resolve(data) }))`.
-2. If that dispatch is already on the successful-save path (T-051 on this branch), do not add a second dispatch; mark this TODO done.
-done when: Grep `saveCharacterToBackend` for one `cacheCharacterV2` + `Promise.resolve`. Save-failure / empty-name paths (if present) do not replace the cache with the failed body. `npx tsc -p app --noEmit`. Browser: Save Yb / Strength / Discount, go home, open the same character — those values match the Save. Hard reload (fresh GET) is T-055, not this check.
-depends on: none
-open questions: none
-deviations from design: none
+## Done
 
 ### T-057: Recolor selected die face to flame; ink white
-status: proposed
+status: done
 source: rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-03 (design: drop outline; Q1 white face → orange, black → white)
 why: Selected is `outline: 2px solid black` on the cell. Designer wants CSS-only glyph recolor: face `#b45f06` (vault flame / `index.css`), ink white. Cell grey / edit teal stay.
 scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (`.die-row p.selected` and `img`). Do not change `Vitals.tsx`, die PNGs, `dieIndex` click, Anointed, `index.css`, or unselected dice.
-steps:
-1. Remove `.vitals-v2 .die-row p.selected` `outline` and `outline-offset`.
-2. On `.vitals-v2 .die-row p.selected img` only: `filter` that starts with `invert(1)` then a black-to-`#b45f06` stack (sepia / saturate / hue-rotate / brightness / contrast; no second invert). Face reads as flame orange; ink reads as white. Do not set orange `background` on the `<p>`.
-3. Edit teal / mid-teal / hover on the cell stay. View unselected cells stay untinted. Unselected `img` have no `filter`.
-done when: Grep `Vitals.css` — no `outline` on `.die-row p.selected`; `filter` exists on `.die-row p.selected img`. Browser view and edit: selected d6 face near `#b45f06`, ink near white, cell background not orange (grey in view; teal / mid-teal in edit). Unselected dice unchanged. Click selected still clears `dieIndex`. `.page-type-one` offsetHeight 1068 view and edit. `npx tsc -p app --noEmit` (no TS change expected).
-depends on: none
+result: Outline removed. `.die-row p.selected img` uses `invert(1) invert(25%) sepia(1) saturate(2) hue-rotate(-10deg) brightness(1.6) contrast(1.3)`. Cell fills unchanged.
+deviations from design: Black-to-`#b45f06` after `invert(1)` needs a partial second invert; without it the face stays black. Face is near-flame, ink near-white.
 open questions: none
-deviations from design: none
 
-## Done
+### T-056: Replace v2 sheet cache after successful Save
+status: done
+source: rewrite-ledger/edit-character.md, 2026-10-03 (design Q2: other fields persist; Redux cache must update)
+why: `characterCache[2][id]` keeps the first view GET. Save only `captureLoaded`s. Home hover skips GET when the slot exists, so a revisit shows the pre-Save sheet.
+scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`saveCharacterToBackend`). Existing `cacheCharacterV2` in `app/src/redux/slices/characterCacheSlice.tsx`. Do not add a reducer. Do not write the cache on keystroke. Do not change `updateCatalogInfo`. Do not import v1 hooks. Do not change v1 cache.
+result: T-051 already dispatches `cacheCharacterV2` with `Promise.resolve(data)` after successful Save. Empty-name and failed POST do not. No second dispatch added.
+deviations from design: none (step 2 skip).
+open questions: none
+
+### T-055: Upsert v2BasicCharacteristics by pageID
+status: done
+source: rewrite-ledger/edit-character.md, rewrite-ledger/schema-on-boot.md, 2026-10-03 (design: Yb / Cultural Strength / Discount not saving; Q3 upsert only)
+why: Those three drawn fields live only on `v2BasicCharacteristics`. Add/get/save/delete use `pageID`. The snapshot still has `characterid`. `ensureSchema` never adds `pageID`. Save is UPDATE only. `query()` swallows errors and hides `rowCount`, so a missing column or row looks like success and assemble returns `0` / `''` / `0`.
+scope: unindexed `backend/server/db/ensureSchema.ts`; unindexed `backend/server/v2/backupTables/page1.sql` (`v2BasicCharacteristics` only); edit primary `backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveBasicCharacteristics.ts`. Do not change `query()`. Do not change frontend updates, Capacity, StrengthNDiscount, or other tables’ `characterid` snapshot columns. Do not fail Save on a missed write.
+result: `ensureSchema` adds `pageID`, backfills from `characterid`, unique index, inserts missing page-type-1 rows, fail-closed. Save SELECTs then UPDATE or INSERT. `page1.sql` `v2BasicCharacteristics` uses `pageID`.
+deviations from design: none
+open questions: none
+
+### T-054: Set attack notes to 12px
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Attack Info same size as name input; Q3 font only; Q4 keep box)
+why: Notes use the global 15px `character-value`. The attack-name input is 12px. Designer wants Info text at that size only.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.css` (`.attack-notes p` and `textarea`). Do not change `Attacks.tsx`, name input letter-spacing/padding, notes `min-height`/`height` `calc(2 * 17.38px)`, Defenses notes, or `View.css`.
+result: `.attacks-v2 .attack-notes p` and `textarea` `font-size: 12px`. Two-line box kept.
+deviations from design: none
+open questions: none
+
+### T-053: Move attack Damage value onto the Type/Rec row
+status: done
+source: rewrite-ledger/page1-view.md, 2026-10-03 (design: Damage value down; Q1 label stays; Q2 leftover on Type/Rec row)
+why: Row 1 is Meas/Atk/Damage. Row 2 is Type/Rec plus an empty 33%. The designer wants only the Damage value on that leftover. The **Damage** `em` stays on row 1. Meas/Atk stay 33%.
+scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Attacks/Attacks.tsx` and `Attacks.css`. Do not change hooks, payload, `varchar`, notes (T-054), name, Defenses, or `index.css` / `View.css`.
+result: First `.attack-row` Damage is `<em>` only. Value `p`/`input` sit in `.attack-damage-value` on the Type/Rec row (`flex: 1; min-width: 0`).
+deviations from design: none
+open questions: none
 
 ### T-052: Warn before leaving unsaved edits
 status: done

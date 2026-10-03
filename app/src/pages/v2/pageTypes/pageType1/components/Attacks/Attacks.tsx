@@ -42,11 +42,6 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                         </span>
                         <span>
                             <em>Damage</em>
-                            {isEditing ?
-                                <input className="character-value" placeholder=" " value={damage} onChange={event => updates.updateAttack(pageID, index, { damage: event.target.value })} />
-                                :
-                                <p className="character-value">{damage}</p>
-                            }
                         </span>
                     </div>
                     <div className="attack-row">
@@ -64,6 +59,13 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                                 <input className="center-text character-value" type="number" placeholder=" " value={recovery} onChange={event => updates.updateAttack(pageID, index, { recovery: +event.target.value })} />
                                 :
                                 <p className="center-text character-value">{recovery}</p>
+                            }
+                        </span>
+                        <span className="attack-damage-value">
+                            {isEditing ?
+                                <input className="character-value" placeholder=" " value={damage} onChange={event => updates.updateAttack(pageID, index, { damage: event.target.value })} />
+                                :
+                                <p className="character-value">{damage}</p>
                             }
                         </span>
                     </div>

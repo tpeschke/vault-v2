@@ -56,6 +56,25 @@ export default async function ensureSchema() {
     if (!await columnExists('v2descriptions', 'defenseemotion')) {
         throw new Error('ensureSchema: v2descriptions.defenseEmotion missing')
     }
+
+    await query(`alter table v2BasicCharacteristics add column if not exists pageID integer`)
+    if (await columnExists('v2basiccharacteristics', 'characterid')) {
+        await query(`update v2BasicCharacteristics set pageID = characterid
+            where pageID is null and characterid is not null`)
+    }
+    await query(`delete from v2BasicCharacteristics a using v2BasicCharacteristics b
+        where a.pageID is not null and a.pageID = b.pageID and a.id < b.id`)
+    await query(`create unique index if not exists v2basiccharacteristics_pageid_uidx
+        on v2BasicCharacteristics (pageID)`)
+    await query(`insert into v2BasicCharacteristics (pageID)
+        select p.id from v2CharacterPages p
+        where p.pageTypeID = 1
+        and not exists (
+            select 1 from v2BasicCharacteristics b where b.pageID = p.id
+        )`)
+    if (!await columnExists('v2basiccharacteristics', 'pageid')) {
+        throw new Error('ensureSchema: v2BasicCharacteristics.pageID missing')
+    }
 }
 
 async function tableExists(tableName: string) {
