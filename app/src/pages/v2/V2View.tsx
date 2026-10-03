@@ -103,13 +103,13 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                 <PageType1 pageInfo={page} index={index} updates={pageType1Updates} />
                                             </div>
                                             {isEditing &&
-                                                <div className="page-type-1-gutter">
+                                                <div className="page-gutter">
                                                     {index < character.pages.length - 1 &&
                                                         <button
                                                             type="button"
-                                                            className="add-page-type-1"
+                                                            className="bottom-buttons"
                                                             data-tooltip-id="my-tooltip"
-                                                            data-tooltip-content="Swap with the sheet below"
+                                                            data-tooltip-content="Swap the above sheet with the sheet below"
                                                             onClick={() => {
                                                                 pageType1Updates.swapPageWithNext(index)
                                                                 scrollSheetIntoView(page.pageID)
@@ -119,9 +119,9 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                     {index > 0 &&
                                                         <button
                                                             type="button"
-                                                            className="add-page-type-1"
+                                                            className="bottom-buttons"
                                                             data-tooltip-id="my-tooltip"
-                                                            data-tooltip-content="Move this sheet to the top"
+                                                            data-tooltip-content="Move the above sheet to the top"
                                                             onClick={() => {
                                                                 pageType1Updates.movePageToTop(index)
                                                                 scrollSheetIntoView(page.pageID)
@@ -131,9 +131,9 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                     {index < character.pages.length - 1 &&
                                                         <button
                                                             type="button"
-                                                            className="add-page-type-1"
+                                                            className="bottom-buttons"
                                                             data-tooltip-id="my-tooltip"
-                                                            data-tooltip-content="Move this sheet to the bottom"
+                                                            data-tooltip-content="Move above sheet to the bottom"
                                                             onClick={() => {
                                                                 pageType1Updates.movePageToBottom(index)
                                                                 scrollSheetIntoView(page.pageID)
@@ -142,7 +142,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                     }
                                                     <button
                                                         type="button"
-                                                        className="add-page-type-1"
+                                                        className="bottom-buttons add-page-type-1"
                                                         onClick={() => pageType1Updates.addPageType1After(index)}
                                                     ><i className="fa-solid fa-plus"></i></button>
                                                 </div>
