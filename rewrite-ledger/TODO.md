@@ -6,46 +6,28 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-060: Persist one view-input column under `/v2/edit/:characterID/field`
-status: proposed
-source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design phase 2; Q1 onBlur; Q2 field-only; Q3 skip non-owner POST; Q4 toast on client)
-why: View play-time inputs are local only. A full-character POST would rewrite sibling columns. v1 `/quickEdit` is rejected as a v2 route.
-scope: edit character primary `backend/server/v2/edit/editV2CharacterRoutes.ts`; new `backend/server/v2/edit/editV2FieldController.ts` (name may vary); new column UPDATEs beside the existing page-type-1 savers, not inside them; new allowlist type under adjacent `backend/common/interfaces/v2/` (e.g. `page1/viewPersist.ts`). Do not change `editV2Character`, `savePages`, `saveGeneralInfo`, `saveFavor`, `saveSelfDoubt`, `saveDamage`, `saveStress`. Do not add `/quickEdit`. Do not change `vault.ts` unless the new route cannot hang on the existing `/v2/edit` router. Do not add `features/`.
-steps:
-1. Add `ViewPersistAttribute = 'unspent' | 'currentFavor' | 'diePenalty' | 'damage' | 'stress'` and a body `{ pageID, attribute, value: number }`.
-2. `POST /:characterID/field` on the existing v2 edit router. Owner: `getCharacterOwnerID(+characterID) === request.user?.id`. Mismatch → `{ success: false, message: "You don't own this character" }`, no write.
-3. Switch on `attribute` only: `UPDATE v2GeneralInfo SET unspent = $1 WHERE pageID = $2`; `UPDATE v2Favor SET current = $1 WHERE pageID = $2`; `UPDATE v2SelfDoubt SET diePenalty = $1 WHERE pageID = $2`; `UPDATE v2Damage SET damage = $1 WHERE pageID = $2`; `UPDATE v2Stress SET stress = $1 WHERE pageID = $2`. Unknown attribute → refuse, no write.
-4. Known attribute: await `query(...)`, then `{ success: true }`. `query()` stays as-is.
-done when:
-- Grep `quickEdit` under `backend/server/v2/` and `app/src/pages/v2/` is 0 hits.
-- Grep `saveGeneralInfo` / `saveFavor` / `saveSelfDoubt` / `saveDamage` / `saveStress` in the new field controller is 0 hits.
-- `npx tsc --noEmit -p backend/server` (or the server package used in-repo) exits 0, or report the existing blocker.
-depends on: T-058
-open questions: none
-deviations from design: none
-
-### T-061: Blur view inputs to persist; spinner on the sidebar
-status: proposed
-source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design phase 2; Q1–Q8)
-why: Persist is on blur of view inputs, owner-only. v1 replaces sidebar buttons with `LoadingIndicator` `secondary` while that POST is in flight. Full `saveCharacterToBackend` nulls the sheet.
-scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; `.../hooks/interfaces/UpdateInterfaces.ts`; `.../V2View.tsx`; `.../components/sidebar/Sidebar.tsx`; view widgets `.../pageType1/components/GeneralInfo/GeneralInfo.tsx` (Unspent only); `.../Favor/Favor.tsx` (Current Favor only); `.../Vitals/Vitals.tsx` (Die Penalty, Current Damage, Current Stress). Unindexed `app/src/components/loading/components/LoadingIndicator.tsx` (reuse). Do not change `Vitals.css`, die click, `saveCharacterToBackend`’s `setCharacter(null)`, leave-warn, or backend beyond T-060. Do not import v1. Do not add `features/`.
-steps:
-1. Pass `isEditing` into `characterHook`. Add `persistViewField(pageID, attribute, value)` on `PageType1Updates`. No-op when `isEditing`, `!ownsThisCharacter`, or the value already matches `revertedCharacter` for that field.
-2. Otherwise POST `editV2URL + id + '/field'` with `{ pageID, attribute, value }`. In-flight count → `isViewSaving`. Do not `setCharacter(null)`.
-3. Success (`data.success`): patch that field on `revertedCharacter`; `cacheCharacterV2` with `Promise.resolve` of the patched snapshot. No success toast.
-4. Failure (throw, or `data.success === false`): `toast.error` (`data.message` or `'Save failed'`). Keep live `character`. Do not patch snapshot or cache. Always decrement in-flight.
-5. `onBlur` on the five view inputs: `persistViewField(pageID, attribute, +event.target.value)`. Do not persist from `onChange`. Do not add blur to edit-only inputs (Spent, Favor max, thresholds, …). Do not persist die clicks.
-6. `Sidebar`: if `isViewSaving`, return only `<LoadingIndicator stylings="" secondary={true} />` (v1). Otherwise today’s Edit / Save / Revert. Wire the flag from the hook through `V2View`.
-done when:
-- Grep `from '../../../pages/v1` / `from '../../../../pages/v1` / `quickEdit` in the scoped v2 files is 0 hits.
-- Grep `persistViewField` in `GeneralInfo.tsx`, `Favor.tsx`, `Vitals.tsx` shows onBlur only (not onChange).
-- Grep `setCharacter(null)` in `characterHook.tsx` is still only inside `saveCharacterToBackend`.
-- `npx tsc --noEmit -p app` from repo root exits 0 (local gitignored `frontend-config.ts` stub may add nothing; `editV2URL` already required).
-depends on: T-060
-open questions: none
-deviations from design: Die rows are not inputs; no persist (Q7). Skip POST when the blurred value equals the snapshot so tab-through does not spin the sidebar.
+None.
 
 ## Done
+
+### T-061: Blur view inputs to persist; spinner on the sidebar
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design phase 2; Q1–Q8)
+why: Persist is on blur of view inputs, owner-only. v1 replaces sidebar buttons with `LoadingIndicator` `secondary` while that POST is in flight. Full `saveCharacterToBackend` nulls the sheet.
+scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; `.../hooks/interfaces/UpdateInterfaces.ts`; `.../V2View.tsx`; `.../components/sidebar/Sidebar.tsx`; view widgets `.../pageType1/components/GeneralInfo/GeneralInfo.tsx` (Unspent only); `.../Favor/Favor.tsx` (Current Favor only); `.../Vitals/Vitals.tsx` (Die Penalty, Current Damage, Current Stress). Unindexed `app/src/components/loading/components/LoadingIndicator.tsx` (reuse).
+result: `persistViewField` on the five view-input `onBlur`s. No-op when editing, non-owner, or snapshot already matches. In-flight count drives `isViewSaving`; sidebar shows `LoadingIndicator` `secondary`. Success patches snapshot + cache. Failure toasts. `setCharacter(null)` still only on full Save. Die click unchanged.
+deviations from design: Die rows are not inputs; no persist (Q7). Skip POST when the blurred value equals the snapshot. Overlapping blurs patch through `revertedRef` so the second success does not wipe the first.
+open questions: none
+
+### T-060: Persist one view-input column under `/v2/edit/:characterID/field`
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design phase 2; Q1 onBlur; Q2 field-only; Q3 skip non-owner POST; Q4 toast on client)
+why: View play-time inputs are local only. A full-character POST would rewrite sibling columns. v1 `/quickEdit` is rejected as a v2 route.
+scope: edit character primary `backend/server/v2/edit/editV2CharacterRoutes.ts`; new `backend/server/v2/edit/editV2FieldController.ts`; new `.../utilities/pageType1/utilities/saveViewField.ts`; new `backend/common/interfaces/v2/page1/viewPersist.ts`.
+result: `POST /:characterID/field` on the existing router. Owner is `request.user?.id`. One-column UPDATEs for `unspent` / `currentFavor` / `diePenalty` / `damage` / `stress`. Unknown attribute and non-owner refuse with no write. Existing full-row savers unchanged. No `/quickEdit`.
+deviations from design: none
+open questions: none
+
 
 ### T-059: Teal-tint unselected die faces on hover
 status: done
