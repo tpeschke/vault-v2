@@ -6,6 +6,7 @@ Decision: Sheet-1 play-time controls on the v2 page-type-1 **view** (`isEditing`
 Why: The designer named the phase-1 set. Persist is owner-only, field-only, on blur. Sidebar loading matches v1 quick-save. Die cells are clicks, not inputs; they do not POST.
 
 Constraints it imposes:
+- Later page types add play-time view controls only when that page’s topic names the cells. Persist and location-highlight mechanics stay here. Sheet-wide card contract: `v2-page-type.md`.
 - Replace only the phase-1 cells. Every other stored or computed view node stays `p` / `h2` / chrome.
 - Number cells: always-visible controlled `input type="number"` `character-value`, same `onChange` as the existing edit inputs (`+event.target.value`; empty → `0`). Unspent → `updateCrP(pageID, 'unspent', …)`. Current Favor → `updateFavor(pageID, { current })`. Die Penalty → `updateSelfDoubt(pageID, { diePenalty })` (Self Doubt only). Current Damage → `updateDamage(pageID, { damage })` (left of the Damage `/`). Current Stress → `updateStress(pageID, { stress })` (left of the Stress `/`).
 - Die rows: keep `p` + PNG markup. Enable the existing `dieIndex` click on the view (`index + 1`; click selected → `0`). Do not wrap dice in `<input>` / `<button>`. Selected glyph filter stays `page1-view.md` / T-057. View die click persists that `dieIndex` (including `0`) through `persistViewField`. Edit-session die click stays local until Save. Die **cell** teal fills match Edit only while locations are shown (`.view-quick-edit`). Locations off: cells stay untinted.
