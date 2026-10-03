@@ -6,6 +6,50 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-071: Put extra type-1 names on the v2 home list payload
+status: proposed
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (catalog icon; Q1 fold)
+why: Home SQL returns only the first type-1. The catalog icon needs the other names without a sheet GET.
+scope: list-characters primary `backend/server/controllers/home/v2/getCharacters.ts`; list adjacency `backend/common/interfaces/characterInterfaces.ts` (`CharacterHomeInfo`). Do not change v1 `getCharacters` or `HomeController` assembly. Do not add a route. Do not add `features/`.
+steps:
+1. Add optional `otherPageType1Names?: string[]` on `CharacterHomeInfo`. v1 rows omit it or leave it empty.
+2. In `allUsersCharacters`, keep one row per character (lowest type-1 `index`). Add a subquery `array_agg` of later type-1 `v2GeneralInfo.name` values, `order by` that page’s `index`, excluding the catalog page’s `v2CharacterPages.id`. `coalesce(..., '{}')`. Alias `"otherPageType1Names"` (quoted) so pg does not fold the key.
+3. Leave v1 home SQL unchanged.
+done when: v2 home rows include `otherPageType1Names` as a JS array (empty when only one type-1). `CharacterHomeInfo` has the optional field. `cd backend/server && ../../node_modules/.bin/tsc --noEmit` (existing gitignored `server-config` misses only). `cd backend/common && ../../node_modules/.bin/tsc --noEmit` if that package has a tsconfig.
+depends on: none
+open questions: none
+deviations from design: none
+
+### T-072: Catalog `fa-user` slot and extra-name tooltip
+status: proposed
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (Q2 separate slot; Q3 inherit; Q4 empty → New Character; Q5 one line; Q6 reuse `my-tooltip`; Q7 row click)
+why: Extra names are on the payload. The row still shows only the first name.
+scope: list adjacency `app/src/pages/home/components/charactersRowDisplay/component/CharacterRow.tsx`; `.../charactersRowDisplay/CharacterRowsDisplay.css`. Unindexed `app/src/App.tsx` only if the shared `Tooltip` needs `white-space: pre-line` so `\n` breaks. Do not add a tooltip package. Do not add a Font Awesome kit. Do not change v1 display except that shared `CharacterRow` stays quiet when the array is missing/empty. Do not add `features/`.
+steps:
+1. When `otherPageType1Names?.length` is greater than 0, render a slot that is **not** inside the name `<strong>`: wrap `<strong>{name}</strong>` and the icon in one 25% name column so ancestry / class / level / delete stay. Reset the nested `strong` so it does not keep `width: 25%`.
+2. Icon is `<i className="fa-solid fa-user"></i>` (exact classes). No extra color or font-size on the icon (inherit the name column’s 15px / row chrome). Not a `<button>`.
+3. Put `data-tooltip-id="my-tooltip"` and `data-tooltip-content` on the icon slot only. Content is extra names, `index` order already on the array, one per line: `name.trim() ? name : 'New Character'`, joined with `\n`. Do not use `data-tooltip-html`.
+4. If `\n` does not break on the existing Tooltip, set `style={{ whiteSpace: 'pre-line' }}` on `<Tooltip id="my-tooltip" />` in `App.tsx`. Delete tooltips stay one line.
+5. No `stopPropagation`. Row `onClick` still opens the character.
+done when: icon absent on v1 rows and on v2 rows with an empty/missing array. Icon present when the array is non-empty. Tooltip lists extras only (not the catalog name), one per line, empty → `New Character`. `rg -n "data-tooltip-html" app/src/pages/home/components/charactersRowDisplay/component/CharacterRow.tsx` is 0 hits. `cd app && ../node_modules/.bin/tsc --noEmit` (existing gitignored `frontend-config` misses only).
+depends on: T-071
+open questions: none
+deviations from design: name+icon share one 25% column (icon is still its own element). A sixth flex child would break the 25%/25%/25%/25%/5% row.
+
+### T-073: Keep extra names on catalog cache; write them on Save
+status: proposed
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (Q8 confirm)
+why: Home uses redux and skips GET when the cache exists. `updateCatalogInfo` replaces the whole `CharacterHomeInfo`, so a first-page name patch drops extras and hides the icon.
+scope: unindexed `app/src/redux/slices/usersCharactersSlice.tsx` (`updateCatalogInfo`); edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`saveCharacterToBackend` success only). Optional helper next to `firstPage1` in `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (export; do not invent a new owner). Do not change `dispatchCatalog` / `restoreCatalogFromSnapshot` payloads beyond what the reducer merge covers. Do not write extras on keystroke or Revert. Do not refetch `/allOfUsersCharacter` on Save. Do not add `features/`.
+steps:
+1. In `updateCatalogInfo`, when replacing a matching row: if `info.otherPageType1Names` is `undefined`, keep the existing row’s array; if the key is present (including `[]`), use the payload.
+2. After a successful full Save (`data` has `pages`), dispatch `updateCatalogInfo` with first-page identity from `data` plus `otherPageType1Names` = type-1 pages after the first, `generalInfo.name` as stored, `index: 1`.
+3. Failed Save / empty-name gate / view-field persist do not write extras.
+done when: a first-page `updateCatalogInfo` without the extra key leaves `otherPageType1Names` in place. Successful Save sets the array from reassembled pages after the first. `cd app && ../node_modules/.bin/tsc --noEmit` (existing gitignored `frontend-config` misses only).
+depends on: T-071
+open questions: none
+deviations from design: none
+
 ## Done
 
 ### T-070: Refuse Save 200 when stored type-1 count is short

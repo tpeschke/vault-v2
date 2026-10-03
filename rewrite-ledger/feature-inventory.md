@@ -23,7 +23,7 @@ Create character: home footer → `UsersCharactersHook.addCharacter` → `backen
 
 Edit character sheet: v2 view sidebar → new v2 edit owner. Canonical: `edit-character.md`.
 
-Add page-type-1 sheet: edit-only `+` under each page-type-1; local until Save; catalog stays the first page-type-1. Another instance of type 1, not page type N (`v2-page-type.md`). Canonical: `add-page-type-1.md`.
+Add page-type-1 sheet: edit-only `+` under each page-type-1; local until Save; catalog stays the first page-type-1. Extra persisted type-1 names are a catalog `fa-user` tooltip on that row, not a second character. Another instance of type 1, not page type N (`v2-page-type.md`). Canonical: `add-page-type-1.md`.
 
 Not present: quick-edit, download PDF.
 
