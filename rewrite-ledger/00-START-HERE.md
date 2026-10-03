@@ -55,7 +55,6 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | FSD colocation | `fsd-colocation.md` |
 | v2 page-type contract | `v2-page-type.md` |
 | Page type 1 first-page view | `page1-view.md` |
-| Page type 2 view | `page2-view.md` |
 | Edit character sheet | `edit-character.md` |
 | Quick view inputs (page type 1) | `quick-view-inputs.md` |
 | Session phases | `phases.md` |

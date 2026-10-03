@@ -48,11 +48,13 @@ New type N uses the same slots with `pageTypeN` / `pageN`. Wire into the existin
 
 Create-character: whether a new character gains page type N is noted by the designer when that type is added. `addV2CharacterController.ts` already comments “Add page type 2” / “Add page type 3”; those lines are not approval.
 
-How the next agent proceeds:
+How the next agent proceeds (only when the designer names a new page type and attaches that page’s official blank):
 1. Route here. Read this contract. Do not scan `TODO.md` Done.
 2. Open the exemplar trees. Copy structure and mechanics. Do not extract a `PageType` base or registry.
 3. Write `pageN-view.md` from that page’s official blank. Then Order TODOs that walk the vertical slice.
 4. After rename/move, grep the old path; expect zero hits.
+
+This file existing is not Order or Execute for a new page type.
 
 Code verified at Order 2026-10-03:
 - `V2View` `switch (page.type)` case 1; `default` empty fragment.
@@ -66,6 +68,7 @@ Rejected:
 - Restating page-1’s left/right section list here.
 - Treating PDF / v1 Quick Edit as required functionality.
 - Extracting a shared kit before a third page type shows a stable contract.
+- Ordering or scaffolding a specific later page type as part of writing this playbook.
 
 Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `edit-character.md`, `quick-view-inputs.md`
-TODOs: T-064 (page-2 layout; blocked on official blank)
+TODOs: none (playbook is the Order result; a later session Orders page N when the designer names it)

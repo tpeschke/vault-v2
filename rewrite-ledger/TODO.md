@@ -6,22 +6,6 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-064: Record page-type-2 layout from the official blank
-status: blocked
-source: rewrite-ledger/v2-page-type.md, rewrite-ledger/page2-view.md, 2026-10-03 (design Q7: Order page-type-2 from a blank)
-why: Page-type-2 implementation TODOs cannot name sections without the official page-2 blank. Inventing from leftover page-1 widgets or v1 `pageTwo` is rejected (`page2-view.md`).
-scope: ledger `rewrite-ledger/page2-view.md`. No application files until a follow-up Order walks the vertical slice (`v2-page-type.md`).
-steps:
-1. Attach the official page-2 blank to the session.
-2. Write `page2-view.md` section order, labels, exceptions, and stores from that blank. Keep sheet-wide rules on `v2-page-type.md`. No wordmark.
-3. Note whether create-character inserts `pageTypeID` 2 (`addV2CharacterController.ts` stub is not approval).
-4. A follow-up Order writes detailed implementation TODOs that walk the vertical slice. Do not start those files in this TODO.
-done when: `page2-view.md` status is `accepted`; it lists left/right (or other) section order from the blank; create-on-add is noted yes or no; grep of `page2-view.md` for “not attached” is 0 hits.
-depends on: designer attaches the official page-2 blank
-open questions: official blank; create-character inclusion
-deviations from design: none
-result:
-
 ### T-065: Restore Current Emotions leftover cap to 6
 status: proposed
 source: rewrite-ledger/page1-view.md, rewrite-ledger/TODO.md T-023 / T-034, found at Order 2026-10-03 while verifying the page-type playbook
