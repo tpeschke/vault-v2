@@ -97,7 +97,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                     type="button"
                                                     className="add-page-type-1"
                                                     onClick={() => pageType1Updates.addPageType1After(index)}
-                                                >+</button>
+                                                ><i className="fa-solid fa-plus"></i></button>
                                             }
                                         </Fragment>
                                     )

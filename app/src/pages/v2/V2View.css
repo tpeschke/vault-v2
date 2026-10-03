@@ -1,19 +1,10 @@
 .v2 .page-shell .add-page-type-1 {
-    display: block;
-    width: 796px;
-    margin: 15px 0;
-    padding: 0;
-    border: 0;
-    background: transparent !important;
-    color: #bdbdbd;
-    box-shadow: none;
-    cursor: pointer;
-    text-align: center;
+    text-align: left;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 6px 3px rgba(0, 0, 0, 0.2), 0px 2px 6px 3px rgba(0, 0, 0, 0.14), 0px 2px 6px 3px rgba(0, 0, 0, 0.12);
+    background: whitesmoke !important;
 }
 
-.v2 .view-edit .add-page-type-1,
-.v2 .view-edit .add-page-type-1:hover {
-    background: transparent !important;
-    color: #bdbdbd;
-    box-shadow: none;
+.v2 .page-shell .add-page-type-1:hover {
+    background: #b45f06 !important;
 }
