@@ -1,5 +1,5 @@
 # Feature inventory
-status: accepted   date: 2026-10-02
+status: accepted   date: 2026-10-03
 
 Unmarked **character** means v2. v1 rows are marked. Sheet widgets are not features.
 
@@ -16,11 +16,14 @@ Home is one page; list objectives stay split by version. Create character stays 
 - Create character
 - View character sheet
 - Edit character sheet
+- Add page-type-1 sheet
 - Delete character
 
 Create character: home footer → `UsersCharactersHook.addCharacter` → `backend/server/v2/add/`. Slot limit (Patreon/owner) is a constraint, not a feature.
 
 Edit character sheet: v2 view sidebar → new v2 edit owner. Canonical: `edit-character.md`.
+
+Add page-type-1 sheet: edit-only `+` under each page-type-1; local until Save; catalog stays the first page-type-1. Another instance of type 1, not page type N (`v2-page-type.md`). Canonical: `add-page-type-1.md`.
 
 Not present: quick-edit, download PDF.
 

@@ -56,6 +56,8 @@ How the next agent proceeds (only when the designer names a new page type and at
 
 This file existing is not Order or Execute for a new page type.
 
+Another **instance** of page-type-1 on the same character is a separate objective (`add-page-type-1.md`). That is not page type N.
+
 Code verified at Order 2026-10-03:
 - `V2View` `switch (page.type)` case 1; `default` empty fragment.
 - No `app/src/pages/v2/pageTypes/pageType2/` (and no v2 `pageTwo` tree). Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store until a later page’s topic and the designer say otherwise. Do not treat them, or v1 `pageTwo`, as page type N.

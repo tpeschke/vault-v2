@@ -56,6 +56,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | v2 page-type contract | `v2-page-type.md` |
 | Page type 1 first-page view | `page1-view.md` |
 | Edit character sheet | `edit-character.md` |
+| Add page-type-1 sheet | `add-page-type-1.md` |
 | Quick view inputs (page type 1) | `quick-view-inputs.md` |
 | Session phases | `phases.md` |
 | Schema on boot | `schema-on-boot.md` |
