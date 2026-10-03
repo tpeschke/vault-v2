@@ -6,20 +6,6 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-065: Restore Current Emotions leftover cap to 6
-status: proposed
-source: rewrite-ledger/page1-view.md, rewrite-ledger/TODO.md T-023 / T-034, found at Order 2026-10-03 while verifying the page-type playbook
-why: `page1-view.md` draws six cells (rank 0–5). T-034 cap is 6. `Characteristics.tsx` `DisplaySingleArray` is `max={9}`.
-scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` (`max` only). Do not change payload, CSS, or other lists.
-steps:
-1. Set `DisplaySingleArray` `max={6}`.
-2. Do not change insert/update helpers or the 3×2 grid CSS.
-done when: `Characteristics.tsx` has `max={6}`; grep of that file for `max={9}` is 0 hits.
-depends on: none
-open questions: none
-deviations from design: none
-result:
-
 ## Done
 
 ### T-063: Reveal view-input locations (v1 eye button)
