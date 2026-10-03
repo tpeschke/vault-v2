@@ -22,4 +22,4 @@ Rejected:
 - Wiring persist or the Edit toggle in this phase.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/components/GeneralInfo/GeneralInfo.tsx`; `.../Favor/Favor.tsx`; `.../Vitals/Vitals.tsx`; `app/src/pages/v2/V2View.tsx`
-TODOs: T-058
+TODOs: T-058 (done)

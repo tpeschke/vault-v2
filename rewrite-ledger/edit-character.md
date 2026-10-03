@@ -63,4 +63,4 @@ Revised 2026-10-03 (`quick-view-inputs.md`):
 - Unsaved-leave dirty — **revised**: warn only while `isEditing`. View play-time changes do not warn.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; `backend/server/db/ensureSchema.ts`; `app/src/redux/slices/characterCacheSlice.tsx`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; unindexed `app/src/App.tsx` / `package.json` (`react-toastify`)
-TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058
+TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058 (done)
