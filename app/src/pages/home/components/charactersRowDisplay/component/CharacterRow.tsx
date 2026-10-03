@@ -16,7 +16,8 @@ interface Props {
 }
 
 export default function CharacterRow({ character, deleteCharacter, viewRoute }: Props) {
-    const { id, name, ancestry, class: primaryClass, subclass, level } = character
+    const { id, name, ancestry, class: primaryClass, subclass, level, otherPageType1Names } = character
+    const extraNames = otherPageType1Names ?? []
 
     const [confirmDelete, setConfirmDelete] = useState(false)
 
@@ -61,7 +62,17 @@ export default function CharacterRow({ character, deleteCharacter, viewRoute }: 
 
     return (
         <div onMouseEnter={_ => preloadCharacterInfo(id)} onMouseLeave={_ => clearTimeout(timeOutID)} onClick={_ => goToCharacter(id)}>
-            <strong>{name ?? '?'}</strong>
+            <div className="catalog-name">
+                <strong>{name ?? '?'}</strong>
+                {extraNames.length > 0 && (
+                    <span
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content={extraNames.map(extraName => extraName.trim() ? extraName : 'New Character').join('\n')}
+                    >
+                        <i className="fa-solid fa-user"></i>
+                    </span>
+                )}
+            </div>
             <p>{ancestry ? ancestry : '?'}</p>
             <p>{primaryClass ? primaryClass : '?'} / {subclass ? subclass : '?'}</p>
             <p>lvl {level ? level : '?'}</p>

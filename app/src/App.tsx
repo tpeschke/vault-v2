@@ -31,7 +31,7 @@ function App() {
       <div className='container'>
         <Header />
         <AllRoutes pathname={pathname} />
-        <Tooltip id="my-tooltip" place="bottom" />
+        <Tooltip id="my-tooltip" place="bottom" style={{ whiteSpace: 'pre-line' }} />
         <ToastContainer />
         <Footer />
       </div>

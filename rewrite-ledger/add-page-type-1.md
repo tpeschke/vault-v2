@@ -36,4 +36,4 @@ Revised 2026-10-03 (catalog extra-name icon; Q1 fold; Q2 separate slot; Q3 inher
 - “Home list is one row per character” — **retained**. Extra type-1 names are a tooltip on that row, not a second character.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/`; `backend/server/v2/add/pageType1/` (reuse); `backend/server/v2/view/viewV2CharacterController.ts`; `backend/server/controllers/home/v2/getCharacters.ts`; `app/src/pages/home/components/charactersRowDisplay/`; `backend/common/interfaces/characterInterfaces.ts`; unindexed `app/src/redux/slices/usersCharactersSlice.tsx`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/basicData.sql` (verify only); `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-064–T-067 (done); persist miss: T-068–T-070 (done); catalog extra names: T-071–T-073
+TODOs: T-064–T-067 (done); persist miss: T-068–T-070 (done); catalog extra names: T-071–T-073 (done)

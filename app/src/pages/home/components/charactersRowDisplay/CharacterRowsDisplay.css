@@ -15,10 +15,22 @@
     background: lightgray;
 }
 
-.user-characters-shell>div strong, .user-characters-shell>div p {
+.user-characters-shell>div .catalog-name,
+.user-characters-shell>div p {
     width: 25%;
     padding: 10px 5px 10px 0;
     font-size: 15px;
+}
+
+.user-characters-shell>div .catalog-name {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+}
+
+.user-characters-shell>div .catalog-name strong {
+    width: auto;
+    padding: 0;
 }
 
 .user-characters-shell>div button {

@@ -13,6 +13,13 @@ function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
 }
 
+export function otherPageType1Names(character: CharacterVersion2): string[] {
+    return character.pages
+        .filter((page): page is Page1 => page.type === 1)
+        .slice(1)
+        .map(page => page.generalInfo.name)
+}
+
 export function mapPage1(character: CharacterVersion2, pageID: number, updater: (page: Page1) => Page1): CharacterVersion2 {
     return {
         ...character,
