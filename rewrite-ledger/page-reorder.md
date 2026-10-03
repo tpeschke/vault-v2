@@ -25,4 +25,4 @@ Rejected:
 - Button order other than swap | top | bottom | add (Q7).
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/editV2CharacterController.ts` (owner check only); `rewrite-ledger/add-page-type-1.md` (gutter row; reorder no longer rejected)
-TODOs: T-074 (proposed); T-075 (proposed)
+TODOs: T-074 (done); T-075 (done)

@@ -6,36 +6,25 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-074: Add edit-only swap / top / bottom left of `+`
-status: proposed
-source: rewrite-ledger/page-reorder.md, 2026-10-03 (Q1 reorder; Q2 first has swap; Q3 local until Save; Q4 isEditing; Q5 no empty slots; Q6 tooltip drafts; Q7 swap | top | bottom | add)
-why: Extra page-type-1 sheets can be added but not reordered. Save already writes `v2CharacterPages.index` from array order. The designer wants the three controls on the existing gutter row.
-scope: view/edit adjacency `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/V2View.css`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. Do not change `PageType1.tsx`. Do not change `persistPageType1` / `savePages` / `getCharacterPages`. Do not implement add-page. Do not import v1. Do not add `features/`.
-steps:
-1. Add local array helpers next to `addPageType1After`: swap with next, move to slot 0, move to last. No-op when the move is impossible.
-2. Wire them through `PageType1Updates` / `getV2Updates`. If the first page-type-1 changes, set `character.name` from that page and `updateCatalogInfo` with its identity plus `otherPageType1Names` from the remaining type-1s (same helpers as T-065 / T-073).
-3. In `V2View`, put the existing `+` last in a gutter row under each type-1 card. Left-to-right when present: swap (`fa-solid fa-arrow-up-arrow-down`, tooltip `Swap with the sheet below`), top (`fa-solid fa-up-to-line`, `Move this sheet to the top`), bottom (`fa-solid fa-down-to-line`, `Move this sheet to the bottom`), add. `data-tooltip-id="my-tooltip"`.
-4. Omit, do not disable: first sheet has no top; last sheet has no swap and no bottom; sole sheet has none of the three. No spacer slots.
-5. Style the new buttons like `.add-page-type-1` (no `.view-edit` teal). After swap / top / bottom, scroll the moved sheet into view by stable `pageID`. Do not scroll on `+`.
-done when: `npm --workspace @vault/frontend exec tsc --noEmit` exits 0. Grep `fa-arrow-up-arrow-down`, `fa-up-to-line`, `fa-down-to-line` hits `V2View.tsx` and not `pageTypes/pageType1/`. Grep `Move this sheet to the top` and `Swap with the sheet below` hits the view slice. One-page edit gutter still has `add-page-type-1` and none of the three new icons.
-depends on: none
-open questions: none
-deviations from design: none. Persist of `index` is already T-066 / T-067.
+## Done
 
 ### T-075: Refuse full Save unless `request.user` is the owner
-status: proposed
+status: done
 source: rewrite-ledger/page-reorder.md, 2026-10-03 (Q4 API-direct saves); rewrite-ledger/edit-character.md (owner check revised)
 why: `editV2Character` compares `ownerID` to `body.userInfo.userID`. Field POST already uses `request.user?.id`. A forged body can persist a reorder (and the rest of the sheet).
 scope: edit character primary `backend/server/v2/edit/editV2CharacterController.ts` (`editV2Character` owner `if` only). Do not change `savePages`, `persistPageType1`, the type-1 count gate, or `/v2/edit/:characterID/field`. Do not change v1 edit.
-steps:
-1. Refuse unless `ownerID === request.user?.id`. Keep the existing refuse message.
-2. Do not treat posted `userInfo.userID` as proof of ownership.
-done when: `npm --workspace @vault/server run build` exits 0. Grep `userInfo.userID` in `editV2CharacterController.ts` is 0. Grep `request.user?.id` in that file hits the owner `if`.
-depends on: none
-open questions: none
+result: Owner `if` is `ownerID === request.user?.id`. Posted `userInfo.userID` is unused. Refuse message unchanged.
 deviations from design: none
+open questions: none
 
-## Done
+### T-074: Add edit-only swap / top / bottom left of `+`
+status: done
+source: rewrite-ledger/page-reorder.md, 2026-10-03 (Q1 reorder; Q2 first has swap; Q3 local until Save; Q4 isEditing; Q5 no empty slots; Q6 tooltip drafts; Q7 swap | top | bottom | add)
+why: Extra page-type-1 sheets can be added but not reordered. Save already writes `v2CharacterPages.index` from array order. The designer wants the three controls on the existing gutter row.
+scope: view/edit adjacency `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/V2View.css`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. Do not change `PageType1.tsx`. Do not change `persistPageType1` / `savePages` / `getCharacterPages`. Do not implement add-page. Do not import v1. Do not add `features/`.
+result: Gutter row is swap | top | bottom | `+`. Helpers no-op at the ends. First-type-1 change updates `character.name` and catalog extras. Scroll uses `sheet-${pageID}`.
+deviations from design: 8px gap between gutter buttons so shadows do not stack.
+open questions: none
 
 ### T-073: Keep extra names on catalog cache; write them on Save
 status: done
