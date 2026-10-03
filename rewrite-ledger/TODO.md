@@ -6,7 +6,26 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-None.
+### T-062: Persist Self Doubt / Damage / Stress dieIndex on click
+status: proposed
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: selected dice must persist; Q1 persist clear-to-0; Q2 Edit session unchanged)
+why: T-061 persists view inputs on blur. Die cells are `<p>` clicks, so `dieIndex` stays local. The designer wants the selected die written too.
+scope: edit primary `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `.../utilities/pageType1/utilities/saveViewField.ts`; edit adjacency `app/src/pages/v2/hooks/characterHook.tsx` (`viewFieldValue`, `patchViewField` only); `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.tsx` (the three `DieRow` `onSelect`s). Do not change `DieRow` markup, die PNGs, T-057/T-059 CSS, `saveSelfDoubt` / `saveDamage` / `saveStress`, `saveCharacterToBackend`, leave-warn, or Edit Save / Revert. Do not wrap dice in `<input>` / `<button>`. Do not add `onBlur` on the die `<p>`. Do not import v1. Do not add `features/`.
+steps:
+1. Add `'selfDoubtDieIndex' | 'damageDieIndex' | 'stressDieIndex'` to `ViewPersistAttribute` and the controller allowlist. Do not reuse `'damage'` / `'stress'` (those are the current totals).
+2. `saveViewField`: `UPDATE v2SelfDoubt SET dieIndex = $1 WHERE pageID = $2`; same for `v2Damage` and `v2Stress`. One column only.
+3. `viewFieldValue` / `patchViewField`: read/write `vitalsInfo.selfDoubt.dieIndex`, `.damage.dieIndex`, `.stress.dieIndex` via existing `updateSelfDoubt` / `updateDamage` / `updateStress`.
+4. After each existing `onSelect` local update, call `persistViewField(pageID, attribute, index)` with that same next index (including `0`). `persistViewField` already no-ops when `isEditing`, non-owner, or snapshot matches — do not add a second gate.
+done when:
+- Grep `selfDoubtDieIndex` / `damageDieIndex` / `stressDieIndex` hits `viewPersist.ts`, `saveViewField.ts`, `editV2FieldController.ts`, `characterHook.tsx`, `Vitals.tsx`.
+- Grep `persistViewField` in `Vitals.tsx` is only on the three `DieRow` `onSelect`s (not onChange, not on DieRow `<p>` blur).
+- Grep `<input` / `<button` in `DieRow` is 0 hits.
+- Grep `saveSelfDoubt` / `saveDamage` / `saveStress` in `saveViewField.ts` is 0 hits.
+- `npx tsc --noEmit -p app` from repo root exits 0.
+depends on: T-060, T-061
+open questions: none
+deviations from design: Attribute names locked at Order (`selfDoubtDieIndex`, `damageDieIndex`, `stressDieIndex`) so they do not collide with current-total `'damage'` / `'stress'`.
+
 
 ## Done
 
