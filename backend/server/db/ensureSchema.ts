@@ -75,6 +75,8 @@ export default async function ensureSchema() {
     if (!await columnExists('v2basiccharacteristics', 'pageid')) {
         throw new Error('ensureSchema: v2BasicCharacteristics.pageID missing')
     }
+
+    await dropCharacterIdOnlyUniquesOnPages()
 }
 
 async function tableExists(tableName: string) {
@@ -106,5 +108,55 @@ async function renameTable(fromName: string, toName: string) {
 
     if (await tableExists(fromName)) {
         throw new Error(`ensureSchema: ${fromName} still exists after rename to ${toName}`)
+    }
+}
+
+function quoteIdent(name: string) {
+    return `"${String(name).replace(/"/g, '""')}"`
+}
+
+async function characterIdOnlyUniqueConstraints() {
+    return query(`
+        select c.conname as name
+        from pg_constraint c
+        join pg_class t on t.oid = c.conrelid
+        join pg_namespace n on n.oid = t.relnamespace
+        join pg_attribute a on a.attrelid = t.oid and a.attnum = c.conkey[1]
+        where n.nspname = 'public'
+          and t.relname = 'v2characterpages'
+          and c.contype = 'u'
+          and array_length(c.conkey, 1) = 1
+          and a.attname = 'characterid'
+    `)
+}
+
+async function characterIdOnlyUniqueIndexes() {
+    return query(`
+        select i.relname as name
+        from pg_index x
+        join pg_class i on i.oid = x.indexrelid
+        join pg_class t on t.oid = x.indrelid
+        join pg_namespace n on n.oid = t.relnamespace
+        join pg_attribute a on a.attrelid = t.oid and a.attnum = (x.indkey::smallint[])[1]
+        where n.nspname = 'public'
+          and t.relname = 'v2characterpages'
+          and x.indisunique
+          and not x.indisprimary
+          and x.indnkeyatts = 1
+          and a.attname = 'characterid'
+    `)
+}
+
+async function dropCharacterIdOnlyUniquesOnPages() {
+    const constraints = await characterIdOnlyUniqueConstraints()
+    for (const { name } of constraints) {
+        await query(`alter table v2CharacterPages drop constraint if exists ${quoteIdent(name)}`)
+    }
+    const indexes = await characterIdOnlyUniqueIndexes()
+    for (const { name } of indexes) {
+        await query(`drop index if exists ${quoteIdent(name)}`)
+    }
+    if ((await characterIdOnlyUniqueConstraints()).length || (await characterIdOnlyUniqueIndexes()).length) {
+        throw new Error('ensureSchema: v2CharacterPages still has a unique on characterid')
     }
 }

@@ -6,55 +6,35 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-068: Allow several v2CharacterPages rows per character
-status: proposed
-source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; Q1+Q2 landmine, not the live miss)
-why: A unique on `v2CharacterPages.characterid` alone would block a second sheet. Snapshot `basicData.sql` has `id` PK only. Live postgres is not in this repo.
-scope: unindexed `backend/server/db/ensureSchema.ts`. Verify `backend/server/v2/backupTables/basicData.sql` (`v2characterpages` only). Do not change `page1.sql`. Do not unique `(characterid, index)`. Do not rewrite `query()`.
-steps:
-1. In `ensureSchema`, list unique constraints and unique indexes on `v2characterpages` whose only key column is `characterid` (Postgres folds unquoted names).
-2. Drop each of those (`ALTER TABLE … DROP CONSTRAINT` / `DROP INDEX`). Leave `id` PK and any composite unique.
-3. Fail closed: if a characterid-only unique still exists, throw and do not listen.
-4. Leave `basicData.sql` unchanged if it still has no unique on `characterid`.
-done when: `ensureSchema.ts` contains the drop + fail-closed check. `basicData.sql` `v2characterpages` has no unique `characterid`. `cd backend/server && ../../node_modules/.bin/tsc --noEmit` (or `./node_modules/.bin/tsc --noEmit` if that package has its own). Live apply needs a server restart (`schema-on-boot.md`).
-depends on: none
-open questions: none
-deviations from design: none (Q1+Q2 already ruled this out as the live miss; still required so INSERT can land)
-
-### T-069: Persist page-type-1 by row existence; fail closed on mint
-status: proposed
-source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; Q1 extras gone, Q2 no server errors)
-why: `persistPageType1` UPDATEs whenever `pageID > 0`. UPDATE of a missing id writes nothing. `query()` hides `rowCount`. Save then 200s the old one-page assemble.
-scope: edit character primary `backend/server/v2/edit/utilities/persistPageType1.ts`. Same T-055 pattern as `saveBasicCharacteristics` (SELECT then UPDATE or INSERT). Do not change `savePages` switch, `addV2CharacterController`, `/v2/edit/:characterID/field`, or `query()`.
-steps:
-1. When `page.pageID > 0`, `select id from v2CharacterPages where id = $1 and characterID = $2`.
-2. If that select returns a row: existing `UPDATE index` + `savePageType1`; return.
-3. Otherwise INSERT `v2CharacterPages` (`index`, `pageTypeID` 1, `characterID`) `RETURNING id` (temps `<= 0` skip the select and INSERT).
-4. Read `id` from the returned rows. If it is not a number `> 0`, throw. Do not call `addPageType1` / `savePageType1` / `getV2Character`.
-5. `addPageType1(id)` then `savePageType1({ ...page, pageID: id })`.
-6. Do not write `if (pageID)` or `if (page.pageID)` without a numeric comparison (`-1` is truthy).
-done when: `persistPageType1` SELECTs by `id`+`characterID` before UPDATE. INSERT path throws when no minted id. `rg -n 'if \\((page\\.)?pageID\\)' backend/server/v2/edit/utilities/persistPageType1.ts` is 0 hits. `cd backend/server && ../../node_modules/.bin/tsc --noEmit`.
-depends on: T-068
-open questions: none
-deviations from design: none
+## Done
 
 ### T-070: Refuse Save 200 when stored type-1 count is short
-status: proposed
+status: done
 source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; do not 200 a shorter list)
 why: Client `captureLoaded`s any 200 that has `pages`. A silent missed INSERT looks like a successful Save and drops the extra cards.
 scope: edit character primary `backend/server/v2/edit/editV2CharacterController.ts` (`editV2Character` after `savePages`). Existing `checkForContentTypeBeforeSending`. Do not change `getV2Character` / `assembleV2Character` to return-without-send. Do not change `characterHook` or add a frontend count check.
-steps:
-1. After `await savePages(characterID, pages)`, count `v2CharacterPages` rows where `characterID = $1` and `pageTypeID = 1`.
-2. Posted count is `pages.filter(page => page.type === 1).length`.
-3. If stored count `<` posted count: `checkForContentTypeBeforeSending(response, { message: 'Could not save all sheets' })` and return. Do not include a `pages` key (`pages: []` is truthy; T-051 would `captureLoaded`).
-4. Else `getV2Character(request as ViewRequest, response)` as today.
-5. If stored count `>` posted count, still succeed (do not delete unknown pages).
-done when: the short-count branch sends `{ message: 'Could not save all sheets' }` and does not call `getV2Character`. Success path still calls `getV2Character`. `rg -n "pages: \\[\\]" backend/server/v2/edit/editV2CharacterController.ts` is 0 hits. `cd backend/server && ../../node_modules/.bin/tsc --noEmit`.
-depends on: T-069
+result: After `savePages`, stored type-1 count vs posted type-1 count. Short → `{ message: 'Could not save all sheets' }` with no `pages`. Else `getV2Character`.
+deviations from design: stored row count, not a split reassemble (Order).
 open questions: none
-deviations from design: gate uses stored type-1 row count, not a split reassemble (`getV2Character` sends)
 
-## Done
+### T-069: Persist page-type-1 by row existence; fail closed on mint
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; Q1 extras gone, Q2 no server errors)
+why: `persistPageType1` UPDATEs whenever `pageID > 0`. UPDATE of a missing id writes nothing. `query()` hides `rowCount`. Save then 200s the old one-page assemble.
+scope: edit character primary `backend/server/v2/edit/utilities/persistPageType1.ts`. Same T-055 pattern as `saveBasicCharacteristics` (SELECT then UPDATE or INSERT). Do not change `savePages` switch, `addV2CharacterController`, `/v2/edit/:characterID/field`, or `query()`.
+result: SELECT `id`+`characterID` before UPDATE. No row or `pageID <= 0` → INSERT. Throw if minted id is not a number `> 0`.
+deviations from design: none
+open questions: none
+
+### T-068: Allow several v2CharacterPages rows per character
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-03 (persist miss; Q1+Q2 landmine, not the live miss)
+why: A unique on `v2CharacterPages.characterid` alone would block a second sheet. Snapshot `basicData.sql` has `id` PK only. Live postgres is not in this repo.
+scope: unindexed `backend/server/db/ensureSchema.ts`. Verify `backend/server/v2/backupTables/basicData.sql` (`v2characterpages` only). Do not change `page1.sql`. Do not unique `(characterid, index)`. Do not rewrite `query()`.
+result: `ensureSchema` drops characterid-only uniques/indexes on `v2characterpages` and throws if one remains. `basicData.sql` left unchanged (no unique `characterid`). Restart to apply.
+deviations from design: none
+open questions: none
+
 
 ### T-067: Insert new page-type-1 rows on Save
 status: done

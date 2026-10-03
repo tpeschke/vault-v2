@@ -32,4 +32,4 @@ Revised 2026-10-03 (new sheets not saved; Q1 extras gone after Save; Q2 no serve
 - “After Save, `getV2Character` reassemble stays the response” — **revised**: success body only. A shorter stored type-1 list is `{ message }` without `pages`.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/`; `backend/server/v2/add/pageType1/` (reuse); `backend/server/v2/view/viewV2CharacterController.ts`; `backend/server/controllers/home/v2/getCharacters.ts`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/basicData.sql` (verify only); `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`
-TODOs: T-064–T-067 (done); persist miss: T-068–T-070
+TODOs: T-064–T-067 (done); persist miss: T-068–T-070 (done)
