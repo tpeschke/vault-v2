@@ -23,4 +23,4 @@ Rejected:
 - Wiring persist or the Edit toggle in this phase.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/components/GeneralInfo/GeneralInfo.tsx`; `.../Favor/Favor.tsx`; `.../Vitals/Vitals.tsx`; `.../Vitals/Vitals.css`; `app/src/pages/v2/V2View.tsx`
-TODOs: T-058 (done); die hover face: T-059
+TODOs: T-058 (done); die hover face: T-059 (done)

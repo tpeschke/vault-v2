@@ -19,7 +19,7 @@
 }
 
 .vitals-v2 .die-row p:hover:not(.selected) img {
-    filter: invert(1) invert(25%) sepia(1) saturate(1.4) hue-rotate(160deg) brightness(1.45) contrast(1.15);
+    filter: invert(1) invert(30%) sepia(1) saturate(0.8) hue-rotate(165deg) brightness(2.2) contrast(1);
 }
 
 .vitals-v2 .die-row p img {

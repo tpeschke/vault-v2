@@ -6,27 +6,19 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+None.
+
+## Done
+
 ### T-059: Teal-tint unselected die faces on hover
-status: proposed
+status: done
 source: rewrite-ledger/quick-view-inputs.md, rewrite-ledger/page1-view.md, 2026-10-03 (design: hover teal + cursor; Q1 default teal on the white face)
 why: T-058 made die cells clickable on the view. Hover teal and `cursor: pointer` exist only under `.view-edit`, and that paints the **cell**. The designer wants the **white face** tinted default teal and the cursor changed.
 scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/Vitals.css` (`.die-row p` and `img` only). Do not change `Vitals.tsx`, die PNGs, `dieIndex` click, Anointed, `index.css`, selected T-057 filter, or `.view-edit` cell fills / hover.
-steps:
-1. On `.vitals-v2 .die-row p` add `cursor: pointer` (view). Leave the existing `.view-edit` `cursor: pointer` in place.
-2. Add `.vitals-v2 .die-row p:hover:not(.selected) img` with `filter` using the T-057 method: `invert(1)` then a black-to-`#ADD8E6` / `rgba(173, 216, 230)` stack. Face near that teal; ink near-white. Tune like T-057 (exact hex not required). Do not use `mix-blend-mode`, a second asset, or hover `background` on the `<p>`.
-3. `.die-row p.selected img` stays the T-057 flame filter on hover. Do not override it.
-4. Do not change `.v2 .view-edit .vitals-v2 .die-row p` rest even/odd fills or their `rgb(145, 181, 194)` hover.
-done when:
-- Computed `cursor` on a view die `p` is `pointer`.
-- Unselected hover `img` has a non-`none` `filter`; unselected rest `img` `filter` is `none`.
-- Selected hover `img` filter equals the T-057 string (`invert(1) invert(25%) sepia(1) saturate(2) hue-rotate(-10deg) brightness(1.6) contrast(1.3)`).
-- View die `p` hover `background-color` is not teal (cell stays grey / transparent).
-- Grep `mix-blend-mode` in `Vitals.css` is 0 hits. No TSX change.
-depends on: T-058
+result: View `.die-row p` is `cursor: pointer`. Unselected hover `img` uses `invert(1) invert(30%) sepia(1) saturate(0.8) hue-rotate(165deg) brightness(2.2) contrast(1)` (face near `#ADD8E6`, ink near-white). Selected hover stays the T-057 flame string. View cell hover background stays transparent. Edit even/odd fills and `rgb(145, 181, 194)` hover unchanged. No `mix-blend-mode`. No TSX change.
+deviations from design: Face is near `#ADD8E6` (sampled ~`#b1d2ec`); exact hex not required. Chrome serializes `invert(25%)` as `invert(0.25)`.
 open questions: none
-deviations from design: none
 
-## Done
 
 ### T-058: Show page-type-1 quick view inputs
 status: done
