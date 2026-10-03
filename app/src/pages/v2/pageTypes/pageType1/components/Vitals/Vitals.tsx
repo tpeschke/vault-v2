@@ -36,7 +36,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                     </span>
                     <span>
                         <h2>Die Penalty</h2>
-                        <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.diePenalty} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.diePenalty} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'diePenalty', +event.target.value)} />
                     </span>
                 </div>
             </section>
@@ -56,7 +56,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                             <p className="center-text character-value">{damage.knockback}</p>
                         }
                     </span>
-                    <input className="center-text character-value" type="number" placeholder=" " value={damage.damage} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} />
+                    <input className="center-text character-value" type="number" placeholder=" " value={damage.damage} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'damage', +event.target.value)} />
                     <span className="slash">/</span>
                     {isEditing ?
                         <input className="center-text character-value" type="number" placeholder=" " value={damage.threshold} onChange={event => updates.updateDamage(pageID, { threshold: +event.target.value })} />
@@ -69,7 +69,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
                 <h1>Stress</h1>
                 <DieRow dieIndex={stress.dieIndex} onSelect={index => updates.updateStress(pageID, { dieIndex: index })} />
                 <div className="stress-values">
-                    <input className="center-text character-value" type="number" placeholder=" " value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} />
+                    <input className="center-text character-value" type="number" placeholder=" " value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'stress', +event.target.value)} />
                     <span className="slash">/</span>
                     {isEditing ?
                         <input className="center-text character-value" type="number" placeholder=" " value={stress.threshold} onChange={event => updates.updateStress(pageID, { threshold: +event.target.value })} />

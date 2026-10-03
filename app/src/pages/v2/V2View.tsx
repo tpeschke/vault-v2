@@ -16,7 +16,7 @@ export default function V2View({ setLoading, pathname }: Props) {
     const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
 
-    const { character, isDirty, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname)
+    const { character, isDirty, isViewSaving, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing)
     const { saveCharacterToBackend, revertCharacter, pageType1Updates } = updateFunctions
     const warnOnLeave = isDirty && isEditing
 
@@ -95,6 +95,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                             saveCharacter={saveCharacter}
                             revertCharacterToUnedited={revertCharacterToUnedited}
                             ownsThisCharacter={character.userInfo.ownsThisCharacter}
+                            isViewSaving={isViewSaving}
                         />
                     }
                 </div>

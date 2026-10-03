@@ -3,6 +3,7 @@ import { SocialSkillSuites } from "@vault/common/interfaces/v2/page1/characteris
 import { Favor } from "@vault/common/interfaces/v2/page1/favor"
 import { Attack, Defense } from "@vault/common/interfaces/v2/page1/combatInfo"
 import { Stats } from "@vault/common/interfaces/v2/page1/statsInterface"
+import { ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
 import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vitals"
 import { Dispatch } from "redux"
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice"
@@ -51,7 +52,8 @@ function dispatchCatalog(character: CharacterVersion2, pageID: number, dispatch:
 export default function getV2Updates(
     character: CharacterVersion2 | null,
     setCharacter: (character: CharacterVersion2) => void,
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number) => void
 ): PageType1Updates {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
@@ -151,6 +153,7 @@ export default function getV2Updates(
         updateAttack: (pageID, index, patch: Partial<Attack>) => {
             if (!character) { return }
             apply(updateAttack(character, pageID, index, patch))
-        }
+        },
+        persistViewField
     }
 }

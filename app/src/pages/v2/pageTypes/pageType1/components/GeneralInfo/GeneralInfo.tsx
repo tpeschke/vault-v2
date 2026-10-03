@@ -63,7 +63,7 @@ export default function GeneralInfoDisplay({ generalInfo, pageID, updates }: Pro
                 <strong>CrP</strong>
                 <span>
                     <em>Unspent</em>
-                    <input className='border center-text character-value' type="number" placeholder=" " value={unspent} onChange={event => updates.updateCrP(pageID, 'unspent', +event.target.value)} />
+                    <input className='border center-text character-value' type="number" placeholder=" " value={unspent} onChange={event => updates.updateCrP(pageID, 'unspent', +event.target.value)} onBlur={event => updates.persistViewField(pageID, 'unspent', +event.target.value)} />
                 </span>
                 <span>
                     <em>Spent</em>

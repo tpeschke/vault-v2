@@ -2,6 +2,7 @@ import { Attack, Defense } from "@vault/common/interfaces/v2/page1/combatInfo"
 import { CharacteristicPair, Description, Emotion, Flaw, SocialSkillSuites } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
 import { Favor } from "@vault/common/interfaces/v2/page1/favor"
 import { Stats } from "@vault/common/interfaces/v2/page1/statsInterface"
+import { ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
 import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vitals"
 import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
 
@@ -29,6 +30,7 @@ export interface PageType1Updates {
     updateStress: (pageID: number, patch: Partial<Stress>) => void
     updateDefense: (pageID: number, patch: Partial<Defense>) => void
     updateAttack: (pageID: number, index: number, patch: Partial<Attack>) => void
+    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number) => void
 }
 
 export interface V2UpdateFunctions {
