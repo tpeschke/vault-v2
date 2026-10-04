@@ -68,6 +68,24 @@
     height: 17.38px;
 }
 
+.combat-skills-v2 .suites-col em,
+.combat-skills-v2 .suites-col p,
+.combat-skills-v2 .suites-col input,
+.combat-skills-v2 .suites-col .discount-row > h2 {
+    min-height: 17.38px;
+    height: 17.38px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.v2 .combat-skills-v2 .suites-col input.character-value {
+    min-height: 17.38px;
+    height: 17.38px;
+    padding: 2px 1px;
+    box-sizing: border-box;
+    background-clip: content-box;
+}
+
 .combat-skills-v2 .skill-header h2 {
     padding: 4px;
     background-clip: border-box;

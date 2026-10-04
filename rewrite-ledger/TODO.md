@@ -6,22 +6,19 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-090: Make each suites-col row the same height in view and edit
-status: proposed
+status: done
 source: rewrite-ledger/page2-view.md, 2026-10-04 (screenshot clarify: one row height in both modes; Q1 every first-column row; Q2 empty-edit 17.38)
 why: View Athletics→Weirdcraft and Armor→Unarmed are taller than the same rows in edit. `suites-col` has `min-height` only. View `p` keeps island padding and `line-height: 1.2`; edit `input` uses View.css `padding: 0` and filled `height: 1.2em`. Native Language wrapping the name under the label already matches across modes — that is not the bug.
 scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/GeneralSkills.css` and `.../CombatSkills/CombatSkills.css` (`suites-col` cells only). Do not change `View.css`, `index.css`, Adv Skills wrap heights, NotesPanes, page type 1, or JSX unless a selector cannot reach the cell. Do not add `features/`. Do not set `--mapped-row-min-height` on `.page-type-two`.
-steps:
-1. Each General and Combat `suites-col` value row (seven general suites, five combat suites, Native Language, Armor Skill Adj, Gen. Skill Discount, Combat Skill Discount) must have the **same used height** in view and in edit.
-2. Lock every value cell in that column (`em`, view `p`, edit `input`, discount `h2`) to `height` and `min-height` **17.38px**. Specificity must beat View.css filled-input `1.2em` and `padding: 0`. Restate island `padding: 2px 1px` / `border-box` / `background-clip: content-box` on those inputs.
-3. Do not lock `.skill-header h2`. Native Language name stays stacked in **both** modes; `em` and the name `p`/`input` are each 17.38 in both modes (that row is two boxes tall in both).
-4. Leave Adv Skills rules unchanged.
-done when: `grep -n "suites-col" -A 20 app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/GeneralSkills.css app/src/pages/v2/pageTypes/pageType2/components/CombatSkills/CombatSkills.css` shows `height: 17.38px` on suites-col `em`/`p`/`input` (and discount `h2`); those input rules include `height: 17.38px` (not only `min-height`); `grep -n "mapped-row-min-height" app/src/pages/v2/pageTypes/pageType2/` is 0 hits.
+result: Locked `em`/`p`/`input`/discount `h2` in both suites-cols to `height` + `min-height` 17.38. Suites-col `input.character-value` restates island padding so View.css `padding: 0` / filled `1.2em` cannot shrink or grow the row. Header `h2` and Adv Skills wrap left as-is.
 depends on: T-083, T-084, T-086 (done)
-open questions: none
 deviations from design: none. Tightened after screenshots: the done-check is same row height, not “17.38 somewhere.”
 
-## Done
 
 ### T-089: Paint leftover zebra behind the note panes
 status: done
