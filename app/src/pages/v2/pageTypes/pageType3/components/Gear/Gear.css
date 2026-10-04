@@ -15,6 +15,7 @@
 .page3-gear-head,
 .page3-gear-row {
     display: flex;
+    flex-wrap: nowrap;
     align-items: stretch;
     box-sizing: border-box;
 }
@@ -71,19 +72,21 @@
 
 .page3-gear-size,
 .page3-gear-head > strong:nth-child(2) {
+    flex: 0 0 32px;
     width: 32px;
     text-align: center;
 }
 
 .page3-gear-w,
 .page3-gear-head > strong:nth-child(5) {
+    flex: 0 0 28px;
     width: 28px;
     text-align: center;
 }
 
 .page3-gear-head > strong:nth-child(3),
-.page3-gear-head > strong:nth-child(4),
-.page3-flag-box {
+.page3-gear-head > strong:nth-child(4) {
+    flex: 0 0 18px;
     width: 18px;
     text-align: center;
 }
@@ -91,6 +94,10 @@
 .page3-gear-size,
 .page3-gear-w {
     height: 17.38px;
+}
+
+.page3-gear-head > strong i {
+    font-size: 12px;
 }
 
 .page3-flag-box {
@@ -102,6 +109,7 @@
     cursor: pointer;
     flex: 0 0 12px;
     padding: 0;
+    background: #e8e8e8;
 }
 
 .page3-flag-box i {

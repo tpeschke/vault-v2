@@ -6,6 +6,7 @@
 .page3-contacts-list > span {
     display: block;
     box-sizing: border-box;
+    padding: 2px 1px;
 }
 
 .page3-contacts-list > span:nth-child(even) {
@@ -15,12 +16,9 @@
 .page3-contacts-list > span p,
 .page3-contacts-list > span input {
     min-height: 17.38px;
-    height: 17.38px;
     width: 100%;
     min-width: 0;
-    padding: 2px 1px;
     box-sizing: border-box;
-    background-clip: content-box;
 }
 
 .v2 .view-edit .page3-contacts-list > span:nth-child(even) input {
