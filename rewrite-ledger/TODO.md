@@ -6,23 +6,19 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-093: Put gutter add on the sheet playbook vertical slice
-status: proposed
+status: done
 source: rewrite-ledger/v2-page-type.md, 2026-10-04 (Q1 Save-gate type N; Q2 label on pageN-view.md)
 why: The playbook lists surfaces every new type must add. Instance add is only today’s two buttons, so a type-N Order can skip the labeled gutter insert and Save count-gate.
 scope: ledger `rewrite-ledger/v2-page-type.md` (playbook). Pointer only on `rewrite-ledger/add-page-type-1.md`. Do not change app or backend. Do not name a type-3 label. Do not add `features/` or a button registry.
-steps:
-1. Add a **Gutter add** row to the vertical slice table. Exemplar: `emptyPageType1` + `addPageAfter`; type 2: `emptyPageType2` + `addPageType2After`; buttons in `V2View` (`add-page-type-1.md`). Type N: `emptyPageTypeN`, `addPageTypeNAfter`, one labeled `+ …` to the right of the last add, on every card, same chrome, insert after that card, no scroll. Label is named on `pageN-view.md`. Save count-gate includes type N. Not Create. Not a dropdown or shared add-button factory.
-2. Proceed step 3: write `pageN-view.md` (including that add-button label) from the official blank; Order TODOs that walk the vertical slice, **including gutter add** and the type-N Save count-gate.
-3. Session gutter bullet: keep today’s **+ Main Info** / **+ Skills & Abilities**; state that every new type adds one labeled add. Mechanics stay `add-page-type-1.md`.
-4. On `add-page-type-1.md`, one pointer: type N instance add is a playbook vertical-slice row (`v2-page-type.md`).
-done when: `grep -n "Gutter add" -A 3 rewrite-ledger/v2-page-type.md` shows `emptyPageTypeN` / `addPageTypeNAfter` / Save count-gate / `pageN-view.md`; `grep -n "gutter add" rewrite-ledger/v2-page-type.md` hits the proceed step; `grep -n "vertical-slice" rewrite-ledger/add-page-type-1.md` is ≥ 1 hit; `git diff --name-only` for this change has no `app/` or `backend/` paths.
+result: Vertical-slice **Gutter add** row plus proceed step 3 now require `emptyPageTypeN` / `addPageTypeNAfter`, a label on `pageN-view.md`, and a type-N Save count-gate. Pointer on `add-page-type-1.md`.
 depends on: T-092 (done)
-open questions: none
 deviations from design: none
 
-
-## Done
 
 ### T-092: Add + Skills & Abilities; make + Main Info always type 1
 status: done
