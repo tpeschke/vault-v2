@@ -17,7 +17,7 @@ Constraints it imposes:
 - Advanced general skills: one array `{ id, key?, name, stat, rank }`. Cap **36**. Leftover pads to cap. Two visual columns, **one list that wraps** column-major (fill down the left Adv Skills track, then the right; 18 rows each, matching the blank). Not two stores. Not two slots glued to each suite.
 - Combat suites: fixed 5, keys `armor` `melee` `ranged` `shields` `unarmed`, `suiteID` 1–5 in that order. Each `{ rank }` only (`number | ''`).
 - Advanced combat skills: one array `{ id, key?, name, rank }`. Cap **20**. Same wrap (10 rows per column). Two-field rows may use v2 `DisplayPairArray` (`name` as `value`). General adv three-field rows stay local; do not add a shared triple widget.
-- Abilities and Burdens & Injuries: one `text` string each, notes-style textarea in edit, `p.character-value` on view. Wrap and grow. Min-height `calc(16 * 17.38px)` (lined rows on the blank). Overflow recorded.
+- Abilities and Burdens & Injuries: one `text` string each, notes-style textarea in edit, `p.character-value` on view. Wrap and grow. Min-height `calc(16 * 17.38px)` (lined rows on the blank). Overflow recorded. **15px** between the two panes (scoped to `.page-type-two`; do not put `gap` on shared `DoubleColumn.css`). Shrink the 50% column widths so 50+50+15 does not overflow `.page`. Leftover zebra behind both the view `p` and the edit `textarea`: `#f3f3f3` / white full bands, pitch **17.38px**, **first band white**, `repeating-linear-gradient`, `background-attachment: local`. Tile the same zebra when the pane grows past 16 rows. Keep the bands visible in `view-edit` (widget restates `background` / hover with `!important`; no solid teal fill). Do not convert to leftover list rows. Do not change `line-height` to chase the 17.38 pitch.
 - List arrays: real rows only; leftover pads to cap; one insert row while editing and `length < cap`; insert on blur if any stored field is non-empty; `makeTempID` for React keys; clearing stored fields removes the row. New rows `id` 0 or omitted.
 - Edit: stored drawn cells swap to controlled `character-value` inputs. Suite names, section bars, and Stat/Rank headers stay chrome. Computed: none on this page.
 - Persist every type-2 field on the full Save payload. Schema: `ensureSchema` + `backupTables/page2.sql` in the same change (`schema-on-boot.md`). Tables keyed by `pageID` (several type-2 pages per character):
@@ -37,6 +37,8 @@ Rejected:
 - Nested two adv-skill slots per suite.
 - Two independent Adv Skills stores.
 - Abilities / Burdens as leftover list rows or name+rank items (Q6: textarea per pane).
+- Official-blank hairline rules on these panes (2026-10-04 Q1: leftover zebra bands).
+- Solid edit teal that hides the note zebra (2026-10-04 Q4: bands stay visible).
 - Sheet spelling **Injures**.
 - Computing discounts or ranks.
 - Play-time view controls on this page.
@@ -44,5 +46,9 @@ Rejected:
 - A shared three-field array widget.
 - The 19.38 leftover bump on this card.
 
+Revised 2026-10-04 (note gap + zebra; Design Q1–Q5):
+- Abilities / Burdens textarea / `p` / 16×17.38 min-height — **retained**.
+- 15px between the panes; leftover zebra behind both controls (white first, 17.38 pitch, tile on grow, visible in edit) — **added**.
+
 Touches: `app/src/pages/v2/pageTypes/pageType2/`; `backend/common/interfaces/v2/page2/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page2.sql`; ledger front panels
-TODOs: T-076–T-087
+TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089
