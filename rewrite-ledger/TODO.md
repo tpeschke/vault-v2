@@ -6,190 +6,126 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+None.
+
+## Done
+
 ### T-100: Add Page3 contract and union member
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-04
 why: Assemble, persist, and the view switch need a `type: 3` payload. `PageV2` is `Page404Error | Page1 | Page2`.
 scope: contracts `backend/common/interfaces/v2/pageTypes.ts`; new `backend/common/interfaces/v2/page3/` (Page3 stores, contact/relationship rows, gear slot keys and `PAGE3_GEAR_SLOTS`, coinage, notes). Do not change page-1 or page-2 interfaces. Do not add `features/`.
-steps:
-1. Add `Page3` with `type: 3`, `pageID`, `contacts`, `relationships`, `gear` (keyed slots), `coinage`, `notes` as `page3-view.md`.
-2. Export the slot-key list and default-size `'S'` set from that file.
-3. Union `PageV2` as `Page404Error | Page1 | Page2 | Page3`.
-done when: `npx tsc --noEmit -p backend/common` succeeds. `PageV2` includes `Page3`. `grep type: 3` hits `pageTypes.ts`.
+result: `Page3` is `type: 3` with contacts, relationships, keyed gear, coinage, notes. `PAGE3_GEAR_SLOTS` and `PAGE3_DEFAULT_S_SLOTS` export from `page3Interfaces.ts`. `PageV2` includes `Page3`. `tsc --noEmit -p backend/common` succeeds.
 depends on: none
-open questions: none
 deviations from design: none
 
 ### T-101: Create page-type-3 tables on boot
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md; rewrite-ledger/schema-on-boot.md, 2026-10-04
 why: Live postgres has no type-3 stores. Snapshot and `ensureSchema` must match.
 scope: unindexed `backend/server/db/ensureSchema.ts`; new `backend/server/v2/backupTables/page3.sql`. Do not change `page1.sql` or `page2.sql`. Do not insert `v2CharacterPages` type-3 rows.
-steps:
-1. Snapshot the four tables from `page3-view.md` (`v2Page3Basics` unique `pageID`; contacts; relationships; gear unique `(pageID, slot)`).
-2. `CREATE TABLE IF NOT EXISTS` in `ensureSchema`. Fail closed if any table is missing after the patch.
-3. Do not backfill `v2CharacterPages` for existing characters.
-done when: `page3.sql` lists all four tables. `ensureSchema` creates them. `grep pageTypeID = 3` in `ensureSchema.ts` is 0 hits.
+result: `page3.sql` and `createPageType3Tables` create `v2Page3Basics`, `v2Page3Contacts`, `v2Page3Relationships`, `v2Page3Gear`. Fail closed if any table is missing. `grep pageTypeID = 3` in `ensureSchema.ts` is 0.
 depends on: T-100
-open questions: none
 deviations from design: none
 
 ### T-102: Assemble page type 3 and empty defaults
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md; rewrite-ledger/v2-page-type.md, 2026-10-04
 why: `assembleV2Character` `default` returns `{ type: 404 }`. `getCharacterPages` already loads every `v2CharacterPages` row.
 scope: view primary `backend/server/v2/view/assembleV2Character/assembleV2Character.ts` (`switch` only); new `backend/server/v2/view/assembleV2Character/utilities/pageType3/`; view adjacency `app/src/pages/v2/hooks/updates/emptyPageType3.ts`. Copy structure from `assemblePageType2` / `emptyPageType2`. Do not change `getCharacterName` (still first type-1).
-steps:
-1. `assemblePageType3` fills a full `Page3` from the four tables. Missing gear slots pad from `PAGE3_GEAR_SLOTS` with the default size set.
-2. `assembleV2Character` `case 3`. `default` stays 404.
-3. `emptyPageType3(pageID)` matches that skeleton (empty contacts/relationships, all slots, coinage 0 / `''`, notes `''`).
-done when: `assembleV2Character.ts` has `case 3`. `emptyPageType3` exists. `getCharacterName` still first type-1 (`pageTypeID = 1` unchanged).
+result: `assemblePageType3` pads all `PAGE3_GEAR_SLOTS`. `assembleV2Character` has `case 3`. `emptyPageType3` matches that skeleton. `getCharacterName` still `pageTypeID = 1`.
 depends on: T-100, T-101
-open questions: none
 deviations from design: none
 
 ### T-103: Insert one page-type-3 on Create character
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md (Q1 type 3 at index 2), 2026-10-04
 why: `addV2CharacterController` inserts type 1 at 0 and type 2 at 1. The “Add page type 3” comment is not approval; this TODO is.
 scope: create primary `backend/server/v2/add/addV2CharacterController.ts`; new `backend/server/v2/add/pageType3/` (mirror `addPageType2`: insert default basics + one gear row per `PAGE3_GEAR_SLOTS`). Do not backfill existing characters. Do not change home slot limits.
-steps:
-1. After the type-2 insert, insert `v2CharacterPages` `(2, 3, characterID)` and `addPageType3`.
-2. `addPageType3` writes basics + every gear slot with the default size set. Contacts and relationships stay empty.
-3. Remove the stale “Add page type 3” comment.
-done when: Create inserts type 1 index 0, type 2 index 1, type 3 index 2. `grep Add page type 3` in `addV2CharacterController.ts` is 0 hits. No `pageTypeID = 3` insert in `ensureSchema.ts`.
+result: Create inserts type 1 index 0, type 2 index 1, type 3 index 2. `addPageType3` writes basics + every gear slot with the default size set. `grep Add page type 3` in the controller is 0. No type-3 insert in `ensureSchema.ts`.
 depends on: T-101
-open questions: none
 deviations from design: none
 
 ### T-104: Persist and delete page type 3; gate Save on type-3 count
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md; rewrite-ledger/add-page-type-1.md, 2026-10-04
 why: `savePages` `default` is a no-op. `deletePages` `default` is true. The Save gate counts type 1 and type 2 only.
 scope: edit primary `backend/server/v2/edit/utilities/savePages.ts`; new `backend/server/v2/edit/utilities/persistPageType3.ts` and `backend/server/v2/edit/utilities/pageType3/`; `backend/server/v2/edit/editV2CharacterController.ts` (count gate only); delete `backend/server/v2/delete/utilities/deletePages.ts`; new `backend/server/v2/delete/utilities/deletePagesUtilities/pageType3/`. Copy `persistPageType2` / `savePageType2` / `deletePageType2`. Reuse `backend/server/v2/add/pageType3/`. Do not rewrite `query()`. Do not change `/v2/edit/:characterID/field`.
-steps:
-1. `savePages` / `deletePages` `case 3`.
-2. Basics upsert on unique `pageID`. Gear upsert per `(pageID, slot)`. Contacts/relationships delete-not-in + update/insert by `index`.
-3. Save refuses if stored type-1 or type-2 or type-3 count is short (`Could not save all sheets`, no `pages`).
-done when: `savePages.ts` and `deletePages.ts` have `case 3`. `editV2CharacterController.ts` has a type-3 count SQL. `persistPageType3` throws if INSERT yields no `id > 0`.
+result: `savePages` / `deletePages` have `case 3`. Basics and gear upsert. Contacts/relationships delete-not-in. Save refuses if stored type-1 or type-2 or type-3 count is short. `persistPageType3` throws if INSERT yields no `id > 0`.
 depends on: T-100, T-101, T-103
-open questions: none
 deviations from design: none
 
 ### T-105: Thread pageType3Updates through the v2 hook
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md; rewrite-ledger/v2-page-type.md, 2026-10-04
 why: `getV2Updates` returns type-1, type-2, and gutter. Type-3 cells have no local writers.
 scope: view/edit adjacency `app/src/pages/v2/hooks/updates/pageType3Updates.ts`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `characterHook.tsx`. Do not import v1. Do not add play-time persist attributes here (T-110).
-steps:
-1. Add `PageType3Updates` writers for contacts, relationships, gear slots, coinage, notes (caps 18 / 18).
-2. `getV2Updates` returns `pageType3Updates`. `characterHook` exposes it.
-3. `mapPage3` / find-by-`pageID` copy `mapPage2`.
-done when: `PageType3Updates` is on `V2UpdateFunctions`. `npx tsc --noEmit -p app` or the app tsconfig used by type-2 work succeeds.
+result: `PageType3Updates` is on `V2UpdateFunctions`. `mapPage3` / find-by-`pageID` copy `mapPage2`. Caps 18 / 18. App tsc reports only the pre-existing missing `frontend-config`.
 depends on: T-100
-open questions: none
 deviations from design: none
 
 ### T-106: Draw Contacts | Relationships
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-04
 why: Type 3 has no widgets. Official blank page 3 starts with that pair.
 scope: new `app/src/pages/v2/pageTypes/pageType3/` (`PageType3.tsx`, `PageType3.css`, Contacts / Relationships widgets). View adjacency `app/src/pages/v2/V2View.tsx` (`case 3` mount only; gutter is T-111). Reuse `doubleColumn` for this pair only. Do not add `features/`. Do not mount the wordmark.
-steps:
-1. Root `.page.card.page-type-three`. No `--mapped-row-min-height`. No wordmark.
-2. Contacts heading exact. `DisplaySingleArray` cap 18, `showInsert={true}`, always-visible `input.character-value`.
-3. Relationships heading + **R** + **P**. Page-local three-field rows, cap 18 leftover. Name and R are `p` on the view; P is always-visible `input type="number"`.
-done when: `V2View` `case 3` mounts `PageType3`. `grep bonfire-wordmark` under `pageType3/` is 0 hits. `grep 19.38` under `pageType3/` is 0 hits. `grep DisplayTripleArray` is 0 hits.
+result: `V2View` `case 3` mounts `PageType3`. Contacts `DisplaySingleArray` cap 18, `showInsert={true}`. Relationships page-local three-field rows. `grep bonfire-wordmark` / `19.38` / `DisplayTripleArray` under `pageType3/` are 0.
 depends on: T-100, T-105
-open questions: none
 deviations from design: none
 
 ### T-107: Draw Gear three columns
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-04
 why: Gear is the rest of official blank page 3. Fixed slots, not a v1 list.
 scope: `app/src/pages/v2/pageTypes/pageType3/` Gear widgets. Do not change page type 1 or 2. Do not add `TripleColumn` under `pageTypes/components/`. Flag box look is T-108.
-steps:
-1. Page-local three-column Gear under the top pair. Chrome labels, `->`, `*`, section bars, footnote, Carry Str, QM numbers, coinage conversion chrome as `page3-view.md`.
-2. Every slot draws Type (Item), Size, two flag cells, W. Play-time: item/size/W are always-visible `character-value` inputs. Worn labels stay chrome.
-3. Coinage amounts + Size per denomination; Notes wrap/grow (`min-height: calc(2 * 17.38px)`). Always-visible on the view.
-done when: All `PAGE3_GEAR_SLOTS` render. `grep TripleColumn` is 0 hits. `grep Gear & Loot` under `pageType3/` is 0 hits.
+result: Left 28 / middle 21 / right 20 slots render. Chrome labels, `->`, `*`, Carry Str, QM numbers, coinage, Notes wrap/grow. `grep TripleColumn` and `Gear & Loot` under `pageType3/` are 0.
 depends on: T-106
-open questions: none
 deviations from design: none
 
 ### T-108: Draw staff-snake and person-meditating flags without a border
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md (Anointed minus border), 2026-10-04
 why: Official blank uses bandage / heart columns. Designer named the FA icons and Anointed-without-border.
 scope: `app/src/pages/v2/pageTypes/pageType3/` Gear flag cells and Gear header icons. Anointed analog is `Favor.tsx` / `Favor.css` (do not import Favor; do not reuse `.anointed-box`).
-steps:
-1. Header icons `fa-solid fa-staff-snake` and `fa-solid fa-person-meditating`.
-2. Page-local box: 12×12, `fa-solid fa-check` when true, teal / hover / checked-black like Anointed. **No** `border`. Not `character-value`.
-3. Clickable on the view and in edit (persist wiring is T-110).
-done when: `grep fa-staff-snake` and `grep fa-person-meditating` hit `pageType3`. `grep anointed-box` under `pageType3/` is 0 hits. `grep border` on the flag class is 0 hits.
+result: Header icons `fa-staff-snake` and `fa-person-meditating`. `.page3-flag-box` is 12×12, `fa-check` when true, teal / hover / checked-black. No `border` on that class. `grep anointed-box` under `pageType3/` is 0.
 depends on: T-107
-open questions: none
 deviations from design: none
 
 ### T-109: Swap page-type-3 edit-only cells to controls
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md; rewrite-ledger/edit-character.md, 2026-10-04
 why: Relationship name and **R** stay `p` on the view. Edit session must swap them without moving boxes.
 scope: `app/src/pages/v2/pageTypes/pageType3/` Relationships (and any other edit-only stored cell). Do not change sidebar or Save POST. Play-time cells already inputs (T-106–T-107).
-steps:
-1. While `isEditing`, relationship `value` and `r` become controlled `character-value` inputs. Insert-on-blur / clear-to-remove. Cap 18.
-2. Inputs copy the display box (`placeholder=" "`, island). Chrome stays text.
-3. Play-time cells stay controls; do not wrap them in `isEditing ?`.
-done when: Name and R swap in `.view-edit`. P / Contacts / Gear stay inputs when `!isEditing`.
+result: Relationship `value` and `r` swap to `character-value` inputs in `.view-edit`. Insert-on-blur / clear-to-remove, cap 18. P / Contacts / Gear stay inputs when `!isEditing`.
 depends on: T-106
-open questions: none
 deviations from design: none
 
 ### T-110: Persist page-type-3 play-time fields
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md; rewrite-ledger/quick-view-inputs.md, 2026-10-04
 why: Named type-3 cells are view controls. Field POST must allowlist them in the same change. Contacts need id-merge like Current Emotions.
 scope: `backend/common/interfaces/v2/page1/viewPersist.ts` (existing home of the allowlist); `backend/server/v2/edit/editV2FieldController.ts`; new writes under `backend/server/v2/edit/utilities/pageType3/`; `app/src/pages/v2/hooks/characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `pageType3Updates.ts`; `pageType3` widgets. Same `inFlight` / `isViewSaving` / toast path as `persistViewField`. Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
-steps:
-1. Allowlist `'page3Contacts'` (replace-all + `RETURNING id`, merge onto live + snapshot, skip is the blurred cell), `'page3RelationshipP'` (row `id` + `p`), `'page3Gear'` (slot + patch of item/size/flags/w), `'page3Coinage'` (amounts + four sizes), `'page3Notes'`.
-2. Contacts persist on insert / row blur / empty-row remove (`showInsert` path). Relationship P on blur of existing rows only. Gear text/number on blur. Flags on click. Notes/coinage on blur.
-3. Unknown attribute still refuses. Owner check unchanged. Location highlight uses existing `view-quick-edit`.
-done when: Those attributes are in `ViewPersistAttribute`. Unknown attribute still `{ success: false }` with no write. Flag click POSTs while `!isEditing`. `grep /quickEdit` under `pageType3/` is 0 hits.
+result: Allowlist `page3Contacts` (replace-all + `RETURNING id`, merge ids), `page3RelationshipP`, `page3Gear`, `page3Coinage`, `page3Notes`. Unknown attribute still `{ success: false }`. Flag click POSTs while `!isEditing`. `grep /quickEdit` under `pageType3/` is 0.
 depends on: T-104, T-106, T-107, T-108
-open questions: none
 deviations from design: attributes live in `page1/viewPersist.ts` because type-2 notes already do.
 
 ### T-111: Add + NPCs & Equipment on every card gutter
-status: proposed
+status: done
 source: rewrite-ledger/add-page-type-1.md; rewrite-ledger/page3-view.md (Q2 analog, Q3 multiples, Q14 exact label), 2026-10-04
 why: Gutter has Main Info and Skills only. Type 3 needs the playbook labeled add to the right of the last add.
 scope: `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (`spliceBlankAfter` / `addPageType3After`); `getV2Updates.ts`; `UpdateInterfaces.ts` (`PageGutterUpdates`). Do not persist on click. No tooltip. No dropdown.
-steps:
-1. Button `<i class="fa-solid fa-plus"></i> NPCs & Equipment` after Skills, same `.add-page` chrome, every card.
-2. `addPageType3After` splices `emptyPageType3(nextTempPageID)` after that index. Temp id from all pages.
-3. Visible text is exactly `NPCs & Equipment`. No `data-tooltip-*`.
-done when: The third add is on every gutter. `grep addPageType3After` hits the hook and `V2View`. `grep data-tooltip` on that button is 0 hits.
+result: Third add is `<i class="fa-solid fa-plus"></i> NPCs & Equipment` on every gutter. `addPageType3After` splices `emptyPageType3`. No `data-tooltip` on that button.
 depends on: T-102, T-104, T-105
-open questions: none
 deviations from design: `fa-plus` prefix matches Main Info / Skills; Q14 forbids a tooltip, not the plus icon.
 
 ### T-112: Index page-type-3 paths on existing L1 keys
-status: proposed
+status: done
 source: rewrite-ledger/v2-page-type.md; rewrite-ledger/feature-index.md, 2026-10-04
 why: Indexed files added under view/edit/create/delete must update root YAML in the same body of work. No new user-objective key for “page type 3.”
 scope: repository `00-START-HERE.yaml` `routing` adjacencies for view / edit / create / delete / add sheet page only. Do not add a `page type 3` L1 key.
-steps:
-1. List new `pageType3` / `page3` trees on those existing keys’ `adjacent`.
-2. Keep ledger YAML routing already added at Order (`page3-view.md`).
-done when: Root YAML `adjacent` lists the new trees. `grep "page type 3"` under `00-START-HERE.yaml` `routing` keys is 0 (no new key). After any rename, `grep` old path is 0 hits.
+result: Root YAML `adjacent` lists `pageType3` / `page3` trees on view, edit, create, add sheet, and delete. `grep "page type 3"` under `00-START-HERE.yaml` `routing` keys is 0.
 depends on: T-100–T-111
-open questions: none
 deviations from design: none
-
-
-
-## Done
 
 ### T-097: Allowlist currentEmotions on the field POST
 status: done

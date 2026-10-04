@@ -6,6 +6,7 @@ import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
 import PageType2 from './pageTypes/pageType2/PageType2'
+import PageType3 from './pageTypes/pageType3/PageType3'
 import EditingContext from './contexts/EditingContext'
 import Sidebar from './components/sidebar/Sidebar'
 
@@ -20,7 +21,7 @@ export default function V2View({ setLoading, pathname }: Props) {
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
 
     const { character, isDirty, isViewSaving, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing)
-    const { saveCharacterToBackend, revertCharacter, pageType1Updates, pageType2Updates, pageGutterUpdates } = updateFunctions
+    const { saveCharacterToBackend, revertCharacter, pageType1Updates, pageType2Updates, pageType3Updates, pageGutterUpdates } = updateFunctions
     const warnOnLeave = isDirty && isEditing
 
     useEffect(() => {
@@ -104,6 +105,9 @@ export default function V2View({ setLoading, pathname }: Props) {
                                 case 2:
                                     card = <PageType2 pageInfo={page} updates={pageType2Updates} />
                                     break
+                                case 3:
+                                    card = <PageType3 pageInfo={page} updates={pageType3Updates} />
+                                    break
                                 default:
                                     return <Fragment key={`${page.type}-${index}`}></Fragment>
                             }
@@ -160,6 +164,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                 className="bottom-buttons add-page"
                                                 onClick={() => pageGutterUpdates.addPageType2After(index)}
                                             ><i className="fa-solid fa-plus"></i> Skills & Abilities</button>
+                                            <button
+                                                type="button"
+                                                className="bottom-buttons add-page"
+                                                onClick={() => pageGutterUpdates.addPageType3After(index)}
+                                            ><i className="fa-solid fa-plus"></i> NPCs & Equipment</button>
                                         </div>
                                     }
                                 </Fragment>

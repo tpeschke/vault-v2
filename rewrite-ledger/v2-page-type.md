@@ -60,10 +60,10 @@ This file existing is not Order or Execute for a new page type.
 
 Another **instance** of an existing type on the same character is the labeled gutter adds (`add-page-type-1.md`). That is not a new page type.
 
-Code verified after Execute 2026-10-04 (T-076–T-087):
-- `V2View` `switch (page.type)` case 1 and case 2; `default` empty fragment. Gutter after every page; labeled adds are T-092.
-- `app/src/pages/v2/pageTypes/pageType2/` exists. Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store. Do not treat them, or v1 `pageTwo`, as page type 2.
-- `getV2Updates` returns `PageType1Updates`, `PageType2Updates`, and `PageGutterUpdates`. `savePages` / assemble / delete have `case 2`; `default` stays no-op / 404 / true. `addV2CharacterController` inserts type 1 at index 0 and type 2 at index 1.
+Code verified after Execute 2026-10-04 (T-076–T-087, T-100–T-112):
+- `V2View` `switch (page.type)` case 1, case 2, and case 3; `default` empty fragment. Gutter after every page; labeled adds are T-092 / T-111.
+- `app/src/pages/v2/pageTypes/pageType2/` and `pageType3/` exist. Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store. Do not treat them, or v1 `pageTwo`, as page type 2.
+- `getV2Updates` returns `PageType1Updates`, `PageType2Updates`, `PageType3Updates`, and `PageGutterUpdates`. `savePages` / assemble / delete have `case 2` and `case 3`; `default` stays no-op / 404 / true. `addV2CharacterController` inserts type 1 at index 0, type 2 at index 1, and type 3 at index 2.
 - `DisplaySingleArray` / `DisplayPairArray` exist on the v2 slice.
 
 Order 2026-10-03 / 2026-10-04 recorded the pre-slice gap (no type-2 tree; gutter inside case 1; create inserted type 1 only).
@@ -91,4 +91,4 @@ Revised 2026-10-04 (page type 3; Design Q1–Q14):
 - Page-local decision list — **revised**: includes `page3-view.md`.
 
 Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
-TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (proposed)
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done)

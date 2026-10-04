@@ -43,6 +43,7 @@ routing:
       - app/src/pages/home/components/homeFooter/
       - app/src/pages/home/components/V2CharacterDisplay/
       - backend/server/v2/add/pageType2/
+      - backend/server/v2/add/pageType3/
   view character sheet / view character / open character:
     primary: backend/server/v2/view/
     adjacent:
@@ -51,7 +52,9 @@ routing:
       - app/src/routes/AllRoutes.tsx
       - backend/common/interfaces/v2/
       - backend/common/interfaces/v2/page2/
+      - backend/common/interfaces/v2/page3/
       - backend/server/v2/view/assembleV2Character/utilities/pageType2/
+      - backend/server/v2/view/assembleV2Character/utilities/pageType3/
   edit character sheet / save character / edit character:
     primary: backend/server/v2/edit/
     adjacent:
@@ -59,13 +62,16 @@ routing:
       - app/src/pages/View.css
       - backend/common/interfaces/v2/
       - backend/common/interfaces/v2/page2/
+      - backend/common/interfaces/v2/page3/
       - backend/server/v2/edit/utilities/pageType2/
+      - backend/server/v2/edit/utilities/pageType3/
   add page-type-1 sheet / add page / add another sheet / add sheet page:
     primary: backend/server/v2/edit/
     adjacent:
       - app/src/pages/v2/
       - backend/server/v2/add/pageType1/
       - backend/server/v2/add/pageType2/
+      - backend/server/v2/add/pageType3/
       - backend/common/interfaces/v2/
       - backend/server/controllers/home/v2/getCharacters.ts
   delete character / remove character:
@@ -75,6 +81,7 @@ routing:
       - app/src/pages/home/components/V2CharacterDisplay/
       - app/src/pages/home/components/charactersRowDisplay/
       - backend/server/v2/delete/utilities/deletePagesUtilities/pageType2/
+      - backend/server/v2/delete/utilities/deletePagesUtilities/pageType3/
   list v1 characters / ancient characters / list ancient:
     primary: backend/server/controllers/home/v1/getCharacters.ts
     adjacent:

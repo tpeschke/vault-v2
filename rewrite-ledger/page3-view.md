@@ -60,4 +60,4 @@ Rejected:
 - One coinage Size for the whole block (Q11: per denomination).
 
 Touches: `app/src/pages/v2/pageTypes/pageType3/`; `backend/common/interfaces/v2/page3/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page3.sql`; ledger front panels
-TODOs: T-100–T-112 (proposed)
+TODOs: T-100–T-112 (done)

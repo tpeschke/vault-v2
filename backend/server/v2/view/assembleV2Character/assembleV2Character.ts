@@ -4,6 +4,7 @@ import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { CharacterPageReturns } from '../viewV2CharacterInterfaces';
 import assemblePageType1 from './utilities/pageType1/assemblePageType1';
 import assemblePageType2 from './utilities/pageType2/assemblePageType2';
+import assemblePageType3 from './utilities/pageType3/assemblePageType3';
 import { Page404Error, PageV2 } from '@vault/common/interfaces/v2/pageTypes'
 import { getCharacterOwnerID } from './utilities/ownerInfo';
 import query from '../../../db/database';
@@ -29,6 +30,8 @@ export default async function assembleV2Character(request: Request, response: Re
                 return assemblePageType1(pageID)
             case 2:
                 return assemblePageType2(pageID)
+            case 3:
+                return assemblePageType3(pageID)
             default:
                 return getPage404Error()
         }

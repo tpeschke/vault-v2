@@ -1,0 +1,19 @@
+.page-type-three {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-type-three .double-column {
+    gap: 0;
+}
+
+.page-type-three .left-column,
+.page-type-three .right-column {
+    width: 50%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.page-type-three .right-column {
+    border-left: 1px solid #323232;
+}
