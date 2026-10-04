@@ -28,7 +28,7 @@ Sheet-wide session (already on the v2 slice; new pages plug in):
 - New tables/columns: `ensureSchema` idempotent patch + `backupTables/pageN.sql` in the same change (`schema-on-boot.md`). No new migration package.
 - Play-time view controls (always-visible inputs, field POST, location highlight) are **not** automatic. Add them only when that page’s topic names the cells. Mechanics: `quick-view-inputs.md`. New allowlist attributes and column UPDATEs ship in the same change as the control.
 - Two-column shell: reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Do not add `features/`, `widgets/`, or `shared/`.
-- Off-card gutter under each sheet card: **+ Main Info** and **+ Skills & Abilities** (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Main Info inserts type 1. Skills inserts type 2. Every new type adds one labeled add to the right of the last add. Mechanics: `add-page-type-1.md`. Do not put that cluster on the printed blank.
+- Off-card gutter under each sheet card: **+ Main Info**, **+ Skills & Abilities**, and **+ NPCs & Equipment** (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Main Info inserts type 1. Skills inserts type 2. NPCs & Equipment inserts type 3. Every new type adds one labeled add to the right of the last add. Mechanics: `add-page-type-1.md`. Do not put that cluster on the printed blank.
 
 Vertical slice (every new page type adds all of these):
 
@@ -44,11 +44,11 @@ Vertical slice (every new page type adds all of these):
 | Delete | `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/`; `deletePages.ts` `switch` (`default` true) |
 | Schema snapshot | `backend/server/v2/backupTables/page1.sql` |
 | Boot DDL | `backend/server/db/ensureSchema.ts` |
-| Page-local decision | `page1-view.md` (type 1); `page2-view.md` (type 2) |
+| Page-local decision | `page1-view.md` (type 1); `page2-view.md` (type 2); `page3-view.md` (type 3) |
 
 New type N uses the same slots with `pageTypeN` / `pageN`. Wire into the existing v2 view/edit/add/delete owners. Paths sit under current YAML view/edit/create/delete adjacencies. Update root L1 YAML only when indexed files are added, moved, or renamed. Do not add a user-objective key for “page type N.”
 
-Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). `addV2CharacterController.ts` comments are not approval for type 3.
+Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). Type 3: yes, one sheet at index 2 (`page3-view.md`). `addV2CharacterController.ts` comments are not approval for a later type.
 
 How the next agent proceeds (only when the designer names a new page type and attaches that page’s official blank):
 1. Route here. Read this contract. Do not scan `TODO.md` Done.
@@ -85,5 +85,10 @@ Revised 2026-10-04 (playbook gutter add; Q1 Save-gate type N; Q2 label on pageN-
 - Gutter mentioned only as today’s two buttons — **revised**: instance add is a vertical-slice surface (T-093).
 - Dropdown / button registry — **retained** rejected.
 
-Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
-TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done)
+Revised 2026-10-04 (page type 3; Design Q1–Q14):
+- Create-character note for type 3 — **recorded** on `page3-view.md` (yes, index 2).
+- Gutter two labeled adds — **revised**: third add **+ NPCs & Equipment** (`add-page-type-1.md`).
+- Page-local decision list — **revised**: includes `page3-view.md`.
+
+Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (proposed)
