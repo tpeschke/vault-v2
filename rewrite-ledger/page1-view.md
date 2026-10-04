@@ -6,7 +6,7 @@ Decision: The v2 page-type-1 view matches the first page of the official blank s
 Why: The attached blank sheet is the layout source. The Cultural Strength name is the listed page-1 exception. Vault typefaces relocated to `v2-page-type.md`.
 
 Constraints it imposes:
-- Sheet-wide contract: `v2-page-type.md`. This file owns page-type-1 section order, labels, and exceptions.
+- Sheet-wide contract: `v2-page-type.md`. This file owns page-type-1 section order, labels, and exceptions. Page type 2: `page2-view.md`.
 - Left: Name, Ancestry, Class / Subclass / Lvl, CrP, Stats, Characteristics / Emotional Capacity, Current Emotions, Social Suites, Reputation, Cultural Strength / Social Skill Discount, Descriptions, Flaws, Favor.
 - Right: Bonfire wordmark (attached logo: flame + BONFIRE + “The Roleplaying Game”) at the top, then Positions (static legend), Self Doubt, Damage, Stress, Defenses, Attacks. Compress the blocks below the logo so the page still fits `.page` height (1036px), except the Vitals die row: that row’s height follows the die PNGs. Do not shrink those glyphs to protect page height. Do not further compress to make room for attack/defense notes; if those overflow, record it. Do not use the v1 flame-only `logo-black.png` plus HTML title. Wordmark is page-1 only (`v2-page-type.md`).
 - Do not put Goals, Temperaments, Relationships, or Movement on this page.

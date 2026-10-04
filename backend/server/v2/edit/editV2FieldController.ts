@@ -4,7 +4,8 @@ import { Response, Request } from '../../interfaces/apiInterfaces'
 import { getCharacterOwnerID } from '../view/assembleV2Character/utilities/ownerInfo'
 import saveViewField from './utilities/pageType1/utilities/saveViewField'
 
-const attributes: ViewPersistAttribute[] = ['unspent', 'currentFavor', 'diePenalty', 'damage', 'stress', 'selfDoubtDieIndex', 'damageDieIndex', 'stressDieIndex']
+const attributes: ViewPersistAttribute[] = ['unspent', 'currentFavor', 'diePenalty', 'damage', 'stress', 'selfDoubtDieIndex', 'damageDieIndex', 'stressDieIndex', 'generalSkillNotes', 'combatSkillNotes']
+const textAttributes: ViewPersistAttribute[] = ['generalSkillNotes', 'combatSkillNotes']
 
 interface FieldRequest extends Request {
     params: {
@@ -33,7 +34,9 @@ export async function editV2Field(request: FieldRequest, response: Response) {
         return
     }
 
-    const nextValue = Number.isFinite(+value) ? +value : 0
+    const nextValue = textAttributes.includes(attribute)
+        ? String(value ?? '')
+        : Number.isFinite(+value) ? +value : 0
     await saveViewField(+pageID, attribute, nextValue)
     checkForContentTypeBeforeSending(response, { success: true })
 }

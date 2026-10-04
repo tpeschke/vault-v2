@@ -6,7 +6,204 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
 ## Done
+
+### T-094: Store generalSkillNotes and combatSkillNotes
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 no label; Q2 grow; Q3 stretch leftover; Q4 always textarea)
+why: Two unlabeled leftover notes under the discounts. No store exists.
+scope: `backend/common/interfaces/v2/pageTypes.ts` (`Page2`); `backend/server/v2/backupTables/page2.sql`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType2/assemblePageType2.ts`; `backend/server/v2/edit/utilities/pageType2/savePageType2.ts`; `app/src/pages/v2/hooks/updates/emptyPageType2.ts`. Do not add a table. Do not add `features/`.
+result: Two `text` columns on `v2Page2Basics`. Assemble / empty / Save carry `generalSkillNotes` and `combatSkillNotes`. Existing rows stay `''`.
+depends on: T-077, T-078, T-080 (done)
+deviations from design: none. Payload keys are `generalSkillNotes` / `combatSkillNotes`.
+
+### T-095: Draw leftover notes textareas under both discounts
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 none; Q2 grow; Q3 stretch; Q4 always textarea)
+why: The blank under Gen. Skill Discount and Combat Skill Discount is unused.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/` and `.../CombatSkills/` (tsx + css). `PageType2Updates` + `pageType2Updates.ts` + `getV2Updates.ts` for the two writers. Do not change NotesPanes, Favor, Adv Skills wrap, or `index.css`. Do not add `features/`.
+result: One unlabeled `textarea.character-value` under each Discount. `suites-col` column flex + `flex: 1` fills leftover. `field-sizing: content` on these two only. No zebra.
+depends on: T-094
+deviations from design: `field-sizing: content` on these two only so wrap+grow works without JS.
+
+### T-096: Persist leftover notes on view blur
+status: done
+source: rewrite-ledger/quick-view-inputs.md / page2-view.md, 2026-10-04
+why: These panes are play-time. View persist is number-only today.
+scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts` (or a page-2 sibling UPDATE, not a new route); `app/src/pages/v2/hooks/characterHook.tsx`; `UpdateInterfaces.ts` / `getV2Updates.ts`; the two skill widgets (blur only). Do not add `/quickEdit`. Do not persist while `isEditing`.
+result: Field POST allowlists the two strings. Text attributes write the string; numbers still coerce. Widgets persist on blur. Location highlight uses existing `.view-quick-edit textarea`.
+depends on: T-094, T-095
+deviations from design: none. Extends the existing field POST; no new route.
+
+
+### T-093: Put gutter add on the sheet playbook vertical slice
+status: done
+source: rewrite-ledger/v2-page-type.md, 2026-10-04 (Q1 Save-gate type N; Q2 label on pageN-view.md)
+why: The playbook lists surfaces every new type must add. Instance add is only today’s two buttons, so a type-N Order can skip the labeled gutter insert and Save count-gate.
+scope: ledger `rewrite-ledger/v2-page-type.md` (playbook). Pointer only on `rewrite-ledger/add-page-type-1.md`. Do not change app or backend. Do not name a type-3 label. Do not add `features/` or a button registry.
+result: Vertical-slice **Gutter add** row plus proceed step 3 now require `emptyPageTypeN` / `addPageTypeNAfter`, a label on `pageN-view.md`, and a type-N Save count-gate. Pointer on `add-page-type-1.md`.
+depends on: T-092 (done)
+deviations from design: none
+
+
+### T-092: Add + Skills & Abilities; make + Main Info always type 1
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-04 (Q1 every card; Q2 insert after this card; Q3 Main Info always type 1; Q4 no scroll; Q5 same chrome)
+why: Existing type-1-only characters cannot add a type-2 sheet because `addPageAfter` copies the card’s type. The designer wants two labeled inserts in the gutter.
+scope: view/edit adjacency `app/src/pages/v2/V2View.tsx` (gutter only), `app/src/pages/v2/hooks/updates/pageType1Updates.ts`, `app/src/pages/v2/hooks/updates/getV2Updates.ts`, `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. Do not change persist, Create, `PageType1.tsx`, `PageType2.tsx`, or `index.css`. Do not add `features/`. Do not add a route or persist-on-click.
+result: `addPageAfter` always inserts type 1. `addPageType2After` inserts type 2. Skills button sits to the right of Main Info on every card. Sibling CSS keeps `margin-left: auto` on Main Info only.
+depends on: T-080, T-082 (done)
+deviations from design: none. Two labeled buttons, not a dropdown. Chrome matches live Main Info (whitesmoke / orange hover), not the older ledger `#bdbdbd` + bare `+`.
+
+
+### T-091: Wash default teal over note textareas while edit is on
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 default teal; Q2 darker hover; Q3 view `p` zebra; Q4 wash)
+why: T-089 hid edit teal so only hover showed a wash. Designer wants the rest state teal too, without a solid fill that hides the leftover zebra.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/NotesPanes.css`. Do not change `index.css`, `View.css`, Favor, page-1 notes, skill tables, or JSX. Do not add `features/`.
+result: `.view-edit` textareas stack `rgba(173, 216, 230, 0.35)` over leftover zebra at rest and `rgba(145, 181, 194, 0.35)` on hover. View `p` stays zebra. Dropped leftover `.view-quick-edit` selectors.
+depends on: T-089 (done)
+deviations from design: none. Rest/hover wash alpha is the existing T-089 hover `0.35`; only the rest color is new.
+
+
+### T-090: Make each suites-col row the same height in view and edit
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04 (screenshot clarify: one row height in both modes; Q1 every first-column row; Q2 empty-edit 17.38)
+why: View Athletics→Weirdcraft and Armor→Unarmed are taller than the same rows in edit. `suites-col` has `min-height` only. View `p` keeps island padding and `line-height: 1.2`; edit `input` uses View.css `padding: 0` and filled `height: 1.2em`. Native Language wrapping the name under the label already matches across modes — that is not the bug.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/GeneralSkills.css` and `.../CombatSkills/CombatSkills.css` (`suites-col` cells only). Do not change `View.css`, `index.css`, Adv Skills wrap heights, NotesPanes, page type 1, or JSX unless a selector cannot reach the cell. Do not add `features/`. Do not set `--mapped-row-min-height` on `.page-type-two`.
+result: Locked `em`/`p`/`input`/discount `h2` in both suites-cols to `height` + `min-height` 17.38. Suites-col `input.character-value` restates island padding so View.css `padding: 0` / filled `1.2em` cannot shrink or grow the row. Header `h2` and Adv Skills wrap left as-is.
+depends on: T-083, T-084, T-086 (done)
+deviations from design: none. Tightened after screenshots: the done-check is same row height, not “17.38 somewhere.”
+
+
+### T-089: Paint leftover zebra behind the note panes
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 zebra; Q2 17.38; Q3 white first; Q4 visible in edit; Q5 tile on grow)
+why: Official blank is lined. These panes are textareas, so leftover `nth-child` zebra does not apply. The designer wants `#f3f3f3` / white bands behind the text.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/NotesPanes.css` (and `NotesPanes.tsx` only if a wrapper is required). Do not change `index.css`. Do not change Favor or page-1 notes. Do not convert to leftover list rows. Do not add a shared widget.
+result: `repeating-linear-gradient` white then `#f3f3f3` at 17.38px on view `p` and textarea. Vertical padding dropped so the first white band is a full 17.38. Widget `!important` beats edit teal; hover is a 0.35 teal wash over the same zebra.
+deviations from design: none
+open questions: none
+
+### T-088: Put 15px between Abilities and Burdens & Injuries
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04 (note gap; Design Q answered)
+why: The two note panes sit in `DoubleColumn` at 50% / 50% with no space between them. The designer named 15px between the stacks.
+scope: view adjacency `app/src/pages/v2/pageTypes/pageType2/PageType2.css` (column widths / `.page-type-two .double-column` only). Do not change `app/src/pages/v2/pageTypes/components/doubleColumn/DoubleColumn.css` or `DoubleColumn.tsx`. Do not change page type 1. Do not add `features/`.
+result: `.page-type-two .double-column` `gap: 15px`. Columns `calc(50% - 7.5px)`. Shared `DoubleColumn` unchanged.
+deviations from design: none
+open questions: none
+
+
+### T-087: Index page-type-2 paths on existing L1 keys
+status: done
+source: rewrite-ledger/v2-page-type.md; rewrite-ledger/feature-index.md, 2026-10-04
+why: Indexed files added under view/edit/create/delete must update root YAML in the same body of work. No new user-objective key for “page type 2.”
+scope: repository `00-START-HERE.yaml` `routing` adjacencies for view / edit / create / delete / add sheet page only. Do not add a `page type 2` L1 key.
+result: New trees listed on create / view / edit / add-sheet / delete `adjacent`. No `page type 2` L1 key. `v2-page-type.md` verification updated after Execute.
+deviations from design: none
+open questions: none
+
+### T-086: Swap page-type-2 stored cells to edit controls
+status: done
+source: rewrite-ledger/page2-view.md; rewrite-ledger/edit-character.md, 2026-10-04
+why: Type-2 view cells must become inputs in the existing `isEditing` session without moving boxes.
+scope: `app/src/pages/v2/pageTypes/pageType2/` widgets from T-083–T-085. Do not change sidebar, Save POST, or page-1 widgets. No view persist.
+result: Stored cells swap to controlled `character-value` inputs / textareas in the same widgets. Leftover + insert on blur. `persistViewField` 0 hits under pageType2.
+deviations from design: none
+open questions: none
+
+### T-085: Draw Abilities | Burdens & Injuries textareas
+status: done
+source: rewrite-ledger/page2-view.md (Q6 textarea; Q7 Injuries), 2026-10-04
+why: Bottom pair on the official blank is two lined panes, not leftover lists.
+scope: `app/src/pages/v2/pageTypes/pageType2/` Abilities / Burdens widgets; reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Favor notes are the textarea analog (`Favor.tsx` / `Favor.css`), not a copy-import of Favor.
+result: `NotesPanes` in `DoubleColumn` under Combat Skills. Headings Abilities and Burdens & Injuries. `Injures` 0 hits.
+deviations from design: none
+open questions: none
+
+### T-084: Draw Combat Skills
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04
+why: Combat Skills is the second stacked block on the official blank.
+scope: `app/src/pages/v2/pageTypes/pageType2/` Combat Skills widgets. Do not change page type 1.
+result: Five chrome suites + Combat Skill Discount. Adv combat uses v2 `DisplayPairArray` (`name` as `value`), cap 20, wrap height `calc(10 * 17.38px)`.
+deviations from design: none
+open questions: none
+
+### T-083: Draw General Skills
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04
+why: Type 2 has no widgets. Official blank page 2 starts with the General Skills block.
+scope: new `app/src/pages/v2/pageTypes/pageType2/` (`PageType2.tsx`, `PageType2.css`, General Skills widgets). View adjacency `app/src/pages/v2/V2View.tsx` (`case 2` mount only; gutter is T-082). Reuse `doubleColumn` only later (T-085). Do not add `features/`. Do not mount the wordmark.
+result: `PageType2` root `.page.card.page-type-two`. Seven suites + Native Language + two discounts. Adv general local 3-field leftover/insert, cap 36, wrap height `calc(18 * 17.38px)`. No wordmark. `V2View` case 2.
+deviations from design: none
+open questions: none
+
+### T-082: Make the page gutter generic
+status: done
+source: rewrite-ledger/add-page-type-1.md; rewrite-ledger/page-reorder.md; Design Q12, 2026-10-04
+why: Gutter JSX and `addPageType1After` live only on type 1. Type 2 needs the same `+` / reorder. `+` must insert the **clicked card’s type**. Temp ids must consider every page.
+scope: `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/V2View.css`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (`addPageType1After` / reorder only); `getV2Updates.ts`; `UpdateInterfaces.ts`; `characterHook.tsx`. Do not change `PageType1.tsx`. Do not persist on click.
+result: Gutter after every page. `addPageAfter` copies type 1 or 2. Temp id from all pages that have `pageID` (404 has none). Helpers on `pageGutterUpdates`. CSS `.add-page`. Old class 0 hits in `app/src/pages/v2/`.
+deviations from design: none
+open questions: none
+
+### T-081: Thread pageType2Updates through the v2 hook
+status: done
+source: rewrite-ledger/page2-view.md; rewrite-ledger/v2-page-type.md, 2026-10-04
+why: `getV2Updates` returns only `PageType1Updates`. Type-2 cells have no local writers.
+scope: view/edit adjacency `app/src/pages/v2/hooks/updates/pageType2Updates.ts`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `characterHook.tsx`. Do not import v1. Do not add play-time persist attributes.
+result: `PageType2Updates` + `mapPage2` writers (caps 36/20). `getV2Updates` returns type-1, type-2, and gutter. `characterHook` exposes `pageType2Updates`.
+deviations from design: none
+open questions: none
+
+### T-080: Persist and delete page type 2; gate Save on type-2 count
+status: done
+source: rewrite-ledger/page2-view.md; rewrite-ledger/add-page-type-1.md, 2026-10-04
+why: `savePages` `default` is a no-op. `deletePages` `default` is true. The Save gate counts type 1 only.
+scope: edit primary `backend/server/v2/edit/utilities/savePages.ts`; new `backend/server/v2/edit/utilities/persistPageType2.ts` and `backend/server/v2/edit/utilities/pageType2/`; `backend/server/v2/edit/editV2CharacterController.ts` (count gate only); delete `backend/server/v2/delete/utilities/deletePages.ts`; new `backend/server/v2/delete/utilities/deletePagesUtilities/pageType2/`. Copy `persistPageType1` / `savePageType1` / `deletePageType1`. Reuse `backend/server/v2/add/pageType2/`. Do not rewrite `query()`. Do not change `/v2/edit/:characterID/field`.
+result: `savePages` / `deletePages` case 2. Basics upsert on unique `pageID`; suites SELECT then UPDATE/INSERT (`query()` hides rowCount). Adv lists delete-not-in + update/insert. Save refuses if stored type-1 or type-2 count is short.
+deviations from design: done-when `grep case 2` on `editV2CharacterController.ts` is 0; the gate is a type-2 count SQL as the steps named, not a switch.
+open questions: none
+
+### T-079: Insert one page-type-2 on Create character
+status: done
+source: rewrite-ledger/page2-view.md (Q2 yes), 2026-10-04
+why: `addV2CharacterController` inserts `pageTypeID` 1 only. Comments about type 2 are not approval; this TODO is.
+scope: create primary `backend/server/v2/add/addV2CharacterController.ts`; new `backend/server/v2/add/pageType2/` (mirror `addPageType1`: insert default basics + seven general suite rows + five combat suite rows). Do not backfill existing characters. Do not change home slot limits.
+result: Create inserts type 1 at index 0 then type 2 at index 1. `addPageType2` writes basics + suites 1–7 and 1–5. Stale “Add page type 2” comment removed. Type-3 comment left.
+deviations from design: none
+open questions: none
+
+### T-078: Assemble page type 2 and empty defaults
+status: done
+source: rewrite-ledger/page2-view.md; rewrite-ledger/v2-page-type.md, 2026-10-04
+why: `assembleV2Character` `default` returns `{ type: 404 }`. `getCharacterPages` already loads every `v2CharacterPages` row.
+scope: view primary `backend/server/v2/view/assembleV2Character/assembleV2Character.ts` (`switch` only); new `backend/server/v2/view/assembleV2Character/utilities/pageType2/`; view adjacency `app/src/pages/v2/hooks/updates/emptyPageType2.ts`. Copy structure from `assemblePageType1` / `emptyPageType1`. Do not change `getCharacterName` (still first type-1).
+result: `assemblePageType2` fills a full `Page2` from the five tables. `assembleV2Character` case 2. `emptyPageType2` matches the skeleton. `getCharacterName` still first type-1.
+deviations from design: none
+open questions: none
+
+### T-077: Create page-type-2 tables on boot
+status: done
+source: rewrite-ledger/page2-view.md; rewrite-ledger/schema-on-boot.md, 2026-10-04
+why: Live postgres has no type-2 stores. Snapshot and `ensureSchema` must match.
+scope: unindexed `backend/server/db/ensureSchema.ts`; new `backend/server/v2/backupTables/page2.sql`. Do not change `page1.sql`. Do not insert `v2CharacterPages` type-2 rows.
+result: Five tables in `page2.sql` and `ensureSchema`. Unique on `v2Page2Basics.pageID`. Fail closed if any table is missing. No type-2 page backfill (`pageTypeID = 2` 0 hits in `ensureSchema`).
+deviations from design: none
+open questions: none
+
+### T-076: Add Page2 contract and union member
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04
+why: Assemble, persist, and the view switch need a `type: 2` payload. `PageV2` is only `Page404Error | Page1`.
+scope: contracts `backend/common/interfaces/v2/pageTypes.ts`; new `backend/common/interfaces/v2/page2/` (basics, general suites, combat suites, adv-skill rows). Do not change page-1 interfaces. Do not add `features/`.
+result: `Page2` with the `page2-view.md` stores. `PageV2` is `Page404Error | Page1 | Page2`. `npx tsc --noEmit -p backend/common` succeeds.
+deviations from design: none
+open questions: none
 
 ### T-075: Refuse full Save unless `request.user` is the owner
 status: done

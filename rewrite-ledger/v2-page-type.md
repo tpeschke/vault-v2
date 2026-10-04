@@ -28,7 +28,7 @@ Sheet-wide session (already on the v2 slice; new pages plug in):
 - New tables/columns: `ensureSchema` idempotent patch + `backupTables/pageN.sql` in the same change (`schema-on-boot.md`). No new migration package.
 - Play-time view controls (always-visible inputs, field POST, location highlight) are **not** automatic. Add them only when that page’s topic names the cells. Mechanics: `quick-view-inputs.md`. New allowlist attributes and column UPDATEs ship in the same change as the control.
 - Two-column shell: reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Do not add `features/`, `widgets/`, or `shared/`.
-- Off-card gutter under each page-type-1: add `+` (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Do not put that cluster on the printed blank.
+- Off-card gutter under each sheet card: **+ Main Info** and **+ Skills & Abilities** (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Main Info inserts type 1. Skills inserts type 2. Every new type adds one labeled add to the right of the last add. Mechanics: `add-page-type-1.md`. Do not put that cluster on the printed blank.
 
 Vertical slice (every new page type adds all of these):
 
@@ -39,30 +39,34 @@ Vertical slice (every new page type adds all of these):
 | Contracts | `backend/common/interfaces/v2/page1/`; union `PageV2` in `pageTypes.ts` |
 | Assemble | `backend/server/v2/view/assembleV2Character/utilities/pageType1/`; `assembleV2Character.ts` `switch` (`default` → `{ type: 404 }`) |
 | Create defaults | `backend/server/v2/add/pageType1/`; `addV2CharacterController.ts` today inserts `pageTypeID` 1 only |
+| Gutter add | `emptyPageType1` + `addPageAfter`; type 2: `emptyPageType2` + `addPageType2After`; buttons in `V2View` (`add-page-type-1.md`). Type N: `emptyPageTypeN`, `addPageTypeNAfter`, one labeled `+ …` to the right of the last add, on every card, same chrome, insert after that card, no scroll. Label is named on `pageN-view.md`. Save count-gate includes type N. Not Create. Not a dropdown or shared add-button factory. |
 | Persist | `backend/server/v2/edit/utilities/pageType1/`; `savePages.ts` `switch` (`default` no-op) |
 | Delete | `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/`; `deletePages.ts` `switch` (`default` true) |
 | Schema snapshot | `backend/server/v2/backupTables/page1.sql` |
 | Boot DDL | `backend/server/db/ensureSchema.ts` |
-| Page-local decision | `page1-view.md` |
+| Page-local decision | `page1-view.md` (type 1); `page2-view.md` (type 2) |
 
 New type N uses the same slots with `pageTypeN` / `pageN`. Wire into the existing v2 view/edit/add/delete owners. Paths sit under current YAML view/edit/create/delete adjacencies. Update root L1 YAML only when indexed files are added, moved, or renamed. Do not add a user-objective key for “page type N.”
 
-Create-character: whether a new character gains page type N is noted by the designer when that type is added. `addV2CharacterController.ts` already comments “Add page type 2” / “Add page type 3”; those lines are not approval.
+Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). `addV2CharacterController.ts` comments are not approval for type 3.
 
 How the next agent proceeds (only when the designer names a new page type and attaches that page’s official blank):
 1. Route here. Read this contract. Do not scan `TODO.md` Done.
 2. Open the exemplar trees. Copy structure and mechanics. Do not extract a `PageType` base or registry.
-3. Write `pageN-view.md` from that page’s official blank. Then Order TODOs that walk the vertical slice.
+3. Write `pageN-view.md` from that page’s official blank, including the gutter-add button label. Then Order TODOs that walk the vertical slice, including gutter add and the type-N Save count-gate.
 4. After rename/move, grep the old path; expect zero hits.
 
 This file existing is not Order or Execute for a new page type.
 
-Another **instance** of page-type-1 on the same character is a separate objective (`add-page-type-1.md`). That is not page type N.
+Another **instance** of an existing type on the same character is the labeled gutter adds (`add-page-type-1.md`). That is not a new page type.
 
-Code verified at Order 2026-10-03:
-- `V2View` `switch (page.type)` case 1; `default` empty fragment.
-- No `app/src/pages/v2/pageTypes/pageType2/` (and no v2 `pageTwo` tree). Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store until a later page’s topic and the designer say otherwise. Do not treat them, or v1 `pageTwo`, as page type N.
+Code verified after Execute 2026-10-04 (T-076–T-087):
+- `V2View` `switch (page.type)` case 1 and case 2; `default` empty fragment. Gutter after every page; labeled adds are T-092.
+- `app/src/pages/v2/pageTypes/pageType2/` exists. Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store. Do not treat them, or v1 `pageTwo`, as page type 2.
+- `getV2Updates` returns `PageType1Updates`, `PageType2Updates`, and `PageGutterUpdates`. `savePages` / assemble / delete have `case 2`; `default` stays no-op / 404 / true. `addV2CharacterController` inserts type 1 at index 0 and type 2 at index 1.
 - `DisplaySingleArray` / `DisplayPairArray` exist on the v2 slice.
+
+Order 2026-10-03 / 2026-10-04 recorded the pre-slice gap (no type-2 tree; gutter inside case 1; create inserted type 1 only).
 
 Rejected:
 - A Cursor skill, cookiecutter, or empty `pageTypeN` stub folder.
@@ -71,7 +75,15 @@ Rejected:
 - Restating page-1’s left/right section list here.
 - Treating PDF / v1 Quick Edit as required functionality.
 - Extracting a shared kit before a third page type shows a stable contract.
-- Ordering or scaffolding a specific later page type as part of writing this playbook.
+- Ordering or scaffolding a specific later page type as part of writing this playbook. (Disposition 2026-10-04: designer named type 2; Order is `page2-view.md` + T-076–T-087.)
 
-Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `edit-character.md`, `quick-view-inputs.md`
-TODOs: none (playbook is the Order result; a later session Orders page N when the designer names it)
+Revised 2026-10-04 (page type 2; Design Q12):
+- “Off-card gutter under each page-type-1” — **revised**: gutter under every sheet card. Copy-type `+` — **revised** again: labeled Main Info / Skills (`add-page-type-1.md`).
+- Create-character note for type 2 — **recorded** on `page2-view.md` (yes, index 1).
+
+Revised 2026-10-04 (playbook gutter add; Q1 Save-gate type N; Q2 label on pageN-view.md):
+- Gutter mentioned only as today’s two buttons — **revised**: instance add is a vertical-slice surface (T-093).
+- Dropdown / button registry — **retained** rejected.
+
+Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done)

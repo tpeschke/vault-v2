@@ -8,6 +8,7 @@ import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vit
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
 import emptyPageType1 from "./emptyPageType1"
+import emptyPageType2 from "./emptyPageType2"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -65,14 +66,25 @@ export function updateGeneralInfoField(character: CharacterVersion2, pageID: num
     return next
 }
 
-export function addPageType1After(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
-    const existingIds = character.pages
-        .filter((page): page is Page1 => page.type === 1)
-        .map(page => page.pageID)
-    const pageID = Math.min(0, ...existingIds) - 1
+function nextTempPageID(character: CharacterVersion2): number {
+    return Math.min(0, ...character.pages.map(page => 'pageID' in page ? page.pageID : 0)) - 1
+}
+
+function spliceBlankAfter(character: CharacterVersion2, afterIndex: number, blank: ReturnType<typeof emptyPageType1> | ReturnType<typeof emptyPageType2>): CharacterVersion2 {
+    if (!character.pages[afterIndex]) {
+        return character
+    }
     const pages = [...character.pages]
-    pages.splice(afterIndex + 1, 0, emptyPageType1(pageID))
+    pages.splice(afterIndex + 1, 0, blank)
     return { ...character, pages }
+}
+
+export function addPageAfter(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
+    return spliceBlankAfter(character, afterIndex, emptyPageType1(nextTempPageID(character)))
+}
+
+export function addPageType2After(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
+    return spliceBlankAfter(character, afterIndex, emptyPageType2(nextTempPageID(character)))
 }
 
 function withFirstPage1Name(character: CharacterVersion2): CharacterVersion2 {

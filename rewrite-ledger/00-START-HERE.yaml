@@ -25,8 +25,9 @@ routing:
   v2-page-type: v2-page-type.md
   new page type / additional page type / page type N / page-type playbook: v2-page-type.md
   page1-view: page1-view.md
+  page2-view / page type 2 / skills page: page2-view.md
   edit-character: edit-character.md
-  add-page-type-1 / add another page-type-1 / add sheet page: add-page-type-1.md
+  add-page-type-1 / add another page-type-1 / add sheet page / add page type 2 sheet: add-page-type-1.md
   page reorder / swap sheets / move sheet to top / move sheet to bottom: page-reorder.md
   quick-view-inputs: quick-view-inputs.md
   session-phases: phases.md
