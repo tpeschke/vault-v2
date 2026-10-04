@@ -6,7 +6,51 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-097: Allowlist currentEmotions on the field POST
+status: proposed
+source: rewrite-ledger/quick-view-inputs.md, rewrite-ledger/page1-view.md, 2026-10-04 (design Q2 A, Q4 max 9, Q6 RETURNING id, Q8 both)
+why: Current Emotions is a child table. Today’s field POST coerces `value` with `+value`. `Number([])` is `0`. Full Save already has `saveCurrentEmotions`.
+scope: edit primary `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveCurrentEmotions.ts`. Do not change `saveViewField` number/text UPDATEs. Do not ALTER `v2currentEmotions.value` (stays `varchar(500)`). Do not add `/quickEdit`. Do not add `features/`.
+steps:
+1. Add `'currentEmotions'` to `ViewPersistAttribute`. Widen `ViewPersistValue` / `ViewPersistBody.value` to `number | string | Emotion[]`.
+2. In `editV2Field`, branch before number/text coerce: if `attribute === 'currentEmotions'`, require `Array.isArray(value)`, `value.length <= 9`, and every item’s `value` a string with `length <= 25`. Else `{ success: false, message }` and no write.
+3. Call `saveCurrentEmotions(+pageID, value)`. Change insert SQL to `returning id`. Return `{ id, value }[]` in posted order (rank = index). Updates keep their ids. Full Save may ignore the return.
+4. Respond `{ success: true, currentEmotions: <returned rows> }`. Other attributes still `{ success: true }` only.
+done when: `npx tsc --noEmit -p backend/server` (or the repo’s server type-check) succeeds. Grep `Number.isFinite(+value)` still exists for number attributes. A `currentEmotions` body that is not an array, has 10 rows, or a 26-char `value` does not call `saveCurrentEmotions`.
+depends on: none
+open questions: none
+deviations from design: none. Column stays 500; refuse is the server half of Q8.
+
+### T-098: Draw Current Emotions as view inputs with the Edit insert row
+status: proposed
+source: rewrite-ledger/quick-view-inputs.md, rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-04 (Q1 A, Q3 default teal, Q4 max 9, Q8 both)
+why: View still renders `p`. `DisplaySingleArray` shows insert only while `isEditing`. Cap in code is already 9.
+scope: view adjacency `app/src/pages/v2/components/displayArray/DisplaySingleArray.tsx`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx`. Do not change `Flaws.tsx`. Do not change `Characteristics.css` (`.view-edit` even-cell mid teal stays edit-only). Do not add `features/`.
+steps:
+1. Add optional `showInsert` defaulting to `isEditing`. Leftover count is `max - items.length - (showInsert ? 1 : 0)`. Show insert when `showInsert && items.length < max`.
+2. In `Characteristics.tsx`, pass `showInsert={true}` and `max={9}`. Render a `character-value` `input` for existing rows in view and edit (`maxLength={25}`, `placeholder=" "`). Leftover stays `p`. Insert input `maxLength={25}`.
+3. Do not gate the emotion row input on `isEditing`. Descriptions Attack/Defense stay as they are.
+done when: `npx tsc --noEmit -p app` (or the repo’s app type-check) succeeds. Grep `isEditing ?` in `Characteristics.tsx` has no emotion `p`/`input` swap. `Flaws.tsx` still omits `showInsert`. Empty view shows one insert input plus eight leftover `p` (nine cells, 3-col wrap). `.page-type-one` overflow past 1068 is recorded, not compressed.
+depends on: none
+open questions: none
+deviations from design: `showInsert` prop instead of a Characteristics-only fork so Flaws stay edit-gated.
+
+### T-099: Persist Current Emotions on blur and merge returned ids
+status: proposed
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-04 (Q5 blurred cell only, Q6 merge ids, Q7 persist clear)
+why: View inputs stay local until a field POST. `id: 0` after insert would make the next full Save delete the persisted row and insert a duplicate.
+scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (reuse `insertEmotion` / `updateEmotion` / `mapPage1` only); `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` (blur / empty / insert wiring). Same `inFlight` / `isViewSaving` / toast path as `persistViewField`. Do not persist while `isEditing`. Do not change number/text `persistViewField`.
+steps:
+1. Add `persistCurrentEmotions(pageID, nextRows, blurred: { index: number, value: string } | { insert: true, value: string })` on `PageType1Updates`. POST `{ pageID, attribute: 'currentEmotions', value: nextRows }` to the existing `/field` URL.
+2. Skip when `isEditing`, `!ownsThisCharacter`, or the blurred cell matches the snapshot: for `{ index }`, snapshot `currentEmotions[index]?.value ?? '' === blurred.value`; for `{ insert: true }`, skip only when `blurred.value === ''` (DisplaySingleArray already does not insert then).
+3. Compute `nextRows` in the same tick as the local update. Do not read stale `character` after `setCharacter`. Row `onChange` still calls `updateEmotion`. Row `onBlur` persists with that index and `event.target.value`. When `updateEmotion` removes a row (`value === ''`) on the view, persist in that handler with `{ index, value: '' }` so an unmount cannot drop the write.
+4. Wrap view insert: `insertEmotion` then persist `{ insert: true, value }` using the array from the just-computed next character.
+5. Success: if `data.currentEmotions` is a same-length `Emotion[]`, write those `id`s onto live `character` and `revertedCharacter` by index; keep each live `key`. Cache the snapshot with ids. No success toast. Failure: `toast.error`; do not patch ids; always decrement `inFlight`.
+done when: type-check of `app` succeeds. Grep `persistCurrentEmotions` hits the hook, `getV2Updates`, and `Characteristics.tsx`. Number `persistViewField` call sites unchanged. Browser (Execute): empty insert, edit a cell, clear a cell, non-owner, Edit session (no POST), then full Save does not duplicate the view-inserted row.
+depends on: T-097, T-098
+open questions: none
+deviations from design: persist the empty-row removal from the `onChange` that unmounts the input, not only `onBlur`, so a missed unmount blur cannot skip Q7.
+
 
 ## Done
 
