@@ -3,7 +3,13 @@
     flex-direction: column;
 }
 
+.page-type-two .double-column {
+    gap: 15px;
+}
+
 .page-type-two .left-column,
 .page-type-two .right-column {
-    width: 50%;
+    width: calc(50% - 7.5px);
+    min-width: 0;
+    box-sizing: border-box;
 }

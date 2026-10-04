@@ -6,36 +6,26 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-088: Put 15px between Abilities and Burdens & Injuries
-status: proposed
-source: rewrite-ledger/page2-view.md, 2026-10-04 (note gap; Design Q answered)
-why: The two note panes sit in `DoubleColumn` at 50% / 50% with no space between them. The designer named 15px between the stacks.
-scope: view adjacency `app/src/pages/v2/pageTypes/pageType2/PageType2.css` (column widths / `.page-type-two .double-column` only). Do not change `app/src/pages/v2/pageTypes/components/doubleColumn/DoubleColumn.css` or `DoubleColumn.tsx`. Do not change page type 1. Do not add `features/`.
-steps:
-1. Scope **15px** between the two note columns on `.page-type-two` only (`gap: 15px` on `.page-type-two .double-column`, or `margin-left: 15px` on `.page-type-two .right-column`).
-2. Shrink the current `width: 50%` so 50+50+15 does not overflow `.page` (`calc(50% - 7.5px)` or `flex: 1; min-width: 0` plus the 15px).
-3. Do not change headings, stores, or `NotesPanes.tsx`.
-done when: `grep -n "15px" app/src/pages/v2/pageTypes/pageType2/PageType2.css` hits; `grep -n "15px\\|gap:" app/src/pages/v2/pageTypes/components/doubleColumn/` is 0 hits.
-depends on: T-085 (done)
-open questions: none
-deviations from design: none
+## Done
 
 ### T-089: Paint leftover zebra behind the note panes
-status: proposed
+status: done
 source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 zebra; Q2 17.38; Q3 white first; Q4 visible in edit; Q5 tile on grow)
 why: Official blank is lined. These panes are textareas, so leftover `nth-child` zebra does not apply. The designer wants `#f3f3f3` / white bands behind the text.
 scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/NotesPanes.css` (and `NotesPanes.tsx` only if a wrapper is required). Do not change `index.css`. Do not change Favor or page-1 notes. Do not convert to leftover list rows. Do not add a shared widget.
-steps:
-1. On `.page-type-two-notes > p` and `> textarea`, paint `repeating-linear-gradient` leftover zebra: white `0–17.38px`, `#f3f3f3` `17.38–34.76px`. `background-attachment: local`. Tile when the pane grows past 16 rows.
-2. Keep bands aligned to the 17.38 box (drop vertical padding or `background-origin` / `background-position` so the first white band is a full 17.38). Do not change `line-height` or the `calc(16 * 17.38px)` min-height.
-3. Restate `background` (and hover) with `!important` so global `.view-edit textarea` teal does not hide the bands. Hover may tint; it must not become a solid fill. View `p` uses the same zebra.
-4. Do not edit `index.css`. Do not add leftover `<span>` rows behind a transparent textarea.
-done when: `grep -n "repeating-linear-gradient" app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/NotesPanes.css` hits; `grep -n "17.38px" app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/NotesPanes.css` hits; `grep -n "nth-child" app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/` is 0 hits.
-depends on: T-085, T-086 (done)
-open questions: none
+result: `repeating-linear-gradient` white then `#f3f3f3` at 17.38px on view `p` and textarea. Vertical padding dropped so the first white band is a full 17.38. Widget `!important` beats edit teal; hover is a 0.35 teal wash over the same zebra.
 deviations from design: none
+open questions: none
 
-## Done
+### T-088: Put 15px between Abilities and Burdens & Injuries
+status: done
+source: rewrite-ledger/page2-view.md, 2026-10-04 (note gap; Design Q answered)
+why: The two note panes sit in `DoubleColumn` at 50% / 50% with no space between them. The designer named 15px between the stacks.
+scope: view adjacency `app/src/pages/v2/pageTypes/pageType2/PageType2.css` (column widths / `.page-type-two .double-column` only). Do not change `app/src/pages/v2/pageTypes/components/doubleColumn/DoubleColumn.css` or `DoubleColumn.tsx`. Do not change page type 1. Do not add `features/`.
+result: `.page-type-two .double-column` `gap: 15px`. Columns `calc(50% - 7.5px)`. Shared `DoubleColumn` unchanged.
+deviations from design: none
+open questions: none
+
 
 ### T-087: Index page-type-2 paths on existing L1 keys
 status: done

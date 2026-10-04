@@ -51,4 +51,4 @@ Revised 2026-10-04 (note gap + zebra; Design Q1–Q5):
 - 15px between the panes; leftover zebra behind both controls (white first, 17.38 pitch, tile on grow, visible in edit) — **added**.
 
 Touches: `app/src/pages/v2/pageTypes/pageType2/`; `backend/common/interfaces/v2/page2/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page2.sql`; ledger front panels
-TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089
+TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089 (done)
