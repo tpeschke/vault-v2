@@ -1,3 +1,7 @@
+.combat-skills-v2 {
+    margin-bottom: 15px;
+}
+
 .combat-skills-v2 .skill-columns {
     display: flex;
 }
@@ -25,7 +29,7 @@
     column-count: 2;
     column-fill: auto;
     column-gap: 0;
-    height: calc(10 * 17.38px);
+    height: calc(12 * 17.38px);
 }
 
 .combat-skills-v2 .suites-col > span,
@@ -50,16 +54,22 @@
 }
 
 .combat-skills-v2 .suites-col span > *:first-child,
-.combat-skills-v2 .adv-list span > *:first-child {
+.combat-skills-v2 .adv-list span > *:first-child,
+.combat-skills-v2 span > *:first-child {
     text-align: left;
     width: 82%;
     border-left: unset;
 }
 
 .combat-skills-v2 .suites-col span > :nth-child(2),
-.combat-skills-v2 .adv-list span > :nth-child(2) {
+.combat-skills-v2 .adv-list span > :nth-child(2),
+.combat-skills-v2 span > *:nth-child(2) {
     width: 18%;
     text-align: center;
+}
+
+.combat-skills-v2 .adv-list > span {
+    border-left: 1px solid black;
 }
 
 .combat-skills-v2 .adv-list span p,
@@ -71,7 +81,7 @@
 .combat-skills-v2 .suites-col em,
 .combat-skills-v2 .suites-col p,
 .combat-skills-v2 .suites-col input,
-.combat-skills-v2 .suites-col .discount-row > h2 {
+.combat-skills-v2 .suites-col .discount-row > em {
     min-height: 17.38px;
     height: 17.38px;
     box-sizing: border-box;
@@ -91,7 +101,12 @@
     background-clip: border-box;
 }
 
-.combat-skills-v2 .discount-row > h2 {
+.combat-skills-v2 .discount-row {
+    border-top: 1px solid black;
+    margin-top: 5px;
+}
+
+.combat-skills-v2 .discount-row > em {
     width: 82%;
     border-left: unset;
 }

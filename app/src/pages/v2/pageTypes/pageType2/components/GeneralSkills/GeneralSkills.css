@@ -1,3 +1,7 @@
+.general-skills-v2 {
+    margin-bottom: 15px;
+}
+
 .general-skills-v2 .skill-columns {
     display: flex;
 }
@@ -25,7 +29,7 @@
     column-count: 2;
     column-fill: auto;
     column-gap: 0;
-    height: calc(18 * 17.38px);
+    height: calc(20 * 17.38px);
 }
 
 .general-skills-v2 .suites-col > span,
@@ -33,6 +37,10 @@
 .general-skills-v2 .adv-list > span {
     display: flex;
     break-inside: avoid;
+}
+
+.general-skills-v2 .adv-list > span {
+    border-left: 1px solid black;
 }
 
 .general-skills-v2 .suites-col > span:nth-child(odd),
@@ -70,7 +78,7 @@
 .general-skills-v2 .suites-col em,
 .general-skills-v2 .suites-col p,
 .general-skills-v2 .suites-col input,
-.general-skills-v2 .suites-col .discount-row > h2 {
+.general-skills-v2 .suites-col .discount-row > strong {
     min-height: 17.38px;
     height: 17.38px;
     box-sizing: border-box;
@@ -90,10 +98,17 @@
     background-clip: border-box;
 }
 
-.general-skills-v2 .native-language-name {
+.native-language-row {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    margin: 5px 0;
     display: flex;
     flex-direction: column;
-    width: 64%;
+}
+
+.general-skills-v2 .native-language-name {
+    display: flex;
+    width: 100% !important;
     border-left: unset;
     padding: 0;
 }
@@ -103,7 +118,7 @@
     width: 100%;
 }
 
-.general-skills-v2 .discount-row > h2 {
+.general-skills-v2 .discount-row > em, .general-skills-v2 .discount-row > strong {
     width: 82%;
     border-left: unset;
 }

@@ -100,33 +100,33 @@ export default function GeneralSkills({ page, pageID, updates }: Props) {
                         </span>
                     ))}
                     <span className="native-language-row">
+                        <em>Native Language</em>
                         <span className="native-language-name">
-                            <em>Native Language</em>
                             {isEditing
                                 ? <input className="character-value" placeholder=" " value={page.nativeLanguage.name} onChange={event => updates.updateNativeLanguage(pageID, { name: event.target.value })} />
                                 : <p className="character-value">{page.nativeLanguage.name}</p>
                             }
+                            <NumberCell
+                                isEditing={isEditing}
+                                value={page.nativeLanguage.stat}
+                                onChange={value => updates.updateNativeLanguage(pageID, { stat: value })}
+                            />
+                            <NumberCell
+                                isEditing={isEditing}
+                                value={page.nativeLanguage.rank}
+                                onChange={value => updates.updateNativeLanguage(pageID, { rank: value })}
+                            />
                         </span>
-                        <NumberCell
-                            isEditing={isEditing}
-                            value={page.nativeLanguage.stat}
-                            onChange={value => updates.updateNativeLanguage(pageID, { stat: value })}
-                        />
-                        <NumberCell
-                            isEditing={isEditing}
-                            value={page.nativeLanguage.rank}
-                            onChange={value => updates.updateNativeLanguage(pageID, { rank: value })}
-                        />
                     </span>
                     <span className="discount-row">
-                        <h2>Armor Skill Adj</h2>
+                        <strong>Armor Skill Adj</strong>
                         {isEditing
                             ? <input className="character-value" type="number" placeholder=" " value={page.armorSkillAdj} onChange={event => updates.updateArmorSkillAdj(pageID, +event.target.value)} />
                             : <p className="character-value">{page.armorSkillAdj}</p>
                         }
                     </span>
                     <span className="discount-row">
-                        <h2>Gen. Skill Discount</h2>
+                        <em>Gen. Skill Discount</em>
                         {isEditing
                             ? <input className="character-value" type="number" placeholder=" " value={page.genSkillDiscount} onChange={event => updates.updateGenSkillDiscount(pageID, +event.target.value)} />
                             : <p className="character-value">{page.genSkillDiscount}</p>

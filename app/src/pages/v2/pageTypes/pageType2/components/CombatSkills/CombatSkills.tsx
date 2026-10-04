@@ -63,7 +63,7 @@ export default function CombatSkills({ page, pageID, updates }: Props) {
                         </span>
                     ))}
                     <span className="discount-row">
-                        <h2>Combat Skill Discount</h2>
+                        <em>Combat Skill Discount</em>
                         {isEditing
                             ? <input className="character-value" type="number" placeholder=" " value={page.combatSkillDiscount} onChange={event => updates.updateCombatSkillDiscount(pageID, +event.target.value)} />
                             : <p className="character-value">{page.combatSkillDiscount}</p>
