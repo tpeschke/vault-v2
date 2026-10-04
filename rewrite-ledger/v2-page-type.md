@@ -80,5 +80,9 @@ Revised 2026-10-04 (page type 2; Design Q12):
 - “Off-card gutter under each page-type-1” — **revised**: gutter under every sheet card. Copy-type `+` — **revised** again: labeled Main Info / Skills (`add-page-type-1.md`).
 - Create-character note for type 2 — **recorded** on `page2-view.md` (yes, index 1).
 
-Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `edit-character.md`, `quick-view-inputs.md`
-TODOs: T-076–T-087 (page type 2)
+Revised 2026-10-04 (playbook gutter add; Q1 Save-gate type N; Q2 label on pageN-view.md):
+- Gutter mentioned only as today’s two buttons — **revised**: instance add is a vertical-slice surface (T-093).
+- Dropdown / button registry — **retained** rejected.
+
+Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093
