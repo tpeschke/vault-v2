@@ -16,13 +16,15 @@ interface Props {
     renderRow: (item: SingleItem, index: number, onChange: (next: SingleItem) => void) => ReactNode
     renderInsert: (onBlur: (event: FocusEvent<HTMLInputElement>) => void) => ReactNode
     renderLeftover: (index: number) => ReactNode
+    showInsert?: boolean
 }
 
-export default function DisplaySingleArray({ max, items, insert, update, renderRow, renderInsert, renderLeftover }: Props) {
+export default function DisplaySingleArray({ max, items, insert, update, renderRow, renderInsert, renderLeftover, showInsert }: Props) {
     const isEditing = useContext(EditingContext)
+    const shouldShowInsert = showInsert ?? isEditing
 
-    const leftOver = max - items.length - (isEditing ? 1 : 0)
-    const showEditInputs = isEditing && leftOver > -1
+    const leftOver = max - items.length - (shouldShowInsert ? 1 : 0)
+    const showInsertRow = shouldShowInsert && items.length < max
 
     function handleInsertBlur(event: FocusEvent<HTMLInputElement>) {
         const { value } = event.target
@@ -39,7 +41,7 @@ export default function DisplaySingleArray({ max, items, insert, update, renderR
                     {renderRow(item, index, next => update(index, next))}
                 </Fragment>
             ))}
-            {showEditInputs && renderInsert(handleInsertBlur)}
+            {showInsertRow && renderInsert(handleInsertBlur)}
             {leftOver > -1 && [...Array(leftOver).keys()].map((_, index) => (
                 <Fragment key={`leftover-${index}`}>
                     {renderLeftover(index)}

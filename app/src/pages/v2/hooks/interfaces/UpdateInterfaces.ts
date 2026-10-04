@@ -39,6 +39,7 @@ export interface PageType1Updates {
     updateDefense: (pageID: number, patch: Partial<Defense>) => void
     updateAttack: (pageID: number, index: number, patch: Partial<Attack>) => void
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void
+    persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void
 }
 
 export interface PageType2Updates {

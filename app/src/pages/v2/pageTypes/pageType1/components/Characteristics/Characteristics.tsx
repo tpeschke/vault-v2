@@ -6,8 +6,6 @@ import StrengthNDiscount from './components/strengthNDiscount/StrengthNDiscount'
 import ReputationDisplay from './components/reputation/ReputationDisplay'
 import FlawsDisplay from './components/flaws/Flaws'
 import DescriptionsDisplay from './components/descriptions/Descriptions'
-import { useContext } from 'react'
-import EditingContext from '../../../../contexts/EditingContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 import DisplaySingleArray from '../../../../components/displayArray/DisplaySingleArray'
 
@@ -18,7 +16,6 @@ interface Props {
 }
 
 export default function CharacteristicsDisplay({ characteristicsInfo, pageID, updates }: Props) {
-    const isEditing = useContext(EditingContext)
     const { capacity, socialSuites, culturalStrength, socialSkillDiscount, currentEmotions, reputations, descriptions, flaws } = characteristicsInfo
     const rows = currentEmotions ?? []
 
@@ -30,26 +27,32 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
             <div className="current-emotions-v2">
                 <DisplaySingleArray
                     max={9}
+                    showInsert={true}
                     items={rows}
                     insert={row => updates.insertEmotion(pageID, row)}
                     update={(index, next) => updates.updateEmotion(pageID, index, next.value)}
-                    renderRow={(item, _index, onChange) => (
+                    renderRow={(item, index, onChange) => (
                         <span>
-                            {isEditing ?
-                                <input
-                                    className="character-value"
-                                    placeholder=" "
-                                    value={item.value}
-                                    onChange={event => onChange({ ...item, value: event.target.value })}
-                                />
-                                :
-                                <p className="character-value">{item.value}</p>
-                            }
+                            <input
+                                className="character-value"
+                                placeholder=" "
+                                maxLength={25}
+                                value={item.value}
+                                onChange={event => onChange({ ...item, value: event.target.value })}
+                                onBlur={event => {
+                                    const value = event.target.value
+                                    if (value === '') {
+                                        return
+                                    }
+                                    const nextRows = rows.map((row, rowIndex) => rowIndex === index ? { ...row, value } : row)
+                                    updates.persistCurrentEmotions(pageID, nextRows, { index, value })
+                                }}
+                            />
                         </span>
                     )}
                     renderInsert={onBlur => (
                         <span>
-                            <input className="character-value" placeholder=" " onBlur={onBlur} />
+                            <input className="character-value" placeholder=" " maxLength={25} onBlur={onBlur} />
                         </span>
                     )}
                     renderLeftover={() => (
