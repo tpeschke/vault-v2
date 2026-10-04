@@ -6,22 +6,19 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-091: Wash default teal over note textareas while edit is on
-status: proposed
+status: done
 source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 default teal; Q2 darker hover; Q3 view `p` zebra; Q4 wash)
 why: T-089 hid edit teal so only hover showed a wash. Designer wants the rest state teal too, without a solid fill that hides the leftover zebra.
 scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/NotesPanes.css`. Do not change `index.css`, `View.css`, Favor, page-1 notes, skill tables, or JSX. Do not add `features/`.
-steps:
-1. Split the current combined `p` / textarea override. View `p` (and the base textarea rule used in view) stay leftover zebra only: white then `#f3f3f3`, 17.38 pitch, `background-attachment: local`. No teal on view `p`.
-2. While `.view-edit`, both note **textareas** keep that zebra and add a **rest** wash: `linear-gradient` of `rgba(173, 216, 230, 0.35)` stacked over the same `repeating-linear-gradient`. Specificity / `!important` must beat `index.css` solid `.view-edit textarea` teal.
-3. Hover on those edit textareas: darker wash `rgba(145, 181, 194, 0.35)` over the same zebra (same stack as the current hover rule). Not a solid fill.
-4. Scope teal wash to `.view-edit` only. Do not paint wash in view or `.view-quick-edit` (type 2 has no play-time view). Drop leftover `.view-quick-edit` selectors on these panes if they would apply the wash outside Edit.
-done when: `grep -n "view-edit" -A 25 app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/NotesPanes.css` shows rest `173, 216, 230` **and** `repeating-linear-gradient` on the textarea; hover `145, 181, 194` **and** `repeating-linear-gradient`; `grep -n "page-type-two-notes > p" -A 18` that file shows zebra and no `173` / `145` teal; `grep -n "view-quick-edit" app/src/pages/v2/pageTypes/pageType2/components/NotesPanes/` is 0 hits.
+result: `.view-edit` textareas stack `rgba(173, 216, 230, 0.35)` over leftover zebra at rest and `rgba(145, 181, 194, 0.35)` on hover. View `p` stays zebra. Dropped leftover `.view-quick-edit` selectors.
 depends on: T-089 (done)
-open questions: none
 deviations from design: none. Rest/hover wash alpha is the existing T-089 hover `0.35`; only the rest color is new.
 
-## Done
 
 ### T-090: Make each suites-col row the same height in view and edit
 status: done
