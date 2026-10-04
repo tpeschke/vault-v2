@@ -28,7 +28,7 @@ Sheet-wide session (already on the v2 slice; new pages plug in):
 - New tables/columns: `ensureSchema` idempotent patch + `backupTables/pageN.sql` in the same change (`schema-on-boot.md`). No new migration package.
 - Play-time view controls (always-visible inputs, field POST, location highlight) are **not** automatic. Add them only when that page’s topic names the cells. Mechanics: `quick-view-inputs.md`. New allowlist attributes and column UPDATEs ship in the same change as the control.
 - Two-column shell: reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Do not add `features/`, `widgets/`, or `shared/`.
-- Off-card gutter under each page-type-1: add `+` (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Do not put that cluster on the printed blank.
+- Off-card gutter under each sheet card: add `+` (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). `+` inserts another blank of **that card’s type**. Do not put that cluster on the printed blank.
 
 Vertical slice (every new page type adds all of these):
 
@@ -43,11 +43,11 @@ Vertical slice (every new page type adds all of these):
 | Delete | `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/`; `deletePages.ts` `switch` (`default` true) |
 | Schema snapshot | `backend/server/v2/backupTables/page1.sql` |
 | Boot DDL | `backend/server/db/ensureSchema.ts` |
-| Page-local decision | `page1-view.md` |
+| Page-local decision | `page1-view.md` (type 1); `page2-view.md` (type 2) |
 
 New type N uses the same slots with `pageTypeN` / `pageN`. Wire into the existing v2 view/edit/add/delete owners. Paths sit under current YAML view/edit/create/delete adjacencies. Update root L1 YAML only when indexed files are added, moved, or renamed. Do not add a user-objective key for “page type N.”
 
-Create-character: whether a new character gains page type N is noted by the designer when that type is added. `addV2CharacterController.ts` already comments “Add page type 2” / “Add page type 3”; those lines are not approval.
+Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). `addV2CharacterController.ts` comments are not approval for type 3.
 
 How the next agent proceeds (only when the designer names a new page type and attaches that page’s official blank):
 1. Route here. Read this contract. Do not scan `TODO.md` Done.
@@ -57,11 +57,12 @@ How the next agent proceeds (only when the designer names a new page type and at
 
 This file existing is not Order or Execute for a new page type.
 
-Another **instance** of page-type-1 on the same character is a separate objective (`add-page-type-1.md`). That is not page type N.
+Another **instance** of an existing type on the same character is the generic gutter (`add-page-type-1.md`). That is not a new page type.
 
-Code verified at Order 2026-10-03:
-- `V2View` `switch (page.type)` case 1; `default` empty fragment.
-- No `app/src/pages/v2/pageTypes/pageType2/` (and no v2 `pageTwo` tree). Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store until a later page’s topic and the designer say otherwise. Do not treat them, or v1 `pageTwo`, as page type N.
+Code verified at Order 2026-10-03; re-verified 2026-10-04:
+- `V2View` `switch (page.type)` case 1; `default` empty fragment. Gutter still lives inside case 1 (T-082 makes it generic).
+- No `app/src/pages/v2/pageTypes/pageType2/` (and no v2 `pageTwo` tree). Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store. Do not treat them, or v1 `pageTwo`, as page type 2.
+- `getV2Updates` returns only `PageType1Updates`. `savePages` / assemble / delete `default` still no-op / 404 / true. `addV2CharacterController` inserts `pageTypeID` 1 only.
 - `DisplaySingleArray` / `DisplayPairArray` exist on the v2 slice.
 
 Rejected:
@@ -71,7 +72,11 @@ Rejected:
 - Restating page-1’s left/right section list here.
 - Treating PDF / v1 Quick Edit as required functionality.
 - Extracting a shared kit before a third page type shows a stable contract.
-- Ordering or scaffolding a specific later page type as part of writing this playbook.
+- Ordering or scaffolding a specific later page type as part of writing this playbook. (Disposition 2026-10-04: designer named type 2; Order is `page2-view.md` + T-076–T-087.)
 
-Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `edit-character.md`, `quick-view-inputs.md`
-TODOs: none (playbook is the Order result; a later session Orders page N when the designer names it)
+Revised 2026-10-04 (page type 2; Design Q12):
+- “Off-card gutter under each page-type-1” — **revised**: gutter under every sheet card; `+` copies that card’s type.
+- Create-character note for type 2 — **recorded** on `page2-view.md` (yes, index 1).
+
+Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `edit-character.md`, `quick-view-inputs.md`
+TODOs: T-076–T-087 (page type 2)

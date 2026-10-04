@@ -1,0 +1,48 @@
+# Page type 2 skills view
+status: accepted   date: 2026-10-04
+
+Decision: The v2 page-type-2 view matches the second page of the official blank: stacked General Skills, Combat Skills, then Abilities | Burdens & Injuries. `pageTypeID` 2. Multiple instances allowed. New characters get one type-2 at `v2CharacterPages.index` 1. Existing characters are not backfilled. No play-time view controls. Sheet-wide fonts, `character-value`, page box, overflow, and island: `v2-page-type.md`. Wordmark is page-1 only. Gutter: `add-page-type-1.md` / `page-reorder.md` (generic under every card).
+
+Why: Designer named page type 2 from the official blank and answered Design Q1–Q12 (2026-10-04). Official blank is the layout source. Caps are the lined Adv Skills rows on that page.
+
+Constraints it imposes:
+- Sheet-wide contract: `v2-page-type.md`. This file owns page-type-2 section order, labels, stores, and exceptions.
+- Stacked order, not page 1’s identity | vitals split: (1) General Skills full width, (2) Combat Skills full width, (3) Abilities | Burdens & Injuries. Reuse `doubleColumn` only for that last pair. Do not wrap the skill tables in page 1’s left/right shell.
+- `.page` is 1036×796. Official blank is letter portrait; leftover Adv Skills rows will overflow 1068. Record overflow; do not shrink type or drop leftover pads to fit. Do not set `--mapped-row-min-height: 19.38px` on `.page-type-two` (the bump would add more overflow). Use the sheet-wide 15px / 17.38px box.
+- No wordmark. No Positions, dice, or page-1 leftover widgets (Temperaments, Relationships, Movement, Goals). Those stay on the page-1 store.
+- Labels: **General Skills**, **Gen. Suites**, **Stat**, **Rank**, **Adv Skills**, Athletics / Lore / Strategy / Streetwise / Survival / Trades / Weirdcraft, **Native Language**, **Armor Skill Adj**, **Gen. Skill Discount**, **Combat Skills**, **Combat Suites**, Armor / Melee / Ranged / Shields / Unarmed, **Combat Skill Discount**, **Abilities**, **Burdens & Injuries** (correct the blank’s “Injures”).
+- General suites: fixed 7, keys `athletics` `lore` `strategy` `streetwise` `survival` `trades` `weirdcraft`, `suiteID` 1–7 in that order. Each `{ stat, rank }` (`number | ''`, same as page-1 social suite Stat/Rank). Names are chrome.
+- Native language: `{ name, stat, rank }`. `name` is stored (`varchar(250)`). Chrome **Native Language** stays on the row; `name` is the `character-value` in that name track.
+- Armor Skill Adj, Gen. Skill Discount, Combat Skill Discount: stored numbers. Not computed.
+- Advanced general skills: one array `{ id, key?, name, stat, rank }`. Cap **36**. Leftover pads to cap. Two visual columns, **one list that wraps** column-major (fill down the left Adv Skills track, then the right; 18 rows each, matching the blank). Not two stores. Not two slots glued to each suite.
+- Combat suites: fixed 5, keys `armor` `melee` `ranged` `shields` `unarmed`, `suiteID` 1–5 in that order. Each `{ rank }` only (`number | ''`).
+- Advanced combat skills: one array `{ id, key?, name, rank }`. Cap **20**. Same wrap (10 rows per column). Two-field rows may use v2 `DisplayPairArray` (`name` as `value`). General adv three-field rows stay local; do not add a shared triple widget.
+- Abilities and Burdens & Injuries: one `text` string each, notes-style textarea in edit, `p.character-value` on view. Wrap and grow. Min-height `calc(16 * 17.38px)` (lined rows on the blank). Overflow recorded.
+- List arrays: real rows only; leftover pads to cap; one insert row while editing and `length < cap`; insert on blur if any stored field is non-empty; `makeTempID` for React keys; clearing stored fields removes the row. New rows `id` 0 or omitted.
+- Edit: stored drawn cells swap to controlled `character-value` inputs. Suite names, section bars, and Stat/Rank headers stay chrome. Computed: none on this page.
+- Persist every type-2 field on the full Save payload. Schema: `ensureSchema` + `backupTables/page2.sql` in the same change (`schema-on-boot.md`). Tables keyed by `pageID` (several type-2 pages per character):
+  - `v2Page2Basics` — unique `pageID`; native language name/stat/rank; three discounts; `abilities` `text`; `burdens` `text`
+  - `v2GeneralSkillSuites` — `pageID`, `suiteID` 1–7, `stat`, `rank`
+  - `v2AdvancedGeneralSkills` — `pageID`, `name`, `stat`, `rank`, `index` (array order for wrap)
+  - `v2CombatSkillSuites` — `pageID`, `suiteID` 1–5, `rank`
+  - `v2AdvancedCombatSkills` — `pageID`, `name`, `rank`, `index`
+- Create-character: insert type 1 at index 0, type 2 at index 1. Existing characters stay without type 2 until the owner adds one from the gutter.
+- Catalog identity stays the first page-type-1. Type 2 has no catalog name.
+- No play-time view inputs, die clicks, or location cells on this type (`quick-view-inputs.md`).
+- Class root `.page-type-two`. Vertical slice paths: `v2-page-type.md` (`pageType2` / `page2`).
+
+Rejected:
+- Landscape remap of the stacked blank (Q1: keep as-is).
+- Boot-insert type 2 onto existing characters (Q3: stay).
+- Nested two adv-skill slots per suite.
+- Two independent Adv Skills stores.
+- Abilities / Burdens as leftover list rows or name+rank items (Q6: textarea per pane).
+- Sheet spelling **Injures**.
+- Computing discounts or ranks.
+- Play-time view controls on this page.
+- Wordmark on type 2.
+- A shared three-field array widget.
+- The 19.38 leftover bump on this card.
+
+Touches: `app/src/pages/v2/pageTypes/pageType2/`; `backend/common/interfaces/v2/page2/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page2.sql`; ledger front panels
+TODOs: T-076–T-087
