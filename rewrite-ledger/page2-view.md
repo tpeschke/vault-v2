@@ -11,7 +11,7 @@ Constraints it imposes:
 - `.page` is 1036×796. Official blank is letter portrait; leftover Adv Skills rows will overflow 1068. Record overflow; do not shrink type or drop leftover pads to fit. Do not set `--mapped-row-min-height: 19.38px` on `.page-type-two` (the bump would add more overflow). Use the sheet-wide 15px / 17.38px box.
 - No wordmark. No Positions, dice, or page-1 leftover widgets (Temperaments, Relationships, Movement, Goals). Those stay on the page-1 store.
 - Labels: **General Skills**, **Gen. Suites**, **Stat**, **Rank**, **Adv Skills**, Athletics / Lore / Strategy / Streetwise / Survival / Trades / Weirdcraft, **Native Language**, **Armor Skill Adj**, **Gen. Skill Discount**, **Combat Skills**, **Combat Suites**, Armor / Melee / Ranged / Shields / Unarmed, **Combat Skill Discount**, **Abilities**, **Burdens & Injuries** (correct the blank’s “Injures”).
-- General suites: fixed 7, keys `athletics` `lore` `strategy` `streetwise` `survival` `trades` `weirdcraft`, `suiteID` 1–7 in that order. Each `{ stat, rank }` (`number | ''`, same as page-1 social suite Stat/Rank). Names are chrome.
+- General suites: fixed 7, keys `athletics` `lore` `strategy` `streetwise` `survival` `trades` `weirdcraft`, `suiteID` 1–7 in that order. Each `{ stat, rank }` (`number | ''`, same as page-1 social suite Stat/Rank). Names are chrome. Suites first-column (`suites-col`) view `p` / edit `input` / chrome `em` (and discount `h2`) share the empty-edit **17.38px** box (`height` and `min-height`), including Native Language and both discount rows. Restate island padding on the input so View.css `padding: 0` does not shrink edit. Do not set `--mapped-row-min-height` on `.page-type-two`. Header `h2` (Gen. Suites | Stat | Rank) stays the header bar. Native Language name stays a stacked chrome+value track; each of those cells is 17.38 (the row is two boxes tall). Same lock on Combat `suites-col`. Adv Skills already lock 17.38; leave them.
 - Native language: `{ name, stat, rank }`. `name` is stored (`varchar(250)`). Chrome **Native Language** stays on the row; `name` is the `character-value` in that name track.
 - Armor Skill Adj, Gen. Skill Discount, Combat Skill Discount: stored numbers. Not computed.
 - Advanced general skills: one array `{ id, key?, name, stat, rank }`. Cap **36**. Leftover pads to cap. Two visual columns, **one list that wraps** column-major (fill down the left Adv Skills track, then the right; 18 rows each, matching the blank). Not two stores. Not two slots glued to each suite.
@@ -45,10 +45,15 @@ Rejected:
 - Wordmark on type 2.
 - A shared three-field array widget.
 - The 19.38 leftover bump on this card.
+- Growing suite-column edit inputs to the loose view `p` (2026-10-04 Q2: empty-edit 17.38).
+- Locking only chrome suite-name rows and leaving Native Language / discounts unmatched (2026-10-04 Q1: every suites-col row).
 
 Revised 2026-10-04 (note gap + zebra; Design Q1–Q5):
 - Abilities / Burdens textarea / `p` / 16×17.38 min-height — **retained**.
 - 15px between the panes; leftover zebra behind both controls (white first, 17.38 pitch, tile on grow, visible in edit) — **added**.
 
+Revised 2026-10-04 (suite-column box; Design Q1 every row, Q2 empty):
+- Suites-col `min-height` only — **revised**: `height` + `min-height` 17.38 on every suites-col value cell so view matches empty-edit.
+
 Touches: `app/src/pages/v2/pageTypes/pageType2/`; `backend/common/interfaces/v2/page2/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page2.sql`; ledger front panels
-TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089 (done)
+TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089 (done); suite-column box: T-090

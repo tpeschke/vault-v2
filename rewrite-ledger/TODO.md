@@ -6,6 +6,21 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-090: Lock suites-col view and edit to the empty 17.38 box
+status: proposed
+source: rewrite-ledger/page2-view.md, 2026-10-04 (suite-column box; Q1 every first-column row; Q2 empty-edit 17.38)
+why: General and Combat `suites-col` only set `min-height: 17.38px`. View `p` keeps island padding and `line-height: 1.2`; edit `input` uses View.css `padding: 0` and `height: 17.38px` / `1.2em`. The first columns do not match. Adv Skills already lock `height: 17.38px`.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/GeneralSkills.css` and `.../CombatSkills/CombatSkills.css` (`suites-col` cells only). Do not change `View.css`, `index.css`, Adv Skills wrap heights, NotesPanes, page type 1, or JSX unless a selector cannot reach the cell. Do not add `features/`. Do not set `--mapped-row-min-height` on `.page-type-two`.
+steps:
+1. On every General and Combat `suites-col` value row (seven general suites, five combat suites, Native Language, Armor Skill Adj, Gen. Skill Discount, Combat Skill Discount), set `height` and `min-height` **17.38px** on chrome `em`, view `p`, edit `input`, and discount `h2`.
+2. Restate island `padding: 2px 1px` / `border-box` / `background-clip: content-box` on those `suites-col` inputs so View.css `padding: 0` does not shrink edit vs view.
+3. Do not lock `.skill-header h2`. Native Language name stays stacked; each of `em` and the name `p`/`input` is 17.38 (that row stays two boxes tall).
+4. Leave Adv Skills rules unchanged.
+done when: `grep -n "suites-col" -A 8 app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/GeneralSkills.css app/src/pages/v2/pageTypes/pageType2/components/CombatSkills/CombatSkills.css` shows `height: 17.38px` on the suites-col cells; `grep -n "mapped-row-min-height" app/src/pages/v2/pageTypes/pageType2/` is 0 hits.
+depends on: T-083, T-084, T-086 (done)
+open questions: none
+deviations from design: none
+
 ## Done
 
 ### T-089: Paint leftover zebra behind the note panes
