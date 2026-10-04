@@ -91,9 +91,13 @@ async function createPageType2Tables() {
         armorSkillAdj integer default 0,
         genSkillDiscount integer default 0,
         combatSkillDiscount integer default 0,
+        generalSkillNotes text default '',
+        combatSkillNotes text default '',
         abilities text default '',
         burdens text default ''
     )`)
+    await query(`alter table v2Page2Basics add column if not exists generalSkillNotes text default ''`)
+    await query(`alter table v2Page2Basics add column if not exists combatSkillNotes text default ''`)
     await query(`create unique index if not exists v2page2basics_pageid_uidx
         on v2Page2Basics (pageID)`)
     await query(`create table if not exists v2GeneralSkillSuites (

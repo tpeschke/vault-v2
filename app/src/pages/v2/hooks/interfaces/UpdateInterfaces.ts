@@ -38,7 +38,7 @@ export interface PageType1Updates {
     updateStress: (pageID: number, patch: Partial<Stress>) => void
     updateDefense: (pageID: number, patch: Partial<Defense>) => void
     updateAttack: (pageID: number, index: number, patch: Partial<Attack>) => void
-    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number) => void
+    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void
 }
 
 export interface PageType2Updates {
@@ -48,6 +48,9 @@ export interface PageType2Updates {
     updateArmorSkillAdj: (pageID: number, value: number) => void
     updateGenSkillDiscount: (pageID: number, value: number) => void
     updateCombatSkillDiscount: (pageID: number, value: number) => void
+    updateGeneralSkillNotes: (pageID: number, value: string) => void
+    updateCombatSkillNotes: (pageID: number, value: string) => void
+    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void
     insertAdvancedGeneralSkill: (pageID: number, newRow: { key: string, name: string, stat: SkillNumber, rank: SkillNumber }) => void
     updateAdvancedGeneralSkill: (pageID: number, index: number, next: AdvancedGeneralSkill) => void
     insertAdvancedCombatSkill: (pageID: number, newRow: { key: string, name: string, rank: SkillNumber }) => void

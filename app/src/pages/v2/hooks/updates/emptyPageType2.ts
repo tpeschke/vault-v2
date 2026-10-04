@@ -14,6 +14,8 @@ export default function emptyPageType2(pageID: number): Page2 {
         armorSkillAdj: 0,
         genSkillDiscount: 0,
         combatSkillDiscount: 0,
+        generalSkillNotes: '',
+        combatSkillNotes: '',
         advancedGeneralSkills: [],
         combatSuites: emptyCombatSuites(),
         advancedCombatSkills: [],

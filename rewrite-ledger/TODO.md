@@ -6,52 +6,37 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-094: Store generalSkillNotes and combatSkillNotes
-status: proposed
+status: done
 source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 no label; Q2 grow; Q3 stretch leftover; Q4 always textarea)
 why: Two unlabeled leftover notes under the discounts. No store exists.
 scope: `backend/common/interfaces/v2/pageTypes.ts` (`Page2`); `backend/server/v2/backupTables/page2.sql`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/view/assembleV2Character/utilities/pageType2/assemblePageType2.ts`; `backend/server/v2/edit/utilities/pageType2/savePageType2.ts`; `app/src/pages/v2/hooks/updates/emptyPageType2.ts`. Do not add a table. Do not add `features/`.
-steps:
-1. Add `generalSkillNotes: string` and `combatSkillNotes: string` on `Page2`. Empty default `''`.
-2. `v2Page2Basics`: two `text default ''` columns. `page2.sql` and `ensureSchema` `ADD COLUMN IF NOT EXISTS` (create-table body too). Same change (`schema-on-boot.md`).
-3. Assemble, empty, and Save upsert both columns. Existing rows stay `''`.
-done when: `grep -n "generalSkillNotes\\|combatSkillNotes" backend/common/interfaces/v2/pageTypes.ts backend/server/v2/backupTables/page2.sql backend/server/db/ensureSchema.ts backend/server/v2/view/assembleV2Character/utilities/pageType2/assemblePageType2.ts backend/server/v2/edit/utilities/pageType2/savePageType2.ts app/src/pages/v2/hooks/updates/emptyPageType2.ts` hits each file; `./node_modules/.bin/tsc --noEmit -p app` and `./node_modules/.bin/tsc --noEmit -p backend/server` exit 0 (or the repo’s usual server check).
+result: Two `text` columns on `v2Page2Basics`. Assemble / empty / Save carry `generalSkillNotes` and `combatSkillNotes`. Existing rows stay `''`.
 depends on: T-077, T-078, T-080 (done)
-open questions: none
 deviations from design: none. Payload keys are `generalSkillNotes` / `combatSkillNotes`.
 
 ### T-095: Draw leftover notes textareas under both discounts
-status: proposed
+status: done
 source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 none; Q2 grow; Q3 stretch; Q4 always textarea)
 why: The blank under Gen. Skill Discount and Combat Skill Discount is unused.
 scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/` and `.../CombatSkills/` (tsx + css). `PageType2Updates` + `pageType2Updates.ts` + `getV2Updates.ts` for the two writers. Do not change NotesPanes, Favor, Adv Skills wrap, or `index.css`. Do not add `features/`.
-steps:
-1. Under each Discount row, one unlabeled `textarea.character-value` (view and edit). Bind `generalSkillNotes` / `combatSkillNotes`. `onChange` writes local state.
-2. Stretch: `suites-col` is a column flex; the textarea (or a wrapper) `flex: 1` so it fills leftover beside Adv Skills (General 18 rows, Combat 10). No zebra. No leftover list rows.
-3. Grow past leftover: do not lock `height`. `min-height` is the leftover. `white-space: pre-wrap`. `field-sizing: content` **only on these two** (exception to `edit-character.md`; do not spread). Overflow recorded.
-4. Do not persist on `onChange`. Blur persist is T-096.
-done when: `grep -n "generalSkillNotes\\|combatSkillNotes\\|textarea" app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/GeneralSkills.tsx app/src/pages/v2/pageTypes/pageType2/components/CombatSkills/CombatSkills.tsx` shows one textarea each; `grep -n "field-sizing\\|flex: 1\\|repeating-linear-gradient" app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/GeneralSkills.css app/src/pages/v2/pageTypes/pageType2/components/CombatSkills/CombatSkills.css` shows `flex: 1` and `field-sizing` and 0 zebra gradients; `./node_modules/.bin/tsc --noEmit -p app` exits 0.
+result: One unlabeled `textarea.character-value` under each Discount. `suites-col` column flex + `flex: 1` fills leftover. `field-sizing: content` on these two only. No zebra.
 depends on: T-094
-open questions: none
 deviations from design: `field-sizing: content` on these two only so wrap+grow works without JS.
 
 ### T-096: Persist leftover notes on view blur
-status: proposed
+status: done
 source: rewrite-ledger/quick-view-inputs.md / page2-view.md, 2026-10-04
 why: These panes are play-time. View persist is number-only today.
 scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts` (or a page-2 sibling UPDATE, not a new route); `app/src/pages/v2/hooks/characterHook.tsx`; `UpdateInterfaces.ts` / `getV2Updates.ts`; the two skill widgets (blur only). Do not add `/quickEdit`. Do not persist while `isEditing`.
-steps:
-1. Allowlist `'generalSkillNotes' | 'combatSkillNotes'`. `ViewPersistBody.value` is `number | string`. Number attributes still coerce with `+value`. Text attributes write the string (no `Number()`).
-2. One-column UPDATE on `v2Page2Basics` for that `pageID`. Unknown attribute still refuse.
-3. `persistViewField` / `viewFieldValue` / `patchViewField` take `number | string`. Same skip rules. Patch snapshot + cache on success.
-4. Each leftover textarea `onBlur` calls persist when `!isEditing`. Location highlight: do not override `.view-quick-edit textarea` teal. No new sidebar button.
-done when: `grep -n "generalSkillNotes\\|combatSkillNotes" backend/common/interfaces/v2/page1/viewPersist.ts backend/server/v2/edit/editV2FieldController.ts backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts app/src/pages/v2/hooks/characterHook.tsx` hits each; widgets have `onBlur` + `persistViewField`; `grep -n "value: number" backend/common/interfaces/v2/page1/viewPersist.ts` is 0 hits (`number | string`); `./node_modules/.bin/tsc --noEmit -p app` exits 0.
+result: Field POST allowlists the two strings. Text attributes write the string; numbers still coerce. Widgets persist on blur. Location highlight uses existing `.view-quick-edit textarea`.
 depends on: T-094, T-095
-open questions: none
 deviations from design: none. Extends the existing field POST; no new route.
 
-
-## Done
 
 ### T-093: Put gutter add on the sheet playbook vertical slice
 status: done

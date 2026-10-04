@@ -40,4 +40,4 @@ Revised 2026-10-04 (type-2 leftover notes):
 - Payload `value` number only — **revised**: `number | string`; text attributes write the string.
 
 Touches: `app/src/pages/v2/pageTypes/pageType1/components/GeneralInfo/GeneralInfo.tsx`; `.../Favor/Favor.tsx`; `.../Vitals/Vitals.tsx`; `.../Vitals/Vitals.css`; `app/src/pages/v2/pageTypes/pageType2/components/GeneralSkills/`; `.../CombatSkills/`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/`; `app/src/pages/v2/components/sidebar/`; `backend/server/v2/edit/`; `backend/common/interfaces/v2/`
-TODOs: T-058 (done); die hover face: T-059 (done); view persist: T-060, T-061 (done); die persist: T-062 (done); location highlight: T-063 (done); type-2 leftover notes: T-094–T-096
+TODOs: T-058 (done); die hover face: T-059 (done); view persist: T-060, T-061 (done); die persist: T-062 (done); location highlight: T-063 (done); type-2 leftover notes: T-094–T-096 (done)

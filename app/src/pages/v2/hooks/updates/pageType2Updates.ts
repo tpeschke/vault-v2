@@ -91,6 +91,14 @@ export function updateCombatSkillDiscount(character: CharacterVersion2, pageID: 
     return mapPage2(character, pageID, page => ({ ...page, combatSkillDiscount: value }))
 }
 
+export function updateGeneralSkillNotes(character: CharacterVersion2, pageID: number, value: string): CharacterVersion2 {
+    return mapPage2(character, pageID, page => ({ ...page, generalSkillNotes: value }))
+}
+
+export function updateCombatSkillNotes(character: CharacterVersion2, pageID: number, value: string): CharacterVersion2 {
+    return mapPage2(character, pageID, page => ({ ...page, combatSkillNotes: value }))
+}
+
 export function updateAbilities(character: CharacterVersion2, pageID: number, value: string): CharacterVersion2 {
     return mapPage2(character, pageID, page => ({ ...page, abilities: value }))
 }

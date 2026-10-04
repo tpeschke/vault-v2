@@ -1,5 +1,5 @@
 import { CharacterVersion2 } from "@vault/common/interfaces/characterInterfaces"
-import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
+import { Page1, Page2 } from "@vault/common/interfaces/v2/pageTypes"
 import { ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
 import axios from "axios"
 import { useState, useEffect, useCallback, useRef } from "react"
@@ -12,6 +12,7 @@ import { updateCatalogInfo } from "../../../redux/slices/usersCharactersSlice"
 import { V2UpdateFunctions } from "./interfaces/UpdateInterfaces"
 import getV2Updates from "./updates/getV2Updates"
 import { otherPageType1Names, updateCrP, updateDamage, updateFavor, updateSelfDoubt, updateStress } from "./updates/pageType1Updates"
+import { updateCombatSkillNotes, updateGeneralSkillNotes } from "./updates/pageType2Updates"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -21,49 +22,62 @@ function sheetName(character: CharacterVersion2): string {
     return (firstPage1(character)?.generalInfo.name ?? character.name ?? '').trim()
 }
 
-function viewFieldValue(character: CharacterVersion2 | null, pageID: number, attribute: ViewPersistAttribute): number | undefined {
-    const page = character?.pages.find((candidate): candidate is Page1 => candidate.type === 1 && candidate.pageID === pageID)
-    if (!page) {
+function viewFieldValue(character: CharacterVersion2 | null, pageID: number, attribute: ViewPersistAttribute): number | string | undefined {
+    const page1 = character?.pages.find((candidate): candidate is Page1 => candidate.type === 1 && candidate.pageID === pageID)
+    if (page1) {
+        switch (attribute) {
+            case 'unspent':
+                return page1.generalInfo.crp.unspent
+            case 'currentFavor':
+                return page1.favor.current
+            case 'diePenalty':
+                return page1.vitalsInfo.selfDoubt.diePenalty
+            case 'damage':
+                return page1.vitalsInfo.damage.damage
+            case 'stress':
+                return page1.vitalsInfo.stress.stress
+            case 'selfDoubtDieIndex':
+                return page1.vitalsInfo.selfDoubt.dieIndex
+            case 'damageDieIndex':
+                return page1.vitalsInfo.damage.dieIndex
+            case 'stressDieIndex':
+                return page1.vitalsInfo.stress.dieIndex
+        }
+    }
+    const page2 = character?.pages.find((candidate): candidate is Page2 => candidate.type === 2 && candidate.pageID === pageID)
+    if (!page2) {
         return undefined
     }
     switch (attribute) {
-        case 'unspent':
-            return page.generalInfo.crp.unspent
-        case 'currentFavor':
-            return page.favor.current
-        case 'diePenalty':
-            return page.vitalsInfo.selfDoubt.diePenalty
-        case 'damage':
-            return page.vitalsInfo.damage.damage
-        case 'stress':
-            return page.vitalsInfo.stress.stress
-        case 'selfDoubtDieIndex':
-            return page.vitalsInfo.selfDoubt.dieIndex
-        case 'damageDieIndex':
-            return page.vitalsInfo.damage.dieIndex
-        case 'stressDieIndex':
-            return page.vitalsInfo.stress.dieIndex
+        case 'generalSkillNotes':
+            return page2.generalSkillNotes
+        case 'combatSkillNotes':
+            return page2.combatSkillNotes
     }
 }
 
-function patchViewField(character: CharacterVersion2, pageID: number, attribute: ViewPersistAttribute, value: number): CharacterVersion2 {
+function patchViewField(character: CharacterVersion2, pageID: number, attribute: ViewPersistAttribute, value: number | string): CharacterVersion2 {
     switch (attribute) {
         case 'unspent':
-            return updateCrP(character, pageID, 'unspent', value)
+            return updateCrP(character, pageID, 'unspent', +value)
         case 'currentFavor':
-            return updateFavor(character, pageID, { current: value })
+            return updateFavor(character, pageID, { current: +value })
         case 'diePenalty':
-            return updateSelfDoubt(character, pageID, { diePenalty: value })
+            return updateSelfDoubt(character, pageID, { diePenalty: +value })
         case 'damage':
-            return updateDamage(character, pageID, { damage: value })
+            return updateDamage(character, pageID, { damage: +value })
         case 'stress':
-            return updateStress(character, pageID, { stress: value })
+            return updateStress(character, pageID, { stress: +value })
         case 'selfDoubtDieIndex':
-            return updateSelfDoubt(character, pageID, { dieIndex: value })
+            return updateSelfDoubt(character, pageID, { dieIndex: +value })
         case 'damageDieIndex':
-            return updateDamage(character, pageID, { dieIndex: value })
+            return updateDamage(character, pageID, { dieIndex: +value })
         case 'stressDieIndex':
-            return updateStress(character, pageID, { dieIndex: value })
+            return updateStress(character, pageID, { dieIndex: +value })
+        case 'generalSkillNotes':
+            return updateGeneralSkillNotes(character, pageID, String(value))
+        case 'combatSkillNotes':
+            return updateCombatSkillNotes(character, pageID, String(value))
     }
 }
 
@@ -173,7 +187,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
 
     const [inFlight, setInFlight] = useState(0)
 
-    function persistViewField(pageID: number, attribute: ViewPersistAttribute, value: number) {
+    function persistViewField(pageID: number, attribute: ViewPersistAttribute, value: number | string) {
         if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }

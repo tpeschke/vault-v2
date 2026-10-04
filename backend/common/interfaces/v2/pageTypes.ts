@@ -41,6 +41,8 @@ export interface Page2 {
     armorSkillAdj: number
     genSkillDiscount: number
     combatSkillDiscount: number
+    generalSkillNotes: string
+    combatSkillNotes: string
     advancedGeneralSkills: AdvancedGeneralSkill[]
     combatSuites: CombatSkillSuites
     advancedCombatSkills: AdvancedCombatSkill[]

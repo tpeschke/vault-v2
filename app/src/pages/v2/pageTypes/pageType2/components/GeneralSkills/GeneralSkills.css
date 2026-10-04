@@ -4,11 +4,14 @@
 
 .general-skills-v2 .skill-columns {
     display: flex;
+    align-items: stretch;
 }
 
 .general-skills-v2 .suites-col {
     width: 34%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .general-skills-v2 .adv-col {
@@ -140,4 +143,14 @@
 
 .v2 .view-edit .general-skills-v2 input {
     background-clip: content-box !important;
+}
+
+.general-skills-v2 .leftover-notes {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    white-space: pre-wrap;
+    field-sizing: content;
 }

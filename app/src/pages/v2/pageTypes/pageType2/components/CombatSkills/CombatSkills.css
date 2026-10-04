@@ -4,11 +4,14 @@
 
 .combat-skills-v2 .skill-columns {
     display: flex;
+    align-items: stretch;
 }
 
 .combat-skills-v2 .suites-col {
     width: 34%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .combat-skills-v2 .adv-col {
@@ -124,4 +127,14 @@
 
 .v2 .view-edit .combat-skills-v2 input {
     background-clip: content-box !important;
+}
+
+.combat-skills-v2 .leftover-notes {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    white-space: pre-wrap;
+    field-sizing: content;
 }

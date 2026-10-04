@@ -72,4 +72,4 @@ Revised 2026-10-04 (discount leftover notes; Q1 none; Q2 grow; Q3 stretch; Q4 al
 - Leftover under Discount empty — **revised**: stretch-fill textarea, no zebra, grow recorded.
 
 Touches: `app/src/pages/v2/pageTypes/pageType2/`; `backend/common/interfaces/v2/page2/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page2.sql`; ledger front panels
-TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089 (done); suite-column box: T-090 (done); note edit wash: T-091 (done); labeled gutter adds: T-092 (done; `add-page-type-1.md`); leftover notes: T-094–T-096
+TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089 (done); suite-column box: T-090 (done); note edit wash: T-091 (done); labeled gutter adds: T-092 (done; `add-page-type-1.md`); leftover notes: T-094–T-096 (done)

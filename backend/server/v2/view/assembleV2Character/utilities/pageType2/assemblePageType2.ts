@@ -19,6 +19,8 @@ interface BasicsReturn {
     armorskilladj?: number | null
     genskilldiscount?: number | null
     combatskilldiscount?: number | null
+    generalskillnotes?: string | null
+    combatskillnotes?: string | null
     abilities?: string | null
     burdens?: string | null
 }
@@ -95,6 +97,8 @@ export default async function assemblePageType2(pageID: number): Promise<Page2> 
         armorSkillAdj: 0,
         genSkillDiscount: 0,
         combatSkillDiscount: 0,
+        generalSkillNotes: '',
+        combatSkillNotes: '',
         advancedGeneralSkills: [],
         combatSuites: emptyCombatSuites(),
         advancedCombatSkills: [],
@@ -126,6 +130,8 @@ export default async function assemblePageType2(pageID: number): Promise<Page2> 
         page.armorSkillAdj = basics.armorskilladj ?? 0
         page.genSkillDiscount = basics.genskilldiscount ?? 0
         page.combatSkillDiscount = basics.combatskilldiscount ?? 0
+        page.generalSkillNotes = basics.generalskillnotes ?? ''
+        page.combatSkillNotes = basics.combatskillnotes ?? ''
         page.abilities = basics.abilities ?? ''
         page.burdens = basics.burdens ?? ''
     }

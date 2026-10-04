@@ -8,6 +8,8 @@ create table
         armorSkillAdj integer default 0,
         genSkillDiscount integer default 0,
         combatSkillDiscount integer default 0,
+        generalSkillNotes text default '',
+        combatSkillNotes text default '',
         abilities text default '',
         burdens text default ''
     );

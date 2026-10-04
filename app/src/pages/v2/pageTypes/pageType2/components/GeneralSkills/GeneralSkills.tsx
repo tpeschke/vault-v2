@@ -132,6 +132,12 @@ export default function GeneralSkills({ page, pageID, updates }: Props) {
                             : <p className="character-value">{page.genSkillDiscount}</p>
                         }
                     </span>
+                    <textarea
+                        className="character-value leftover-notes"
+                        value={page.generalSkillNotes}
+                        onChange={event => updates.updateGeneralSkillNotes(pageID, event.target.value)}
+                        onBlur={event => updates.persistViewField(pageID, 'generalSkillNotes', event.target.value)}
+                    />
                 </div>
                 <div className="adv-col">
                     <div className="adv-headers">

@@ -49,7 +49,9 @@ import {
     updateArmorSkillAdj,
     updateBurdens,
     updateCombatSkillDiscount,
+    updateCombatSkillNotes,
     updateCombatSuiteRank,
+    updateGeneralSkillNotes,
     updateGenSkillDiscount,
     updateGeneralSuiteField,
     updateNativeLanguage
@@ -75,7 +77,7 @@ export default function getV2Updates(
     character: CharacterVersion2 | null,
     setCharacter: (character: CharacterVersion2) => void,
     dispatch: Dispatch,
-    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number) => void
+    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void
 ): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageGutterUpdates: PageGutterUpdates } {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
@@ -204,6 +206,15 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateCombatSkillDiscount(character, pageID, value))
         },
+        updateGeneralSkillNotes: (pageID, value) => {
+            if (!character) { return }
+            apply(updateGeneralSkillNotes(character, pageID, value))
+        },
+        updateCombatSkillNotes: (pageID, value) => {
+            if (!character) { return }
+            apply(updateCombatSkillNotes(character, pageID, value))
+        },
+        persistViewField,
         insertAdvancedGeneralSkill: (pageID, newRow) => {
             if (!character) { return }
             apply(insertAdvancedGeneralSkill(character, pageID, newRow))

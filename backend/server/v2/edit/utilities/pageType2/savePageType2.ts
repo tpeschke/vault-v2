@@ -8,8 +8,9 @@ import query from "../../../../db/database"
 
 const upsertBasicsSQL = `insert into v2Page2Basics (
     pageID, nativeLanguageName, nativeLanguageStat, nativeLanguageRank,
-    armorSkillAdj, genSkillDiscount, combatSkillDiscount, abilities, burdens
-) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    armorSkillAdj, genSkillDiscount, combatSkillDiscount,
+    generalSkillNotes, combatSkillNotes, abilities, burdens
+) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 on conflict (pageID) do update set
     nativeLanguageName = excluded.nativeLanguageName,
     nativeLanguageStat = excluded.nativeLanguageStat,
@@ -17,6 +18,8 @@ on conflict (pageID) do update set
     armorSkillAdj = excluded.armorSkillAdj,
     genSkillDiscount = excluded.genSkillDiscount,
     combatSkillDiscount = excluded.combatSkillDiscount,
+    generalSkillNotes = excluded.generalSkillNotes,
+    combatSkillNotes = excluded.combatSkillNotes,
     abilities = excluded.abilities,
     burdens = excluded.burdens`
 
@@ -55,6 +58,8 @@ export default async function savePageType2(page: Page2): Promise<void> {
         armorSkillAdj,
         genSkillDiscount,
         combatSkillDiscount,
+        generalSkillNotes,
+        combatSkillNotes,
         advancedGeneralSkills,
         combatSuites,
         advancedCombatSkills,
@@ -70,6 +75,8 @@ export default async function savePageType2(page: Page2): Promise<void> {
         armorSkillAdj,
         genSkillDiscount,
         combatSkillDiscount,
+        generalSkillNotes,
+        combatSkillNotes,
         abilities,
         burdens
     ])

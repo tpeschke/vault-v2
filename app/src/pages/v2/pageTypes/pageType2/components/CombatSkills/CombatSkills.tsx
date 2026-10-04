@@ -69,6 +69,12 @@ export default function CombatSkills({ page, pageID, updates }: Props) {
                             : <p className="character-value">{page.combatSkillDiscount}</p>
                         }
                     </span>
+                    <textarea
+                        className="character-value leftover-notes"
+                        value={page.combatSkillNotes}
+                        onChange={event => updates.updateCombatSkillNotes(pageID, event.target.value)}
+                        onBlur={event => updates.persistViewField(pageID, 'combatSkillNotes', event.target.value)}
+                    />
                 </div>
                 <div className="adv-col">
                     <div className="adv-headers">
