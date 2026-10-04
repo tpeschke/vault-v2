@@ -8,9 +8,9 @@ import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vit
 import { Dispatch } from "redux"
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice"
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
-import { PageType1Updates } from "../interfaces/UpdateInterfaces"
+import { PageGutterUpdates, PageType1Updates, PageType2Updates } from "../interfaces/UpdateInterfaces"
 import {
-    addPageType1After as insertPageAfter,
+    addPageAfter as insertPageAfter,
     movePageToBottom as moveToBottom,
     movePageToTop as moveToTop,
     otherPageType1Names,
@@ -39,6 +39,20 @@ import {
     updateStat,
     updateStress
 } from "./pageType1Updates"
+import {
+    insertAdvancedCombatSkill,
+    insertAdvancedGeneralSkill,
+    updateAbilities,
+    updateAdvancedCombatSkill,
+    updateAdvancedGeneralSkill,
+    updateArmorSkillAdj,
+    updateBurdens,
+    updateCombatSkillDiscount,
+    updateCombatSuiteRank,
+    updateGenSkillDiscount,
+    updateGeneralSuiteField,
+    updateNativeLanguage
+} from "./pageType2Updates"
 
 function findPage1(character: CharacterVersion2, pageID: number): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1 && page.pageID === pageID)
@@ -61,13 +75,13 @@ export default function getV2Updates(
     setCharacter: (character: CharacterVersion2) => void,
     dispatch: Dispatch,
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number) => void
-): PageType1Updates {
+): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageGutterUpdates: PageGutterUpdates } {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
         return next
     }
 
-    return {
+    const pageType1Updates: PageType1Updates = {
         updateGeneralInfoField: (pageID, key, value) => {
             if (!character) { return }
             const next = apply(updateGeneralInfoField(character, pageID, key, value))
@@ -161,8 +175,62 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateAttack(character, pageID, index, patch))
         },
-        persistViewField,
-        addPageType1After: (afterIndex) => {
+        persistViewField
+    }
+
+    const pageType2Updates: PageType2Updates = {
+        updateGeneralSuiteField: (pageID, suite, field, value) => {
+            if (!character) { return }
+            apply(updateGeneralSuiteField(character, pageID, suite, field, value))
+        },
+        updateCombatSuiteRank: (pageID, suite, value) => {
+            if (!character) { return }
+            apply(updateCombatSuiteRank(character, pageID, suite, value))
+        },
+        updateNativeLanguage: (pageID, patch) => {
+            if (!character) { return }
+            apply(updateNativeLanguage(character, pageID, patch))
+        },
+        updateArmorSkillAdj: (pageID, value) => {
+            if (!character) { return }
+            apply(updateArmorSkillAdj(character, pageID, value))
+        },
+        updateGenSkillDiscount: (pageID, value) => {
+            if (!character) { return }
+            apply(updateGenSkillDiscount(character, pageID, value))
+        },
+        updateCombatSkillDiscount: (pageID, value) => {
+            if (!character) { return }
+            apply(updateCombatSkillDiscount(character, pageID, value))
+        },
+        insertAdvancedGeneralSkill: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertAdvancedGeneralSkill(character, pageID, newRow))
+        },
+        updateAdvancedGeneralSkill: (pageID, index, next) => {
+            if (!character) { return }
+            apply(updateAdvancedGeneralSkill(character, pageID, index, next))
+        },
+        insertAdvancedCombatSkill: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertAdvancedCombatSkill(character, pageID, newRow))
+        },
+        updateAdvancedCombatSkill: (pageID, index, next) => {
+            if (!character) { return }
+            apply(updateAdvancedCombatSkill(character, pageID, index, next))
+        },
+        updateAbilities: (pageID, value) => {
+            if (!character) { return }
+            apply(updateAbilities(character, pageID, value))
+        },
+        updateBurdens: (pageID, value) => {
+            if (!character) { return }
+            apply(updateBurdens(character, pageID, value))
+        }
+    }
+
+    const pageGutterUpdates: PageGutterUpdates = {
+        addPageAfter: (afterIndex) => {
             if (!character) { return }
             apply(insertPageAfter(character, afterIndex))
         },
@@ -179,6 +247,8 @@ export default function getV2Updates(
             applyReorder(character, moveToBottom(character, index), dispatch, apply)
         }
     }
+
+    return { pageType1Updates, pageType2Updates, pageGutterUpdates }
 }
 
 function applyReorder(

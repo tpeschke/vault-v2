@@ -3,6 +3,7 @@ import { checkForContentTypeBeforeSending } from '../../../controllers/common/se
 import { Response, Request } from '../../../interfaces/apiInterfaces'
 import { CharacterPageReturns } from '../viewV2CharacterInterfaces';
 import assemblePageType1 from './utilities/pageType1/assemblePageType1';
+import assemblePageType2 from './utilities/pageType2/assemblePageType2';
 import { Page404Error, PageV2 } from '@vault/common/interfaces/v2/pageTypes'
 import { getCharacterOwnerID } from './utilities/ownerInfo';
 import query from '../../../db/database';
@@ -26,6 +27,8 @@ export default async function assembleV2Character(request: Request, response: Re
         switch (pageTypeID) {
             case 1:
                 return assemblePageType1(pageID)
+            case 2:
+                return assemblePageType2(pageID)
             default:
                 return getPage404Error()
         }

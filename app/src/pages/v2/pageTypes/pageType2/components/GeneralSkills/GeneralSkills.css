@@ -1,0 +1,110 @@
+.general-skills-v2 .skill-columns {
+    display: flex;
+}
+
+.general-skills-v2 .suites-col {
+    width: 34%;
+    box-sizing: border-box;
+}
+
+.general-skills-v2 .adv-col {
+    width: 66%;
+    box-sizing: border-box;
+}
+
+.general-skills-v2 .adv-headers {
+    display: flex;
+}
+
+.general-skills-v2 .adv-headers > span {
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.general-skills-v2 .adv-list {
+    column-count: 2;
+    column-fill: auto;
+    column-gap: 0;
+    height: calc(18 * 17.38px);
+}
+
+.general-skills-v2 .suites-col > span,
+.general-skills-v2 .adv-headers > span,
+.general-skills-v2 .adv-list > span {
+    display: flex;
+    break-inside: avoid;
+}
+
+.general-skills-v2 .suites-col > span:nth-child(odd),
+.general-skills-v2 .adv-list > span:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.general-skills-v2 span > * {
+    min-width: 0;
+    padding: 2px 1px;
+    box-sizing: border-box;
+    background-clip: content-box;
+    border-left: 1px solid #bdbdbd;
+    min-height: 17.38px;
+}
+
+.general-skills-v2 span > *:first-child {
+    text-align: left;
+    width: 64%;
+    border-left: unset;
+}
+
+.general-skills-v2 span > :nth-child(2),
+.general-skills-v2 span > :nth-child(3) {
+    width: 18%;
+    text-align: center;
+}
+
+.general-skills-v2 .adv-list > span p,
+.general-skills-v2 .adv-list > span input {
+    min-height: 17.38px;
+    height: 17.38px;
+}
+
+.general-skills-v2 .skill-header h2 {
+    padding: 4px;
+    background-clip: border-box;
+}
+
+.general-skills-v2 .native-language-name {
+    display: flex;
+    flex-direction: column;
+    width: 64%;
+    border-left: unset;
+    padding: 0;
+}
+
+.general-skills-v2 .native-language-name > * {
+    border-left: unset;
+    width: 100%;
+}
+
+.general-skills-v2 .discount-row > h2 {
+    width: 82%;
+    border-left: unset;
+}
+
+.general-skills-v2 .discount-row > :nth-child(2) {
+    width: 18%;
+}
+
+.v2 .view-edit .general-skills-v2 .suites-col > span:nth-child(odd) input,
+.v2 .view-edit .general-skills-v2 .adv-list > span:nth-child(odd) input {
+    background: rgb(159, 199, 212) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .general-skills-v2 input:hover {
+    background: rgb(145, 181, 194) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .general-skills-v2 input {
+    background-clip: content-box !important;
+}

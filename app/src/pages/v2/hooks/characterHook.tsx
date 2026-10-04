@@ -212,16 +212,18 @@ export default function characterHook(pathname: string, isEditing: boolean) {
             })
     }
 
-    const [pageType1Updates, setPageType1Updates] = useState(() => getV2Updates(character, setCharacter, dispatch, persistViewField))
+    const [updates, setUpdates] = useState(() => getV2Updates(character, setCharacter, dispatch, persistViewField))
 
     useEffect(() => {
-        setPageType1Updates(getV2Updates(character, setCharacter, dispatch, persistViewField))
+        setUpdates(getV2Updates(character, setCharacter, dispatch, persistViewField))
     }, [character, isEditing, revertedCharacter])
 
     const updateFunctions: V2UpdateFunctions = {
         saveCharacterToBackend,
         revertCharacter,
-        pageType1Updates
+        pageType1Updates: updates.pageType1Updates,
+        pageType2Updates: updates.pageType2Updates,
+        pageGutterUpdates: updates.pageGutterUpdates
     }
 
     return {

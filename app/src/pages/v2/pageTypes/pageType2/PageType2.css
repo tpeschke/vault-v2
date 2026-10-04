@@ -1,0 +1,9 @@
+.page-type-two {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-type-two .left-column,
+.page-type-two .right-column {
+    width: 50%;
+}

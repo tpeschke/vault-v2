@@ -8,6 +8,7 @@ import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vit
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
 import emptyPageType1 from "./emptyPageType1"
+import emptyPageType2 from "./emptyPageType2"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -65,13 +66,15 @@ export function updateGeneralInfoField(character: CharacterVersion2, pageID: num
     return next
 }
 
-export function addPageType1After(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
-    const existingIds = character.pages
-        .filter((page): page is Page1 => page.type === 1)
-        .map(page => page.pageID)
-    const pageID = Math.min(0, ...existingIds) - 1
+export function addPageAfter(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
+    const source = character.pages[afterIndex]
+    if (!source || (source.type !== 1 && source.type !== 2)) {
+        return character
+    }
+    const pageID = Math.min(0, ...character.pages.map(page => 'pageID' in page ? page.pageID : 0)) - 1
+    const blank = source.type === 1 ? emptyPageType1(pageID) : emptyPageType2(pageID)
     const pages = [...character.pages]
-    pages.splice(afterIndex + 1, 0, emptyPageType1(pageID))
+    pages.splice(afterIndex + 1, 0, blank)
     return { ...character, pages }
 }
 

@@ -1,0 +1,12 @@
+.page-type-two-notes > p,
+.page-type-two-notes > textarea {
+    min-height: calc(16 * 17.38px);
+    padding: 2px 1px;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+}
+
+.page-type-two-notes > textarea {
+    width: 100%;
+    height: calc(16 * 17.38px);
+}

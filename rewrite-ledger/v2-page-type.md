@@ -59,11 +59,13 @@ This file existing is not Order or Execute for a new page type.
 
 Another **instance** of an existing type on the same character is the generic gutter (`add-page-type-1.md`). That is not a new page type.
 
-Code verified at Order 2026-10-03; re-verified 2026-10-04:
-- `V2View` `switch (page.type)` case 1; `default` empty fragment. Gutter still lives inside case 1 (T-082 makes it generic).
-- No `app/src/pages/v2/pageTypes/pageType2/` (and no v2 `pageTwo` tree). Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store. Do not treat them, or v1 `pageTwo`, as page type 2.
-- `getV2Updates` returns only `PageType1Updates`. `savePages` / assemble / delete `default` still no-op / 404 / true. `addV2CharacterController` inserts `pageTypeID` 1 only.
+Code verified after Execute 2026-10-04 (T-076–T-087):
+- `V2View` `switch (page.type)` case 1 and case 2; `default` empty fragment. Gutter after every page; `+` copies that card’s type.
+- `app/src/pages/v2/pageTypes/pageType2/` exists. Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store. Do not treat them, or v1 `pageTwo`, as page type 2.
+- `getV2Updates` returns `PageType1Updates`, `PageType2Updates`, and `PageGutterUpdates`. `savePages` / assemble / delete have `case 2`; `default` stays no-op / 404 / true. `addV2CharacterController` inserts type 1 at index 0 and type 2 at index 1.
 - `DisplaySingleArray` / `DisplayPairArray` exist on the v2 slice.
+
+Order 2026-10-03 / 2026-10-04 recorded the pre-slice gap (no type-2 tree; gutter inside case 1; create inserted type 1 only).
 
 Rejected:
 - A Cursor skill, cookiecutter, or empty `pageTypeN` stub folder.

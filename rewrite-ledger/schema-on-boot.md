@@ -19,4 +19,4 @@ Rejected:
 - Applying DDL only by hand.
 
 Touches: `backend/server/db/` (unindexed); `backend/server/vault.ts` (unindexed); `backend/server/v2/backupTables/page1.sql` (unindexed); `backend/server/v2/backupTables/page2.sql`
-TODOs: T-017, T-018, T-022, T-036 (done); Descriptions columns: T-041 (done); basics pageID: T-055 (done); pages characterid unique: T-068 (done); page type 2 tables: T-077
+TODOs: T-017, T-018, T-022, T-036 (done); Descriptions columns: T-041 (done); basics pageID: T-055 (done); pages characterid unique: T-068 (done); page type 2 tables: T-077 (done)

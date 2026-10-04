@@ -7,6 +7,7 @@ import { getV2Character, ViewRequest } from '../view/viewV2CharacterController'
 import savePages from './utilities/savePages'
 
 const countType1PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 1`
+const countType2PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 2`
 
 interface EditRequest extends Request {
     params: {
@@ -24,8 +25,10 @@ export async function editV2Character(request: EditRequest, response: Response) 
     if (ownerID === request.user?.id) {
         await savePages(characterID, pages)
         const storedType1 = await query(countType1PagesSQL, characterID)
+        const storedType2 = await query(countType2PagesSQL, characterID)
         const postedType1 = pages.filter(page => page.type === 1).length
-        if (storedType1.length < postedType1) {
+        const postedType2 = pages.filter(page => page.type === 2).length
+        if (storedType1.length < postedType1 || storedType2.length < postedType2) {
             checkForContentTypeBeforeSending(response, { message: 'Could not save all sheets' })
             return
         }

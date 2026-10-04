@@ -5,6 +5,7 @@ import { useBlocker } from "react-router-dom"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
+import PageType2 from './pageTypes/pageType2/PageType2'
 import EditingContext from './contexts/EditingContext'
 import Sidebar from './components/sidebar/Sidebar'
 
@@ -19,7 +20,7 @@ export default function V2View({ setLoading, pathname }: Props) {
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
 
     const { character, isDirty, isViewSaving, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing)
-    const { saveCharacterToBackend, revertCharacter, pageType1Updates } = updateFunctions
+    const { saveCharacterToBackend, revertCharacter, pageType1Updates, pageType2Updates, pageGutterUpdates } = updateFunctions
     const warnOnLeave = isDirty && isEditing
 
     useEffect(() => {
@@ -95,63 +96,69 @@ export default function V2View({ setLoading, pathname }: Props) {
                 <div className="version-two-shell">
                     <div className={`page-shell ${isEditing ? 'view-edit' : viewQuickEdit ? 'view-quick-edit' : ''}`}>
                         {character && character.pages.map((page, index) => {
+                            let card = <></>
                             switch (page.type) {
                                 case 1:
-                                    return (
-                                        <Fragment key={page.pageID}>
-                                            <div id={'sheet-' + page.pageID}>
-                                                <PageType1 pageInfo={page} index={index} updates={pageType1Updates} />
-                                            </div>
-                                            {isEditing &&
-                                                <div className="page-gutter">
-                                                    {index < character.pages.length - 1 &&
-                                                        <button
-                                                            type="button"
-                                                            className="bottom-buttons"
-                                                            data-tooltip-id="my-tooltip"
-                                                            data-tooltip-content="Swap the above sheet with the sheet below"
-                                                            onClick={() => {
-                                                                pageType1Updates.swapPageWithNext(index)
-                                                                scrollSheetIntoView(page.pageID)
-                                                            }}
-                                                        ><i className="fa-solid fa-arrow-up-arrow-down"></i></button>
-                                                    }
-                                                    {index > 0 &&
-                                                        <button
-                                                            type="button"
-                                                            className="bottom-buttons"
-                                                            data-tooltip-id="my-tooltip"
-                                                            data-tooltip-content="Move the above sheet to the top"
-                                                            onClick={() => {
-                                                                pageType1Updates.movePageToTop(index)
-                                                                scrollSheetIntoView(page.pageID)
-                                                            }}
-                                                        ><i className="fa-solid fa-up-to-line"></i></button>
-                                                    }
-                                                    {index < character.pages.length - 1 &&
-                                                        <button
-                                                            type="button"
-                                                            className="bottom-buttons"
-                                                            data-tooltip-id="my-tooltip"
-                                                            data-tooltip-content="Move above sheet to the bottom"
-                                                            onClick={() => {
-                                                                pageType1Updates.movePageToBottom(index)
-                                                                scrollSheetIntoView(page.pageID)
-                                                            }}
-                                                        ><i className="fa-solid fa-down-to-line"></i></button>
-                                                    }
-                                                    <button
-                                                        type="button"
-                                                        className="bottom-buttons add-page-type-1"
-                                                        onClick={() => pageType1Updates.addPageType1After(index)}
-                                                    ><i className="fa-solid fa-plus"></i></button>
-                                                </div>
-                                            }
-                                        </Fragment>
-                                    )
+                                    card = <PageType1 pageInfo={page} index={index} updates={pageType1Updates} />
+                                    break
+                                case 2:
+                                    card = <PageType2 pageInfo={page} updates={pageType2Updates} />
+                                    break
                                 default:
-                                    return <></>
+                                    return <Fragment key={`${page.type}-${index}`}></Fragment>
                             }
+                            return (
+                                <Fragment key={page.pageID}>
+                                    <div id={'sheet-' + page.pageID}>
+                                        {card}
+                                    </div>
+                                    {isEditing &&
+                                        <div className="page-gutter">
+                                            {index < character.pages.length - 1 &&
+                                                <button
+                                                    type="button"
+                                                    className="bottom-buttons"
+                                                    data-tooltip-id="my-tooltip"
+                                                    data-tooltip-content="Swap the above sheet with the sheet below"
+                                                    onClick={() => {
+                                                        pageGutterUpdates.swapPageWithNext(index)
+                                                        scrollSheetIntoView(page.pageID)
+                                                    }}
+                                                ><i className="fa-solid fa-arrow-up-arrow-down"></i></button>
+                                            }
+                                            {index > 0 &&
+                                                <button
+                                                    type="button"
+                                                    className="bottom-buttons"
+                                                    data-tooltip-id="my-tooltip"
+                                                    data-tooltip-content="Move the above sheet to the top"
+                                                    onClick={() => {
+                                                        pageGutterUpdates.movePageToTop(index)
+                                                        scrollSheetIntoView(page.pageID)
+                                                    }}
+                                                ><i className="fa-solid fa-up-to-line"></i></button>
+                                            }
+                                            {index < character.pages.length - 1 &&
+                                                <button
+                                                    type="button"
+                                                    className="bottom-buttons"
+                                                    data-tooltip-id="my-tooltip"
+                                                    data-tooltip-content="Move above sheet to the bottom"
+                                                    onClick={() => {
+                                                        pageGutterUpdates.movePageToBottom(index)
+                                                        scrollSheetIntoView(page.pageID)
+                                                    }}
+                                                ><i className="fa-solid fa-down-to-line"></i></button>
+                                            }
+                                            <button
+                                                type="button"
+                                                className="bottom-buttons add-page"
+                                                onClick={() => pageGutterUpdates.addPageAfter(index)}
+                                            ><i className="fa-solid fa-plus"></i></button>
+                                        </div>
+                                    }
+                                </Fragment>
+                            )
                         })}
                     </div>
                     {character &&

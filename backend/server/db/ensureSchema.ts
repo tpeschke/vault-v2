@@ -77,6 +77,65 @@ export default async function ensureSchema() {
     }
 
     await dropCharacterIdOnlyUniquesOnPages()
+
+    await createPageType2Tables()
+}
+
+async function createPageType2Tables() {
+    await query(`create table if not exists v2Page2Basics (
+        id serial primary key,
+        pageID integer unique,
+        nativeLanguageName varchar(250) default '',
+        nativeLanguageStat integer,
+        nativeLanguageRank integer,
+        armorSkillAdj integer default 0,
+        genSkillDiscount integer default 0,
+        combatSkillDiscount integer default 0,
+        abilities text default '',
+        burdens text default ''
+    )`)
+    await query(`create unique index if not exists v2page2basics_pageid_uidx
+        on v2Page2Basics (pageID)`)
+    await query(`create table if not exists v2GeneralSkillSuites (
+        id serial primary key,
+        pageID integer,
+        suiteID integer,
+        stat integer,
+        rank integer
+    )`)
+    await query(`create table if not exists v2AdvancedGeneralSkills (
+        id serial primary key,
+        pageID integer,
+        name varchar(250) default '',
+        stat integer,
+        rank integer,
+        index integer
+    )`)
+    await query(`create table if not exists v2CombatSkillSuites (
+        id serial primary key,
+        pageID integer,
+        suiteID integer,
+        rank integer
+    )`)
+    await query(`create table if not exists v2AdvancedCombatSkills (
+        id serial primary key,
+        pageID integer,
+        name varchar(250) default '',
+        rank integer,
+        index integer
+    )`)
+
+    for (const table of [
+        'v2page2basics',
+        'v2generalskillsuites',
+        'v2advancedgeneralskills',
+        'v2combatskillsuites',
+        'v2advancedcombatskills'
+    ]) {
+        if (!await tableExists(table)) {
+            throw new Error(`ensureSchema: ${table} missing`)
+        }
+    }
 }
 
 async function tableExists(tableName: string) {
