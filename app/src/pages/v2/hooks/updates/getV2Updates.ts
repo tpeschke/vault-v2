@@ -7,11 +7,14 @@ import { ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPers
 import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vitals"
 import { Dispatch } from "redux"
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice"
-import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
-import { PageGutterUpdates, PageType1Updates, PageType2Updates } from "../interfaces/UpdateInterfaces"
+import { Page1, Page3 } from "@vault/common/interfaces/v2/pageTypes"
+import { Page3Coinage, Page3Contact } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { Page3GearValue, Page3RelationshipPValue } from "@vault/common/interfaces/v2/page1/viewPersist"
+import { PageGutterUpdates, PageType1Updates, PageType2Updates, PageType3Updates } from "../interfaces/UpdateInterfaces"
 import {
     addPageAfter as insertPageAfter,
     addPageType2After as insertPageType2After,
+    addPageType3After as insertPageType3After,
     movePageToBottom as moveToBottom,
     movePageToTop as moveToTop,
     otherPageType1Names,
@@ -56,9 +59,30 @@ import {
     updateGeneralSuiteField,
     updateNativeLanguage
 } from "./pageType2Updates"
+import {
+    insertContact,
+    insertRelationship,
+    updateCoinage,
+    updateContact,
+    updateGearCell,
+    updateNotes,
+    updateRelationship
+} from "./pageType3Updates"
+
+export interface Page3PersistFns {
+    persistPage3Contacts: (pageID: number, nextRows: Page3Contact[], blurred: { index: number, value: string } | { insert: true, value: string }) => void
+    persistPage3RelationshipP: (pageID: number, value: Page3RelationshipPValue) => void
+    persistPage3Gear: (pageID: number, value: Page3GearValue) => void
+    persistPage3Coinage: (pageID: number, value: Page3Coinage) => void
+    persistPage3Notes: (pageID: number, value: string) => void
+}
 
 function findPage1(character: CharacterVersion2, pageID: number): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1 && page.pageID === pageID)
+}
+
+function findPage3(character: CharacterVersion2, pageID: number): Page3 | undefined {
+    return character.pages.find((page): page is Page3 => page.type === 3 && page.pageID === pageID)
 }
 
 function dispatchCatalog(character: CharacterVersion2, pageID: number, dispatch: Dispatch) {
@@ -78,8 +102,9 @@ export default function getV2Updates(
     setCharacter: (character: CharacterVersion2) => void,
     dispatch: Dispatch,
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void,
-    persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void
-): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageGutterUpdates: PageGutterUpdates } {
+    persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void,
+    page3Persist: Page3PersistFns
+): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageType3Updates: PageType3Updates, pageGutterUpdates: PageGutterUpdates } {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
         return next
@@ -247,6 +272,46 @@ export default function getV2Updates(
         }
     }
 
+    const pageType3Updates: PageType3Updates = {
+        insertContact: (pageID, newRow) => {
+            if (!character) { return }
+            const next = apply(insertContact(character, pageID, newRow))
+            page3Persist.persistPage3Contacts(pageID, findPage3(next, pageID)?.contacts ?? [], { insert: true, value: newRow.value })
+        },
+        updateContact: (pageID, index, value) => {
+            if (!character) { return }
+            const next = apply(updateContact(character, pageID, index, value))
+            if (value === '') {
+                page3Persist.persistPage3Contacts(pageID, findPage3(next, pageID)?.contacts ?? [], { index, value: '' })
+            }
+        },
+        insertRelationship: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertRelationship(character, pageID, newRow))
+        },
+        updateRelationship: (pageID, index, next) => {
+            if (!character) { return }
+            apply(updateRelationship(character, pageID, index, next))
+        },
+        updateGearCell: (pageID, slot, patch) => {
+            if (!character) { return }
+            apply(updateGearCell(character, pageID, slot, patch))
+        },
+        updateCoinage: (pageID, patch) => {
+            if (!character) { return }
+            apply(updateCoinage(character, pageID, patch))
+        },
+        updateNotes: (pageID, value) => {
+            if (!character) { return }
+            apply(updateNotes(character, pageID, value))
+        },
+        persistPage3Contacts: page3Persist.persistPage3Contacts,
+        persistPage3RelationshipP: page3Persist.persistPage3RelationshipP,
+        persistPage3Gear: page3Persist.persistPage3Gear,
+        persistPage3Coinage: page3Persist.persistPage3Coinage,
+        persistPage3Notes: page3Persist.persistPage3Notes
+    }
+
     const pageGutterUpdates: PageGutterUpdates = {
         addPageAfter: (afterIndex) => {
             if (!character) { return }
@@ -255,6 +320,10 @@ export default function getV2Updates(
         addPageType2After: (afterIndex) => {
             if (!character) { return }
             apply(insertPageType2After(character, afterIndex))
+        },
+        addPageType3After: (afterIndex) => {
+            if (!character) { return }
+            apply(insertPageType3After(character, afterIndex))
         },
         swapPageWithNext: (index) => {
             if (!character) { return }
@@ -270,7 +339,7 @@ export default function getV2Updates(
         }
     }
 
-    return { pageType1Updates, pageType2Updates, pageGutterUpdates }
+    return { pageType1Updates, pageType2Updates, pageType3Updates, pageGutterUpdates }
 }
 
 function applyReorder(

@@ -79,6 +79,7 @@ export default async function ensureSchema() {
     await dropCharacterIdOnlyUniquesOnPages()
 
     await createPageType2Tables()
+    await createPageType3Tables()
 }
 
 async function createPageType2Tables() {
@@ -135,6 +136,60 @@ async function createPageType2Tables() {
         'v2advancedgeneralskills',
         'v2combatskillsuites',
         'v2advancedcombatskills'
+    ]) {
+        if (!await tableExists(table)) {
+            throw new Error(`ensureSchema: ${table} missing`)
+        }
+    }
+}
+
+async function createPageType3Tables() {
+    await query(`create table if not exists v2Page3Basics (
+        id serial primary key,
+        pageID integer unique,
+        notes text default '',
+        copper integer default 0,
+        copperSize varchar(50) default '',
+        silver integer default 0,
+        silverSize varchar(50) default '',
+        gold integer default 0,
+        goldSize varchar(50) default '',
+        platinum integer default 0,
+        platinumSize varchar(50) default ''
+    )`)
+    await query(`create unique index if not exists v2page3basics_pageid_uidx
+        on v2Page3Basics (pageID)`)
+    await query(`create table if not exists v2Page3Contacts (
+        id serial primary key,
+        pageID integer,
+        value varchar(500),
+        index integer
+    )`)
+    await query(`create table if not exists v2Page3Relationships (
+        id serial primary key,
+        pageID integer,
+        value varchar(500),
+        r integer,
+        p integer,
+        index integer
+    )`)
+    await query(`create table if not exists v2Page3Gear (
+        id serial primary key,
+        pageID integer,
+        slot varchar(50),
+        item varchar(500) default '',
+        size varchar(50) default '',
+        staffSnake boolean default false,
+        meditating boolean default false,
+        w integer,
+        unique (pageID, slot)
+    )`)
+
+    for (const table of [
+        'v2page3basics',
+        'v2page3contacts',
+        'v2page3relationships',
+        'v2page3gear'
     ]) {
         if (!await tableExists(table)) {
             throw new Error(`ensureSchema: ${table} missing`)

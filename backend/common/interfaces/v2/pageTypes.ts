@@ -12,10 +12,16 @@ import {
     GeneralSkillSuites,
     NativeLanguage
 } from "./page2/page2Interfaces"
+import {
+    Page3Coinage,
+    Page3Contact,
+    Page3Gear,
+    Page3Relationship
+} from "./page3/page3Interfaces"
 
 export type PageV2 = {
     type: number
-} & (Page404Error | Page1 | Page2)
+} & (Page404Error | Page1 | Page2 | Page3)
 
 export interface Page404Error {
     type: 404
@@ -48,4 +54,14 @@ export interface Page2 {
     advancedCombatSkills: AdvancedCombatSkill[]
     abilities: string
     burdens: string
+}
+
+export interface Page3 {
+    type: 3
+    pageID: number
+    contacts: Page3Contact[]
+    relationships: Page3Relationship[]
+    gear: Page3Gear
+    coinage: Page3Coinage
+    notes: string
 }
