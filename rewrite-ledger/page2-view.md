@@ -26,7 +26,7 @@ Constraints it imposes:
   - `v2AdvancedGeneralSkills` — `pageID`, `name`, `stat`, `rank`, `index` (array order for wrap)
   - `v2CombatSkillSuites` — `pageID`, `suiteID` 1–5, `rank`
   - `v2AdvancedCombatSkills` — `pageID`, `name`, `rank`, `index`
-- Create-character: insert type 1 at index 0, type 2 at index 1. Existing characters stay without type 2 until the owner adds one from the gutter.
+- Create-character: insert type 1 at index 0, type 2 at index 1. Existing characters stay without type 2 until the owner clicks **+ Skills & Abilities** (`add-page-type-1.md`).
 - Catalog identity stays the first page-type-1. Type 2 has no catalog name.
 - No play-time view inputs, die clicks, or location cells on this type (`quick-view-inputs.md`).
 - Class root `.page-type-two`. Vertical slice paths: `v2-page-type.md` (`pageType2` / `page2`).
@@ -64,4 +64,4 @@ Revised 2026-10-04 (suite-column box; Q1 every row, Q2 empty; screenshot clarify
 - Suites-col `min-height` only — **revised**: one used row height in view and edit. `height` + `min-height` 17.38 on every suites-col value cell. Native Language stack is the same in both modes.
 
 Touches: `app/src/pages/v2/pageTypes/pageType2/`; `backend/common/interfaces/v2/page2/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page2.sql`; ledger front panels
-TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089 (done); suite-column box: T-090 (done); note edit wash: T-091 (done)
+TODOs: T-076–T-087 (done); note gap + zebra: T-088, T-089 (done); suite-column box: T-090 (done); note edit wash: T-091 (done); labeled gutter adds: T-092 (`add-page-type-1.md`)

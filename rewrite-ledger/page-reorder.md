@@ -7,7 +7,7 @@ Why: The designer asked to swap a sheet with the one below it and to send a shee
 
 Constraints it imposes:
 - Edit mode only (`isEditing`). Owners reach it through the existing Edit button. No controls on the view. No persist on click. No new HTTP route.
-- Same gutter as `+`: immediately under each rendered sheet card, outside `.page` / `.page-type-one` / `.page-type-two`. Not in the sidebar. Not inside `PageType1.tsx` or `PageType2.tsx`. Left-to-right: swap | top | bottom | add. Do not implement add-page.
+- Same gutter as the add buttons: immediately under each rendered sheet card, outside `.page` / `.page-type-one` / `.page-type-two`. Not in the sidebar. Not inside `PageType1.tsx` or `PageType2.tsx`. Left-to-right: swap | top | bottom | **+ Main Info** | **+ Skills & Abilities**. Do not implement add-page.
 - Icons (exact): swap `fa-solid fa-arrow-up-arrow-down`; top `fa-solid fa-up-to-line`; bottom `fa-solid fa-down-to-line`. Tooltips on existing `Tooltip id="my-tooltip"`: `Swap with the sheet below`; `Move this sheet to the top`; `Move this sheet to the bottom`.
 - Swap exchanges this sheet with the next (`index` ↔ `index + 1`). Send to top moves it to array slot 0. Send to bottom moves it to the last slot. First sheet: no send-to-top. Last sheet: no swap, no send-to-bottom. Sole sheet: none of the three (`+` stays). Collapse the row when a button is omitted.
 - Match the live `+` chrome (`.add-page-type-1` in `V2View.css`): no edit-teal fill. After a move, keep that sheet in view (stable `pageID`, not `page-${index}`). `+` still does not scroll (`add-page-type-1.md`).
@@ -22,11 +22,11 @@ Rejected:
 - Persist on click / a new reorder route (Q3: local until Save).
 - Showing the controls outside `isEditing` (Q4).
 - Disabled or spacer slots for omitted buttons (Q5).
-- Button order other than swap | top | bottom | add (Q7).
+- Button order other than swap | top | bottom | Main Info | Skills (Q7; Skills added 2026-10-04).
 
 Revised 2026-10-04 (page type 2; Design Q12 gutter generic):
 - “under each page-type-1 card” / “Not on other page types” — **revised**: gutter under every sheet card.
-- “Do not add … page type N” — **revised**: type 2 is `page2-view.md`. Type picker still rejected.
+- “Do not add … page type N” — **revised**: type 2 is `page2-view.md`. Dropdown type picker still rejected; labeled adds are `add-page-type-1.md`.
 - Catalog first-type-1 on reorder — **retained**.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/editV2CharacterController.ts` (owner check only); `rewrite-ledger/add-page-type-1.md` (gutter row; reorder no longer rejected)

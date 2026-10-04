@@ -28,7 +28,7 @@ Sheet-wide session (already on the v2 slice; new pages plug in):
 - New tables/columns: `ensureSchema` idempotent patch + `backupTables/pageN.sql` in the same change (`schema-on-boot.md`). No new migration package.
 - Play-time view controls (always-visible inputs, field POST, location highlight) are **not** automatic. Add them only when that page’s topic names the cells. Mechanics: `quick-view-inputs.md`. New allowlist attributes and column UPDATEs ship in the same change as the control.
 - Two-column shell: reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Do not add `features/`, `widgets/`, or `shared/`.
-- Off-card gutter under each sheet card: add `+` (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). `+` inserts another blank of **that card’s type**. Do not put that cluster on the printed blank.
+- Off-card gutter under each sheet card: **+ Main Info** and **+ Skills & Abilities** (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Main Info inserts type 1. Skills inserts type 2. Do not put that cluster on the printed blank.
 
 Vertical slice (every new page type adds all of these):
 
@@ -57,10 +57,10 @@ How the next agent proceeds (only when the designer names a new page type and at
 
 This file existing is not Order or Execute for a new page type.
 
-Another **instance** of an existing type on the same character is the generic gutter (`add-page-type-1.md`). That is not a new page type.
+Another **instance** of an existing type on the same character is the labeled gutter adds (`add-page-type-1.md`). That is not a new page type.
 
 Code verified after Execute 2026-10-04 (T-076–T-087):
-- `V2View` `switch (page.type)` case 1 and case 2; `default` empty fragment. Gutter after every page; `+` copies that card’s type.
+- `V2View` `switch (page.type)` case 1 and case 2; `default` empty fragment. Gutter after every page; labeled adds are T-092.
 - `app/src/pages/v2/pageTypes/pageType2/` exists. Unused leftover widgets under page-type-1 (Temperaments, Relationships, Movement; Goals on the payload only) stay on the page-1 store. Do not treat them, or v1 `pageTwo`, as page type 2.
 - `getV2Updates` returns `PageType1Updates`, `PageType2Updates`, and `PageGutterUpdates`. `savePages` / assemble / delete have `case 2`; `default` stays no-op / 404 / true. `addV2CharacterController` inserts type 1 at index 0 and type 2 at index 1.
 - `DisplaySingleArray` / `DisplayPairArray` exist on the v2 slice.
@@ -77,7 +77,7 @@ Rejected:
 - Ordering or scaffolding a specific later page type as part of writing this playbook. (Disposition 2026-10-04: designer named type 2; Order is `page2-view.md` + T-076–T-087.)
 
 Revised 2026-10-04 (page type 2; Design Q12):
-- “Off-card gutter under each page-type-1” — **revised**: gutter under every sheet card; `+` copies that card’s type.
+- “Off-card gutter under each page-type-1” — **revised**: gutter under every sheet card. Copy-type `+` — **revised** again: labeled Main Info / Skills (`add-page-type-1.md`).
 - Create-character note for type 2 — **recorded** on `page2-view.md` (yes, index 1).
 
 Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `edit-character.md`, `quick-view-inputs.md`

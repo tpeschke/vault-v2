@@ -6,7 +6,21 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-092: Add + Skills & Abilities; make + Main Info always type 1
+status: proposed
+source: rewrite-ledger/add-page-type-1.md, 2026-10-04 (Q1 every card; Q2 insert after this card; Q3 Main Info always type 1; Q4 no scroll; Q5 same chrome)
+why: Existing type-1-only characters cannot add a type-2 sheet because `addPageAfter` copies the card’s type. The designer wants two labeled inserts in the gutter.
+scope: view/edit adjacency `app/src/pages/v2/V2View.tsx` (gutter only), `app/src/pages/v2/hooks/updates/pageType1Updates.ts`, `app/src/pages/v2/hooks/updates/getV2Updates.ts`, `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`. Do not change persist, Create, `PageType1.tsx`, `PageType2.tsx`, or `index.css`. Do not add `features/`. Do not add a route or persist-on-click.
+steps:
+1. `addPageAfter` always inserts `emptyPageType1` after `afterIndex` (temp `pageID <= 0` from all pages). Stop branching on `source.type`. Unknown/missing `afterIndex`: no-op.
+2. Add `addPageType2After` that inserts `emptyPageType2` after that index, same temp-id rule. Wire it on `PageGutterUpdates` and `getV2Updates`.
+3. In the gutter under **every** card, keep `+ Main Info` and put `+ Skills & Abilities` immediately to its right (`fa-plus` + that text). Same classes / chrome as Main Info (`bottom-buttons add-page`). `margin-left: auto` stays on Main Info so the pair sits at the right. No `scrollSheetIntoView`. Edit-only (existing `isEditing` wrap).
+4. Leave reorder buttons to the left. Leave Save / Revert / Create alone.
+done when: `grep -n "Skills & Abilities" -B 8 app/src/pages/v2/V2View.tsx` shows the button after Main Info, `addPageType2After`, and no `scrollSheetIntoView` on either add; `grep -n "emptyPageType1\\|emptyPageType2\\|source.type" app/src/pages/v2/hooks/updates/pageType1Updates.ts` shows type 1 insert without `source.type === 1 ?` and a type 2 insert; `grep -n "addPageType2After" app/src/pages/v2/hooks/` is ≥ 2 hits; `./node_modules/.bin/tsc --noEmit -p app` exits 0.
+depends on: T-080, T-082 (done)
+open questions: none
+deviations from design: none. Two labeled buttons, not a dropdown. Chrome matches live Main Info (whitesmoke / orange hover), not the older ledger `#bdbdbd` + bare `+`.
+
 
 ## Done
 
