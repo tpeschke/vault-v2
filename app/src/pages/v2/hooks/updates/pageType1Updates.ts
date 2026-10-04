@@ -162,6 +162,16 @@ export function insertEmotion(character: CharacterVersion2, pageID: number, newR
     }))
 }
 
+export function applyCurrentEmotionIds(character: CharacterVersion2, pageID: number, rows: Emotion[]): CharacterVersion2 {
+    return mapPage1(character, pageID, page => ({
+        ...page,
+        characteristicsInfo: {
+            ...page.characteristicsInfo,
+            currentEmotions: rows
+        }
+    }))
+}
+
 export function updateEmotion(character: CharacterVersion2, pageID: number, index: number, value: string): CharacterVersion2 {
     return mapPage1(character, pageID, page => {
         const current = page.characteristicsInfo.currentEmotions ?? []

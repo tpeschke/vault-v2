@@ -1,5 +1,5 @@
 import { CharacterVersion2 } from "@vault/common/interfaces/characterInterfaces"
-import { SocialSkillSuites } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
+import { Emotion, SocialSkillSuites } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
 import { Favor } from "@vault/common/interfaces/v2/page1/favor"
 import { Attack, Defense } from "@vault/common/interfaces/v2/page1/combatInfo"
 import { Stats } from "@vault/common/interfaces/v2/page1/statsInterface"
@@ -77,7 +77,8 @@ export default function getV2Updates(
     character: CharacterVersion2 | null,
     setCharacter: (character: CharacterVersion2) => void,
     dispatch: Dispatch,
-    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void
+    persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void,
+    persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void
 ): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageGutterUpdates: PageGutterUpdates } {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
@@ -100,11 +101,15 @@ export default function getV2Updates(
         },
         insertEmotion: (pageID, newRow) => {
             if (!character) { return }
-            apply(insertEmotion(character, pageID, newRow))
+            const next = apply(insertEmotion(character, pageID, newRow))
+            persistCurrentEmotions(pageID, findPage1(next, pageID)?.characteristicsInfo.currentEmotions ?? [], { insert: true, value: newRow.value })
         },
         updateEmotion: (pageID, index, value) => {
             if (!character) { return }
-            apply(updateEmotion(character, pageID, index, value))
+            const next = apply(updateEmotion(character, pageID, index, value))
+            if (value === '') {
+                persistCurrentEmotions(pageID, findPage1(next, pageID)?.characteristicsInfo.currentEmotions ?? [], { index, value: '' })
+            }
         },
         updateSocialSuiteField: (pageID, suite: keyof SocialSkillSuites, field, value) => {
             if (!character) { return }
@@ -178,7 +183,8 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateAttack(character, pageID, index, patch))
         },
-        persistViewField
+        persistViewField,
+        persistCurrentEmotions
     }
 
     const pageType2Updates: PageType2Updates = {

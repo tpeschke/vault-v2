@@ -10,6 +10,34 @@ none
 
 ## Done
 
+### T-097: Allowlist currentEmotions on the field POST
+status: done
+source: rewrite-ledger/quick-view-inputs.md, rewrite-ledger/page1-view.md, 2026-10-04 (design Q2 A, Q4 max 9, Q6 RETURNING id, Q8 both)
+why: Current Emotions is a child table. Today’s field POST coerces `value` with `+value`. `Number([])` is `0`. Full Save already has `saveCurrentEmotions`.
+scope: edit primary `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveCharacteristics/utilities/saveCurrentEmotions.ts`. Do not change `saveViewField` number/text UPDATEs. Do not ALTER `v2currentEmotions.value` (stays `varchar(500)`). Do not add `/quickEdit`. Do not add `features/`.
+result: `'currentEmotions'` is allowlisted. Invalid array / >9 / `value` longer than 25 refuses with no write. Insert `RETURNING id`. Success `{ success: true, currentEmotions }`. Number/text path still `Number.isFinite(+value)`.
+depends on: none
+deviations from design: none. Column stays 500.
+
+### T-098: Draw Current Emotions as view inputs with the Edit insert row
+status: done
+source: rewrite-ledger/quick-view-inputs.md, rewrite-ledger/page1-view.md, rewrite-ledger/edit-character.md, 2026-10-04 (Q1 A, Q3 default teal, Q4 max 9, Q8 both)
+why: View still renders `p`. `DisplaySingleArray` shows insert only while `isEditing`. Cap in code is already 9.
+scope: view adjacency `app/src/pages/v2/components/displayArray/DisplaySingleArray.tsx`; `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx`. Do not change `Flaws.tsx`. Do not change `Characteristics.css` (`.view-edit` even-cell mid teal stays edit-only). Do not add `features/`.
+result: `showInsert` defaults to `isEditing`. Characteristics passes `showInsert={true}`, always-visible `input` `maxLength={25}`, leftover `p`. Flaws omits `showInsert`. No `isEditing ?` swap in `Characteristics.tsx`.
+depends on: none
+deviations from design: `showInsert` prop so Flaws stay edit-gated.
+
+### T-099: Persist Current Emotions on blur and merge returned ids
+status: done
+source: rewrite-ledger/quick-view-inputs.md, 2026-10-04 (Q5 blurred cell only, Q6 merge ids, Q7 persist clear)
+why: View inputs stay local until a field POST. `id: 0` after insert would make the next full Save delete the persisted row and insert a duplicate.
+scope: edit adjacency `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (reuse `insertEmotion` / `updateEmotion` / `mapPage1` only); `app/src/pages/v2/pageTypes/pageType1/components/Characteristics/Characteristics.tsx` (blur / empty / insert wiring). Same `inFlight` / `isViewSaving` / toast path as `persistViewField`. Do not persist while `isEditing`. Do not change number/text `persistViewField`.
+result: `persistCurrentEmotions` POSTs the next array on insert, row blur, and empty-row remove. Skip is the blurred cell vs snapshot. Success merges returned ids onto live + snapshot + cache; keeps `key`.
+depends on: T-097, T-098
+deviations from design: persist the empty-row removal from the `onChange` that unmounts the input, not only `onBlur`.
+
+
 ### T-094: Store generalSkillNotes and combatSkillNotes
 status: done
 source: rewrite-ledger/page2-view.md, 2026-10-04 (Q1 no label; Q2 grow; Q3 stretch leftover; Q4 always textarea)

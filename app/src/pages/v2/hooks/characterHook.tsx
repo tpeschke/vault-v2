@@ -1,5 +1,6 @@
 import { CharacterVersion2 } from "@vault/common/interfaces/characterInterfaces"
 import { Page1, Page2 } from "@vault/common/interfaces/v2/pageTypes"
+import { Emotion } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
 import { ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
 import axios from "axios"
 import { useState, useEffect, useCallback, useRef } from "react"
@@ -11,7 +12,7 @@ import { V2CharacterCacheInfo, cacheCharacterV2 } from "../../../redux/slices/ch
 import { updateCatalogInfo } from "../../../redux/slices/usersCharactersSlice"
 import { V2UpdateFunctions } from "./interfaces/UpdateInterfaces"
 import getV2Updates from "./updates/getV2Updates"
-import { otherPageType1Names, updateCrP, updateDamage, updateFavor, updateSelfDoubt, updateStress } from "./updates/pageType1Updates"
+import { applyCurrentEmotionIds, otherPageType1Names, updateCrP, updateDamage, updateFavor, updateSelfDoubt, updateStress } from "./updates/pageType1Updates"
 import { updateCombatSkillNotes, updateGeneralSkillNotes } from "./updates/pageType2Updates"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
@@ -42,6 +43,8 @@ function viewFieldValue(character: CharacterVersion2 | null, pageID: number, att
                 return page1.vitalsInfo.damage.dieIndex
             case 'stressDieIndex':
                 return page1.vitalsInfo.stress.dieIndex
+            case 'currentEmotions':
+                return undefined
         }
     }
     const page2 = character?.pages.find((candidate): candidate is Page2 => candidate.type === 2 && candidate.pageID === pageID)
@@ -78,6 +81,8 @@ function patchViewField(character: CharacterVersion2, pageID: number, attribute:
             return updateGeneralSkillNotes(character, pageID, String(value))
         case 'combatSkillNotes':
             return updateCombatSkillNotes(character, pageID, String(value))
+        case 'currentEmotions':
+            return character
     }
 }
 
@@ -226,10 +231,69 @@ export default function characterHook(pathname: string, isEditing: boolean) {
             })
     }
 
-    const [updates, setUpdates] = useState(() => getV2Updates(character, setCharacter, dispatch, persistViewField))
+    function persistCurrentEmotions(pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) {
+        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+            return
+        }
+        const snapshotPage = revertedCharacter?.pages.find((candidate): candidate is Page1 => candidate.type === 1 && candidate.pageID === pageID)
+        const snapshotRows = snapshotPage?.characteristicsInfo.currentEmotions ?? []
+        if ('insert' in blurred) {
+            if (blurred.value === '') {
+                return
+            }
+        } else if ((snapshotRows[blurred.index]?.value ?? '') === blurred.value) {
+            return
+        }
+
+        setInFlight(count => count + 1)
+        axios.post(editV2URL + character.id + '/field', { pageID, attribute: 'currentEmotions', value: nextRows })
+            .then(({ data }) => {
+                if (!data.success) {
+                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    return
+                }
+                const returned = data.currentEmotions
+                if (!Array.isArray(returned) || returned.length !== nextRows.length) {
+                    return
+                }
+                const snapshot = revertedRef.current
+                if (!snapshot) {
+                    return
+                }
+                setCharacter(current => {
+                    if (!current) {
+                        return current
+                    }
+                    const liveRows = current.pages.find((candidate): candidate is Page1 => candidate.type === 1 && candidate.pageID === pageID)?.characteristicsInfo.currentEmotions ?? []
+                    const source = liveRows.length === returned.length ? liveRows : nextRows
+                    const merged = source.map((row, index) => ({ ...row, id: returned[index].id }))
+                    return applyCurrentEmotionIds(current, pageID, merged)
+                })
+                const patchedRows = nextRows.map((row, index) => ({ ...row, id: returned[index].id }))
+                const patched = applyCurrentEmotionIds(snapshot, pageID, patchedRows)
+                revertedRef.current = patched
+                setRevertedCharacter(patched)
+                dispatch(cacheCharacterV2({
+                    id: patched.id,
+                    version: 2,
+                    characterInfo: Promise.resolve(patched)
+                }))
+            })
+            .catch(error => {
+                const message = axios.isAxiosError(error) && typeof error.response?.data?.message === 'string'
+                    ? error.response.data.message
+                    : 'Save failed'
+                toast.error(message)
+            })
+            .finally(() => {
+                setInFlight(count => Math.max(0, count - 1))
+            })
+    }
+
+    const [updates, setUpdates] = useState(() => getV2Updates(character, setCharacter, dispatch, persistViewField, persistCurrentEmotions))
 
     useEffect(() => {
-        setUpdates(getV2Updates(character, setCharacter, dispatch, persistViewField))
+        setUpdates(getV2Updates(character, setCharacter, dispatch, persistViewField, persistCurrentEmotions))
     }, [character, isEditing, revertedCharacter])
 
     const updateFunctions: V2UpdateFunctions = {
