@@ -155,6 +155,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                 className="bottom-buttons add-page"
                                                 onClick={() => pageGutterUpdates.addPageAfter(index)}
                                             ><i className="fa-solid fa-plus"></i> Main Info</button>
+                                            <button
+                                                type="button"
+                                                className="bottom-buttons add-page"
+                                                onClick={() => pageGutterUpdates.addPageType2After(index)}
+                                            ><i className="fa-solid fa-plus"></i> Skills & Abilities</button>
                                         </div>
                                     }
                                 </Fragment>

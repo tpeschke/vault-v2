@@ -58,6 +58,7 @@ export interface PageType2Updates {
 
 export interface PageGutterUpdates {
     addPageAfter: (afterIndex: number) => void
+    addPageType2After: (afterIndex: number) => void
     swapPageWithNext: (index: number) => void
     movePageToTop: (index: number) => void
     movePageToBottom: (index: number) => void

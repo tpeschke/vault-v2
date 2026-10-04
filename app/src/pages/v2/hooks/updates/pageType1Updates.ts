@@ -66,16 +66,25 @@ export function updateGeneralInfoField(character: CharacterVersion2, pageID: num
     return next
 }
 
-export function addPageAfter(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
-    const source = character.pages[afterIndex]
-    if (!source || (source.type !== 1 && source.type !== 2)) {
+function nextTempPageID(character: CharacterVersion2): number {
+    return Math.min(0, ...character.pages.map(page => 'pageID' in page ? page.pageID : 0)) - 1
+}
+
+function spliceBlankAfter(character: CharacterVersion2, afterIndex: number, blank: ReturnType<typeof emptyPageType1> | ReturnType<typeof emptyPageType2>): CharacterVersion2 {
+    if (!character.pages[afterIndex]) {
         return character
     }
-    const pageID = Math.min(0, ...character.pages.map(page => 'pageID' in page ? page.pageID : 0)) - 1
-    const blank = source.type === 1 ? emptyPageType1(pageID) : emptyPageType2(pageID)
     const pages = [...character.pages]
     pages.splice(afterIndex + 1, 0, blank)
     return { ...character, pages }
+}
+
+export function addPageAfter(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
+    return spliceBlankAfter(character, afterIndex, emptyPageType1(nextTempPageID(character)))
+}
+
+export function addPageType2After(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
+    return spliceBlankAfter(character, afterIndex, emptyPageType2(nextTempPageID(character)))
 }
 
 function withFirstPage1Name(character: CharacterVersion2): CharacterVersion2 {

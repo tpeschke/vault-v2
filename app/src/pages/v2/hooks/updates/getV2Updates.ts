@@ -11,6 +11,7 @@ import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { PageGutterUpdates, PageType1Updates, PageType2Updates } from "../interfaces/UpdateInterfaces"
 import {
     addPageAfter as insertPageAfter,
+    addPageType2After as insertPageType2After,
     movePageToBottom as moveToBottom,
     movePageToTop as moveToTop,
     otherPageType1Names,
@@ -233,6 +234,10 @@ export default function getV2Updates(
         addPageAfter: (afterIndex) => {
             if (!character) { return }
             apply(insertPageAfter(character, afterIndex))
+        },
+        addPageType2After: (afterIndex) => {
+            if (!character) { return }
+            apply(insertPageType2After(character, afterIndex))
         },
         swapPageWithNext: (index) => {
             if (!character) { return }
