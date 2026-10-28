@@ -15,7 +15,6 @@ import {
 import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
 import {
     Page3Coinage,
-    Page3Contact,
     Page3GearCell,
     Page3GearSlot,
     Page3Relationship
@@ -69,14 +68,12 @@ export interface PageType2Updates {
 }
 
 export interface PageType3Updates {
-    insertContact: (pageID: number, newRow: { key: string, value: string }) => void
-    updateContact: (pageID: number, index: number, value: string) => void
+    updateContacts: (pageID: number, value: string) => void
     insertRelationship: (pageID: number, newRow: { key: string, value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }) => void
     updateRelationship: (pageID: number, index: number, next: Page3Relationship) => void
     updateGearCell: (pageID: number, slot: Page3GearSlot, patch: Partial<Omit<Page3GearCell, 'slot'>>) => void
     updateCoinage: (pageID: number, patch: Partial<Page3Coinage>) => void
     updateNotes: (pageID: number, value: string) => void
-    persistPage3Contacts: (pageID: number, nextRows: Page3Contact[], blurred: { index: number, value: string } | { insert: true, value: string }) => void
     persistPage3RelationshipP: (pageID: number, value: Page3RelationshipPValue) => void
     persistPage3Gear: (pageID: number, value: Page3GearValue) => void
     persistPage3Coinage: (pageID: number, value: Page3Coinage) => void

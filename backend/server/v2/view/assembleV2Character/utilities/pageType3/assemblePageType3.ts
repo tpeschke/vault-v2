@@ -1,7 +1,6 @@
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import {
     PAGE3_GEAR_SLOTS,
-    Page3Contact,
     Page3Gear,
     Page3GearSlot,
     Page3Relationship,
@@ -13,6 +12,7 @@ import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import query from "../../../../../db/database"
 
 interface BasicsReturn {
+    contacts?: string | null
     notes?: string | null
     copper?: number | null
     coppersize?: string | null
@@ -22,11 +22,6 @@ interface BasicsReturn {
     goldsize?: string | null
     platinum?: number | null
     platinumsize?: string | null
-}
-
-interface ContactReturn {
-    id: number
-    value?: string | null
 }
 
 interface RelationshipReturn {
@@ -46,7 +41,6 @@ interface GearReturn {
 }
 
 const getBasicsSQL = `select * from v2Page3Basics where pageID = $1`
-const getContactsSQL = `select * from v2Page3Contacts where pageID = $1 order by index, id`
 const getRelationshipsSQL = `select * from v2Page3Relationships where pageID = $1 order by index, id`
 const getGearSQL = `select * from v2Page3Gear where pageID = $1`
 
@@ -75,14 +69,12 @@ function mapGear(rows: GearReturn[]): Page3Gear {
 }
 
 export default async function assemblePageType3(pageID: number): Promise<Page3> {
-    const [basicsRows, contactRows, relationshipRows, gearRows]: [
+    const [basicsRows, relationshipRows, gearRows]: [
         BasicsReturn[],
-        ContactReturn[],
         RelationshipReturn[],
         GearReturn[]
     ] = await Promise.all([
         query(getBasicsSQL, pageID),
-        query(getContactsSQL, pageID),
         query(getRelationshipsSQL, pageID),
         query(getGearSQL, pageID)
     ])
@@ -103,10 +95,7 @@ export default async function assemblePageType3(pageID: number): Promise<Page3> 
     return {
         type: 3,
         pageID,
-        contacts: (contactRows ?? []).map((row): Page3Contact => ({
-            id: row.id,
-            value: row.value ?? ''
-        })),
+        contacts: basics?.contacts ?? '',
         relationships: (relationshipRows ?? []).map((row): Page3Relationship => ({
             id: row.id,
             value: row.value ?? '',

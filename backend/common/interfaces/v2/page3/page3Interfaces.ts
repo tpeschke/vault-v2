@@ -29,12 +29,6 @@ export function isDefaultSSlot(slot: Page3GearSlot): boolean {
     return defaultS.has(slot)
 }
 
-export interface Page3Contact {
-    id: number
-    key?: string
-    value: string
-}
-
 export interface Page3Relationship {
     id: number
     key?: string

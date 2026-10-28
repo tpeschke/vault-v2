@@ -7,8 +7,8 @@ import { ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPers
 import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vitals"
 import { Dispatch } from "redux"
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice"
-import { Page1, Page3 } from "@vault/common/interfaces/v2/pageTypes"
-import { Page3Coinage, Page3Contact } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
+import { Page3Coinage } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { Page3GearValue, Page3RelationshipPValue } from "@vault/common/interfaces/v2/page1/viewPersist"
 import { PageGutterUpdates, PageType1Updates, PageType2Updates, PageType3Updates } from "../interfaces/UpdateInterfaces"
 import {
@@ -60,17 +60,15 @@ import {
     updateNativeLanguage
 } from "./pageType2Updates"
 import {
-    insertContact,
     insertRelationship,
     updateCoinage,
-    updateContact,
+    updateContacts,
     updateGearCell,
     updateNotes,
     updateRelationship
 } from "./pageType3Updates"
 
 export interface Page3PersistFns {
-    persistPage3Contacts: (pageID: number, nextRows: Page3Contact[], blurred: { index: number, value: string } | { insert: true, value: string }) => void
     persistPage3RelationshipP: (pageID: number, value: Page3RelationshipPValue) => void
     persistPage3Gear: (pageID: number, value: Page3GearValue) => void
     persistPage3Coinage: (pageID: number, value: Page3Coinage) => void
@@ -79,10 +77,6 @@ export interface Page3PersistFns {
 
 function findPage1(character: CharacterVersion2, pageID: number): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1 && page.pageID === pageID)
-}
-
-function findPage3(character: CharacterVersion2, pageID: number): Page3 | undefined {
-    return character.pages.find((page): page is Page3 => page.type === 3 && page.pageID === pageID)
 }
 
 function dispatchCatalog(character: CharacterVersion2, pageID: number, dispatch: Dispatch) {
@@ -273,17 +267,9 @@ export default function getV2Updates(
     }
 
     const pageType3Updates: PageType3Updates = {
-        insertContact: (pageID, newRow) => {
+        updateContacts: (pageID, value) => {
             if (!character) { return }
-            const next = apply(insertContact(character, pageID, newRow))
-            page3Persist.persistPage3Contacts(pageID, findPage3(next, pageID)?.contacts ?? [], { insert: true, value: newRow.value })
-        },
-        updateContact: (pageID, index, value) => {
-            if (!character) { return }
-            const next = apply(updateContact(character, pageID, index, value))
-            if (value === '') {
-                page3Persist.persistPage3Contacts(pageID, findPage3(next, pageID)?.contacts ?? [], { index, value: '' })
-            }
+            apply(updateContacts(character, pageID, value))
         },
         insertRelationship: (pageID, newRow) => {
             if (!character) { return }
@@ -305,7 +291,6 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateNotes(character, pageID, value))
         },
-        persistPage3Contacts: page3Persist.persistPage3Contacts,
         persistPage3RelationshipP: page3Persist.persistPage3RelationshipP,
         persistPage3Gear: page3Persist.persistPage3Gear,
         persistPage3Coinage: page3Persist.persistPage3Coinage,
