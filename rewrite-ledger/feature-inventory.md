@@ -27,7 +27,7 @@ Add sheet page: edit-only labeled adds under each sheet card insert a blank of t
 
 Not present: quick-edit, download PDF.
 
-Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current Damage, Current Stress, Current Emotions; type-2 leftover notes; type-3 Contacts, Relationship P, and Gear) are view controls, not a feature. View inputs persist on blur; view die clicks persist `dieIndex`; type-3 flag clicks persist the boolean. A v1-matched sidebar button highlights those locations. Canonical: `quick-view-inputs.md`.
+Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current Damage, Current Stress, Current Emotions; type-2 leftover notes; type-3 Relationship P and Gear) are view controls, not a feature. View inputs persist on blur; view die clicks persist `dieIndex`; type-3 flag clicks persist the boolean. A v1-matched sidebar button highlights those locations. Canonical: `quick-view-inputs.md`.
 
 ## v1 (ancient)
 
