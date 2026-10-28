@@ -6,7 +6,21 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-114: Align Contacts and Relationships to the Abilities row; 15px above Gear
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-28 (band matches band; text line matches text line; 15px above the Gear heading)
+why: Contacts bands are 17.38px and the text line is already 15px / 1.2. Each Relationships row is that 17.38px content plus `padding: 2px 1px`, so the columns do not line up. The double column sits flush on the Gear heading.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType3/PageType3.css`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css`; `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.css`. Do not change `DoubleColumn.css`, `NotesPanes.css`, `View.css`, `index.css`, Gear, stores, or JSX unless a selector cannot reach the row. Do not add `features/`. Do not set `line-height: 17.38px` on the Contacts pane or on relationship value text. Do not add `field-sizing`.
+steps:
+1. Relationships list row (`span`): `box-sizing: border-box`, `height` and `min-height` `17.38px`. Keep `padding: 2px 1px` inside that box so the painted row is 17.38px, not 17.38px plus padding. `p` and `input` in the row keep `font-size: 15px` and `line-height: 1.2`. Override `span > *` `min-height: 17.38px` and the `index.css` `p` `min-height: 17.38px` on these rows (`min-height: 0` is enough) so the child cannot grow the span. Do not edit `index.css`. Restate height on `input.character-value` so `View.css` filled `height: 1.2em` and placeholder `17.38px` cannot change the row. Same row border-box in view and in edit, including leftover and insert rows.
+2. Contacts pane: keep the 17.38px zebra (white first) and `min-height: calc(18 * 17.38px)`. Leave the text line at `font-size: 15px` and `line-height: 1.2`. Do not add a `line-height` that equals the band.
+3. One shared border-box on `.page3-contacts > h1` and on `.page3-relationships-headers > h1`: `box-sizing: border-box`, `height` and `min-height` `calc(16px + 8px)` (`.v2 h1` content `min-height: 16px` plus its `padding: 4px` top and bottom; that padding stays and sits inside the box). `line-height: 16px` on those `h1`s. `.page3-relationships-headers` is that same height so the flex row does not add a second bar. Contacts keeps `font-size: 13px` and `white-space: nowrap` inside that bar. Row 1 of each column then starts on the same line, and 18 relationship rows cover the same vertical span as the Contacts pane.
+4. `.page-type-three .double-column { margin-bottom: 15px; }`. That space is above the Gear `h1`. Do not set `gap` or `margin` on shared `DoubleColumn.css`. Do not change Gear row heights.
+done when: `Relationships.css` sets the list `span` to `height: 17.38px` and `min-height: 17.38px`, and sets `span > *` `min-height: 0`. A page-type-3 stylesheet sets `.page3-contacts > h1` and `.page3-relationships-headers > h1` to `height: calc(16px + 8px)`. `Contacts.css` still has pitch `17.38px` and does not set `line-height: 17.38px`. `PageType3.css` sets `.page-type-three .double-column` `margin-bottom: 15px`. `DoubleColumn.css` has no `15px`. `NotesPanes.css` is unchanged (`git diff` empty for that file). No new store or attribute.
+depends on: T-113 (done)
+open questions: none
+deviations from design: Header bar is `calc(16px + 8px)`, taken from `.v2 h1` `min-height: 16px` and `padding: 4px`. The designer named row alignment, not a new header pixel.
+result:
 
 ## Done
 
