@@ -6,13 +6,12 @@ import {
     ViewPersistBody,
     ViewPersistValue
 } from '@vault/common/interfaces/v2/page1/viewPersist'
-import { Page3Coinage, Page3Contact } from '@vault/common/interfaces/v2/page3/page3Interfaces'
+import { Page3Coinage } from '@vault/common/interfaces/v2/page3/page3Interfaces'
 import { checkForContentTypeBeforeSending } from '../../controllers/common/sendingFunctions'
 import { Response, Request } from '../../interfaces/apiInterfaces'
 import { getCharacterOwnerID } from '../view/assembleV2Character/utilities/ownerInfo'
 import saveCurrentEmotions from './utilities/pageType1/utilities/saveCharacteristics/utilities/saveCurrentEmotions'
 import saveViewField from './utilities/pageType1/utilities/saveViewField'
-import savePage3Contacts from './utilities/pageType3/savePage3Contacts'
 import savePage3RelationshipP from './utilities/pageType3/savePage3RelationshipP'
 import savePage3GearField, { isPage3GearSlot } from './utilities/pageType3/savePage3GearField'
 import savePage3Coinage from './utilities/pageType3/savePage3Coinage'
@@ -22,7 +21,7 @@ const attributes: ViewPersistAttribute[] = [
     'unspent', 'currentFavor', 'diePenalty', 'damage', 'stress',
     'selfDoubtDieIndex', 'damageDieIndex', 'stressDieIndex',
     'generalSkillNotes', 'combatSkillNotes', 'currentEmotions',
-    'page3Contacts', 'page3RelationshipP', 'page3Gear', 'page3Coinage', 'page3Notes'
+    'page3RelationshipP', 'page3Gear', 'page3Coinage', 'page3Notes'
 ]
 const textAttributes: ViewPersistAttribute[] = ['generalSkillNotes', 'combatSkillNotes']
 
@@ -41,12 +40,6 @@ function isCurrentEmotionsPayload(value: ViewPersistValue): value is Emotion[] {
     return Array.isArray(value)
         && value.length <= 9
         && value.every(item => item && typeof item.value === 'string' && item.value.length <= 25)
-}
-
-function isPage3ContactsPayload(value: ViewPersistValue): value is Page3Contact[] {
-    return Array.isArray(value)
-        && value.length <= 18
-        && value.every(item => item && typeof item.value === 'string' && item.value.length <= 500)
 }
 
 function isSkillNumber(value: unknown): value is number | '' {
@@ -126,16 +119,6 @@ export async function editV2Field(request: FieldRequest, response: Response) {
         }
         const currentEmotions = await saveCurrentEmotions(+pageID, value)
         checkForContentTypeBeforeSending(response, { success: true, currentEmotions })
-        return
-    }
-
-    if (attribute === 'page3Contacts') {
-        if (!isPage3ContactsPayload(value)) {
-            checkForContentTypeBeforeSending(response, { success: false, message: 'Invalid contacts' })
-            return
-        }
-        const page3Contacts = await savePage3Contacts(+pageID, value)
-        checkForContentTypeBeforeSending(response, { success: true, page3Contacts })
         return
     }
 

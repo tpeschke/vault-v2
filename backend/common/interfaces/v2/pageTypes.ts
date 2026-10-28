@@ -14,7 +14,6 @@ import {
 } from "./page2/page2Interfaces"
 import {
     Page3Coinage,
-    Page3Contact,
     Page3Gear,
     Page3Relationship
 } from "./page3/page3Interfaces"
@@ -59,7 +58,7 @@ export interface Page2 {
 export interface Page3 {
     type: 3
     pageID: number
-    contacts: Page3Contact[]
+    contacts: string
     relationships: Page3Relationship[]
     gear: Page3Gear
     coinage: Page3Coinage

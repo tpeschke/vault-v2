@@ -2,6 +2,7 @@ create table
     v2Page3Basics (
         id serial primary key,
         pageID integer unique,
+        contacts text default '',
         notes text default '',
         copper integer default 0,
         copperSize varchar(50) default '',
@@ -11,14 +12,6 @@ create table
         goldSize varchar(50) default '',
         platinum integer default 0,
         platinumSize varchar(50) default ''
-    );
-
-create table
-    v2Page3Contacts (
-        id serial primary key,
-        pageID integer,
-        value varchar(500),
-        index integer
     );
 
 create table

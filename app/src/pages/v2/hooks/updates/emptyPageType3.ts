@@ -5,7 +5,7 @@ export default function emptyPageType3(pageID: number): Page3 {
     return {
         type: 3,
         pageID,
-        contacts: [],
+        contacts: '',
         relationships: [],
         gear: emptyPage3Gear(),
         coinage: emptyPage3Coinage(),

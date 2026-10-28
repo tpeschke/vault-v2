@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-113: Replace the Contacts list with one Abilities-style text box
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-28 (follow Abilities; height 18 × 17.38; join existing rows)
 why: Contacts, Allies, Mentors, & Enemies is an 18-row play-time list. The designer wants one Save-only text box, the same family as Abilities, as tall as the Relationships line count, with existing rows joined into that string.
 scope: page-type-3 owner `rewrite-ledger/page3-view.md` (already revised). Store: `backend/common/interfaces/v2/pageTypes.ts` (`Page3.contacts`); `backend/common/interfaces/v2/page3/page3Interfaces.ts` (drop `Page3Contact`); `backend/common/interfaces/v2/page1/viewPersist.ts` (drop `'page3Contacts'` and `Page3Contact[]`). Boot: unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page3.sql`. View: `backend/server/v2/view/assembleV2Character/utilities/pageType3/assemblePageType3.ts`. Edit: `backend/server/v2/edit/utilities/pageType3/savePageType3.ts`; delete `savePage3Contacts.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts` (drop `page3Contacts` from the `Exclude`). Delete: `backend/server/v2/delete/utilities/deletePagesUtilities/pageType3/deletePageType3.ts`. App: `app/src/pages/v2/hooks/updates/emptyPageType3.ts`; `pageType3Updates.ts`; `getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.tsx` and `Contacts.css`. Do not change Relationships, Gear, `addPageType3.ts` (basics INSERT lists `pageID` only; column default `''` covers it), gutter, page type 1, or page type 2. Do not import `NotesPanes`. Do not add `features/`. Do not add a field-POST attribute for this string.
@@ -20,10 +24,9 @@ steps:
 done when: `npx tsc --noEmit -p backend/common` succeeds. `npx tsc --noEmit -p app` reports only the pre-existing missing `frontend-config`. Grep under `app/` and `backend/` for `page3Contacts`, `v2Page3Contacts`, `Page3Contact`, `PAGE3_CONTACT_CAP`, `savePage3Contacts`, `insertContact`, `updateContact`, `persistPage3Contacts` is 0. Grep `DisplaySingleArray` under `app/src/pages/v2/pageTypes/pageType3/` is 0. `ensureSchema.ts` contains `string_agg` into `contacts` and `drop table` of the old contacts table. No database is required for the join check.
 depends on: T-100–T-112 (done)
 open questions: none
-deviations from design: Copy-then-drop of `v2Page3Contacts` follows the currentEmotions patch (`schema-on-boot.md`): one store after the join. The 18 × 17.38 box is the line count from the design answer. Relationship spans also have `padding: 2px 1px`, so this box is not the padded span’s border-box. No `field-sizing`; `edit-character.md` reserves that for the two page-type-2 discount notes.
-result:
+deviations from design: Copy-then-drop of `v2Page3Contacts` follows the currentEmotions patch (`schema-on-boot.md`): one store after the join. The 18 × 17.38 box is the line count from the design answer. Relationship spans also have `padding: 2px 1px`, so this box is not the padded span’s border-box. No `field-sizing`; `edit-character.md` reserves that for the two page-type-2 discount notes. The boot SQL names the old table `v2page3contacts` (Postgres folds unquoted names). A case-sensitive grep for `v2Page3Contacts` is 0.
+result: `Page3.contacts` is a string on `v2Page3Basics.contacts`. Boot copies non-empty child rows with newlines, then drops `v2page3contacts`. The pane is edit `textarea` / view `p`, min-height `calc(18 * 17.38px)`, zebra, and the Abilities wash. `'page3Contacts'` is gone. `savePage3Contacts.ts` is deleted.
 
-## Done
 
 ### T-100: Add Page3 contract and union member
 status: done

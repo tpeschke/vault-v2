@@ -2,13 +2,13 @@ import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import { PAGE3_GEAR_SLOTS, Page3Coinage } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import query from "../../../../db/database"
-import savePage3Contacts from "./savePage3Contacts"
 import savePage3Relationships from "./savePage3Relationships"
 
 const upsertBasicsSQL = `insert into v2Page3Basics (
-    pageID, notes, copper, copperSize, silver, silverSize, gold, goldSize, platinum, platinumSize
-) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+    pageID, contacts, notes, copper, copperSize, silver, silverSize, gold, goldSize, platinum, platinumSize
+) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 on conflict (pageID) do update set
+    contacts = excluded.contacts,
     notes = excluded.notes,
     copper = excluded.copper,
     copperSize = excluded.copperSize,
@@ -49,8 +49,7 @@ function coinageParams(coinage: Page3Coinage) {
 export default async function savePageType3(page: Page3): Promise<void> {
     const { pageID, contacts, relationships, gear, coinage, notes } = page
 
-    await query(upsertBasicsSQL, [pageID, notes ?? '', ...coinageParams(coinage)])
-    await savePage3Contacts(pageID, contacts ?? [])
+    await query(upsertBasicsSQL, [pageID, contacts ?? '', notes ?? '', ...coinageParams(coinage)])
     await savePage3Relationships(pageID, relationships ?? [])
     await Promise.all(PAGE3_GEAR_SLOTS.map(slot => {
         const cell = gear[slot]
