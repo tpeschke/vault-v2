@@ -13,7 +13,6 @@ import cors from 'cors'
 // @ts-ignore
 import path from 'path'
 
-import { callbackURL, clientID, clientSecret, domain, fakeAuth, secret, server } from './server-config'
 
 import { Profile } from './interfaces/apiInterfaces'
 import { Response, Request } from './interfaces/apiInterfaces'
@@ -30,6 +29,8 @@ import addV2Routes from './v2/add/addV2CharacterRoutes'
 import homeRoutes from './controllers/home/HomeRoutes'
 import deleteV2Routes from './v2/delete/deleteV2CharacterRoutes'
 import editV2Routes from './v2/edit/editV2CharacterRoutes'
+
+import { secret, domain, clientID, clientSecret, callbackURL, fakeAuth, server } from './server-config'
 
 const app = express()
 app.use(bodyParser.json({ limit: '10mb' }))

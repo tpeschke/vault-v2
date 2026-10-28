@@ -473,7 +473,7 @@ open questions: none
 
 
 
-### T-062: Persist Self Doubt / Damage / Stress dieIndex on click
+### T-062: Persist Doom / Damage / Stress dieIndex on click
 status: done
 source: rewrite-ledger/quick-view-inputs.md, 2026-10-03 (design: selected dice must persist; Q1 persist clear-to-0; Q2 Edit session unchanged)
 why: T-061 persists view inputs on blur. Die cells are `<p>` clicks, so `dieIndex` stays local. The designer wants the selected die written too.
@@ -864,7 +864,7 @@ open questions: none
 ### T-021: Replace Vitals Die labels with polyhedral PNGs
 status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01 (design: vitals die glyphs)
-why: Self Doubt, Damage, and Stress still paint `d4`…`d20` text. Design: those six cells show the attached die PNGs.
+why: Doom, Damage, and Stress still paint `d4`…`d20` text. Design: those six cells show the attached die PNGs.
 scope: view character adjacency `app/src/pages/v2/pageTypes/pageType1/components/Vitals/` (`Vitals.tsx` `DieRow`; `Vitals.css`); unindexed `app/src/assets/images/` (same slot as `bonfire-wordmark.png`). Do not change `dieIndex` storage, assemble, or v1 Integrity `d4!` copy.
 result: Die cells are `d4.png`…`d20.png` with `alt` d4–d20. Grey boxes kept. Selected is Positions outline, not fill. `dieIndex` 0 still draws all six. v1 `d4!` untouched. Browser: `.page-type-one` 1068px (1036 + card padding), `overflow=false`; Attacks stay on the card.
 deviations from design: none beyond Order (Positions 2px outline; no glyph shrink).
@@ -966,7 +966,7 @@ open questions: Social suite display names; Current Emotions vs goals; Descripti
 ### T-010: Lay out page-type-1 right column to match the blank sheet
 status: done
 source: rewrite-ledger/page1-view.md, 2026-10-01
-why: Right column was a placeholder (`Right`). The sheet’s right column is Positions, Self Doubt, Damage, Stress, Defenses, Attacks. The designer added a Bonfire wordmark at the top of that column, which the blank PDF does not have.
+why: Right column was a placeholder (`Right`). The sheet’s right column is Positions, Doom, Damage, Stress, Defenses, Attacks. The designer added a Bonfire wordmark at the top of that column, which the blank PDF does not have.
 scope: `app/src/pages/v2/pageTypes/pageType1/`; `app/src/assets/images/bonfire-wordmark.png`.
 result: Wordmark mounted first in the right column. Positions, vitals, defenses, and four attacks follow. Spacing tightened. Measured `.page-type-one` at 1068px (1036 content + 16px card padding); right-column content ended at ~788px, no overflow.
 deviations from design: none
