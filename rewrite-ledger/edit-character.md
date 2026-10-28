@@ -81,5 +81,9 @@ Revised 2026-10-28 (`page3-view.md` row box):
 Revised 2026-10-28 (`page3-view.md` Contacts text box):
 - Solid teal on every edit textarea — **retained** for page type 1. Page-type-3 Contacts uses the Abilities wash. Canonical: `page3-view.md`. Not play-time.
 
+Revised 2026-10-28 (`page3-view.md` quick edit):
+- Contacts “Not play-time” — **revised**: the textarea stays on the view and blur POSTs the string. The Edit wash stays under `.view-edit`. Canonical: `page3-view.md`.
+- Relationship **R** is edit-session — **revised**: play-time, same as **P**. The name is play-time too. View insert and clear-to-remove run on the view (`page3-view.md`).
+
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; `backend/server/db/ensureSchema.ts`; `app/src/redux/slices/characterCacheSlice.tsx`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; unindexed `app/src/App.tsx` / `package.json` (`react-toastify`)
 TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058 (done); die hover face: T-059 (done); view persist: T-060, T-061 (done); die persist: T-062 (done); location highlight: T-063 (done); add page-type-1: T-064–T-067 (done); persist miss: T-068–T-070 (done); catalog extra names: T-071–T-073 (done); Current Emotions view persist: T-097–T-099
