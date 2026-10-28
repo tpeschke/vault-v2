@@ -23,7 +23,7 @@ export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
     return (
         <div className="vitals-v2">
             <section>
-                <h1>Self Doubt</h1>
+                <h1>Doom</h1>
                 <DieRow dieIndex={selfDoubt.dieIndex} onSelect={index => { updates.updateSelfDoubt(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'selfDoubtDieIndex', index) }} />
                 <div className="vitals-split">
                     <span>
