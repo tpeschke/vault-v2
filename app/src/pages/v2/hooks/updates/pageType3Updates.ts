@@ -7,7 +7,7 @@ import {
 } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 
-export const PAGE3_RELATIONSHIP_CAP = 16
+export const PAGE3_RELATIONSHIP_CAP = 20
 
 export function mapPage3(character: CharacterVersion2, pageID: number, updater: (page: Page3) => Page3): CharacterVersion2 {
     return {

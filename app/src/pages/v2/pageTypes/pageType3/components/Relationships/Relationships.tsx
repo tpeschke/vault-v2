@@ -60,8 +60,8 @@ export default function Relationships({ relationships, pageID, updates }: Props)
         <div className="page3-relationships">
             <div className="page3-relationships-headers">
                 <h1>Relationships</h1>
-                <h1>R</h1>
-                <h1>P</h1>
+                <h1 className='minor-heading'>R</h1>
+                <h1 className='minor-heading'>P</h1>
             </div>
             <div className="page3-relationships-list">
                 {rows.map((row, index) => (
