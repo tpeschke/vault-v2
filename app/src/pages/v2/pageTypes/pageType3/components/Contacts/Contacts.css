@@ -6,7 +6,7 @@
 .page3-contacts > p,
 .page3-contacts > textarea {
     width: 100%;
-    min-height: calc(18 * 17.38px);
+    min-height: calc(20 * 17.38px);
     padding: 0 1px;
     box-sizing: border-box;
     white-space: pre-wrap;
