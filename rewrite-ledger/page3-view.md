@@ -3,7 +3,7 @@ status: accepted   date: 2026-10-04
 
 Decision: The v2 page-type-3 view matches official blank page 3: Contacts | Relationships on top, Gear below. `pageTypeID` 3. Multiple instances allowed. New characters get one type-3 at `v2CharacterPages.index` 2. Existing characters are not backfilled. Gutter add label: **NPCs & Equipment** (`fa-plus` + that exact text; no tooltip). Contacts is one string, the same control family as page-type-2 Abilities, and it is play-time. Play-time also includes the relationship name, **R**, and **P**, and everything under Gear (`quick-view-inputs.md`). Sheet-wide fonts, `character-value`, page box, overflow, and island: `v2-page-type.md`. Wordmark is page-1 only. Gutter: `add-page-type-1.md` / `page-reorder.md`.
 
-Why: Designer named page type 3 from the official blank and answered Design Q1–Q14 plus Notes (2026-10-04). Official blank is the layout source. Page-type-1 / page-type-2 are the mechanical exemplars. 2026-10-28: Contacts is one string, the box is 18 × 17.38px, and existing contact rows are joined into that string. Same day: Contacts and Relationships rows line up; each kind of measure matches Abilities (band to band, text line to text line). 15px under that pair, above Gear. Same day: Contacts, the relationship name, and **R** blur-save on the view. The view can insert a relationship and clear one. Same day: the **R** cell’s gray rules run the full 17.38px row. Same day: Show Quick Edit washes the Contacts textarea over the stripes.
+Why: Designer named page type 3 from the official blank and answered Design Q1–Q14 plus Notes (2026-10-04). Official blank is the layout source. Page-type-1 / page-type-2 are the mechanical exemplars. 2026-10-28: Contacts is one string, the box is 18 × 17.38px, and existing contact rows are joined into that string. Same day: Contacts and Relationships rows line up; each kind of measure matches Abilities (band to band, text line to text line). 15px under that pair, above Gear. Same day: Contacts, the relationship name, and **R** blur-save on the view. The view can insert a relationship and clear one. Same day: the **R** cell’s gray rules run the full 17.38px row. Same day: Show Quick Edit washes the Contacts textarea over the stripes. Same day: the Gear meditating head stays `fa-person-meditating`, and that icon is added to the kit subset.
 
 Constraints it imposes:
 - Sheet-wide contract: `v2-page-type.md`. This file owns page-type-3 section order, labels, stores, slot keys, and exceptions.
@@ -26,7 +26,7 @@ Constraints it imposes:
 
 - Worn / Backpack / Pouch / held bag labels and Carry **−4 Str** … **5 Str** / QM numbers are chrome. Type (Item) is the writable remainder of that track.
 - Flag columns: boolean. Mimic Anointed’s check box (`Favor.tsx` / `Favor.css`: 12×12, `fa-solid fa-check` when true, edit teal / hover / checked-black) **without** `border`. Do not reuse `.anointed-box`. Page-local class. Do not mark `character-value`. Play-time: clickable on the view; persist on click (die-click pattern). Edit-session click stays local until Save.
-- Icons: `fa-solid fa-staff-snake` and `fa-solid fa-person-meditating` from the existing kit (`app/index.html`). Header icons replace the blank’s bandage / heart emoji.
+- Icons: `fa-solid fa-staff-snake` and `fa-solid fa-person-meditating` from the existing kit (`app/index.html`, kit `db12ee03d1`). Header icons replace the blank’s bandage / heart emoji. The kit is a By Icon subset. Classic solid `person-meditating` must be in that subset. The class stays. Do not substitute `person-praying`. Do not add an inline SVG.
 - Coinage: `cc` / `sc` / `gc` / `pc` amounts (`number`, empty → `0`) **and** a Size string per denomination. Play-time.
 - Notes: one wrap/grow `text` string (`notes`). Favor `divineRelationship` box: `min-height: calc(2 * 17.38px)`, wrap and grow, textarea in edit, always-visible textarea or input on the view (play-time). Overflow recorded. Not one string per printed Notes line.
 - Do not compute encumbrance. Carry bands are written slots, not v1 S/M/L totals.
@@ -64,6 +64,11 @@ Rejected:
 - Editable worn labels. Display-only **S** (Q9: stored default).
 - One coinage Size for the whole block (Q11: per denomination).
 
+Revised 2026-10-28 (meditating head; add the icon to the kit):
+- “Both header icons come from the existing kit” — **retained**. The subset CSS defines `.fa-staff-snake` and does not define `.fa-person-meditating`, so the head is empty. Classic solid `person-meditating` is added to kit `db12ee03d1`.
+- Rename the head to `person-praying` — **rejected**.
+- An inline SVG or a second icon font — **rejected**.
+
 Revised 2026-10-28 (Show Quick Edit; stripes stay visible):
 - “Location highlight is the existing `.view-quick-edit textarea` rule” — **revised**: that solid fill does not paint this box. While `view-quick-edit` is on, the textarea uses the `.view-edit` wash (`rgba(173, 216, 230, 0.35)` at rest, `rgba(145, 181, 194, 0.35)` on hover) stacked on the zebra.
 - Solid quick-edit teal on this textarea — **rejected**. The stripes stay visible.
@@ -97,4 +102,4 @@ Revised 2026-10-28 (Contacts text box; Design answers: follow Abilities; height 
 - `'page3Contacts'` field POST — **rejected**.
 
 Touches: `app/src/pages/v2/pageTypes/pageType3/`; `backend/common/interfaces/v2/page3/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page3.sql`; ledger front panels
-TODOs: T-100–T-112 (done); contacts text box: T-113 (done); row alignment and 15px above Gear: T-114 (done); Contacts play-time: T-115 (done); relationship name and **R**: T-116 (done); view insert and clear: T-117 (done); **R** column rules: T-118 (done); Contacts quick-edit wash: T-119 (proposed)
+TODOs: T-100–T-112 (done); contacts text box: T-113 (done); row alignment and 15px above Gear: T-114 (done); Contacts play-time: T-115 (done); relationship name and **R**: T-116 (done); view insert and clear: T-117 (done); **R** column rules: T-118 (done); Contacts quick-edit wash: T-119 (proposed); meditating icon in the kit subset: T-120 (proposed)

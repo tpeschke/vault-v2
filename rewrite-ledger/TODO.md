@@ -20,6 +20,20 @@ open questions: none
 deviations from design: none
 result:
 
+### T-120: Add person-meditating to the Font Awesome kit subset
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Add)
+why: The Gear meditating head is `fa-solid fa-person-meditating`. Kit `db12ee03d1` loads a By Icon subset (`subsetPath` `assets/db12ee03d1/7158220/kit.css`, version 6.7.2, method css). That file defines `.fa-staff-snake` and does not define `.fa-person-meditating`, so the head is an empty `<i>`. The 18px cell is large enough for the 12px glyph.
+scope: Font Awesome kit `db12ee03d1`, referenced by `app/index.html`. Owner of the icon name: `rewrite-ledger/page3-view.md`. Do not change `Gear.tsx` or `Gear.css`. Do not rename the class to `person-praying`. Do not add an SVG or another icon font.
+steps:
+1. Add classic solid `person-meditating` to the kit’s By Icon subset and publish the kit. Leave `fa-staff-snake` in the subset.
+2. Leave `Gear.tsx` `ColumnHead` on `fa-solid fa-person-meditating`.
+done when: the subset CSS for kit `db12ee03d1` contains `.fa-person-meditating` with a `--fa` value, and still contains `.fa-staff-snake`. `Gear.tsx` still has `fa-person-meditating`. `git diff` is empty for `Gear.tsx` and `Gear.css`.
+depends on: T-108 (done)
+open questions: none
+deviations from design: none
+result:
+
 ## Done
 
 ### T-118: Run the R-column gray rules the full row
