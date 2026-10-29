@@ -6,7 +6,19 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-119: Wash the Contacts textarea when quick-edit locations are shown
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: the stripes should still be visible)
+why: Show Quick Edit puts `view-quick-edit` on `page-shell`. `index.css` paints `.view-quick-edit textarea` solid teal, and `.v2 .page3-contacts > textarea` paints the zebra with `!important` at higher specificity, so the Contacts box stays unhighlighted.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not change `index.css`, `NotesPanes.css`, `Contacts.tsx`, `V2View.tsx`, or relationship styles. Do not change min-height, zebra pitch, or the text line. Do not add a wrapper. Do not put `view-edit` on the view.
+steps:
+1. Copy the existing `.v2 .view-edit .page3-contacts > textarea` rest rule and its `:hover` rule, with `.view-quick-edit` in place of `.view-edit`. Rest wash `rgba(173, 216, 230, 0.35)` stacked on the same `repeating-linear-gradient` zebra (`#fff` / `#f3f3f3` at 17.38px). Hover wash `rgba(145, 181, 194, 0.35)` on that zebra. `background-color: transparent`, `background-attachment: local`, and the same `!important` as the edit rules.
+2. Leave the toggle-off zebra (`.v2 .page3-contacts > textarea` with no teal layer) and the `.view-edit` rules in place.
+done when: `Contacts.css` has `.v2 .view-quick-edit .page3-contacts > textarea` containing `rgba(173, 216, 230, 0.35)` and `repeating-linear-gradient`, and a `:hover` rule containing `rgba(145, 181, 194, 0.35)`. `.v2 .view-edit .page3-contacts > textarea` is still present. The toggle-off `.v2 .page3-contacts > textarea` rule has no `173, 216, 230`. `git diff` is empty for `index.css`, `NotesPanes.css`, `Contacts.tsx`, and `V2View.tsx`.
+depends on: T-115 (done)
+open questions: none
+deviations from design: none
+result:
 
 ## Done
 
