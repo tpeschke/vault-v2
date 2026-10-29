@@ -8,8 +8,8 @@ import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vit
 import { Dispatch } from "redux"
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice"
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
-import { Page3Coinage } from "@vault/common/interfaces/v2/page3/page3Interfaces"
-import { Page3GearValue, Page3RelationshipPValue } from "@vault/common/interfaces/v2/page1/viewPersist"
+import { Page3Coinage, Page3Relationship } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { Page3GearValue, Page3RelationshipDeleteValue, Page3RelationshipPValue, Page3RelationshipRValue, Page3RelationshipValue } from "@vault/common/interfaces/v2/page1/viewPersist"
 import { PageGutterUpdates, PageType1Updates, PageType2Updates, PageType3Updates } from "../interfaces/UpdateInterfaces"
 import {
     addPageAfter as insertPageAfter,
@@ -69,7 +69,12 @@ import {
 } from "./pageType3Updates"
 
 export interface Page3PersistFns {
+    persistPage3Contacts: (pageID: number, value: string) => void
+    persistPage3RelationshipValue: (pageID: number, value: Page3RelationshipValue) => void
+    persistPage3RelationshipR: (pageID: number, value: Page3RelationshipRValue) => void
     persistPage3RelationshipP: (pageID: number, value: Page3RelationshipPValue) => void
+    persistPage3RelationshipInsert: (pageID: number, row: { key: string, value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }) => void
+    persistPage3RelationshipDelete: (pageID: number, value: Page3RelationshipDeleteValue) => void
     persistPage3Gear: (pageID: number, value: Page3GearValue) => void
     persistPage3Coinage: (pageID: number, value: Page3Coinage) => void
     persistPage3Notes: (pageID: number, value: string) => void
@@ -291,7 +296,12 @@ export default function getV2Updates(
             if (!character) { return }
             apply(updateNotes(character, pageID, value))
         },
+        persistPage3Contacts: page3Persist.persistPage3Contacts,
+        persistPage3RelationshipValue: page3Persist.persistPage3RelationshipValue,
+        persistPage3RelationshipR: page3Persist.persistPage3RelationshipR,
         persistPage3RelationshipP: page3Persist.persistPage3RelationshipP,
+        persistPage3RelationshipInsert: page3Persist.persistPage3RelationshipInsert,
+        persistPage3RelationshipDelete: page3Persist.persistPage3RelationshipDelete,
         persistPage3Gear: page3Persist.persistPage3Gear,
         persistPage3Coinage: page3Persist.persistPage3Coinage,
         persistPage3Notes: page3Persist.persistPage3Notes

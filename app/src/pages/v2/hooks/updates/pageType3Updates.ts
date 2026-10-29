@@ -50,6 +50,42 @@ export function insertRelationship(
     })
 }
 
+export function setPage3RelationshipId(character: CharacterVersion2, pageID: number, key: string, id: number): CharacterVersion2 {
+    return mapPage3(character, pageID, page => ({
+        ...page,
+        relationships: (page.relationships ?? []).map(row => row.key === key ? { ...row, id } : row)
+    }))
+}
+
+export function putPage3RelationshipSnapshot(
+    character: CharacterVersion2,
+    pageID: number,
+    key: string,
+    id: number,
+    posted: { value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }
+): CharacterVersion2 {
+    return mapPage3(character, pageID, page => {
+        const rows = page.relationships ?? []
+        const index = rows.findIndex(row => row.key === key)
+        if (index === -1) {
+            return {
+                ...page,
+                relationships: [...rows, { id, key, value: posted.value, r: posted.r, p: posted.p }]
+            }
+        }
+        const next = rows.slice()
+        next[index] = { ...rows[index], id, value: posted.value, r: posted.r, p: posted.p }
+        return { ...page, relationships: next }
+    })
+}
+
+export function dropPage3RelationshipId(character: CharacterVersion2, pageID: number, id: number): CharacterVersion2 {
+    return mapPage3(character, pageID, page => ({
+        ...page,
+        relationships: (page.relationships ?? []).filter(row => row.id !== id)
+    }))
+}
+
 export function updateRelationship(
     character: CharacterVersion2,
     pageID: number,

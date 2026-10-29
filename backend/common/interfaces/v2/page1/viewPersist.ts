@@ -2,11 +2,31 @@ import { Emotion } from "./characteristicsInfo"
 import { Page3Coinage, Page3GearSlot } from "../page3/page3Interfaces"
 import { SkillNumber } from "../page2/page2Interfaces"
 
-export type ViewPersistAttribute = 'unspent' | 'currentFavor' | 'diePenalty' | 'damage' | 'stress' | 'selfDoubtDieIndex' | 'damageDieIndex' | 'stressDieIndex' | 'generalSkillNotes' | 'combatSkillNotes' | 'currentEmotions' | 'page3RelationshipP' | 'page3Gear' | 'page3Coinage' | 'page3Notes'
+export type ViewPersistAttribute = 'unspent' | 'currentFavor' | 'diePenalty' | 'damage' | 'stress' | 'selfDoubtDieIndex' | 'damageDieIndex' | 'stressDieIndex' | 'generalSkillNotes' | 'combatSkillNotes' | 'currentEmotions' | 'page3Contacts' | 'page3RelationshipValue' | 'page3RelationshipR' | 'page3RelationshipP' | 'page3RelationshipInsert' | 'page3RelationshipDelete' | 'page3Gear' | 'page3Coinage' | 'page3Notes'
+
+export interface Page3RelationshipValue {
+    id: number
+    value: string
+}
+
+export interface Page3RelationshipRValue {
+    id: number
+    r: SkillNumber
+}
 
 export interface Page3RelationshipPValue {
     id: number
     p: SkillNumber
+}
+
+export interface Page3RelationshipInsertValue {
+    value: string
+    r: SkillNumber
+    p: SkillNumber
+}
+
+export interface Page3RelationshipDeleteValue {
+    id: number
 }
 
 export interface Page3GearValue {
@@ -18,7 +38,7 @@ export interface Page3GearValue {
     w?: SkillNumber
 }
 
-export type ViewPersistValue = number | string | Emotion[] | Page3RelationshipPValue | Page3GearValue | Page3Coinage
+export type ViewPersistValue = number | string | Emotion[] | Page3RelationshipValue | Page3RelationshipRValue | Page3RelationshipPValue | Page3RelationshipInsertValue | Page3RelationshipDeleteValue | Page3GearValue | Page3Coinage
 
 export interface ViewPersistBody {
     pageID: number

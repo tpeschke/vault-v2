@@ -10,6 +10,69 @@ none
 
 ## Done
 
+### T-115: Make Contacts a play-time textarea
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Contacts yes)
+why: Contacts is a view `p` until Edit, then a Save. The designer wants the textarea on the view, with blur saving the string. Edit stays local until Save.
+scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; new `backend/server/v2/edit/utilities/pageType3/savePage3Contacts.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts` (the `Exclude` only); `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.tsx`. Do not change `Contacts.css` metrics (T-114). Do not import `NotesPanes`. Do not add `features/`. Do not recreate `v2Page3Contacts`. Do not persist while `isEditing`. Do not add `/quickEdit`.
+steps:
+1. Allowlist `'page3Contacts'`. Value is `string`. The controller writes it before `saveViewField` and adds the attribute to that function's `Exclude`. `savePage3Contacts` upserts `v2Page3Basics.contacts` only: `insert into v2Page3Basics (pageID, contacts) values ($1, $2) on conflict (pageID) do update set contacts = excluded.contacts`. Do not set `notes` in that statement. `String(value ?? '')`. Success `{ success: true }`. Unknown attribute still refuses.
+2. `persistPage3Contacts` copies `persistPage3Notes`: skip when editing, when the viewer does not own the character, or when the snapshot string matches. Patch `revertedCharacter` with `updateContacts`. Do not replace live `character` from the response. Toast on failure. In-flight spinner stays the existing one.
+3. `Contacts.tsx`: always the `textarea.character-value` (`placeholder=" "`, `value`, `onChange` → `updateContacts`, `onBlur` → `persistPage3Contacts`). Remove the view `p` and the `EditingContext` branch. Zebra, min-height, and the `.view-edit` wash stay in CSS. Location highlight is `index.css` `.view-quick-edit textarea`. Do not add a highlight rule.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. `./node_modules/.bin/tsc --noEmit -p app` reports only the missing `frontend-config`. `Contacts.tsx` has no `<p` and no `EditingContext`. `savePage3Contacts` sets `contacts` and does not set `notes`. Grep `page3Contacts` in `viewPersist.ts` and `editV2FieldController.ts` is present. Grep `/quickEdit` under `pageType3/` is 0.
+depends on: T-113 (done). Independent of T-114.
+open questions: none
+deviations from design: none
+result: Contacts is always a `textarea`. Blur POSTs `'page3Contacts'`. `savePage3Contacts` upserts `contacts` only. Edit skips the POST.
+
+### T-116: Make the relationship name and R play-time
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answers: **R** and **P**; then the name too)
+why: **P** already blur-saves on the view. The name and **R** are inputs only while editing. The designer named all three.
+scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; new `backend/server/v2/edit/utilities/pageType3/savePage3RelationshipValue.ts`; new `savePage3RelationshipR.ts`; `saveViewField.ts` (`Exclude` only); `app/src/pages/v2/hooks/characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.tsx`. Do not change `Relationships.css` metrics (T-114). Do not change insert visibility (T-117). Do not add a delete attribute here. Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
+steps:
+1. `'page3RelationshipValue'` is `{ id: number, value: string }`. Refuse unless `id > 0`, `value` is a string, and `value.length <= 500`. `update v2Page3Relationships set value = $1 where id = $2 and pageID = $3`. `'page3RelationshipR'` is `{ id: number, r: SkillNumber }`. Refuse unless `id > 0` and `r` is a SkillNumber. `update ... set r = $1` with `''` stored as null. Copy `savePage3RelationshipP`. Both return `{ success: true }`. Add both attributes to the `saveViewField` `Exclude`. Handle them in the controller before `saveViewField`.
+2. `persistPage3RelationshipValue` and `persistPage3RelationshipR` copy `persistPage3RelationshipP`: skip when editing, when not owner, when the snapshot row is missing, or when that cell already matches. Patch that cell on the snapshot only. Do not replace live `character` from the response.
+3. `Relationships.tsx`: the name and **R** are `input.character-value` on the view and in Edit (same mount as **P**). `onChange` stays `updateRelationship`. `onBlur` persists when `row.id` is set. **P**'s handlers stay. `showInsert` stays `isEditing && leftover > -1`.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. App `tsc` reports only the missing `frontend-config`. The name input and the **R** input in `Relationships.tsx` are outside an `isEditing` ternary. `showInsert` still requires `isEditing`. Grep `page3RelationshipValue` and `page3RelationshipR` in the controller is present. Grep `/quickEdit` under `pageType3/` is 0.
+depends on: T-113 (done). Independent of T-114 and T-115.
+open questions: none
+deviations from design: `showInsert` no longer reads `isEditing`. T-117 changed that in the same Execute.
+result: Name and **R** are inputs on the view. Blur POSTs `'page3RelationshipValue'` and `'page3RelationshipR'` when `id > 0`. **P** is unchanged.
+
+### T-117: Insert and clear a relationship on the view
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: view insert and clear-to-remove; name is a view input)
+why: The insert row is edit-only, so the view cannot add a relationship. Clearing the last stored field removes the row locally, and the input unmounts before a blur POST. A new row's `id` is 0, so the next full Save would drop the persisted row and insert a duplicate.
+scope: `viewPersist.ts`; `editV2FieldController.ts`; new `savePage3RelationshipInsert.ts`; new `savePage3RelationshipDelete.ts`; `saveViewField.ts` (`Exclude` only); `characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `pageType3Updates.ts` only if a helper is required to set an `id` by `key`; `Relationships.tsx`. Do not replace the whole relationship list on a cell blur. Do not change row metrics (T-114). Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
+steps:
+1. `'page3RelationshipInsert'` value is `{ value: string, r: SkillNumber, p: SkillNumber }`. Refuse when `value`, `r`, and `p` are all empty, when `value` is not a string or `value.length > 500`, or when `r` or `p` is not a SkillNumber. `insert into v2Page3Relationships (pageID, value, r, p, index) values (...) returning id`. `index` is the current row count for that `pageID`. `''` numbers store as null. Success `{ success: true, id }` with `id > 0`. No id → `{ success: false }`.
+2. `'page3RelationshipDelete'` value is `{ id: number }`. Refuse unless `id > 0`. `delete from v2Page3Relationships where id = $1 and pageID = $2`. Success `{ success: true }`.
+3. `persistPage3RelationshipInsert(pageID, row)` skips when editing, when not owner, or when `value`, `r`, and `p` are all empty. On success, set `id` on the live row with that client `key` and on the snapshot copy of that row. Keep `key`. Write the snapshot cell values from the posted payload. If the live row's `value` / `r` / `p` then differ, POST `'page3RelationshipValue'` / `'page3RelationshipR'` / `'page3RelationshipP'` for the cells that differ. If the live row with that `key` is already gone, POST `'page3RelationshipDelete'` for the returned `id`.
+4. `persistPage3RelationshipDelete` skips when editing, when not owner, or when `id` is missing. On success, drop that `id` from the snapshot. Live state is already updated by `updateRelationship`.
+5. `Relationships.tsx`: `showInsert` is `rows.length < 18` in both modes. `leftover` is `18 - length - (showInsert ? 1 : 0)`. The insert row's name, **R**, and **P** are inputs. Blur of any of them, when any stored field is non-empty, calls `insertRelationship` and `persistPage3RelationshipInsert`. When `updateRelationship` removes a row with `id > 0`, call `persistPage3RelationshipDelete` from that change, not from blur.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. App `tsc` reports only the missing `frontend-config`. `Relationships.tsx` `showInsert` does not read `isEditing`. Insert SQL contains `returning id`. Delete SQL names `v2Page3Relationships`. Grep `/quickEdit` under `pageType3/` is 0.
+depends on: T-116
+open questions: none
+deviations from design: none
+result: The insert row shows while `length < 18`. Insert SQL `returning id` merges onto the live row and the snapshot. Clearing the last stored field POSTs `'page3RelationshipDelete'`.
+
+### T-114: Align Contacts and Relationships to the Abilities row; 15px above Gear
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (band matches band; text line matches text line; 15px above the Gear heading)
+why: Contacts bands are 17.38px and the text line is already 15px / 1.2. Each Relationships row is that 17.38px content plus `padding: 2px 1px`, so the columns do not line up. The double column sits flush on the Gear heading.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType3/PageType3.css`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css`; `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.css`. Do not change `DoubleColumn.css`, `NotesPanes.css`, `View.css`, `index.css`, Gear, stores, or JSX unless a selector cannot reach the row. Do not add `features/`. Do not set `line-height: 17.38px` on the Contacts pane or on relationship value text. Do not add `field-sizing`.
+steps:
+1. Relationships list row (`span`): `box-sizing: border-box`, `height` and `min-height` `17.38px`. Keep `padding: 2px 1px` inside that box so the painted row is 17.38px, not 17.38px plus padding. `p` and `input` in the row keep `font-size: 15px` and `line-height: 1.2`. Override `span > *` `min-height: 17.38px` and the `index.css` `p` `min-height: 17.38px` on these rows (`min-height: 0` is enough) so the child cannot grow the span. Do not edit `index.css`. Restate height on `input.character-value` so `View.css` filled `height: 1.2em` and placeholder `17.38px` cannot change the row. Same row border-box in view and in edit, including leftover and insert rows.
+2. Contacts pane: keep the 17.38px zebra (white first) and `min-height: calc(18 * 17.38px)` on the mounted control. T-115 removes the view `p`; the zebra and min-height then apply to the `textarea`. Leave the text line at `font-size: 15px` and `line-height: 1.2`. Do not add a `line-height` that equals the band.
+3. One shared border-box on `.page3-contacts > h1` and on `.page3-relationships-headers > h1`: `box-sizing: border-box`, `height` and `min-height` `calc(16px + 8px)` (`.v2 h1` content `min-height: 16px` plus its `padding: 4px` top and bottom; that padding stays and sits inside the box). `line-height: 16px` on those `h1`s. `.page3-relationships-headers` is that same height so the flex row does not add a second bar. Contacts keeps `font-size: 13px` and `white-space: nowrap` inside that bar. Row 1 of each column then starts on the same line, and 18 relationship rows cover the same vertical span as the Contacts pane.
+4. `.page-type-three .double-column { margin-bottom: 15px; }`. That space is above the Gear `h1`. Do not set `gap` or `margin` on shared `DoubleColumn.css`. Do not change Gear row heights.
+done when: `Relationships.css` sets the list `span` to `height: 17.38px` and `min-height: 17.38px`, and sets `span > *` `min-height: 0`. A page-type-3 stylesheet sets `.page3-contacts > h1` and `.page3-relationships-headers > h1` to `height: calc(16px + 8px)`. `Contacts.css` still has pitch `17.38px` and does not set `line-height: 17.38px`. `PageType3.css` sets `.page-type-three .double-column` `margin-bottom: 15px`. `DoubleColumn.css` has no `15px`. `NotesPanes.css` is unchanged (`git diff` empty for that file). No new store or attribute.
+depends on: T-113 (done)
+open questions: none
+deviations from design: Header bar is `calc(16px + 8px)`, taken from `.v2 h1` `min-height: 16px` and `padding: 4px`. The designer named row alignment, not a new header pixel.
+result: Relationship rows are a 17.38px border-box with padding inside. Header bars share `calc(16px + 8px)`. `.page-type-three .double-column` has `margin-bottom: 15px`.
+
 ### T-113: Replace the Contacts list with one Abilities-style text box
 status: done
 source: rewrite-ledger/page3-view.md, 2026-10-28 (follow Abilities; height 18 × 17.38; join existing rows)
