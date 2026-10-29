@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-115: Make Contacts a play-time textarea
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Contacts yes)
 why: Contacts is a view `p` until Edit, then a Save. The designer wants the textarea on the view, with blur saving the string. Edit stays local until Save.
 scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; new `backend/server/v2/edit/utilities/pageType3/savePage3Contacts.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts` (the `Exclude` only); `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.tsx`. Do not change `Contacts.css` metrics (T-114). Do not import `NotesPanes`. Do not add `features/`. Do not recreate `v2Page3Contacts`. Do not persist while `isEditing`. Do not add `/quickEdit`.
@@ -19,10 +23,10 @@ done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. `./nod
 depends on: T-113 (done). Independent of T-114.
 open questions: none
 deviations from design: none
-result:
+result: Contacts is always a `textarea`. Blur POSTs `'page3Contacts'`. `savePage3Contacts` upserts `contacts` only. Edit skips the POST.
 
 ### T-116: Make the relationship name and R play-time
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answers: **R** and **P**; then the name too)
 why: **P** already blur-saves on the view. The name and **R** are inputs only while editing. The designer named all three.
 scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; new `backend/server/v2/edit/utilities/pageType3/savePage3RelationshipValue.ts`; new `savePage3RelationshipR.ts`; `saveViewField.ts` (`Exclude` only); `app/src/pages/v2/hooks/characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.tsx`. Do not change `Relationships.css` metrics (T-114). Do not change insert visibility (T-117). Do not add a delete attribute here. Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
@@ -33,11 +37,11 @@ steps:
 done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. App `tsc` reports only the missing `frontend-config`. The name input and the **R** input in `Relationships.tsx` are outside an `isEditing` ternary. `showInsert` still requires `isEditing`. Grep `page3RelationshipValue` and `page3RelationshipR` in the controller is present. Grep `/quickEdit` under `pageType3/` is 0.
 depends on: T-113 (done). Independent of T-114 and T-115.
 open questions: none
-deviations from design: none
-result:
+deviations from design: `showInsert` no longer reads `isEditing`. T-117 changed that in the same Execute.
+result: Name and **R** are inputs on the view. Blur POSTs `'page3RelationshipValue'` and `'page3RelationshipR'` when `id > 0`. **P** is unchanged.
 
 ### T-117: Insert and clear a relationship on the view
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: view insert and clear-to-remove; name is a view input)
 why: The insert row is edit-only, so the view cannot add a relationship. Clearing the last stored field removes the row locally, and the input unmounts before a blur POST. A new row's `id` is 0, so the next full Save would drop the persisted row and insert a duplicate.
 scope: `viewPersist.ts`; `editV2FieldController.ts`; new `savePage3RelationshipInsert.ts`; new `savePage3RelationshipDelete.ts`; `saveViewField.ts` (`Exclude` only); `characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `pageType3Updates.ts` only if a helper is required to set an `id` by `key`; `Relationships.tsx`. Do not replace the whole relationship list on a cell blur. Do not change row metrics (T-114). Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
@@ -51,10 +55,10 @@ done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. App `t
 depends on: T-116
 open questions: none
 deviations from design: none
-result:
+result: The insert row shows while `length < 18`. Insert SQL `returning id` merges onto the live row and the snapshot. Clearing the last stored field POSTs `'page3RelationshipDelete'`.
 
 ### T-114: Align Contacts and Relationships to the Abilities row; 15px above Gear
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-28 (band matches band; text line matches text line; 15px above the Gear heading)
 why: Contacts bands are 17.38px and the text line is already 15px / 1.2. Each Relationships row is that 17.38px content plus `padding: 2px 1px`, so the columns do not line up. The double column sits flush on the Gear heading.
 scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType3/PageType3.css`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css`; `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.css`. Do not change `DoubleColumn.css`, `NotesPanes.css`, `View.css`, `index.css`, Gear, stores, or JSX unless a selector cannot reach the row. Do not add `features/`. Do not set `line-height: 17.38px` on the Contacts pane or on relationship value text. Do not add `field-sizing`.
@@ -67,9 +71,7 @@ done when: `Relationships.css` sets the list `span` to `height: 17.38px` and `mi
 depends on: T-113 (done)
 open questions: none
 deviations from design: Header bar is `calc(16px + 8px)`, taken from `.v2 h1` `min-height: 16px` and `padding: 4px`. The designer named row alignment, not a new header pixel.
-result:
-
-## Done
+result: Relationship rows are a 17.38px border-box with padding inside. Header bars share `calc(16px + 8px)`. `.page-type-three .double-column` has `margin-bottom: 15px`.
 
 ### T-113: Replace the Contacts list with one Abilities-style text box
 status: done

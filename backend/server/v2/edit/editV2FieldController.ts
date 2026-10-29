@@ -1,7 +1,11 @@
 import { Emotion } from '@vault/common/interfaces/v2/page1/characteristicsInfo'
 import {
     Page3GearValue,
+    Page3RelationshipDeleteValue,
+    Page3RelationshipInsertValue,
     Page3RelationshipPValue,
+    Page3RelationshipRValue,
+    Page3RelationshipValue,
     ViewPersistAttribute,
     ViewPersistBody,
     ViewPersistValue
@@ -12,7 +16,12 @@ import { Response, Request } from '../../interfaces/apiInterfaces'
 import { getCharacterOwnerID } from '../view/assembleV2Character/utilities/ownerInfo'
 import saveCurrentEmotions from './utilities/pageType1/utilities/saveCharacteristics/utilities/saveCurrentEmotions'
 import saveViewField from './utilities/pageType1/utilities/saveViewField'
+import savePage3Contacts from './utilities/pageType3/savePage3Contacts'
+import savePage3RelationshipValue from './utilities/pageType3/savePage3RelationshipValue'
+import savePage3RelationshipR from './utilities/pageType3/savePage3RelationshipR'
 import savePage3RelationshipP from './utilities/pageType3/savePage3RelationshipP'
+import savePage3RelationshipInsert from './utilities/pageType3/savePage3RelationshipInsert'
+import savePage3RelationshipDelete from './utilities/pageType3/savePage3RelationshipDelete'
 import savePage3GearField, { isPage3GearSlot } from './utilities/pageType3/savePage3GearField'
 import savePage3Coinage from './utilities/pageType3/savePage3Coinage'
 import savePage3Notes from './utilities/pageType3/savePage3Notes'
@@ -21,7 +30,8 @@ const attributes: ViewPersistAttribute[] = [
     'unspent', 'currentFavor', 'diePenalty', 'damage', 'stress',
     'selfDoubtDieIndex', 'damageDieIndex', 'stressDieIndex',
     'generalSkillNotes', 'combatSkillNotes', 'currentEmotions',
-    'page3RelationshipP', 'page3Gear', 'page3Coinage', 'page3Notes'
+    'page3Contacts', 'page3RelationshipValue', 'page3RelationshipR', 'page3RelationshipP',
+    'page3RelationshipInsert', 'page3RelationshipDelete', 'page3Gear', 'page3Coinage', 'page3Notes'
 ]
 const textAttributes: ViewPersistAttribute[] = ['generalSkillNotes', 'combatSkillNotes']
 
@@ -46,6 +56,25 @@ function isSkillNumber(value: unknown): value is number | '' {
     return value === '' || (typeof value === 'number' && Number.isFinite(value))
 }
 
+function isPage3RelationshipValuePayload(value: ViewPersistValue): value is Page3RelationshipValue {
+    return !!value
+        && typeof value === 'object'
+        && !Array.isArray(value)
+        && typeof (value as Page3RelationshipValue).id === 'number'
+        && (value as Page3RelationshipValue).id > 0
+        && typeof (value as Page3RelationshipValue).value === 'string'
+        && (value as Page3RelationshipValue).value.length <= 500
+}
+
+function isPage3RelationshipRPayload(value: ViewPersistValue): value is Page3RelationshipRValue {
+    return !!value
+        && typeof value === 'object'
+        && !Array.isArray(value)
+        && typeof (value as Page3RelationshipRValue).id === 'number'
+        && (value as Page3RelationshipRValue).id > 0
+        && isSkillNumber((value as Page3RelationshipRValue).r)
+}
+
 function isPage3RelationshipPPayload(value: ViewPersistValue): value is Page3RelationshipPValue {
     return !!value
         && typeof value === 'object'
@@ -53,6 +82,26 @@ function isPage3RelationshipPPayload(value: ViewPersistValue): value is Page3Rel
         && typeof (value as Page3RelationshipPValue).id === 'number'
         && (value as Page3RelationshipPValue).id > 0
         && isSkillNumber((value as Page3RelationshipPValue).p)
+}
+
+function isPage3RelationshipInsertPayload(value: ViewPersistValue): value is Page3RelationshipInsertValue {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+        return false
+    }
+    const row = value as Page3RelationshipInsertValue
+    return typeof row.value === 'string'
+        && row.value.length <= 500
+        && isSkillNumber(row.r)
+        && isSkillNumber(row.p)
+        && (row.value !== '' || row.r !== '' || row.p !== '')
+}
+
+function isPage3RelationshipDeletePayload(value: ViewPersistValue): value is Page3RelationshipDeleteValue {
+    return !!value
+        && typeof value === 'object'
+        && !Array.isArray(value)
+        && typeof (value as Page3RelationshipDeleteValue).id === 'number'
+        && (value as Page3RelationshipDeleteValue).id > 0
 }
 
 function isPage3GearPayload(value: ViewPersistValue): value is Page3GearValue {
@@ -119,6 +168,56 @@ export async function editV2Field(request: FieldRequest, response: Response) {
         }
         const currentEmotions = await saveCurrentEmotions(+pageID, value)
         checkForContentTypeBeforeSending(response, { success: true, currentEmotions })
+        return
+    }
+
+    if (attribute === 'page3Contacts') {
+        await savePage3Contacts(+pageID, String(value ?? ''))
+        checkForContentTypeBeforeSending(response, { success: true })
+        return
+    }
+
+    if (attribute === 'page3RelationshipValue') {
+        if (!isPage3RelationshipValuePayload(value)) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Invalid relationship' })
+            return
+        }
+        await savePage3RelationshipValue(+pageID, value.id, value.value)
+        checkForContentTypeBeforeSending(response, { success: true })
+        return
+    }
+
+    if (attribute === 'page3RelationshipR') {
+        if (!isPage3RelationshipRPayload(value)) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Invalid relationship' })
+            return
+        }
+        await savePage3RelationshipR(+pageID, value.id, value.r)
+        checkForContentTypeBeforeSending(response, { success: true })
+        return
+    }
+
+    if (attribute === 'page3RelationshipInsert') {
+        if (!isPage3RelationshipInsertPayload(value)) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Invalid relationship' })
+            return
+        }
+        const id = await savePage3RelationshipInsert(+pageID, value.value, value.r, value.p)
+        if (!(id > 0)) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Invalid relationship' })
+            return
+        }
+        checkForContentTypeBeforeSending(response, { success: true, id })
+        return
+    }
+
+    if (attribute === 'page3RelationshipDelete') {
+        if (!isPage3RelationshipDeletePayload(value)) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Invalid relationship' })
+            return
+        }
+        await savePage3RelationshipDelete(+pageID, value.id)
+        checkForContentTypeBeforeSending(response, { success: true })
         return
     }
 

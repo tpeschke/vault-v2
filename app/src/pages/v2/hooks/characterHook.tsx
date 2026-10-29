@@ -1,8 +1,8 @@
 import { CharacterVersion2 } from "@vault/common/interfaces/characterInterfaces"
 import { Page1, Page2, Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import { Emotion } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
-import { Page3GearValue, Page3RelationshipPValue, ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
-import { Page3Coinage } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { Page3GearValue, Page3RelationshipDeleteValue, Page3RelationshipPValue, Page3RelationshipRValue, Page3RelationshipValue, ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
+import { Page3Coinage, Page3Relationship } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import axios from "axios"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -15,7 +15,7 @@ import { V2UpdateFunctions } from "./interfaces/UpdateInterfaces"
 import getV2Updates from "./updates/getV2Updates"
 import { applyCurrentEmotionIds, otherPageType1Names, updateCrP, updateDamage, updateFavor, updateSelfDoubt, updateStress } from "./updates/pageType1Updates"
 import { updateCombatSkillNotes, updateGeneralSkillNotes } from "./updates/pageType2Updates"
-import { mapPage3, updateCoinage, updateGearCell, updateNotes } from "./updates/pageType3Updates"
+import { dropPage3RelationshipId, mapPage3, putPage3RelationshipSnapshot, setPage3RelationshipId, updateCoinage, updateContacts, updateGearCell, updateNotes } from "./updates/pageType3Updates"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -50,7 +50,12 @@ function viewFieldValue(character: CharacterVersion2 | null, pageID: number, att
             case 'stressDieIndex':
                 return page1.vitalsInfo.stress.dieIndex
             case 'currentEmotions':
+            case 'page3Contacts':
+            case 'page3RelationshipValue':
+            case 'page3RelationshipR':
             case 'page3RelationshipP':
+            case 'page3RelationshipInsert':
+            case 'page3RelationshipDelete':
             case 'page3Gear':
             case 'page3Coinage':
             case 'page3Notes':
@@ -94,7 +99,12 @@ function patchViewField(character: CharacterVersion2, pageID: number, attribute:
         case 'combatSkillNotes':
             return updateCombatSkillNotes(character, pageID, String(value))
         case 'currentEmotions':
+        case 'page3Contacts':
+        case 'page3RelationshipValue':
+        case 'page3RelationshipR':
         case 'page3RelationshipP':
+        case 'page3RelationshipInsert':
+        case 'page3RelationshipDelete':
         case 'page3Gear':
         case 'page3Coinage':
         case 'page3Notes':
@@ -107,6 +117,8 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion2 | null>(null)
     const revertedRef = useRef<CharacterVersion2 | null>(null)
     revertedRef.current = revertedCharacter
+    const characterRef = useRef<CharacterVersion2 | null>(null)
+    characterRef.current = character
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -306,6 +318,117 @@ export default function characterHook(pathname: string, isEditing: boolean) {
             })
     }
 
+    function persistFailureMessage(error: unknown) {
+        return axios.isAxiosError(error) && typeof error.response?.data?.message === 'string'
+            ? error.response.data.message
+            : 'Save failed'
+    }
+
+    function commitSnapshot(patched: CharacterVersion2) {
+        revertedRef.current = patched
+        setRevertedCharacter(patched)
+        dispatch(cacheCharacterV2({
+            id: patched.id,
+            version: 2,
+            characterInfo: Promise.resolve(patched)
+        }))
+    }
+
+    function persistPage3Contacts(pageID: number, value: string) {
+        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+            return
+        }
+        if ((findPage3(revertedCharacter, pageID)?.contacts ?? '') === value) {
+            return
+        }
+
+        setInFlight(count => count + 1)
+        axios.post(editV2URL + character.id + '/field', { pageID, attribute: 'page3Contacts', value })
+            .then(({ data }) => {
+                if (!data.success) {
+                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    return
+                }
+                const snapshot = revertedRef.current
+                if (!snapshot) {
+                    return
+                }
+                commitSnapshot(updateContacts(snapshot, pageID, value))
+            })
+            .catch(error => {
+                toast.error(persistFailureMessage(error))
+            })
+            .finally(() => {
+                setInFlight(count => Math.max(0, count - 1))
+            })
+    }
+
+    function persistPage3RelationshipValue(pageID: number, value: Page3RelationshipValue) {
+        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+            return
+        }
+        const snapshotRow = findPage3(revertedCharacter, pageID)?.relationships.find(row => row.id === value.id)
+        if (!snapshotRow || snapshotRow.value === value.value) {
+            return
+        }
+
+        setInFlight(count => count + 1)
+        axios.post(editV2URL + character.id + '/field', { pageID, attribute: 'page3RelationshipValue', value })
+            .then(({ data }) => {
+                if (!data.success) {
+                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    return
+                }
+                const snapshot = revertedRef.current
+                if (!snapshot) {
+                    return
+                }
+                commitSnapshot(mapPage3(snapshot, pageID, page => ({
+                    ...page,
+                    relationships: page.relationships.map(row => row.id === value.id ? { ...row, value: value.value } : row)
+                })))
+            })
+            .catch(error => {
+                toast.error(persistFailureMessage(error))
+            })
+            .finally(() => {
+                setInFlight(count => Math.max(0, count - 1))
+            })
+    }
+
+    function persistPage3RelationshipR(pageID: number, value: Page3RelationshipRValue) {
+        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+            return
+        }
+        const snapshotRow = findPage3(revertedCharacter, pageID)?.relationships.find(row => row.id === value.id)
+        if (!snapshotRow || snapshotRow.r === value.r) {
+            return
+        }
+
+        setInFlight(count => count + 1)
+        axios.post(editV2URL + character.id + '/field', { pageID, attribute: 'page3RelationshipR', value })
+            .then(({ data }) => {
+                if (!data.success) {
+                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    return
+                }
+                const snapshot = revertedRef.current
+                if (!snapshot) {
+                    return
+                }
+                commitSnapshot(mapPage3(snapshot, pageID, page => ({
+                    ...page,
+                    relationships: page.relationships.map(row => row.id === value.id ? { ...row, r: value.r } : row)
+                })))
+            })
+            .catch(error => {
+                toast.error(persistFailureMessage(error))
+            })
+            .finally(() => {
+                setInFlight(count => Math.max(0, count - 1))
+            })
+    }
+
     function persistPage3RelationshipP(pageID: number, value: Page3RelationshipPValue) {
         if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
@@ -489,8 +612,149 @@ export default function characterHook(pathname: string, isEditing: boolean) {
             })
     }
 
+    function persistPage3RelationshipInsert(pageID: number, row: { key: string, value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }) {
+        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+            return
+        }
+        if (row.value === '' && row.r === '' && row.p === '') {
+            return
+        }
+        const characterID = character.id
+
+        setInFlight(count => count + 1)
+        axios.post(editV2URL + characterID + '/field', {
+            pageID,
+            attribute: 'page3RelationshipInsert',
+            value: { value: row.value, r: row.r, p: row.p }
+        })
+            .then(({ data }) => {
+                if (!data.success || typeof data.id !== 'number' || !(data.id > 0)) {
+                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    return
+                }
+                const id = data.id as number
+                const liveRow = findPage3(characterRef.current, pageID)?.relationships.find(candidate => candidate.key === row.key)
+                if (liveRow) {
+                    setCharacter(current => current ? setPage3RelationshipId(current, pageID, row.key, id) : current)
+                }
+                if (!liveRow) {
+                    setInFlight(count => count + 1)
+                    axios.post(editV2URL + characterID + '/field', { pageID, attribute: 'page3RelationshipDelete', value: { id } })
+                        .then(({ data: deleted }) => {
+                            if (!deleted.success) {
+                                toast.error(typeof deleted.message === 'string' ? deleted.message : 'Save failed')
+                            }
+                        })
+                        .catch(error => {
+                            toast.error(persistFailureMessage(error))
+                        })
+                        .finally(() => {
+                            setInFlight(count => Math.max(0, count - 1))
+                        })
+                    return
+                }
+                const snapshot = revertedRef.current
+                if (!snapshot) {
+                    return
+                }
+                const liveValue = liveRow.value
+                const liveR = liveRow.r
+                const liveP = liveRow.p
+                commitSnapshot(putPage3RelationshipSnapshot(snapshot, pageID, row.key, id, row))
+                const followUps: Array<{ attribute: 'page3RelationshipValue' | 'page3RelationshipR' | 'page3RelationshipP', value: Page3RelationshipValue | Page3RelationshipRValue | Page3RelationshipPValue, patch: (current: CharacterVersion2) => CharacterVersion2 }> = []
+                if (liveValue !== row.value) {
+                    followUps.push({
+                        attribute: 'page3RelationshipValue',
+                        value: { id, value: liveValue },
+                        patch: current => mapPage3(current, pageID, page => ({
+                            ...page,
+                            relationships: page.relationships.map(candidate => candidate.id === id ? { ...candidate, value: liveValue } : candidate)
+                        }))
+                    })
+                }
+                if (liveR !== row.r) {
+                    followUps.push({
+                        attribute: 'page3RelationshipR',
+                        value: { id, r: liveR },
+                        patch: current => mapPage3(current, pageID, page => ({
+                            ...page,
+                            relationships: page.relationships.map(candidate => candidate.id === id ? { ...candidate, r: liveR } : candidate)
+                        }))
+                    })
+                }
+                if (liveP !== row.p) {
+                    followUps.push({
+                        attribute: 'page3RelationshipP',
+                        value: { id, p: liveP },
+                        patch: current => mapPage3(current, pageID, page => ({
+                            ...page,
+                            relationships: page.relationships.map(candidate => candidate.id === id ? { ...candidate, p: liveP } : candidate)
+                        }))
+                    })
+                }
+                followUps.forEach(item => {
+                    setInFlight(count => count + 1)
+                    axios.post(editV2URL + characterID + '/field', { pageID, attribute: item.attribute, value: item.value })
+                        .then(({ data: cell }) => {
+                            if (!cell.success) {
+                                toast.error(typeof cell.message === 'string' ? cell.message : 'Save failed')
+                                return
+                            }
+                            const currentSnapshot = revertedRef.current
+                            if (!currentSnapshot) {
+                                return
+                            }
+                            commitSnapshot(item.patch(currentSnapshot))
+                        })
+                        .catch(error => {
+                            toast.error(persistFailureMessage(error))
+                        })
+                        .finally(() => {
+                            setInFlight(count => Math.max(0, count - 1))
+                        })
+                })
+            })
+            .catch(error => {
+                toast.error(persistFailureMessage(error))
+            })
+            .finally(() => {
+                setInFlight(count => Math.max(0, count - 1))
+            })
+    }
+
+    function persistPage3RelationshipDelete(pageID: number, value: Page3RelationshipDeleteValue) {
+        if (!character || isEditing || !character.userInfo.ownsThisCharacter || !(value.id > 0)) {
+            return
+        }
+
+        setInFlight(count => count + 1)
+        axios.post(editV2URL + character.id + '/field', { pageID, attribute: 'page3RelationshipDelete', value })
+            .then(({ data }) => {
+                if (!data.success) {
+                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    return
+                }
+                const snapshot = revertedRef.current
+                if (!snapshot) {
+                    return
+                }
+                commitSnapshot(dropPage3RelationshipId(snapshot, pageID, value.id))
+            })
+            .catch(error => {
+                toast.error(persistFailureMessage(error))
+            })
+            .finally(() => {
+                setInFlight(count => Math.max(0, count - 1))
+            })
+    }
+
     const page3Persist = {
+        persistPage3Contacts,
+        persistPage3RelationshipValue,
+        persistPage3RelationshipR,
         persistPage3RelationshipP,
+        persistPage3RelationshipInsert,
+        persistPage3RelationshipDelete,
         persistPage3Gear,
         persistPage3Coinage,
         persistPage3Notes

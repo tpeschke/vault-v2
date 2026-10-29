@@ -1,4 +1,8 @@
-.page3-contacts h1 {
+.page3-contacts > h1 {
+    box-sizing: border-box;
+    height: calc(16px + 8px);
+    min-height: calc(16px + 8px);
+    line-height: 16px;
     white-space: nowrap;
     font-size: 13px;
 }
