@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-118: Run the R-column gray rules the full row
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-28 (Design: no gaps in the gray borders for the R column)
 why: The **R** cell paints `border-left` and `border-right` `1px solid #bdbdbd`, and that cell is `height: 100%` of a span with `padding: 2px 1px`. The rules stop at the padding, so each row shows a white or `#f3f3f3` gap.
 scope: `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not change `Relationships.tsx`, `Contacts.css`, `PageType3.css`, `pageType3Updates.ts`, Gear, `DoubleColumn.css`, `NotesPanes.css`, `View.css`, or `index.css`. Do not change `PAGE3_RELATIONSHIP_CAP`. Do not add a border on the name cell, the **P** cell, or the header. Do not set `line-height: 17.38px`. Do not add `features/`.
@@ -19,9 +23,7 @@ done when: `.page3-relationships-list>span>*:nth-child(2)` still sets `border-le
 depends on: T-114 (done)
 open questions: none
 deviations from design: Both rules stay on the **R** cell (`border-left` and `border-right` on `:nth-child(2)`), which is what `d64787b` already paints. The design snippet put `border-left` on children 2 and 3; a left border on **P** next to **R**’s `border-right` would be 2px. `height: 100%` stays. It is the full row once the span has no padding, and it still beats `View.css` `height: 1.2em`.
-result:
-
-## Done
+result: Span padding is gone. `padding: 2px 1px` is on `span>*`. Headless Chrome: row and **R** cell are both 17.38px, edge delta 0. Both `#bdbdbd` rules are continuous through four view rows (including a leftover `p`) and two edit rows. **P** `border-left` is 0.
 
 ### T-115: Make Contacts a play-time textarea
 status: done
