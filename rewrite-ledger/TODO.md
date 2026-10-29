@@ -6,9 +6,35 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-120: Add person-meditating to the Font Awesome kit subset
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Add)
+why: The Gear meditating head is `fa-solid fa-person-meditating`. Kit `db12ee03d1` loads a By Icon subset (`subsetPath` `assets/db12ee03d1/7158220/kit.css`, version 6.7.2, method css). That file defines `.fa-staff-snake` and does not define `.fa-person-meditating`, so the head is an empty `<i>`. The 18px cell is large enough for the 12px glyph.
+scope: Font Awesome kit `db12ee03d1`, referenced by `app/index.html`. Owner of the icon name: `rewrite-ledger/page3-view.md`. Do not change `Gear.tsx` or `Gear.css`. Do not rename the class to `person-praying`. Do not add an SVG or another icon font.
+steps:
+1. Add classic solid `person-meditating` to the kit’s By Icon subset and publish the kit. Leave `fa-staff-snake` in the subset.
+2. Leave `Gear.tsx` `ColumnHead` on `fa-solid fa-person-meditating`.
+done when: the subset CSS for kit `db12ee03d1` contains `.fa-person-meditating` with a `--fa` value, and still contains `.fa-staff-snake`. `Gear.tsx` still has `fa-person-meditating`. `git diff` is empty for `Gear.tsx` and `Gear.css`.
+depends on: T-108 (done)
+open questions: none
+deviations from design: none
+result:
 
 ## Done
+
+### T-119: Wash the Contacts textarea when quick-edit locations are shown
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: the stripes should still be visible)
+why: Show Quick Edit puts `view-quick-edit` on `page-shell`. `index.css` paints `.view-quick-edit textarea` solid teal, and `.v2 .page3-contacts > textarea` paints the zebra with `!important` at higher specificity, so the Contacts box stays unhighlighted.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not change `index.css`, `NotesPanes.css`, `Contacts.tsx`, `V2View.tsx`, or relationship styles. Do not change min-height, zebra pitch, or the text line. Do not add a wrapper. Do not put `view-edit` on the view.
+steps:
+1. Copy the existing `.v2 .view-edit .page3-contacts > textarea` rest rule and its `:hover` rule, with `.view-quick-edit` in place of `.view-edit`. Rest wash `rgba(173, 216, 230, 0.35)` stacked on the same `repeating-linear-gradient` zebra (`#fff` / `#f3f3f3` at 17.38px). Hover wash `rgba(145, 181, 194, 0.35)` on that zebra. `background-color: transparent`, `background-attachment: local`, and the same `!important` as the edit rules.
+2. Leave the toggle-off zebra (`.v2 .page3-contacts > textarea` with no teal layer) and the `.view-edit` rules in place.
+done when: `Contacts.css` has `.v2 .view-quick-edit .page3-contacts > textarea` containing `rgba(173, 216, 230, 0.35)` and `repeating-linear-gradient`, and a `:hover` rule containing `rgba(145, 181, 194, 0.35)`. `.v2 .view-edit .page3-contacts > textarea` is still present. The toggle-off `.v2 .page3-contacts > textarea` rule has no `173, 216, 230`. `git diff` is empty for `index.css`, `NotesPanes.css`, `Contacts.tsx`, and `V2View.tsx`.
+depends on: T-115 (done)
+open questions: none
+deviations from design: none
+result: The Edit wash is copied onto `.v2 .view-quick-edit .page3-contacts > textarea` and its hover. Headless Chrome: toggle off is zebra only. With `view-quick-edit`, the background is the 0.35 teal gradient plus the zebra. Pixels: white band 226,241,246 and gray band 219,234,239.
 
 ### T-118: Run the R-column gray rules the full row
 status: done
