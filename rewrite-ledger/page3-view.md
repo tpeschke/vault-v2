@@ -102,4 +102,4 @@ Revised 2026-10-28 (Contacts text box; Design answers: follow Abilities; height 
 - `'page3Contacts'` field POST — **rejected**.
 
 Touches: `app/src/pages/v2/pageTypes/pageType3/`; `backend/common/interfaces/v2/page3/`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page3.sql`; ledger front panels
-TODOs: T-100–T-112 (done); contacts text box: T-113 (done); row alignment and 15px above Gear: T-114 (done); Contacts play-time: T-115 (done); relationship name and **R**: T-116 (done); view insert and clear: T-117 (done); **R** column rules: T-118 (done); Contacts quick-edit wash: T-119 (proposed); meditating icon in the kit subset: T-120 (proposed)
+TODOs: T-100–T-112 (done); contacts text box: T-113 (done); row alignment and 15px above Gear: T-114 (done); Contacts play-time: T-115 (done); relationship name and **R**: T-116 (done); view insert and clear: T-117 (done); **R** column rules: T-118 (done); Contacts quick-edit wash: T-119 (done); meditating icon in the kit subset: T-120 (proposed)
