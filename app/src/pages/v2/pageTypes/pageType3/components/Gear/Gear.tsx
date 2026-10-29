@@ -17,7 +17,6 @@ interface GearRowSpec {
     slot: Page3GearSlot
     label?: string
     arrow?: boolean
-    star?: boolean
     bar?: boolean
     carryStr?: string
     qm?: number
@@ -33,23 +32,23 @@ const LEFT_ROWS: GearRowSpec[] = [
     { slot: 'armor', label: 'Armor', arrow: true },
     { slot: 'lHand', label: 'L. Hand', arrow: true },
     { slot: 'rHand', label: 'R. Hand', arrow: true },
-    { slot: 'backpack', label: 'Backpack', star: true, bar: true },
+    { slot: 'backpack', label: 'Backpack', bar: true },
     { slot: 'leftS1' }, { slot: 'leftS2' }, { slot: 'leftS3' }, { slot: 'leftS4' }, { slot: 'leftS5' },
     { slot: 'leftS6' }, { slot: 'leftS7' }, { slot: 'leftS8' }, { slot: 'leftS9' },
-    { slot: 'pouch1', label: 'Pouch', star: true, bar: true },
+    { slot: 'pouch1', label: 'Pouch', bar: true },
     { slot: 'leftS10' }, { slot: 'leftS11' },
-    { slot: 'pouch2', label: 'Pouch', star: true, bar: true },
+    { slot: 'pouch2', label: 'Pouch', bar: true },
     { slot: 'leftS12' }, { slot: 'leftS13' },
-    { slot: 'pouch3', label: 'Pouch', star: true, bar: true },
+    { slot: 'pouch3', label: 'Pouch', bar: true },
     { slot: 'leftS14' }, { slot: 'leftS15' }
 ]
 
 const MIDDLE_ROWS: GearRowSpec[] = [
-    { slot: 'heldBag1', label: 'held bag', star: true, bar: true },
+    { slot: 'heldBag1', label: 'held bag', bar: true },
     { slot: 'midS1' }, { slot: 'midS2' }, { slot: 'midS3' },
-    { slot: 'heldBag2', label: 'held bag', star: true, bar: true },
+    { slot: 'heldBag2', label: 'held bag', bar: true },
     { slot: 'midS4' }, { slot: 'midS5' }, { slot: 'midS6' },
-    { slot: 'other1', label: 'Other Containers', star: true, bar: true },
+    { slot: 'other1', label: 'Other Containers', bar: true },
     { slot: 'other2', arrow: true },
     { slot: 'other3', arrow: true },
     { slot: 'carryM4', carryStr: '−4 Str' },
@@ -102,8 +101,7 @@ function GearRow({
         <span className={`page3-gear-row${spec.bar ? ' page3-gear-bar-row' : ''}`}>
             <span className="page3-gear-item">
                 {spec.label && <em className="page3-gear-label">{spec.label}</em>}
-                {spec.arrow && <em className="page3-gear-chrome">{'->'}</em>}
-                {spec.star && <em className="page3-gear-chrome">*</em>}
+                {spec.arrow && <em className="page3-gear-chrome"><i className="fa-solid fa-arrow-right-from-line"></i></em>}
                 {spec.carryStr && <em className="page3-gear-label">{spec.carryStr}</em>}
                 {spec.qm !== undefined && <em className="page3-gear-label">{spec.qm}</em>}
                 <input
