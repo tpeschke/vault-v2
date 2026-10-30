@@ -5,6 +5,20 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-149: Refuse a labeled add that would pass 15 sheets
+status: proposed
+source: rewrite-ledger/add-page-type-1.md, 2026-10-30 (add click at the cap; Q1 default toast)
+why: A row opened below the cap can still insert a 16th sheet. The click has to refuse that before the insert.
+scope: the four labeled `onClick` handlers in `app/src/pages/v2/V2View.tsx` (`addPageAfter`, `addPageType2After`, `addPageType3After`, `addPageType4After`). Owner: `rewrite-ledger/add-page-type-1.md`. Import `toast` from `react-toastify`. `SHEET_PAGE_CAP_MESSAGE` and `SHEET_PAGE_MAX` are already imported. Do not change file-circle-plus, Save, `savePage4Scene`, or the disclosure flags of other cards. Do not pass `{ autoClose: false }`.
+steps:
+1. In each labeled click, when `character.pages.length >= SHEET_PAGE_MAX`, call `toast.error(SHEET_PAGE_CAP_MESSAGE)` with no second argument, then `restPage(page.pageID)`, and do not call the add helper.
+2. Otherwise keep today’s order: the add helper, then `restPage(page.pageID)`, and no toast.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0. Each of `addPageAfter`, `addPageType2After`, `addPageType3After`, and `addPageType4After` appears after a `SHEET_PAGE_MAX` check in its handler. Grep of `V2View.tsx` for `autoClose` is 0.
+depends on: T-147
+open questions: none
+deviations from design: none
+result:
+
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
