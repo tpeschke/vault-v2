@@ -65,7 +65,7 @@ Revised 2026-10-03 (`quick-view-inputs.md`):
 - “v2 Quick Edit or PDF as part of this feature” — **retained** as no `/quickEdit` **route**. Local `viewQuickEdit` is the location-highlight flag (`quick-view-inputs.md`, T-063), not a feature.
 - Die click only while editing — **revised**: the three die rows use the existing `dieIndex` click on the view. `.view-edit` **cell** tint — **revised**: view die cells stay untinted unless locations are shown (then Edit cell fills). Unselected view hover tints the **face** teal except while locations are shown (`quick-view-inputs.md`, T-059 / T-063).
 - Unsaved-leave dirty — **revised**: warn only while `isEditing`. View play-time changes do not warn.
-- “Autosave. Mixing autosave with Save.” — **retained** for the edit session. View **inputs** persist on blur, and view die clicks persist `dieIndex`, via a field POST (`quick-view-inputs.md`). Edit-session Save / Revert / local die click unchanged. Not a second Save button and not a full-character POST.
+- “Autosave. Mixing autosave with Save.” — **retained** for types 1–3. View **inputs** persist on blur, and view die clicks persist `dieIndex`, via a field POST (`quick-view-inputs.md`). Edit-session Save / Revert / local die click unchanged for those fields. Not a second Save button and not a full-character POST. **Revised** for the type-4 scene: each finished stroke field-POSTs during Edit (`page4-view.md`). Full Save still posts the character.
 
 Revised 2026-10-04 (Current Emotions):
 - Caps `6 / 5 / 3 / 3 / 6` — **revised**: emotions cap is **9** (live `max={9}`). Other list caps unchanged.
@@ -88,9 +88,10 @@ Revised 2026-10-28 (`page3-view.md` quick edit):
 Revised 2026-10-30 (`page4-view.md`):
 - Save count gate through type 3 — **revised**: type 4 is gated the same way.
 - Persist every type-3 field — **retained**, and type-4 `scene` is persisted too.
+- “Autosave stays off during Edit” for every field — **revised** for the type-4 scene only (`page4-view.md`). A stroke that already succeeded is on the snapshot, so Revert does not undo it.
 
 Revised 2026-10-30 (`page3-view.md` Gear Notes):
 - Page-type-3 Contacts is the only type-3 pane on the Abilities wash — **revised**: Gear Notes uses that wash too. Canonical: `page3-view.md`.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/` (new); `backend/server/vault.ts`; `backend/server/db/ensureSchema.ts`; `app/src/redux/slices/characterCacheSlice.tsx`; gitignored `app/src/frontend-config.ts`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; unindexed `app/src/App.tsx` / `package.json` (`react-toastify`)
-TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058 (done); die hover face: T-059 (done); view persist: T-060, T-061 (done); die persist: T-062 (done); location highlight: T-063 (done); add page-type-1: T-064–T-067 (done); persist miss: T-068–T-070 (done); catalog extra names: T-071–T-073 (done); Current Emotions view persist: T-097–T-099; type-4 scene on the full Save: T-136 (`page4-view.md`)
+TODOs: T-027–T-049 (done); empty name / failed save / unsaved warn: T-050–T-052 (done); Damage value / notes 12px: T-053–T-054 (done); basics upsert / cache / selected die: T-055–T-057 (done); view play-time controls: T-058 (done); die hover face: T-059 (done); view persist: T-060, T-061 (done); die persist: T-062 (done); location highlight: T-063 (done); add page-type-1: T-064–T-067 (done); persist miss: T-068–T-070 (done); catalog extra names: T-071–T-073 (done); Current Emotions view persist: T-097–T-099; type-4 scene on the full Save: T-136 (`page4-view.md`); notes stroke POST: T-141, T-142 (`page4-view.md`)
