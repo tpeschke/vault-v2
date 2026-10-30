@@ -4,10 +4,9 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import { DeleteCharacterFunction } from '../../../../../hooks/UsersCharactersHook'
 import axios from 'axios'
-import { viewURL, viewV2URL } from '../../../../../frontend-config'
 import { useDispatch, useSelector } from 'react-redux'
 import { cacheCharacterV1, cacheCharacterV2, CharacterCache } from '../../../../../redux/slices/characterCacheSlice'
-import { UsersCharacterCache } from '../../../../../redux/slices/usersCharactersSlice'
+import { viewURL, viewV2URL } from '../../../../../frontend-config'
 
 interface Props {
     character: CharacterHomeInfo,

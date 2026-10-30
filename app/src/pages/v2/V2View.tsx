@@ -179,7 +179,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="primary"
                                                         data-tooltip-id="my-tooltip"
-                                                        data-tooltip-content="Nevermind"
+                                                        data-tooltip-content="Never mind"
                                                         onClick={() => restPage(page.pageID)}
                                                     ><i className="fa-solid fa-rotate-left"></i></button>
                                                 </>
