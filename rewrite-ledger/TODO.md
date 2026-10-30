@@ -19,6 +19,39 @@ open questions: What `limit` string replaces `'10mb'`? Page count is uncapped, s
 deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
 result:
 
+### T-141: Field-POST a notes stroke, and mint a new notes page
+status: proposed
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: The owner’s finished strokes must persist without a full-character Save, including the first stroke on a sheet that **+ Notes** has only created locally.
+scope: `backend/common/interfaces/v2/page1/viewPersist.ts` (`ViewPersistAttribute`); `backend/server/v2/edit/editV2FieldController.ts`; new writer under `backend/server/v2/edit/utilities/pageType4/`. Owner: the existing field POST (`quick-view-inputs.md`) and the type-4 persist slice (`page4-view.md`). Do not add a route. Do not call `savePages`. Do not change `bodyParser.json`. Do not change type-1, type-2, or type-3 field writes.
+steps:
+1. Add `'page4Scene'` to `ViewPersistAttribute` and to the controller allowlist. `value` is a string. Refuse any other shape with `{ success: false }` and no write.
+2. Run the same byte and JSON checks as `notesScenesWithinCap` on that one string. On failure respond `{ message: 'Notes sheet is limited to 100 MB' }` with `success: false` and do not write.
+3. When `pageID > 0`, update `v2Page4Notes.scene` only if `v2CharacterPages` has that id, this `characterID`, and `pageTypeID` 4. Success `{ success: true }`. No such row: `{ success: false }` and no write. Do not change `index`.
+4. When `pageID <= 0`, require a numeric `index` (the page’s array index, `>= 0`). Insert `v2CharacterPages` (`pageTypeID` 4, that index, this `characterID`) and `v2Page4Notes` with the scene. Before the insert, `update v2CharacterPages set index = index + 1` for this character where `index >=` the new index. Fail closed when the insert returns no numeric `id > 0` (`{ success: false }`, no notes row). Success `{ success: true, pageID }` with that id. Do not insert on an empty string that the client should have skipped; if one arrives, still mint, because the client only sends a string that differs from the snapshot.
+5. Owner check stays `getCharacterOwnerID` against `request.user?.id`. Unknown attribute still refuses with no write.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`. Grep `page4Scene` finds the allowlist and the controller branch. Grep `savePages` in the new writer is 0.
+depends on: none
+open questions: none
+deviations from design: A scene larger than the live `10mb` JSON limit never reaches this write until T-139. The check is still required for a bypass under that limit.
+result:
+
+### T-142: Draw notes on the view and save each finished stroke
+status: proposed
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: The notes board is play-time for the owner. The help button shows with the tool bar, and a new sheet is minted by the first stroke instead of waiting for Save.
+scope: `app/src/pages/v2/pageTypes/pageType4/PageType4.tsx`; `app/src/pages/v2/pageTypes/pageType4/PageType4.css`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/emptyPageType4.ts`; the v2 update thread that already carries `updateNotesScene` (`getV2Updates.ts`, `UpdateInterfaces.ts`). Owner: the notes card and the view field-POST hook. Do not persist from the **+ Notes** click. Do not POST types 1–3 while `isEditing`. Do not add `features/`. Do not change the pan hint.
+steps:
+1. Give a new blank type-4 page a client `key` that is not a stored column. `V2View` keys that card, and `PageType4` keys the editor, with the client key when present and otherwise `pageID`, plus the existing notes epoch. Replacing `pageID` after a mint keeps the key, so the editor does not remount.
+2. `viewModeEnabled` is true only when `ownsThisCharacter` is false. An owned card has a class the hover rule can see (do not reuse `.view-edit` as that gate). On `.page-type-four` hover of an owned card, show `.App-toolbar` and `.undo-redo-buttons` as they show today, and show `.help-icon` with `display: flex`. Zoom, the hamburger, and the library trigger stay hidden. A non-owner never shows those controls.
+3. After the cap accept, a finished stroke (`newElement`, `resizingElement`, `multiElement`, `selectedElementsAreBeingDragged`, and `editingTextElement` all clear) updates local `scene` for the owner whether or not Edit is on. Then POST `'page4Scene'` unless the viewer does not own the character or the string matches the snapshot. Send `index` (array index) when `pageID <= 0`. One POST in flight per card. When it returns, if the live scene differs, POST that latest string. On `{ success: true, pageID }`, replace the temp id on the live page and the snapshot and keep the client key. Patch the snapshot scene only when it is still the string that succeeded. Do not bump the notes epoch. Do not replace the live scene from the response. Failure toasts and leaves the canvas. The existing in-flight count keeps the sidebar spinner up.
+4. Do not POST while Edit is on for any other attribute. Full Save still sends the scene.
+done when: `npm run build` in `app/` exits 0, or fails only on the pre-existing missing `frontend-config`. Grep `viewModeEnabled={!isEditing}` in `PageType4.tsx` is 0. Grep `page4Scene` in `app/src/pages/v2` finds the POST. Grep `.help-icon` in `PageType4.css` finds the hover show.
+depends on: T-141
+open questions: none
+deviations from design: none
+result:
+
 ## Done
 
 ### T-134: Add the Page4 contract and scene cap
