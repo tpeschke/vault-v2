@@ -6,6 +6,22 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-124: Nest kit icons so unchecking a check does not throw
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Kit `db12ee03d1` replaces `<i class="fa-solid">` with `<svg class="svg-inline--fa">`. `GearFlag` and v2 Anointed render `fa-check` only while checked. Uncheck asks React to `removeChild` that `<i>`, which is no longer in the tree, and the router error page replaces the sheet.
+scope: `app/index.html` (kit script). Owners of the checks: `rewrite-ledger/page3-view.md` (`GearFlag` in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx`, placement in `Gear.css`) and `rewrite-ledger/edit-character.md` (Anointed in `app/src/pages/v2/pageTypes/pageType1/components/Favor/Favor.tsx`, placement in `Favor.css`). Do not add an icon package. Do not add `features/` or `shared/`. Do not edit kit `db12ee03d1` on fontawesome.com.
+steps:
+1. In `app/index.html`, before `https://kit.fontawesome.com/db12ee03d1.js`, set `window.FontAwesomeConfig = { autoReplaceSvg: 'nest' }` in a classic script (not `type="module"`). Leave the kit URL. Do not add `async` or `defer`.
+2. Leave both conditionals: Gear `{checked && <i className="fa-solid fa-check">}` and Anointed `{anointed && <i className="fa-solid fa-check">}`. Do not add `checked` to Anointed’s class. Do not change Gear click-persist or Anointed’s edit-only click. Staff-snake, the arrow, and the meditating `<img>` stay as they are.
+3. Leave the Gear rules that size `.page3-gear-head > strong i` and `.page3-gear-head > strong > svg.svg-inline--fa.fa-staff-snake`, and that place `.page3-flag-box i` and `.page3-flag-box > svg.svg-inline--fa.fa-check`. Leave `.favor-v2 .anointed-box i` (`font-size: 20px`, `position: absolute`, `top: -4px`). Do not add `left`. Do not add a selector that is only `svg` or only `.svg-inline--fa`. Do not set width or height on those svgs.
+4. If headless Chrome shows the kit still replaces the `<i>` (no `<i>` left, svg is the child) or `parent.removeChild` on that `<i>` throws: nest did not fix it. Then always render the check `<i>` in `GearFlag` and in Anointed. Hide it unless the box is on. Gear hides with the existing `.checked` class. Anointed hides with a class that is not `checked`, so the black fill stays unused. `visibility: hidden` on both the `i` and `> svg.svg-inline--fa.fa-check`. Say so in the result.
+done when: `app/index.html` sets `autoReplaceSvg` to `nest` before the kit script. `rg "fa-person-meditating" app/src/pages/v2/pageTypes/pageType3` is 0. `Gear.tsx` and `Favor.tsx` still contain `fa-solid fa-check`. Anointed’s class string does not contain `checked` unless step 4 ran and the result says so. `Gear.css` has no width or height on a selector that is only `svg` or only `.svg-inline--fa`. `npm run build` in `app/` exits 0. Headless Chrome with that config and kit `db12ee03d1`: a `fa-check` `<i>` remains an `i` with an svg inside; removing it does not throw; the Gear check’s positioned node is font-size 20px, position absolute, top -4px; the staff-snake `<i>` is font-size 12px; the meditating img is 18×18.
+depends on: T-123 (done)
+open questions: none
+deviations from design: The design’s first proposal was to keep the check mounted and hide it, and to leave the kit replacing the `<i>`. The designer said to use whatever fixes the error, and to include Anointed. Nest lets the existing unmount succeed on both checkboxes. Step 4 is the keep-mounted fallback only if nest still throws.
+result:
+
 ## Done
 
 ### T-123: Keep staff-snake, the arrow, and the check as kit icons
