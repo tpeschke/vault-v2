@@ -121,8 +121,9 @@ function GearRow({
                 />
             </span>
             <span className="page3-gear-size">
-                {spec.arrow && <em className="page3-gear-chrome"><i className="fa-solid fa-arrow-right-from-line"></i></em>}
-                {isDefaultSSlot(spec.slot) ? (
+                {spec.arrow ? (
+                    <em className="page3-gear-chrome"><i className="fa-solid fa-arrow-right-from-line"></i></em>
+                ) : isDefaultSSlot(spec.slot) ? (
                     <em className="page3-gear-label">{cell.size}</em>
                 ) : (
                     <input

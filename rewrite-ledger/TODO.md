@@ -6,8 +6,10 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-126: Drop the Size input on arrow rows
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Head through R. Hand, `other2`, and `other3` already draw the arrow in Size and still draw a size input after it.
 scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (the Size cell when `spec.arrow`). Owner: `rewrite-ledger/page3-view.md`. Do not edit schema, coinage, printed-S slots, bar headers, the Size track width, or rows without `arrow`. Do not add `features/` or `shared/`.
@@ -18,9 +20,7 @@ done when: In `Gear.tsx`, an `arrow` Size cell contains `fa-arrow-right-from-lin
 depends on: T-121 (done), T-125 (done)
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: The eleven arrow rows render only `fa-arrow-right-from-line` in Size. No size input, no size text, and no size POST. Printed S stays text. A non-arrow size input stays. The Size track stays 64px. Headless Chrome: the arrow cell has the icon and no input; a printed-S cell shows S; another row still has a size input; flags and W remain.
 
 ### T-125: Draw Gear bar headers as labels only
 status: done
