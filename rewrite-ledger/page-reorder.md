@@ -34,4 +34,4 @@ Revised 2026-10-30 (`add-page-type-1.md` disclosure):
 - Omit rules, local-until-Save, no spacers — **retained**.
 
 Touches: `app/src/pages/v2/`; `backend/server/v2/edit/editV2CharacterController.ts` (owner check only); `rewrite-ledger/add-page-type-1.md` (gutter row; reorder no longer rejected)
-TODOs: T-074 (done); T-075 (done); generic gutter: T-082; disclosure: T-145 (proposed)
+TODOs: T-074 (done); T-075 (done); generic gutter: T-082; disclosure: T-145 (done)

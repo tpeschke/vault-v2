@@ -84,6 +84,22 @@ export default function V2View({ setLoading, pathname }: Props) {
         setIsEditing(false)
     }
 
+    const [disclosedPageIDs, setDisclosedPageIDs] = useState<number[]>([])
+
+    useEffect(() => {
+        if (!isEditing) {
+            setDisclosedPageIDs(ids => ids.length === 0 ? ids : [])
+        }
+    }, [isEditing])
+
+    const disclosePage = (pageID: number) => {
+        setDisclosedPageIDs(ids => ids.includes(pageID) ? ids : [...ids, pageID])
+    }
+
+    const restPage = (pageID: number) => {
+        setDisclosedPageIDs(ids => ids.includes(pageID) ? ids.filter(id => id !== pageID) : ids)
+    }
+
     const scrollSheetIntoView = (pageID: number) => {
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -125,62 +141,95 @@ export default function V2View({ setLoading, pathname }: Props) {
                                     </div>
                                     {isEditing &&
                                         <div className="page-gutter">
-                                            {index < character.pages.length - 1 &&
-                                                <button
-                                                    type="button"
-                                                    className="bottom-buttons"
-                                                    data-tooltip-id="my-tooltip"
-                                                    data-tooltip-content="Swap the above sheet with the sheet below"
-                                                    onClick={() => {
-                                                        pageGutterUpdates.swapPageWithNext(index)
-                                                        scrollSheetIntoView(page.pageID)
-                                                    }}
-                                                ><i className="fa-solid fa-arrow-up-arrow-down"></i></button>
-                                            }
-                                            {index > 0 &&
-                                                <button
-                                                    type="button"
-                                                    className="bottom-buttons"
-                                                    data-tooltip-id="my-tooltip"
-                                                    data-tooltip-content="Move the above sheet to the top"
-                                                    onClick={() => {
-                                                        pageGutterUpdates.movePageToTop(index)
-                                                        scrollSheetIntoView(page.pageID)
-                                                    }}
-                                                ><i className="fa-solid fa-up-to-line"></i></button>
-                                            }
-                                            {index < character.pages.length - 1 &&
-                                                <button
-                                                    type="button"
-                                                    className="bottom-buttons"
-                                                    data-tooltip-id="my-tooltip"
-                                                    data-tooltip-content="Move above sheet to the bottom"
-                                                    onClick={() => {
-                                                        pageGutterUpdates.movePageToBottom(index)
-                                                        scrollSheetIntoView(page.pageID)
-                                                    }}
-                                                ><i className="fa-solid fa-down-to-line"></i></button>
-                                            }
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageAfter(index)}
-                                            ><i className="fa-solid fa-plus"></i> Main Info</button>
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageType2After(index)}
-                                            ><i className="fa-solid fa-plus"></i> Skills & Abilities</button>
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageType3After(index)}
-                                            ><i className="fa-solid fa-plus"></i> NPCs & Equipment</button>
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageType4After(index)}
-                                            ><i className="fa-solid fa-plus"></i> Notes</button>
+                                            {disclosedPageIDs.includes(page.pageID) ? (
+                                                <>
+                                                    <button
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            pageGutterUpdates.addPageAfter(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> Main Info</button>
+                                                    <button
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            pageGutterUpdates.addPageType2After(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> Skills & Abilities</button>
+                                                    <button
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            pageGutterUpdates.addPageType3After(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> NPCs & Equipment</button>
+                                                    <button
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            pageGutterUpdates.addPageType4After(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> Notes</button>
+                                                    <button
+                                                        type="button"
+                                                        className="primary"
+                                                        data-tooltip-id="my-tooltip"
+                                                        data-tooltip-content="Nevermind"
+                                                        onClick={() => restPage(page.pageID)}
+                                                    ><i className="fa-solid fa-rotate-left"></i></button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {index < character.pages.length - 1 &&
+                                                        <button
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Swap the above sheet with the sheet below"
+                                                            onClick={() => {
+                                                                pageGutterUpdates.swapPageWithNext(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-arrow-up-arrow-down"></i></button>
+                                                    }
+                                                    {index > 0 &&
+                                                        <button
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Move the above sheet to the top"
+                                                            onClick={() => {
+                                                                pageGutterUpdates.movePageToTop(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-up-to-line"></i></button>
+                                                    }
+                                                    {index < character.pages.length - 1 &&
+                                                        <button
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Move above sheet to the bottom"
+                                                            onClick={() => {
+                                                                pageGutterUpdates.movePageToBottom(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-down-to-line"></i></button>
+                                                    }
+                                                    <button
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        data-tooltip-id="my-tooltip"
+                                                        data-tooltip-content="Click to Add New Pages"
+                                                        onClick={() => disclosePage(page.pageID)}
+                                                    ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                </>
+                                            )}
                                         </div>
                                     }
                                 </Fragment>
