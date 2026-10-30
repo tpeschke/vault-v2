@@ -28,7 +28,7 @@ Sheet-wide session (already on the v2 slice; new pages plug in):
 - New tables/columns: `ensureSchema` idempotent patch + `backupTables/pageN.sql` in the same change (`schema-on-boot.md`). No new migration package.
 - Play-time view controls (always-visible inputs, field POST, location highlight) are **not** automatic. Add them only when that page’s topic names the cells. Mechanics: `quick-view-inputs.md`. New allowlist attributes and column UPDATEs ship in the same change as the control.
 - Two-column shell: reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Do not add `features/`, `widgets/`, or `shared/`.
-- Off-card gutter under each sheet card: **+ Main Info**, **+ Skills & Abilities**, and **+ NPCs & Equipment** (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Main Info inserts type 1. Skills inserts type 2. NPCs & Equipment inserts type 3. Every new type adds one labeled add to the right of the last add. Mechanics: `add-page-type-1.md`. Do not put that cluster on the printed blank.
+- Off-card gutter under each sheet card: **+ Main Info**, **+ Skills & Abilities**, **+ NPCs & Equipment**, and **+ Notes** (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Main Info inserts type 1. Skills inserts type 2. NPCs & Equipment inserts type 3. Notes inserts type 4 (`page4-view.md`). Every new type adds one labeled add to the right of the last add. Mechanics: `add-page-type-1.md`. Do not put that cluster on the printed blank.
 
 Vertical slice (every new page type adds all of these):
 
@@ -48,7 +48,7 @@ Vertical slice (every new page type adds all of these):
 
 New type N uses the same slots with `pageTypeN` / `pageN`. Wire into the existing v2 view/edit/add/delete owners. Paths sit under current YAML view/edit/create/delete adjacencies. Update root L1 YAML only when indexed files are added, moved, or renamed. Do not add a user-objective key for “page type N.”
 
-Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). Type 3: yes, one sheet at index 2 (`page3-view.md`). `addV2CharacterController.ts` comments are not approval for a later type.
+Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). Type 3: yes, one sheet at index 2 (`page3-view.md`). Type 4: yes, one sheet at index 3 (`page4-view.md`). `addV2CharacterController.ts` comments are not approval for a later type. Sheet-wide blank and font rules do not apply to type 4. Types 1, 2, and 3 keep them.
 
 How the next agent proceeds (only when the designer names a new page type and attaches that page’s official blank):
 1. Route here. Read this contract. Do not scan `TODO.md` Done.
@@ -90,5 +90,10 @@ Revised 2026-10-04 (page type 3; Design Q1–Q14):
 - Gutter two labeled adds — **revised**: third add **+ NPCs & Equipment** (`add-page-type-1.md`).
 - Page-local decision list — **revised**: includes `page3-view.md`.
 
-Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
-TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done)
+Revised 2026-10-30 (page type 4 general notes):
+- Create-character note stopped at type 3 — **revised**: type 4 yes, index 3 (`page4-view.md`).
+- Sheet-wide blank, fonts, and `character-value` on every v2 sheet page — **revised** for type 4 only. Types 1, 2, and 3 **retained**.
+- “Attaches that page’s official blank” before Order — **revised** for type 4: the designer named Excalidraw and no blank. Later types still bring a blank.
+
+Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `page4-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`)

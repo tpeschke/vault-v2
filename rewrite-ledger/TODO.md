@@ -6,7 +6,118 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-134: Add the Page4 contract and scene cap
+status: proposed
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: Assemble, save, and the editor need one page shape and one byte cap. Page type 3 is already NPCs & Equipment, so this contract is type 4.
+scope: `backend/common/interfaces/v2/pageTypes.ts` (`PageV2` union, new `Page4`); new `backend/common/interfaces/v2/page4/` for `NOTES_SCENE_MAX_BYTES` and the stored scene shape. Owner: v2 page-type contract (`rewrite-ledger/v2-page-type.md`). Do not edit `page3/` or `Page3`. Do not add `features/`. Do not import `@excalidraw/excalidraw` into `backend/common`.
+steps:
+1. Add `Page4`: `type: 4`, `pageID: number`, `scene: string`. Add it to the `PageV2` union beside `Page3`.
+2. Export `NOTES_SCENE_MAX_BYTES = 100 * 1024 * 1024` from the page4 interface module.
+3. Document the stored string in that module: `''`, or JSON `{ elements, files }` with deleted elements omitted and `files` limited to ids still referenced. No `appState`.
+done when: `npm run build` in `app/` exits 0, or fails only on the pre-existing missing `frontend-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep `100 * 1024 * 1024` under `app/` and `backend/` finds that expression only in the page4 interface module.
+depends on: none
+open questions: none
+deviations from design: Type id is 4. The design notes assumed 3 from a ledger that had not yet recorded NPCs & Equipment.
+result:
+
+### T-135: Create the page-type-4 notes table on boot
+status: proposed
+source: rewrite-ledger/page4-view.md, rewrite-ledger/schema-on-boot.md, 2026-10-30
+why: Save and assemble need `v2Page4Notes` before a type-4 row can persist. Boot DDL is the only migration path.
+scope: unindexed `backend/server/db/ensureSchema.ts`; new unindexed `backend/server/v2/backupTables/page4.sql`. Do not change `page3.sql`. Do not insert `v2CharacterPages` rows. Do not add a migration package.
+steps:
+1. Add `backupTables/page4.sql` with `v2Page4Notes` (`id` serial primary key, `pageID` integer unique, `scene` text default `''`).
+2. In `ensureSchema`, `CREATE TABLE IF NOT EXISTS` that table with the same columns. Safe to re-run.
+3. Do not insert type-4 pages for existing characters.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep `v2Page4Notes` finds the table in `ensureSchema.ts` and `page4.sql`. Grep `v2Page4Notes` in `page3.sql` is 0.
+depends on: T-134
+open questions: none
+deviations from design: none
+result:
+
+### T-136: Assemble, persist, delete, and create page type 4
+status: proposed
+source: rewrite-ledger/page4-view.md, rewrite-ledger/edit-character.md, rewrite-ledger/add-page-type-1.md, 2026-10-30
+why: A type-4 page with no server case is a 404 on view and a silent no-op on Save. Create must insert the sheet the designer asked for, after the existing type-3 sheet.
+scope: `backend/server/v2/view/assembleV2Character/assembleV2Character.ts` and new `utilities/pageType4/`; `backend/server/v2/edit/utilities/savePages.ts` and new `persistPageType4` / `pageType4/`; `backend/server/v2/edit/editV2CharacterController.ts`; `backend/server/v2/delete/utilities/deletePages.ts` and new `deletePagesUtilities/pageType4/`; `backend/server/v2/add/addV2CharacterController.ts` and new `add/pageType4/`. Copy the type-3 existence upsert (`pageID <= 0` always INSERT; fail closed when INSERT returns no `id > 0`). Do not add a route. Do not rewrite `query()`. Do not backfill existing characters. Do not change type-3 SQL.
+steps:
+1. Assemble `pageTypeID` 4 into `Page4`. Missing row yields `scene: ''`. `default` in the assemble switch stays `{ type: 404 }`.
+2. `addPageType4` inserts one `v2Page4Notes` row for that `pageID`.
+3. Create character inserts type 4 at index 3 after type 3 at index 2, then calls `addPageType4`. Leave the type-1, type-2, and type-3 inserts as they are.
+4. `savePages` `case 4` updates `index` and upserts `scene` the way type 3 upserts its row. Check every type-4 `scene` before `savePages`: byte length `Buffer.byteLength(scene, 'utf8')` must be `<= NOTES_SCENE_MAX_BYTES`, and a non-empty string must be JSON with an `elements` array. On failure respond `{ message: 'Notes sheet is limited to 100 MB' }` with no `pages` key and do not call `savePages`.
+5. After `savePages`, count `pageTypeID = 4` the same way as types 1, 2, and 3. A short stored count uses the existing `{ message: 'Could not save all sheets' }` with no `pages` key.
+6. `deletePages` `case 4` deletes `v2Page4Notes` for that `pageID`. `default` stays success.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep `pageTypeID = 4` in `editV2CharacterController.ts` finds the count. Grep `case 4` finds a branch in assemble, `savePages`, and `deletePages`.
+depends on: T-134, T-135
+open questions: none
+deviations from design: A scene larger than the live `10mb` JSON limit never reaches this check until T-139. The check is still required for a bypass under that limit.
+result:
+
+### T-137: Thread type-4 updates and the + Notes gutter button
+status: proposed
+source: rewrite-ledger/page4-view.md, rewrite-ledger/add-page-type-1.md, 2026-10-30
+why: The notes card and its add button have to land in the existing edit session. The rightmost add today is **+ NPCs & Equipment**.
+scope: `app/src/pages/v2/hooks/updates/emptyPageType4.ts`; `pageType1Updates.ts` (`spliceBlankAfter` / `addPageType4After`); `getV2Updates.ts`; `hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/V2View.tsx`. Do not persist on click. Do not add a route or a dropdown. Do not put the button inside `PageType3.tsx` or the page-4 widget. Do not change the Gear Notes pane.
+steps:
+1. `emptyPageType4(pageID)` returns `{ type: 4, pageID, scene: '' }`. Temp `pageID` uses the existing min-over-all-pages helper (`pageID <= 0`).
+2. Extend `spliceBlankAfter`’s blank union with `emptyPageType4`. `addPageType4After` splices that blank after `afterIndex`. Missing `afterIndex`: no-op.
+3. `PageGutterUpdates` gains `addPageType4After`. `getV2Updates` returns it. `PageType4Updates` gains `updateNotesScene(pageID, scene)`, which replaces that page’s `scene` and returns a new character object. Thread it the way `PageType3Updates` is threaded.
+4. `V2View` `case 4` renders the type-4 widget (T-138). Until that widget exists, the case may render an empty `.page.card.page-type-four` so the gutter still mounts. Do not use the `default` fragment for type 4.
+5. Gutter, edit-only, on every card, right of **+ NPCs & Equipment**: `bottom-buttons add-page`, `fa-plus`, text `Notes`. Click calls `addPageType4After(index)`. No scroll. No tooltip. Do not set `margin-left: auto` on this button.
+done when: `npm run build` in `app/` exits 0, or fails only on the pre-existing missing `frontend-config`. Grep `addPageType4After` finds the gutter handler and the update. In `V2View.tsx` the Notes button is after the NPCs & Equipment button.
+depends on: T-134
+open questions: none
+deviations from design: none
+result:
+
+### T-138: Mount Excalidraw on the notes card
+status: proposed
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: The card has to enforce zoom, pan, the hover tool bar, view mode, and the 100 MB cap. Props on the published package do not do that alone.
+scope: root `package.json` (dependency only); new `app/src/pages/v2/pageTypes/pageType4/` (`PageType4.tsx`, `PageType4.css`); `V2View.tsx` case 4; `characterHook.tsx` for a remount epoch only. Do not edit type-1, type-2, or type-3 widgets. Do not add `features/`. Do not add a scene route.
+steps:
+1. Install `@excalidraw/excalidraw@0.18.1`. Import its CSS from the package entry the install documents (`@excalidraw/excalidraw/index.css` if that file exists). If a direct import fails the app `tsc` because `window` is missing, load the component with `React.lazy` from the client only.
+2. Root is `page card page-type-four`. The editor’s parent fills that box (`height: 100%`; the `.page` height is already 1036px). `theme="light"`. `aiEnabled={false}`. `viewModeEnabled={!isEditing}` from `EditingContext`. `UIOptions.canvasActions`: `loadScene: false`, `export: false`, `saveToActiveFile: false`, `saveAsImage: false`. No `WelcomeScreen` or `MainMenu` children.
+3. `initialData` comes from `scene` once per mount (`''` means no elements and no files). App state on that load: `zoom.value` 1 and, for `''`, `scrollX` 0 and `scrollY` 0. Do not pass a new `initialData` on later renders.
+4. Card `onWheelCapture` calls `preventDefault` and `stopPropagation`. `onScrollChange`: `updateScene` back to zoom 1 and the scroll captured at mount, with `captureUpdate` set so the snap-back is not an undo entry (0.18.1 `CaptureUpdateAction` if that export exists).
+5. In `PageType4.css`, under `.page-type-four` only: hide `.zoom-actions`, `.main-menu-trigger`, and `.default-sidebar-trigger` always. Hide `.App-toolbar` and `.undo-redo-buttons` unless `.view-edit .page-type-four:hover`. Confirm those class names in the installed 0.18.1 CSS before using them. If a name is absent, stop and report. Do not hide `.App-toolbar` with the zoom rule.
+6. Build the persisted JSON (drop `isDeleted`, drop unreferenced files). UTF-8 length via `TextEncoder`. If it would exceed `NOTES_SCENE_MAX_BYTES`, `toast.error('Notes sheet is limited to 100 MB')`, `updateScene` back to the last accepted elements and files, and do not call `updateNotesScene`. Measure when the gesture is finished (`newElement`, `resizingElement`, and `multiElement` are clear), not on every drag frame. `onPaste` returns false when the paste would exceed the cap. `onDuplicate` returns the previous elements in that case.
+7. `characterHook` holds a number epoch. Increment it on load, on Revert, and after a successful full Save. Pass it to `PageType4` and set React `key` to `` `${pageID}:${epoch}` ``. Do not put the epoch in the saved scene.
+done when: `npm run build` in `app/` exits 0, or fails only on the pre-existing missing `frontend-config`. Grep `@excalidraw/excalidraw` in root `package.json` shows `0.18.1`. Grep `zoom-actions` in `PageType4.css` finds a hide rule. Grep `NOTES_SCENE_MAX_BYTES` in `PageType4.tsx` finds the client check.
+depends on: T-134, T-137
+open questions: none
+deviations from design: 0.18.1 has no `ui` or `setViewport`. Zoom and the tool bar are CSS. Pan and zoom snap back through `onScrollChange`.
+result:
+
+### T-139: Raise the JSON body limit for a notes scene
+status: blocked
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: `backend/server/vault.ts` sets `bodyParser.json({ limit: '10mb' })`. A legal notes scene is up to 100 MB and rides the full-character POST. The request is rejected before T-136’s cap check.
+scope: unindexed `backend/server/vault.ts` only. Do not add a scene route. Do not change the per-page cap.
+steps:
+1. Wait until the designer names the `limit` string.
+2. Set `bodyParser.json({ limit })` to that string. Leave every other parser untouched.
+done when: grep of `vault.ts` shows the named limit. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing.
+depends on: none
+open questions: What `limit` string replaces `'10mb'`? Page count is uncapped, so no single limit accepts every character that stays under the per-page cap. A Save larger than the chosen limit still fails before the per-page check.
+deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
+result:
+
+### T-140: Index page-type-4 paths on existing L1 keys
+status: proposed
+source: rewrite-ledger/v2-page-type.md, rewrite-ledger/feature-index.md, 2026-10-30
+why: New indexed files under view, edit, create, add-sheet, and delete have to land on the existing L1 keys in the same change. There is no “page type 4” objective.
+scope: repository `00-START-HERE.yaml` `routing` adjacencies for view character sheet, edit character sheet, create character, add sheet page, and delete character. Do not add a user-objective key for page type 4 or notes sheet. Do not edit `unindexed`. Do not remove page-type-3 paths.
+steps:
+1. Add `app/src/pages/v2/pageTypes/pageType4/` beside the other view/edit adjacencies if that tree is not already covered by `app/src/pages/v2/`.
+2. Add `backend/common/interfaces/v2/page4/`, `backend/server/v2/view/assembleV2Character/utilities/pageType4/`, `backend/server/v2/edit/utilities/pageType4/`, `backend/server/v2/add/pageType4/`, and `backend/server/v2/delete/utilities/deletePagesUtilities/pageType4/` on the same keys type 3 used.
+3. Grep that file for a key line whose text is only `notes sheet` or `page type 4`. Expect zero.
+done when: `00-START-HERE.yaml` lists each new tree above. That grep is zero.
+depends on: T-136, T-137, T-138
+open questions: none
+deviations from design: none
+result:
 
 ## Done
 
