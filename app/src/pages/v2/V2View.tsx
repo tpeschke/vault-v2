@@ -2,6 +2,7 @@ import '../View.css'
 import './V2View.css'
 import { Fragment, useEffect, useState } from "react"
 import { useBlocker } from "react-router-dom"
+import { toast } from "react-toastify"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
@@ -157,6 +158,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageAfter(index)
                                                             restPage(page.pageID)
                                                         }}
@@ -166,6 +172,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageType2After(index)
                                                             restPage(page.pageID)
                                                         }}
@@ -175,6 +186,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageType3After(index)
                                                             restPage(page.pageID)
                                                         }}
@@ -184,6 +200,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageType4After(index)
                                                             restPage(page.pageID)
                                                         }}
