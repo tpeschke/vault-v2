@@ -5,6 +5,39 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-152: Open `/v/blank` without a character
+status: proposed
+source: rewrite-ledger/blank-sheet.md, 2026-10-30
+why: `/v/:characterID` always fetches. The id `blank` hits `getV2Character`, which sends no response. The sheet has to render signed out, with types 1–3 only, and `/view/blank` must keep the v1 assembler.
+scope: `app/src/routes/AllRoutes.tsx`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/emptyPageType1.ts`, `emptyPageType2.ts`, `emptyPageType3.ts` (call them; do not change their defaults). `backend/server/v2/view/viewV2CharacterController.ts`. Owner: v2 view (`blank-sheet.md`). Do not edit the gutter block in `V2View.tsx` (it already mounts only while `isEditing`, including reorder, file-circle-plus, delete, and the disclosed adds). Do not edit `backend/server/v1/`. Do not edit `app/src/pages/v1/`. Do not add `assembleBlankCharacter` on v2. Do not add `features/`. Do not mount page type 4. Do not add `isBlank` to `CharacterVersion2`.
+steps:
+1. Add `path="v/blank"` rendering `V2View` with a blank flag. Leave `path="v/:characterID"` and `path="view/:characterID"` as they are.
+2. When that flag is set, build one in-memory character: `version: 2`, `id: 0`, `name: ''`, `userInfo: { userID: 0, ownsThisCharacter: false }`, pages `emptyPageType1(-1)`, `emptyPageType2(-2)`, `emptyPageType3(-3)`. Set it as the loaded character before any request. Do not call `axios.get`, `cacheCharacterV2`, or `navigate`.
+3. Pass the flag into `characterHook`. `isEditing` stays false. Do not call `saveCharacterToBackend` or any field POST for this character; return before `axios` if one is reached.
+4. In `getV2Character`, any non-numeric id, including `blank` in any case, uses `checkForContentTypeBeforeSending(response, { message: 'Bad ID' })`. Delete the `BLANK` branch and the `assembleBlankCharacter` comment.
+5. Leave the document-title line that uses `'Blank'` when the name is empty. Leave `Header` and `Footer`. Leave the `view blank sheet` key in `00-START-HERE.yaml`. `app/src/pages/v2/` already covers a context file added under that tree.
+done when: `npx tsc --noEmit -p app` exits 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`. Grep `assembleBlankCharacter` under `backend/server/v2` is 0. Grep `assembleBlankCharacter` under `backend/server/v1` is unchanged. Grep `path="v/blank"` in `AllRoutes.tsx` is 1. Grep `path="view/blank"` in `AllRoutes.tsx` is 0. Grep `emptyPageType4` in `characterHook.tsx` is 0. Repository `00-START-HERE.yaml` has `view blank sheet` with `primary: app/src/pages/v2/V2View.tsx`.
+depends on: none
+open questions: none
+deviations from design: The v2 controller already special-cased `BLANK` and sent nothing. This TODO closes that branch. It does not build a server sheet. Ids are T-152 and T-153 because T-145–T-151 are the gutter disclosure, cap, and delete work.
+result:
+
+### T-153: Show the blank sheet with empty handwriting and no edit controls
+status: proposed
+source: rewrite-ledger/blank-sheet.md, 2026-10-30
+why: Create-empty still paints `0`, capacity formulas, and coinage `0s` in Kalam. Play-time controls stay interactive for a non-owner. The sidebar still shows Show / Hide Quick Edit Locations. The designer wants empty handwriting, a read-only sheet, and the sidebar shell kept for later controls.
+scope: new `app/src/pages/v2/contexts/BlankContext.tsx` (context default `false`, plus a helper that returns `''` when blank and the value otherwise). `V2View.tsx` provides it around the sheet and the sidebar. `app/src/pages/v2/components/sidebar/Sidebar.tsx`. Mounted widgets that render `character-value`: `pageType1` GeneralInfo, Stats, Capacity, Characteristics (Current Emotions), SocialSuite, ReputationDisplay, StrengthNDiscount, Descriptions, Flaws, Favor, Vitals, Defenses, Attacks; `pageType2` GeneralSkills, CombatSkills, NotesPanes; `pageType3` Contacts, Relationships, Gear. `characterHook.tsx` persist functions. Do not edit unmounted `Temperaments.tsx`, `MovementDisplay.tsx`, or page-type-1 `relationships/Relationships.tsx`. Do not import v1 `IsBlankContext`. Do not add a second layout branch. Do not add `features/`. Do not change a real character’s view, Edit, or Quick Edit.
+steps:
+1. When the blank flag is on, every `.character-value` text node and control value is `''`. That includes stored numbers, `toLvl`, capacity band strings (`<0`, `≤…`, `>…`), and coinage size (do not paint `0s`). Keep `placeholder=" "`. Leave printed **S**, slashes, die images, Positions, the wordmark, labels, gear bars, arrows, and `100 coins = 1s`.
+2. Play-time `input` and `textarea` nodes that remain mounted when `isEditing` is false get `readOnly` when blank, including insert rows an empty view already shows. Do not remove those rows. Do not turn on `isEditing` or `viewQuickEdit`.
+3. Die `onSelect`, gear flag clicks, and Anointed do nothing when blank. Each persist function in `characterHook` returns before `axios` when the sheet is blank.
+4. In `Sidebar`, keep `.sidebar-shell`. When blank, do not render Edit, Save, Revert, or Show / Hide Quick Edit Locations. Do not wrap the shell in a blank check. A button added beside those stays visible.
+done when: `npx tsc --noEmit -p app` exits 0. Grep `IsBlankContext` under `app/src/pages/v2` is 0. Grep `view-quick-edit` is still applied only from `viewQuickEdit` in `V2View.tsx`. On `/v/blank`, every `.character-value` element’s trimmed text is empty, Show Quick Edit Locations is absent, the header is present, and die clicks do not mark a die. A signed-in character view still shows handwritten values and the Quick Edit button. `/view/blank` still renders the v1 sheet.
+depends on: T-152
+open questions: none
+deviations from design: none
+result:
+
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30

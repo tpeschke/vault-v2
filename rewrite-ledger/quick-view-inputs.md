@@ -20,7 +20,7 @@ Constraints it imposes:
 - Success: toast none. Patch that field on `revertedCharacter`. `cacheCharacterV2` with `Promise.resolve` of that patched snapshot (DB truth). Number/text attributes: do not replace live `character` from the response. `'currentEmotions'`: merge returned ids onto live `character` and the snapshot (full Save would re-insert `id: 0` rows and delete the persisted ones). `'page4Scene'` mint: merge the returned `pageID` onto the live page and the snapshot; keep the client key (`page4-view.md`).
 - Failure: `toast.error` (T-051). Keep local `character`. Do not patch snapshot or cache. Always clear the in-flight count so the spinner cannot stick. `query()` stays as-is; HTTP success means owner + known attribute + query invoked. A `'page4Scene'` failure is the exception: the sentence names the notes sheet and the reason, and the toast stays until dismissed (`page4-view.md`).
 - Leave-warn (T-052) runs only while `isEditing`. Dirty for `beforeunload` / `useBlocker` is `isDirty && isEditing` (`V2View.tsx`). View changes do not warn. The hook’s `isDirty` (`character !== revertedCharacter`) stays. Edit-session Save stays the full-character POST.
-- Location highlight (phase 3): local `viewQuickEdit` default `false` (session `useState` only). Sidebar button under Edit, exact v1 copy and icons (`fa-eye` / `fa-eye-slash`, Show / Hide Quick Edit Locations). Who sees it: as v1 — anyone on the view, not owner-gated. Hidden while `isEditing` and while `isViewSaving`. No blank gate this phase. Highlight only: put `view-quick-edit` on `page-shell` when `viewQuickEdit && !isEditing`. Do not put `view-edit` on the view for this toggle. Inputs keep the global transparent / hover teal until that class is on; then they use the existing `.view-quick-edit input` Edit fill. Do not swap `p`↔`input`. Contacts and Gear Notes are the exception: their highlight is the page-3 wash over the zebra (`page3-view.md`).
+- Location highlight (phase 3): local `viewQuickEdit` default `false` (session `useState` only). Sidebar button under Edit, exact v1 copy and icons (`fa-eye` / `fa-eye-slash`, Show / Hide Quick Edit Locations). Who sees it: as v1 — anyone on the view, not owner-gated. Hidden while `isEditing` and while `isViewSaving`. No blank gate on a real character. `/v/blank` hides this button (`blank-sheet.md`). Highlight only: put `view-quick-edit` on `page-shell` when `viewQuickEdit && !isEditing`. Do not put `view-edit` on the view for this toggle. Inputs keep the global transparent / hover teal until that class is on; then they use the existing `.view-quick-edit input` Edit fill. Do not swap `p`↔`input`. Contacts and Gear Notes are the exception: their highlight is the page-3 wash over the zebra (`page3-view.md`).
 - Leave Integrity Threshold, Trauma, Knock Back, Damage threshold, Stress threshold, Spent CrP, CrP to lvl, Favor max, Anointed, and divine relationship as they are. No view Save / Revert. No v1 import. No `features/`.
 
 Rejected:
@@ -34,7 +34,7 @@ Rejected:
 - View persist while `isEditing`.
 - Hiding view widgets until the location button is on.
 - Persisting the location flag across reload.
-- Blank-sheet hide for the location button (later).
+- Blank-sheet hide for the location button (later). Revised 2026-10-30: `/v/blank` hides it (`blank-sheet.md`). A real character still shows it.
 - Owner-gating the location button.
 
 Revised 2026-10-04 (type-2 leftover notes):
@@ -75,6 +75,11 @@ Revised 2026-10-30 (notes sheet quick edit; `page4-view.md`):
 - “Non-owners keep the controls; skip POST” — **retained** for types 1–3. **Revised** for type 4: read-only.
 - “Later page types add play-time only when named” — **retained**. Type 4 names the board.
 - Debounced persist — **retained** as rejected. The notes commit is the finished stroke, not a timer.
+
+Revised 2026-10-30 (blank sheet; `blank-sheet.md`):
+- “No blank gate this phase.” — **revised** for `/v/blank` only. A real character’s view is unchanged.
+- “Blank-sheet hide for the location button (later).” — **revised**: `/v/blank` hides Show / Hide Quick Edit Locations.
+- “Hiding or disabling view inputs for non-owners” — **retained**. The blank sheet is not a non-owner. Its read-only rule is `blank-sheet.md`.
 
 Revised 2026-10-30 (notes stroke failure text; `page4-view.md`):
 - Failure toast **Save failed** when the body has no `message` — **retained** for other attributes. **Revised** for `'page4Scene'`: a specific sentence, sticky.

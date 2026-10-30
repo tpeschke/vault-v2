@@ -28,6 +28,7 @@ routing:
   page2-view / page type 2 / skills page: page2-view.md
   page3-view / page type 3 / NPCs & Equipment / gear page: page3-view.md
   page4-view / page type 4 / general notes sheet / excalidraw: page4-view.md
+  blank sheet / /v/blank / view blank sheet: blank-sheet.md
   edit-character: edit-character.md
   add-page-type-1 / add another page-type-1 / add sheet page / add page type 2 sheet / add page type 3 sheet: add-page-type-1.md
   page reorder / swap sheets / move sheet to top / move sheet to bottom: page-reorder.md

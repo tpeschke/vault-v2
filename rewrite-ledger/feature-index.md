@@ -8,7 +8,7 @@ Why: Task lookup needs a feature vocabulary without moving code. Version splits 
 Constraints it imposes:
 - Do not relocate application files as part of building the index.
 - Do not treat sheet widgets (weapons, stats, armor, …) as features unless the inventory names them as user objectives.
-- One file, one primary owner; primary is backend when the feature has a backend. Frontend paths are adjacencies.
+- One file, one primary owner; primary is backend when the feature has a backend. Frontend paths are adjacencies. View blank sheet has no backend sheet: its primary is the v2 view (`blank-sheet.md`). The controller path on that key only retires an unfinished branch.
 - `dist/` is excluded from the completeness rule (generated SPA output).
 - Do not create remaining FSD layer folders (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`) until a TODO executes that move. Canonical: `rewrite-ledger/fsd-colocation.md`.
 - When FSD is executed, layers live at `app/src/{app,pages,widgets,features,entities,shared}`. Repo `app/` stays the Vite/React package. View slices are `app/src/pages/v1` and `app/src/pages/v2`. Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`.
@@ -20,6 +20,9 @@ Rejected:
 - Derive feature names from current folders (`pageOne`, `pageTwo`) as the primary vocabulary.
 - CODEOWNERS, FeatureIDE traces, or recovered feature-location as the living index.
 - v1 create character (permanently excluded).
+
+Revised 2026-10-30 (blank sheet; `blank-sheet.md`):
+- “primary is backend when the feature has a backend” — **retained**. View blank sheet — **exception**: primary is the v2 view. The controller adjacency only retires an unfinished branch.
 
 Touches: repository `00-START-HERE.md`, `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
 TODOs: T-001–T-008 (all done)

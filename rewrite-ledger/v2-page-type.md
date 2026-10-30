@@ -48,7 +48,7 @@ Vertical slice (every new page type adds all of these):
 
 New type N uses the same slots with `pageTypeN` / `pageN`. Wire into the existing v2 view/edit/add/delete owners. Paths sit under current YAML view/edit/create/delete adjacencies. Update root L1 YAML only when indexed files are added, moved, or renamed. Do not add a user-objective key for “page type N.”
 
-Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). Type 3: yes, one sheet at index 2 (`page3-view.md`). Type 4: yes, one sheet at index 3 (`page4-view.md`). `addV2CharacterController.ts` comments are not approval for a later type. Sheet-wide blank and font rules do not apply to type 4. Types 1, 2, and 3 keep them.
+Create-character: whether a new character gains page type N is noted by the designer when that type is added. Type 2: yes, one sheet at index 1 (`page2-view.md`). Type 3: yes, one sheet at index 2 (`page3-view.md`). Type 4: yes, one sheet at index 3 (`page4-view.md`). `addV2CharacterController.ts` comments are not approval for a later type. Sheet-wide blank and font rules do not apply to type 4. Types 1, 2, and 3 keep them. `/v/blank` reuses those three types and does not add a page type (`blank-sheet.md`).
 
 How the next agent proceeds (only when the designer names a new page type and attaches that page’s official blank):
 1. Route here. Read this contract. Do not scan `TODO.md` Done.
@@ -93,6 +93,9 @@ Revised 2026-10-04 (page type 3; Design Q1–Q14):
 Revised 2026-10-30 (delete the sheet above the gutter):
 - Gutter is adds plus reorder only — **revised**: delete of the sheet above is `delete-sheet-page.md`. A new type’s labeled add still sits to the right of the last add, inside the disclosed set, before `fa-rotate-left`. Delete stays on the resting row, after file-circle-plus.
 
+Revised 2026-10-30 (blank sheet; `blank-sheet.md`):
+- `/v/blank` is a view of types 1–3, not a new page type and not type 4. Layout stays on the page-type components. The edit gutter, including delete and disclosure, stays off that URL.
+
 Revised 2026-10-30 (page type 4 general notes):
 - Create-character note stopped at type 3 — **revised**: type 4 yes, index 3 (`page4-view.md`).
 - Sheet-wide blank, fonts, and `character-value` on every v2 sheet page — **revised** for type 4 only. Types 1, 2, and 3 **retained**.
@@ -101,5 +104,5 @@ Revised 2026-10-30 (page type 4 general notes):
 Revised 2026-10-30 (gutter disclosure, `add-page-type-1.md`):
 - Gutter lists both clusters as one always-visible row — **revised**: resting versus disclosed. Labeled adds, including **+ Notes**, stay the disclosed set.
 
-Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `page4-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
-TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`); disclosure: T-145 (done); sheet cap: T-147, T-148 (done); add-click guard: T-149 (done; `add-page-type-1.md`); sheet delete: T-150, T-151 (`delete-sheet-page.md`)
+Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `page4-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`, `blank-sheet.md`
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`); disclosure: T-145 (done); sheet cap: T-147, T-148 (done); add-click guard: T-149 (done; `add-page-type-1.md`); sheet delete: T-150, T-151 (`delete-sheet-page.md`); blank sheet: T-152, T-153 (`blank-sheet.md`)
