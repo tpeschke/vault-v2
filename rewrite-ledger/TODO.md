@@ -5,6 +5,22 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-154: Keep `/v/blank` hover at the resting paint
+status: proposed
+source: rewrite-ledger/blank-sheet.md, 2026-10-30 (hover rest)
+why: The blank sheet is read-only, but hover still paints teal and the pointer still says the dice and flags can be used. A focused field still shows a ring.
+scope: `app/src/pages/v2/V2View.tsx` (marker class on `.page-shell` only); `app/src/pages/v2/V2View.css` (one override block). Owner: the blank v2 view (`blank-sheet.md`). Do not edit `app/src/index.css`. Do not edit widget CSS unless a selector in `V2View.css` cannot beat that widget’s rule. Do not edit `backend/`. Do not edit `app/src/pages/v1/`. Do not change when `view-edit` or `view-quick-edit` is applied. Do not change a real character. Do not set `pointer-events` or `inert`. Do not change the Positions Weak 1 `.outlined` box.
+steps:
+1. When `blank` is true, add the class `blank` on `.page-shell`. Leave the sidebar, header, and footer unmarked.
+2. Under `.v2 .page-shell.blank`, sheet `input:hover` and `textarea:hover` keep the resting background (transparent, or the Contacts / Gear Notes zebra with no wash). Beat `!important` where the live rule uses it. Unselected die hover uses `filter: none`. Flag hover has no fill.
+3. Under that same class, `.die-row p` and `.page3-flag-box` use `cursor: default`. Leave the text caret on inputs and textareas. Leave gear arrow tooltips.
+4. Under that same class, `input` and `textarea` `:focus` and `:focus-visible` use `outline: none`. Do not set `outline` on `.positions-row.outlined`.
+done when: `npx tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. In `V2View.tsx`, `view-quick-edit` is still applied only from `viewQuickEdit`, and `blank` is a separate class on `.page-shell`. Grep of `cursor: default` and `outline: none` in `V2View.css` is under `.page-shell.blank`. On `/v/blank`, hovering an input, a leftover textarea, Contacts, Gear Notes, an unselected die, and a flag box does not add teal; the die and the flag use the arrow; focusing a field shows no ring; a gear arrow tooltip still appears. A real character view still turns teal on hover and still uses the pointer on a die. `/view/blank` is unchanged.
+depends on: T-153
+open questions: none
+deviations from design: The marker is `blank` on `.page-shell`, not on `.v2`, so a later sidebar control is outside it. Anointed’s pointer is already edit-only, so this sheet does not restyle it.
+result:
+
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30

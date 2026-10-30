@@ -22,7 +22,7 @@ Home is one page; list objectives stay split by version. Create character stays 
 
 Create character: home footer → `UsersCharactersHook.addCharacter` → `backend/server/v2/add/`. A new character gets page type 1 at index 0, page type 2 at index 1 (`page2-view.md`), page type 3 at index 2 (`page3-view.md`), and page type 4 at index 3 (`page4-view.md`). Existing characters are not backfilled with type 4. Slot limit (Patreon/owner) is a constraint, not a feature.
 
-View blank sheet: `/v/blank` only. One type 1, one type 2, one type 3, same components as the view. Handwritten `character-value` text is empty. Read-only. Not `/view/blank`. Canonical: `blank-sheet.md`.
+View blank sheet: `/v/blank` only. One type 1, one type 2, one type 3, same components as the view. Handwritten `character-value` text is empty. Read-only. Hover stays at rest. Not `/view/blank`. Canonical: `blank-sheet.md`.
 
 Edit character sheet: v2 view sidebar → new v2 edit owner. Canonical: `edit-character.md`.
 

@@ -32,6 +32,9 @@ Rejected:
 - SVG die glyphs; CSS invert / filter / second asset set for **unselected at rest**; selected as black fill or cell outline; orange or hover teal on the die **cell** while locations are off; `mask-image` or `mix-blend-mode` that fills the silhouette or tints the cell; capping die-row height to one text line; visually hidden text in addition to `alt`. (Revised: invert + tint on the selected `img` is required. Unselected **hover** face filter: `quick-view-inputs.md`. Location-on cell teal: T-063.)
 - Current Emotions as one string (T-013), a `text[]` column, or six named columns. Named labels on emotion cells. Heading shortened to Emotions. Six-slot cap (T-022 / earlier 3×2); live max is 9.
 
+Revised 2026-10-30 (blank sheet hover; `blank-sheet.md`):
+- Unselected view die hover face tint and `cursor: pointer` — **retained** on a real character. **Revised** for `/v/blank`: no face filter, arrow cursor.
+
 Relocated 2026-10-03 (`v2-page-type.md`):
 - Form fonts (HamletOrNot / oldClaude / Source Sans 3) — **relocated**.
 - Kalam Regular 400 / `character-value` on interpolated nodes; Google `@import`; `.v2 .character-value` in `View.css` — **relocated**.

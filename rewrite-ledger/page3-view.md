@@ -116,6 +116,10 @@ Revised 2026-10-30 (Gear columns, SVG head, printed S, Notes hover):
 - Gear Notes have no zebra — **revised**: same zebra and the same hover and edit washes as Contacts. Notes box height unchanged.
 - Move **Quarter Mastering** so `qm1` shares a line with Head — **rejected**. The bar stays under that column’s head.
 
+Revised 2026-10-30 (blank sheet hover; `blank-sheet.md`):
+- Plain-view Contacts and Gear Notes hover wash — **retained** on a real character. **Revised** for `/v/blank`: resting zebra only.
+- Plain-view gear flag hover teal and `cursor: pointer` — **retained** on a real character. **Revised** for `/v/blank`: no fill, arrow cursor. Gear arrow tooltips — **retained**.
+
 Revised 2026-10-30 (only the meditating head is an asset):
 - Meditating head is the Gear SVG `<img>` — **retained**.
 - Staff-snake, `fa-arrow-right-from-line`, and `fa-check` stay kit icons — **retained**. Their tags stay `<i class="fa-solid">`. Replacing any of them with an img or an inlined svg — **rejected**.

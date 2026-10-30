@@ -80,6 +80,8 @@ Revised 2026-10-30 (blank sheet; `blank-sheet.md`):
 - “No blank gate this phase.” — **revised** for `/v/blank` only. A real character’s view is unchanged.
 - “Blank-sheet hide for the location button (later).” — **revised**: `/v/blank` hides Show / Hide Quick Edit Locations.
 - “Hiding or disabling view inputs for non-owners” — **retained**. The blank sheet is not a non-owner. Its read-only rule is `blank-sheet.md`.
+- View die hover (`cursor: pointer`, unselected face tint) — **retained** on a real character. **Revised** for `/v/blank`: arrow cursor, no face tint (`blank-sheet.md`).
+- “Inputs keep the global transparent / hover teal” — **retained** on a real character. **Revised** for `/v/blank`: hover stays transparent, and the focus ring is absent.
 
 Revised 2026-10-30 (notes stroke failure text; `page4-view.md`):
 - Failure toast **Save failed** when the body has no `message` — **retained** for other attributes. **Revised** for `'page4Scene'`: a specific sentence, sticky.
