@@ -6,7 +6,23 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-129: Match Gear row height to the sheet band
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Gear data rows paint about 21.38px and the column head about 22px. A Relationships row and a Gear bar header are 17.38px. `min-height: 17.38px` does not cap a cell that also has `padding: 2px 1px` and an input `height: 17.38px`.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not edit `Gear.tsx`, `Relationships.css`, `Contacts.css`, `View.css`, `index.css`, Notes height, coinage, or section `h2` text. Do not add `features/` or `shared/`. Do not remove the column head’s `background: #bdbdbd` or its `border-bottom: 1px solid whitesmoke`. Do not put a rest `background` back on `.page3-flag-box`. Leave its `border-radius: 3px` and its hover wash.
+steps:
+1. Set `.page3-gear-head` and `.page3-gear-row` to `box-sizing: border-box`, `height: 17.38px`, `min-height: 17.38px`, and `max-height: 17.38px`. The `min-height` must be that length, not `auto`, so the content size cannot raise the row. This includes bar headers. Do not set `grid-auto-rows` on `.page3-gear-col`. Do not set `overflow: hidden` on the head or the row.
+2. Keep `padding: 2px 1px` on the cells that already have it, inside that box. Give the track cells and the item cell `height: 100%` and `min-height: 0` so they fill the row and do not grow it. Size, snake, meditating, and **W** stay centered on both axes. Type (Item) stays top-aligned. The left rules stay `border-left: 1px solid #bdbdbd` on those four tracks and still stop at a bar header and at Carry, Notes, Quarter Mastering, and Tiny & Other.
+3. Inputs in the item cell, the Size cell, and **W** fill the cell: `height: 100%` and `min-height: 0`. Remove `height: 17.38px` from those inputs. The rule must beat `View.css` `.v2 :where(input.character-value:not(.border))` (`height: 1.2em`) and `.v2 :where(input.character-value:not(.border):placeholder-shown)` (`height: 17.38px`). `:where()` adds no specificity.
+4. `.page3-gear-label` and `.page3-gear-chrome` inside the item cell and the Size cell must not keep `line-height: 17.38px`. Keep `font-size: 12px`. The line box must fit in the content box left by `padding: 2px 1px` inside 17.38px. Leave the bar label able to fill its 17.38px band.
+5. Leave the meditating `img` at `width: 18px` and `height: 18px`. It may paint outside the head. Leave the check at `font-size: 20px`, `position: absolute`, `top: -4px`, `left: -4px`. Neither grows the row. `.page3-flag-box` stays 12×12, borderless, and centered in the track.
+6. Do not change `.page3-notes` (`height: calc(5 * 17.38px)`), `.page3-coinage`, or `.page3-gear-col > h2` (margin only; no min-height). Do not remove `.page3-gear-head`’s `background` or `border-bottom`, and do not edit the flag box’s `border-radius` or hover rule.
+done when: `Gear.css` sets `height: 17.38px` on `.page3-gear-head` and `.page3-gear-row`. `rg "grid-auto-rows" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` is 0. `rg "overflow: hidden" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` is 0. The item, Size, and **W** inputs do not set `height: 17.38px`. `.page3-notes` still has `height: calc(5 * 17.38px)`. The meditating `img` rule is still `width: 18px` and `height: 18px`. `.page3-flag-box` has no `border` declaration. `npm run build` in `app/` exits 0. Headless Chrome: a Gear data row and the column head are 17.38px border-box; a bar header is 17.38px; Notes is about `5 * 17.38` px; the image is 18×18; the flag box is 12×12 with no border.
+depends on: T-127 (done)
+open questions: none
+deviations from design: none
+result:
 
 ## Done
 
