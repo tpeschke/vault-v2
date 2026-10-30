@@ -203,17 +203,6 @@ export default function Gear({ page, pageID, updates }: Props) {
                     {CARRY_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
-                </div>
-                <div className="page3-gear-col">
-                    <ColumnHead />
-                    <h2>Quarter Mastering</h2>
-                    {QM_ROWS.map(spec => (
-                        <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
-                    ))}
-                    <h2>Tiny &amp; Other</h2>
-                    {TINY_ROWS.map(spec => (
-                        <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
-                    ))}
                     <h2>Notes</h2>
                     <textarea
                         className="character-value page3-notes"
@@ -226,7 +215,12 @@ export default function Gear({ page, pageID, updates }: Props) {
                 </div>
                 <div className="page3-gear-col">
                     <ColumnHead />
-                    {CONTAINER_ROWS.map(spec => (
+                    <h2>Quarter Mastering</h2>
+                    {QM_ROWS.map(spec => (
+                        <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
+                    ))}
+                    <h2>Tiny &amp; Other</h2>
+                    {TINY_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
                     <div className="page3-coinage">
@@ -312,6 +306,12 @@ export default function Gear({ page, pageID, updates }: Props) {
                             <em>x100 gc</em>
                         </span>
                     </div>
+                </div>
+                <div className="page3-gear-col">
+                    <ColumnHead />
+                    {CONTAINER_ROWS.map(spec => (
+                        <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
+                    ))}
                     {OTHER_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}

@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-132: Move Notes under Carry and Coinage under Tiny & Other
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Notes renders at the bottom of the second column. Coinage renders in the third column, between the Held Bags and Other Containers. The designer moved Notes under Carry, and Coinage under Tiny & Other.
 scope: the three `.page3-gear-col` stacks in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (the Notes heading, the Notes textarea, the footnote, and `.page3-coinage`). Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3Interfaces.ts`, `page3.sql`, or `ensureSchema.ts`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not rename a slot. Do not add or remove a row. Do not change tracks, row height, tooltips, Notes height, or coinage fields. Do not add `features/` or `shared/`.
@@ -20,9 +24,7 @@ done when: In `Gear.tsx`, the first `.page3-gear-col` contains `CARRY_ROWS` and 
 depends on: T-131 (done)
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: Notes and the footnote follow Carry in the first column. Coinage follows Tiny & Other in the second column. Other Containers follows the Held Bags. Headless Chrome: the first column ends Notes and the footnote; the second ends Coinage; the third ends Other Containers and three arrows. A data row is 17.38px. Notes is 86.89px. `PAGE3_GEAR_SLOTS` and `page3.sql` are unchanged. `npm run build` in `app/` exits 0.
 
 ### T-131: Move Carry, the containers, and the right-hand sections
 status: done
