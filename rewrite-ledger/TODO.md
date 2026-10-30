@@ -42,17 +42,17 @@ scope: `app/src/pages/v2/V2View.tsx` and `app/src/pages/v2/V2View.css`. Owner: `
 steps:
 1. In `V2View`, keep a per-card flag keyed by `page.pageID`. A card with no flag is resting. One card’s flag does not change another card. Type 1, 2, 3, and 4 cards all use this gutter.
 2. Resting gutter: existing reorder buttons and omit rules, then `<i className="fa-solid fa-file-circle-plus">` inside a `.bottom-buttons` button with `margin-left: auto`. `data-tooltip-id="my-tooltip"` and `data-tooltip-content="Click to Add New Pages"`. No text label. Click sets this card disclosed and does not call an add helper. Do not mount the labeled adds.
-3. Disclosed gutter: do not mount reorder or file-circle-plus. Mount the four labeled adds in today’s order, handlers, and chrome (`addPageAfter`, `addPageType2After`, `addPageType3After`, `addPageType4After`). After those, mount `fa-solid fa-rotate-left` as the last button. Tooltip `Nevermind`. Class `primary`.
+3. Disclosed gutter: do not mount reorder or file-circle-plus. Mount the four labeled adds in today’s order, handlers, and chrome (`addPageAfter`, `addPageType2After`, `addPageType3After`, `addPageType4After`). After those, mount `fa-solid fa-rotate-left` as the last button. Tooltip `Never mind`. Class `primary`.
 4. The rotate-left click clears this card’s flag only. It does not call `revertCharacter`.
 5. Each labeled-add click runs today’s insert, then clears this card’s flag (the card that was clicked). The new page has a new `pageID` and starts resting.
 6. Clear every flag when `isEditing` becomes false (Edit toggle, successful Save, sidebar Revert).
 7. Hidden controls are absent from the tree. Do not leave them disabled or `visibility` hidden.
-done when: `npx tsc --noEmit -p app` exits 0. Grep of `app/src/pages/v2/V2View.tsx` shows `fa-file-circle-plus`, `Click to Add New Pages`, `fa-rotate-left`, and `Nevermind`. Grep of `CharacterRow.tsx` still shows `Never mind` (catalog string unchanged). The exit button’s class is `primary`.
+done when: `npx tsc --noEmit -p app` exits 0. Grep of `app/src/pages/v2/V2View.tsx` shows `fa-file-circle-plus`, `Click to Add New Pages`, `fa-rotate-left`, and `Never mind`. The exit button’s class is `primary`.
 depends on: none
 open questions: none
 deviations from design: The exit button’s class is `primary`, named by the designer as the catalog revert.
 result:
-Each editing gutter rests on reorder plus `fa-file-circle-plus`. That icon discloses the four labeled adds and a far-right `primary` `fa-rotate-left` (`Nevermind`) for that card only. An add or that exit returns the card to resting. Leaving Edit clears the flags. `./node_modules/.bin/tsc --noEmit -p app` exits 0.
+Each editing gutter rests on reorder plus `fa-file-circle-plus`. That icon discloses the four labeled adds and a far-right `primary` `fa-rotate-left` (tooltip `Never mind`, matching the catalog) for that card only. An add or that exit returns the card to resting. Leaving Edit clears the flags. `./node_modules/.bin/tsc --noEmit -p app` exits 0.
 
 ### T-143: Name the reason a notes stroke was refused
 status: done
