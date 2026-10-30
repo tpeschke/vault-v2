@@ -6,7 +6,23 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-None.
+### T-140: Make Quarter Mastering Size a printed S
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30. Designer answer: set all to S and show S.
+why: `qm1`–`qm15` render a size input and default `size` to `''`. Carry’s printed-S slots render the stored size as text. Quarter Mastering joins that cell, and every one of those fifteen sizes is `'S'`.
+scope: `PAGE3_DEFAULT_S_SLOTS` and a new `isQuarterMasteringSlot` in `backend/common/interfaces/v2/page3/page3Interfaces.ts`. `mapGear` in `backend/server/v2/view/assembleV2Character/utilities/pageType3/assemblePageType3.ts`. `savePageType3` in `backend/server/v2/edit/utilities/pageType3/savePageType3.ts`. `savePage3GearField` in `backend/server/v2/edit/utilities/pageType3/savePage3GearField.ts`. The page-3 boot function in unindexed `backend/server/db/ensureSchema.ts`. Owner: `rewrite-ledger/page3-view.md`. Boot patch pointer: `rewrite-ledger/schema-on-boot.md`. Leave `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` on the existing `isDefaultSSlot` branch. Leave `addPageType3.ts` on `isDefaultSSlot`. Do not edit `page3.sql`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not change Tiny & Other, Carry, the container **S** rows, arrow rows, coinage, tracks, row height, or the textarea caps. Do not add `features/` or `shared/`.
+steps:
+1. Add `'qm1'` through `'qm15'` to `PAGE3_DEFAULT_S_SLOTS`. Add `isQuarterMasteringSlot(slot)` next to `isDefaultSSlot`. It is true only for those fifteen keys. Do not implement it as “every default-S slot”.
+2. Leave `Gear.tsx` as it is. `isDefaultSSlot` already renders `<em className="page3-gear-label">{cell.size}</em>` and does not render a size input or call `persistPage3Gear` with `size`. Quarter Mastering rows are `{ slot, qm }` with no `arrow`. Do not hardcode the letter `S` in the JSX.
+3. In `mapGear`, when `isQuarterMasteringSlot(slot)`, set `size` to `'S'`. A stored `''` or another string is not returned. Other slots keep `row.size ?? fallback.size`. A missing slot still comes from `emptyGearCell`, which follows `PAGE3_DEFAULT_S_SLOTS`.
+4. In `savePageType3` and `savePage3GearField`, when `isQuarterMasteringSlot`, write `'S'`. A full-save `cell.size` and a field patch `size` are not stored for those slots. Item, flags, and **W** still save. Do not reject the `page3Gear` request. Leave the textarea cap checks in `savePageType3` as they are. Other slots, including Carry, still write the size they were given.
+5. In `ensureSchema.ts`, after `v2Page3Gear` exists, run an idempotent update: `update v2Page3Gear set size = 'S' where slot in ('qm1','qm2','qm3','qm4','qm5','qm6','qm7','qm8','qm9','qm10','qm11','qm12','qm13','qm14','qm15') and size is distinct from 'S'`. Safe to re-run. Leave the `trimTextareaColumn` calls in place. Do not put that statement in `page3.sql`.
+6. Leave the ledger edits from Order as they are.
+done when: `PAGE3_DEFAULT_S_SLOTS` contains `qm1` and `qm15`, and `PAGE3_GEAR_SLOTS` still lists `qm15` before `tiny1`. `isQuarterMasteringSlot` is used by `assemblePageType3.ts`, `savePageType3.ts`, and `savePage3GearField.ts`. `Gear.tsx` still has one size `<input>`, inside the branch that is not `isDefaultSSlot`. `rg "qm1" backend/server/v2/backupTables/page3.sql` is 0. `rg "is distinct from 'S'" backend/server/db/ensureSchema.ts` is 1. `npm run build` in `app/`, `backend/common/`, and `backend/server/` each exits 0.
+depends on: T-133 (done)
+open questions: none
+deviations from design: The design assumed a server allowlist that refuses a printed-S size POST. `page3Gear` accepts a `size` string up to 50 characters for every slot, and Carry still stores that string. These fifteen slots store `'S'` instead, so the rest of the gear patch still saves. Existing rows are updated from `ensureSchema.ts`, the same module as the contacts copy and the textarea trim. `page3.sql` is the table snapshot, not a data script. T-130’s rejected migration was about inserting new slot keys, which assemble already fills. T-134–T-139 are the textarea-cap work already on `main`, so this TODO is T-140.
+result:
 
 ## Done
 
