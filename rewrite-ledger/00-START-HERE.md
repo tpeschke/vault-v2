@@ -56,6 +56,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | v2 page-type contract | `v2-page-type.md` |
 | Page type 1 first-page view | `page1-view.md` |
 | Page type 2 skills view | `page2-view.md` |
+| Page type 3 NPCs & Equipment view | `page3-view.md` |
 | Edit character sheet | `edit-character.md` |
 | Add sheet page (same type as the card) | `add-page-type-1.md` |
 | Page reorder | `page-reorder.md` |

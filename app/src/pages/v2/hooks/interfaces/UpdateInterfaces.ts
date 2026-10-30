@@ -2,7 +2,7 @@ import { Attack, Defense } from "@vault/common/interfaces/v2/page1/combatInfo"
 import { CharacteristicPair, Description, Emotion, Flaw, SocialSkillSuites } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
 import { Favor } from "@vault/common/interfaces/v2/page1/favor"
 import { Stats } from "@vault/common/interfaces/v2/page1/statsInterface"
-import { ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
+import { Page3GearValue, Page3RelationshipDeleteValue, Page3RelationshipPValue, Page3RelationshipRValue, Page3RelationshipValue, ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
 import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vitals"
 import {
     AdvancedCombatSkill,
@@ -13,6 +13,12 @@ import {
     SkillNumber
 } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
+import {
+    Page3Coinage,
+    Page3GearCell,
+    Page3GearSlot,
+    Page3Relationship
+} from "@vault/common/interfaces/v2/page3/page3Interfaces"
 
 export interface PageType1Updates {
     updateGeneralInfoField: (pageID: number, key: 'name' | 'ancestry' | 'class' | 'subclass' | 'level', value: string | number) => void
@@ -60,9 +66,28 @@ export interface PageType2Updates {
     updateBurdens: (pageID: number, value: string) => void
 }
 
+export interface PageType3Updates {
+    updateContacts: (pageID: number, value: string) => void
+    insertRelationship: (pageID: number, newRow: { key: string, value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }) => void
+    updateRelationship: (pageID: number, index: number, next: Page3Relationship) => void
+    updateGearCell: (pageID: number, slot: Page3GearSlot, patch: Partial<Omit<Page3GearCell, 'slot'>>) => void
+    updateCoinage: (pageID: number, patch: Partial<Page3Coinage>) => void
+    updateNotes: (pageID: number, value: string) => void
+    persistPage3Contacts: (pageID: number, value: string) => void
+    persistPage3RelationshipValue: (pageID: number, value: Page3RelationshipValue) => void
+    persistPage3RelationshipR: (pageID: number, value: Page3RelationshipRValue) => void
+    persistPage3RelationshipP: (pageID: number, value: Page3RelationshipPValue) => void
+    persistPage3RelationshipInsert: (pageID: number, row: { key: string, value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }) => void
+    persistPage3RelationshipDelete: (pageID: number, value: Page3RelationshipDeleteValue) => void
+    persistPage3Gear: (pageID: number, value: Page3GearValue) => void
+    persistPage3Coinage: (pageID: number, value: Page3Coinage) => void
+    persistPage3Notes: (pageID: number, value: string) => void
+}
+
 export interface PageGutterUpdates {
     addPageAfter: (afterIndex: number) => void
     addPageType2After: (afterIndex: number) => void
+    addPageType3After: (afterIndex: number) => void
     swapPageWithNext: (index: number) => void
     movePageToTop: (index: number) => void
     movePageToBottom: (index: number) => void
@@ -73,5 +98,6 @@ export interface V2UpdateFunctions {
     revertCharacter: () => void
     pageType1Updates: PageType1Updates
     pageType2Updates: PageType2Updates
+    pageType3Updates: PageType3Updates
     pageGutterUpdates: PageGutterUpdates
 }

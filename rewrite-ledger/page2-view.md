@@ -27,7 +27,7 @@ Constraints it imposes:
   - `v2AdvancedGeneralSkills` — `pageID`, `name`, `stat`, `rank`, `index` (array order for wrap)
   - `v2CombatSkillSuites` — `pageID`, `suiteID` 1–5, `rank`
   - `v2AdvancedCombatSkills` — `pageID`, `name`, `rank`, `index`
-- Create-character: insert type 1 at index 0, type 2 at index 1. Existing characters stay without type 2 until the owner clicks **+ Skills & Abilities** (`add-page-type-1.md`).
+- Create-character: insert type 1 at index 0, type 2 at index 1. Type 3 is index 2 (`page3-view.md`). Existing characters stay without type 2 until the owner clicks **+ Skills & Abilities** (`add-page-type-1.md`).
 - Catalog identity stays the first page-type-1. Type 2 has no catalog name.
 - Play-time on this type: only the two leftover notes (`quick-view-inputs.md`). No die clicks. No other view inputs.
 - Class root `.page-type-two`. Vertical slice paths: `v2-page-type.md` (`pageType2` / `page2`).

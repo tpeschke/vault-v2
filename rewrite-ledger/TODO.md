@@ -10,6 +10,459 @@ none
 
 ## Done
 
+### T-133: Add a Carry row, a Tiny row, a Notes band, and calculated Coinage size
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Carry, Tiny & Other, and Notes each gain one row. The footnote leaves Notes for the bottom of the third column. The Coinage header does not sit on the cells under it, the coin rows are not striped, and Size is a typed string instead of the printed `100 coins = 1s` ratio.
+scope: `rewrite-ledger/page3-view.md` (done in Order). `backend/common/interfaces/v2/page3/page3Interfaces.ts` (`PAGE3_GEAR_SLOTS`, `PAGE3_DEFAULT_S_SLOTS`). `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` and `Gear.css`. Do not edit Characteristics. Do not add `features/` or `shared/`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not touch `page3.sql`, `ensureSchema.ts`, or the size columns. Do not POST Coinage Size. Do not write the ratio into a Carry slot.
+steps:
+1. Append `carry18` after `carry17` and `tiny13` after `tiny12` in `PAGE3_GEAR_SLOTS`. Add `carry18` to `PAGE3_DEFAULT_S_SLOTS`. Do not add `tiny13`.
+2. Render `carry18` like `carry17` (item, printed **S**, both flags, **W**). Render `tiny13` like `tiny1` (item, size input, both flags, **W**).
+3. Set the Notes textarea to `height: calc(6 * 17.38px)`. Leave `min-height: calc(2 * 17.38px)` and the zebra. Move `<p class="page3-footnote">` to the end of the third column, after `other4`.
+4. Give `.page3-coinage-head` and each coin `span` one grid: `22px 28% 28% minmax(0, 1fr)`. **Coinage** `h2` spans the first two columns. **Size** and `100 coins = 1s` are `h2.minor-heading` (`oldClaude`, 10px, aligned to the bottom of the bar). Do not use an `h1` or `#323232`.
+5. Stripe `.page3-coinage > span:nth-child(even)` `#f3f3f3`. Keep the count input transparent at rest. Leave the view-edit teal.
+6. Replace each Size input with `<p class="character-value">`. Text is the row count divided by 100, from integer arithmetic: no space, lowercase `s`, drop a trailing `.0`, at most two decimals. `0` → `0s`, `1` → `0.01s`, `10` → `0.1s`, `99` → `0.99s`, `100` → `1s`, `150` → `1.5s`, `250` → `2.5s`. A negative count keeps the minus. Empty is `0`. Amount blur still sends the stored size strings unchanged.
+done when: Carry has 18 printed-S rows ending at `carry18`. Tiny & Other has 13 rows ending at `tiny13`. Notes is six bands tall and has no footnote under it. The footnote is the last child of the third column. Coinage **Size** and `100 coins = 1s` sit on the size cell and the note. **cc** is gray, **sc** is white, **gc** is gray, **pc** is white. A count of 150 shows `1.5s` in `Kalam` and does not POST. `npm run build` in `app/` exits 0. `page3.sql` has no diff.
+depends on: T-132
+open questions: none
+deviations: The size `p` margin is cleared and each coin row is a 17.38px track, so the paragraph does not grow the row. Notes is `border-box` with padding and border 0, so `calc(6 * 17.38px)` is the border box. Coinage `h2`s use that same 17.38px bar.
+result: `carry18` is printed S. `tiny13` matches `tiny1`. Notes is 104.27px and the footnote is the last child of the third column. Coinage Size for 150 is `1.5s` in Kalam and is not an input. Size and `100 coins = 1s` share the size and note columns. cc and gc are `#f3f3f3`. `npm run build` exits 0. `page3.sql` has no diff.
+
+### T-132: Move Notes under Carry and Coinage under Tiny & Other
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Notes renders at the bottom of the second column. Coinage renders in the third column, between the Held Bags and Other Containers. The designer moved Notes under Carry, and Coinage under Tiny & Other.
+scope: the three `.page3-gear-col` stacks in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (the Notes heading, the Notes textarea, the footnote, and `.page3-coinage`). Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3Interfaces.ts`, `page3.sql`, or `ensureSchema.ts`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not rename a slot. Do not add or remove a row. Do not change tracks, row height, tooltips, Notes height, or coinage fields. Do not add `features/` or `shared/`.
+steps:
+1. In the first column, after `CARRY_ROWS`, render `<h2>Notes</h2>`, the Notes textarea, and the footnote. Leave the textarea class `character-value page3-notes` and its handlers.
+2. In the second column, after `TINY_ROWS`, render the existing `.page3-coinage` block. Quarter Mastering and Tiny & Other stay above it. This column has no Notes heading, no Notes textarea, and no footnote.
+3. In the third column, `OTHER_ROWS` follows `CONTAINER_ROWS`. No `.page3-coinage` between `midS6` and `other1`.
+4. Leave Carry, the worn rows, the container rows, Quarter Mastering, and Tiny & Other where T-131 put them. Do not change a field inside Notes or Coinage.
+done when: In `Gear.tsx`, the first `.page3-gear-col` contains `CARRY_ROWS` and then `page3-notes` and `page3-footnote`, and does not contain `page3-coinage`. The second `.page3-gear-col` contains `TINY_ROWS` and then `page3-coinage`, and does not contain `page3-notes`. The third `.page3-gear-col` contains `CONTAINER_ROWS` and then `OTHER_ROWS`, and does not contain `page3-coinage`. `PAGE3_GEAR_SLOTS` is unchanged. `rg "carry11|other4|qm15" backend/server/v2/backupTables/page3.sql` is 0. `npm run build` in `app/` exits 0.
+depends on: T-131 (done)
+open questions: none
+deviations from design: none
+result: Notes and the footnote follow Carry in the first column. Coinage follows Tiny & Other in the second column. Other Containers follows the Held Bags. Headless Chrome: the first column ends Notes and the footnote; the second ends Coinage; the third ends Other Containers and three arrows. A data row is 17.38px. Notes is 86.89px. `PAGE3_GEAR_SLOTS` and `page3.sql` are unchanged. `npm run build` in `app/` exits 0.
+
+### T-131: Move Carry, the containers, and the right-hand sections
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Carry renders in the second column. Backpack, the Pouches, and the Held Bags render in the first. Quarter Mastering and Tiny & Other render in the third. The designer moved Carry under the worn rows, moved those container blocks to the third column, moved Quarter Mastering and Tiny & Other to the second, and put Other Containers at the bottom of the third column.
+scope: the three `.page3-gear-col` stacks in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`LEFT_ROWS`, `OTHER_ROWS`, `CARRY_ROWS`, `QM_ROWS`, `TINY_ROWS`, the Notes block, the footnote, and `.page3-coinage`). Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3Interfaces.ts`, `page3.sql`, or `ensureSchema.ts`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not rename a slot. Do not add or remove a row. Do not change tracks, row height, tooltips, Notes height, or coinage fields. Do not add `features/` or `shared/`.
+steps:
+1. First column, under `ColumnHead`: Head through R. Hand (`head`, `chest`, `coat`, `gloves`, `pants`, `shoes`, `armor`, `lHand`, `rHand`), then `<h2>Carry</h2>`, then `CARRY_ROWS` (`carryM4` through `carry17`, 17 printed-S rows). No backpack, pouch, held bag, Other Containers, Quarter Mastering, Tiny & Other, Notes, or Coinage in this column.
+2. Second column, under `ColumnHead`: `<h2>Quarter Mastering</h2>`, `QM_ROWS` (`qm1`–`qm15`), `<h2>Tiny &amp; Other</h2>`, `TINY_ROWS` (`tiny1`–`tiny12`), `<h2>Notes</h2>`, the Notes textarea, then the footnote. No Carry. No Other Containers. No Coinage.
+3. Third column, under `ColumnHead`: the container block in its current order (`backpack`, `leftS1`–`leftS9`, `pouch1`, `leftS10`, `leftS11`, `pouch2`, `leftS12`, `leftS13`, `pouch3`, `leftS14`, `leftS15`, `heldBag1`, `midS1`–`midS3`, `heldBag2`, `midS4`–`midS6`), then the existing `.page3-coinage` block, then `OTHER_ROWS` (`other1` bar **Other Containers**, `other2`, `other3`, `other4` arrows).
+4. Leave each block’s fields as they are. Bars stay labels. Printed S stays text. Arrow rows stay the arrow only. Quarter Mastering numbers stay **1**–**15**. Do not split a block with `slice`.
+done when: In `Gear.tsx`, the first `.page3-gear-col` contains `rHand` and then the Carry heading’s 17 rows, and does not contain `backpack`, `heldBag1`, `other1`, or `qm1`. The second `.page3-gear-col` contains `qm1` before `tiny1`, and the Notes heading after `tiny12`, and does not contain `carryM4` or `other1`. The third `.page3-gear-col` contains `backpack` before `page3-coinage`, and `other1` after `page3-coinage`. `PAGE3_GEAR_SLOTS` is unchanged. `rg "carry11|other4|qm15" backend/server/v2/backupTables/page3.sql` is 0. `npm run build` in `app/` exits 0.
+depends on: T-130 (done)
+open questions: none
+deviations from design: The design notes put Other Containers at the top of the second column. The designer put it at the bottom of the third column. The container block still precedes Coinage, so Other Containers follows Coinage.
+result: The first column is Head through R. Hand, then Carry’s 17 printed-S rows. The second column is Quarter Mastering, Tiny & Other, Notes, and the footnote. The third column is Backpack through the Held Bags, then Coinage, then Other Containers. Headless Chrome: those sections sit in that order; a data row is 17.38px; Notes is 86.89px. `PAGE3_GEAR_SLOTS` and `page3.sql` are unchanged. `npm run build` in `app/` exits 0.
+
+### T-130: Move Held Bags, restack Carry, extend Quarter Mastering
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Held Bags render at the top of the middle column. Carry prints a strength label on ten rows. Quarter Mastering stops at `qm10`. The designer moved the bags to the first column, added one Other Containers row, set Carry to 17 printed-S rows with no strength label, and set Quarter Mastering to 15.
+scope: `LEFT_ROWS`, the middle lists, and `RIGHT_ROWS` in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx`; `PAGE3_GEAR_SLOTS` and `PAGE3_DEFAULT_S_SLOTS` in `backend/common/interfaces/v2/page3/page3Interfaces.ts`. Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3.sql` or `ensureSchema.ts`. Do not add a migration. Do not rename `heldBag1`, `heldBag2`, `midS1`–`midS6`, or `carryM4`–`carryP5`. Do not move the **Carry**, **Notes**, **Quarter Mastering**, or **Tiny & Other** headings into another column. Do not change row height, tracks, or coinage. Do not add `features/` or `shared/`. Do not remove the `data-tooltip-id` / `data-tooltip-content` attributes on the arrow, the staff-snake head, the meditating head, or **W**.
+steps:
+1. Append the Held Bag block to `LEFT_ROWS` after `leftS15`, in this order: `heldBag1` (**Held Bag**, bar), `midS1`, `midS2`, `midS3`, `heldBag2` (**Held Bag**, bar), `midS4`, `midS5`, `midS6`. Leave those keys, the bars, and the printed **S** on `midS1`–`midS6`.
+2. Above **Carry**, draw only `other1` (**Other Containers**, bar), `other2` (arrow), `other3` (arrow), and `other4` (arrow). `other4` matches `other2`: the arrow only, no size input, no size text, no size POST. It is not a bar and not printed **S**.
+3. Do not set `carryStr` on any row. The strings **−4 Str** through **5 Str** must not render. Keep `carryM4`, `carryM3`, `carryM2`, `carryM1`, `carry0`, `carryP1`, `carryP2`, `carryP3`, `carryP4`, `carryP5` as printed **S**.
+4. Under those ten, draw `carry11`–`carry17`. Add them to `PAGE3_GEAR_SLOTS` and to `PAGE3_DEFAULT_S_SLOTS`. Printed **S**. No strength label. Not an arrow. Not a bar.
+5. Under **Quarter Mastering**, draw `qm1`–`qm15` with chrome numbers **1**–**15**, in order, before **Tiny & Other**. Add `qm11`–`qm15` to `PAGE3_GEAR_SLOTS`. Do not add them to `PAGE3_DEFAULT_S_SLOTS`. Same fields as `qm1`: number, item input, size input, both flags, **W**. **Tiny & Other** stays `tiny1`–`tiny12`.
+6. Add `other4` to `PAGE3_GEAR_SLOTS`. Do not add it to `PAGE3_DEFAULT_S_SLOTS`. Do not insert rows by hand. Assemble, create, Save, and field POST already follow `PAGE3_GEAR_SLOTS`.
+7. Do not split those groups with `slice(0, 11)` or `slice(0, 10)`. The **Carry** heading’s list is the 17 carry slots. The **Quarter Mastering** heading’s list is the 15 `qm` slots. Leave the existing tooltip attributes on the arrow and on the column-head snake, meditating image, and **W**.
+done when: In `Gear.tsx`, `heldBag1` is after `leftS15`, and `Str` does not appear. `other4` is an arrow row and is not inside the first column. `carry11`–`carry17` and `qm11`–`qm15` are in `PAGE3_GEAR_SLOTS`. `carry11`–`carry17` are in `PAGE3_DEFAULT_S_SLOTS`. `other4`, `qm11`, `qm12`, `qm13`, `qm14`, and `qm15` are not. `rg "carry11|carry17|other4|qm15" backend/server/v2/backupTables/page3.sql` is 0. `npm run build` in `app/` exits 0.
+depends on: T-125 (done), T-126 (done), T-128 (done)
+open questions: none
+deviations from design: The designer said to add a row to Other Containers and did not name its fields. It is an arrow row, `other4`, like `other2` and `other3`.
+result: Both Held Bag bars and `midS1`–`midS6` follow `leftS15`. Above Carry the middle column is Other Containers plus `other2`, `other3`, and `other4` (arrow). Carry is 17 printed-S rows and has no strength label. Quarter Mastering is `qm1`–`qm15`. The arrow, snake, meditating, and W tooltips stay. The letters Str remain only inside the meditating tooltip “Does this item heal Stress?”. `page3.sql` is unchanged. `npm run build` in `app/` exits 0.
+
+### T-129: Match Gear row height to the sheet band
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Gear data rows paint about 21.38px and the column head about 22px. A Relationships row and a Gear bar header are 17.38px. `min-height: 17.38px` does not cap a cell that also has `padding: 2px 1px` and an input `height: 17.38px`.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not edit `Gear.tsx`, `Relationships.css`, `Contacts.css`, `View.css`, `index.css`, Notes height, coinage, or section `h2` text. Do not add `features/` or `shared/`. Do not remove the column head’s `background: #bdbdbd` or its `border-bottom: 1px solid whitesmoke`. Do not put a rest `background` back on `.page3-flag-box`. Leave its `border-radius: 3px` and its hover wash.
+steps:
+1. Set `.page3-gear-head` and `.page3-gear-row` to `box-sizing: border-box`, `height: 17.38px`, `min-height: 17.38px`, and `max-height: 17.38px`. The `min-height` must be that length, not `auto`, so the content size cannot raise the row. This includes bar headers. Do not set `grid-auto-rows` on `.page3-gear-col`. Do not set `overflow: hidden` on the head or the row.
+2. Keep `padding: 2px 1px` on the cells that already have it, inside that box. Give the track cells and the item cell `height: 100%` and `min-height: 0` so they fill the row and do not grow it. Size, snake, meditating, and **W** stay centered on both axes. Type (Item) stays top-aligned. The left rules stay `border-left: 1px solid #bdbdbd` on those four tracks and still stop at a bar header and at Carry, Notes, Quarter Mastering, and Tiny & Other.
+3. Inputs in the item cell, the Size cell, and **W** fill the cell: `height: 100%` and `min-height: 0`. Remove `height: 17.38px` from those inputs. The rule must beat `View.css` `.v2 :where(input.character-value:not(.border))` (`height: 1.2em`) and `.v2 :where(input.character-value:not(.border):placeholder-shown)` (`height: 17.38px`). `:where()` adds no specificity.
+4. `.page3-gear-label` and `.page3-gear-chrome` inside the item cell and the Size cell must not keep `line-height: 17.38px`. Keep `font-size: 12px`. The line box must fit in the content box left by `padding: 2px 1px` inside 17.38px. Leave the bar label able to fill its 17.38px band.
+5. Leave the meditating `img` at `width: 18px` and `height: 18px`. It may paint outside the head. Leave the check at `font-size: 20px`, `position: absolute`, `top: -4px`, `left: -4px`. Neither grows the row. `.page3-flag-box` stays 12×12, borderless, and centered in the track.
+6. Do not change `.page3-notes` (`height: calc(5 * 17.38px)`), `.page3-coinage`, or `.page3-gear-col > h2` (margin only; no min-height). Do not remove `.page3-gear-head`’s `background` or `border-bottom`, and do not edit the flag box’s `border-radius` or hover rule.
+done when: `Gear.css` sets `height: 17.38px` on `.page3-gear-head` and `.page3-gear-row`. `rg "grid-auto-rows" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` is 0. `rg "overflow: hidden" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` is 0. The item, Size, and **W** inputs do not set `height: 17.38px`. `.page3-notes` still has `height: calc(5 * 17.38px)`. The meditating `img` rule is still `width: 18px` and `height: 18px`. `.page3-flag-box` has no `border` declaration. `npm run build` in `app/` exits 0. Headless Chrome: a Gear data row and the column head are 17.38px border-box; a bar header is 17.38px; Notes is about `5 * 17.38` px; the image is 18×18; the flag box is 12×12 with no border.
+depends on: T-127 (done)
+open questions: none
+deviations from design: none
+result: The column head and each data row, including bar headers, are a 17.38px border-box. Inputs fill the cell and no longer set `height: 17.38px`. Item and Size labels use a 13.38px line box so they fit inside the padding. The meditating image stays 18×18 and paints outside the head. Headless Chrome: head, data row, empty row, and Backpack are 17.38px; a Relationships row is 17.38px; Notes is 86.89px; the flag box is 12×12 with no border.
+
+### T-128: Add two Tiny & Other rows
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Tiny & Other is `tiny1`–`tiny10`. The designer asked for two more rows.
+scope: `PAGE3_GEAR_SLOTS` in `backend/common/interfaces/v2/page3/page3Interfaces.ts`; `RIGHT_ROWS` in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx`. Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3.sql` or `ensureSchema.ts`. Do not add a migration. Do not mark the new slots printed **S**, arrow, or bar. Do not add `features/` or `shared/`.
+steps:
+1. Append `'tiny11'` and `'tiny12'` to `PAGE3_GEAR_SLOTS` after `'tiny10'`. Leave `PAGE3_DEFAULT_S_SLOTS` unchanged.
+2. Append `{ slot: 'tiny11' }` and `{ slot: 'tiny12' }` to `RIGHT_ROWS` after `tiny10`, so they render under **Tiny & Other** with the same fields as `tiny1`: item input, size input, both flags, **W**.
+3. Do not insert rows by hand. `emptyPage3Gear` and assemble already fill a slot that has no database row. `addPageType3` inserts every `PAGE3_GEAR_SLOTS` entry. Save and field POST already upsert by that list.
+done when: `PAGE3_GEAR_SLOTS` and `RIGHT_ROWS` both contain `tiny11` and `tiny12`. `PAGE3_DEFAULT_S_SLOTS` does not. `rg "tiny11|tiny12" backend/server/v2/backupTables/page3.sql` is 0. `npm run build` in `app/` exits 0.
+depends on: none
+open questions: none
+deviations from design: The column design did not include new rows. The designer added two Tiny & Other rows in the same reply.
+result: `tiny11` and `tiny12` follow `tiny10` in `PAGE3_GEAR_SLOTS` and `RIGHT_ROWS`. They are not printed **S**. `page3.sql` has no match. They render under Tiny & Other with an item input, a size input, both flags, and **W**.
+
+### T-127: Set Gear track width, centering, and left rules
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Size is 64px. Size, snake, meditating, and **W** sit on the top edge. Those four tracks have no `#bdbdbd` left rule.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`. `GearFlag`’s caller in `Gear.tsx` only if the 12×12 box cannot both fill the track for the rule and stay a centered borderless box. Owner: `rewrite-ledger/page3-view.md`. Do not edit coinage, Notes height, the stack divider `#323232`, bar-header markup, or section `h2` text. Do not add `features/` or `shared/`.
+steps:
+1. Set `.page3-gear-col` tracks to `minmax(0, 1fr) 30px 18px 18px 28px`.
+2. Center the contents of Size, snake, meditating, and **W** on both axes in the column head and in each data row. Leave Type (Item) top-aligned. The 12×12 flag box stays borderless and stays 12×12, centered in its track. The meditating image stays 18×18. The arrow gets no new size rule. Size and **W** text stay `text-align: center`.
+3. `border-left: 1px solid #bdbdbd` on those four track cells in the column head and in each data row, inside the track (`border-box`). The rule is the track edge. Do not put it on the 12×12 box. Do not paint it on a bar row or on Carry, Notes, Quarter Mastering, or Tiny & Other.
+done when: `Gear.css` has `30px 18px 18px 28px` and does not have `64px` in `.page3-gear-col`. `border-left: 1px solid #bdbdbd` applies to the Size cell, both flag tracks, and **W**, and to the matching head cells. `.page3-flag-box` has no `border` declaration. A bar row and `.page3-gear-col > h2` do not receive that rule. `npm run build` in `app/` exits 0.
+depends on: T-125 (done), T-126 (done)
+open questions: none
+deviations from design: The design ran the four rules through bar headers and section `h2`s. The designer said to stop at the header.
+result: Tracks are `minmax(0, 1fr) 30px 18px 18px 28px`. Size, snake, meditating, and **W** center on both axes in the column head and in each data row. Those cells have `border-left: 1px solid #bdbdbd`. Each flag sits in a track span because the 12×12 box stays borderless. Bar rows and section `h2`s do not get the rule. Headless Chrome: the tracks measure 30px, 18px, 18px, and 28px; the flag box is 12×12 with no border; Backpack, Carry, and Tiny & Other have no rule; the meditating image is 18×18.
+
+### T-126: Drop the Size input on arrow rows
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Head through R. Hand, `other2`, and `other3` already draw the arrow in Size and still draw a size input after it.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (the Size cell when `spec.arrow`). Owner: `rewrite-ledger/page3-view.md`. Do not edit schema, coinage, printed-S slots, bar headers, the Size track width, or rows without `arrow`. Do not add `features/` or `shared/`.
+steps:
+1. When `spec.arrow` is set, the Size cell is only `<i class="fa-solid fa-arrow-right-from-line">` inside `.page3-gear-size`. Slots: `head`, `chest`, `coat`, `gloves`, `pants`, `shoes`, `armor`, `lHand`, `rHand`, `other2`, `other3`. No size `input`, no `readOnly`, no `disabled`, no `character-value`, and no `cell.size` text. Do not call `updateGearCell` or `persistPage3Gear` for `size` from that cell.
+2. Leave item, both flags, and **W** on those rows. Leave printed **S** as text. Leave coinage Size inputs. Leave every non-arrow size input. Leave the stored size column. Do not add a migration. Do not change the Size track width. Do not add a size rule for the arrow.
+done when: In `Gear.tsx`, an `arrow` Size cell contains `fa-arrow-right-from-line` and does not contain `input` or `cell.size`. A non-arrow size path still has a size `input`. `isDefaultSSlot` still renders `cell.size` as text. `rg "fa-arrow-right-from-line" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` is at least 1, and that element is not inside `page3-gear-item`. `npm run build` in `app/` exits 0.
+depends on: T-121 (done), T-125 (done)
+open questions: none
+deviations from design: none
+result: The eleven arrow rows render only `fa-arrow-right-from-line` in Size. No size input, no size text, and no size POST. Printed S stays text. A non-arrow size input stays. The Size track stays 64px. Headless Chrome: the arrow cell has the icon and no input; a printed-S cell shows S; another row still has a size input; flags and W remain.
+
+### T-125: Draw Gear bar headers as labels only
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: **Backpack**, **Pouch**, **held bag**, and **Other Containers** are gray bars and still render an item input, a size input, both flag boxes, and **W**.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`GearRow` when `spec.bar`); `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` (the bar label spans the five tracks). Owner: `rewrite-ledger/page3-view.md`. Do not edit schema, coinage, Notes, `ColumnHead`, the `h2` bars, or any row with `bar` unset. Do not add `features/` or `shared/`.
+steps:
+1. When `spec.bar` is set, render one row whose only content is `spec.label` (**Backpack**, **Pouch**, **held bag**, **Other Containers**). Slots: `backpack`, `pouch1`, `pouch2`, `pouch3`, `heldBag1`, `heldBag2`, `other1`. The label spans `grid-column: 1 / -1`. Keep `page3-gear-bar-row` (`#bdbdbd`) and the oldClaude 13px label. No `input`, no `textarea`, no `GearFlag`, no **W**, no arrow, no `character-value`. Do not render `cell.item`, `cell.size`, `cell.staffSnake`, `cell.meditating`, or `cell.w`.
+2. Do not call `updateGearCell` or `persistPage3Gear` from that row. Leave the slot keys and any stored rows. Do not add a migration.
+3. Leave every non-bar `GearRow` as it is, including Head through R. Hand, the Carry strength lines, the QM numbers, printed **S**, `other2`, and `other3`.
+done when: In `Gear.tsx`, the `spec.bar` branch contains `spec.label` and does not contain `input`, `GearFlag`, or `cell.`. The non-bar path still has an item `input`. `backpack`, `pouch1`, `heldBag1`, and `other1` are still slot keys in `Gear.tsx`. `Gear.css` sets `grid-column: 1 / -1` on the bar label (or the bar row’s only child). `npm run build` in `app/` exits 0.
+depends on: T-121 (done)
+open questions: none
+deviations from design: none
+result: The seven bar rows render only `spec.label` across all five tracks. No item, size, flag, or W control, and no POST from that row. Headless Chrome: the Backpack bar is one oldClaude 13px label on `#bdbdbd` with `grid-column: 1 / -1` and no inputs; a Head row still has its fields and a printed-S row still shows S.
+
+### T-124: Nest kit icons so unchecking a check does not throw
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Kit `db12ee03d1` replaces `<i class="fa-solid">` with `<svg class="svg-inline--fa">`. `GearFlag` and v2 Anointed render `fa-check` only while checked. Uncheck asks React to `removeChild` that `<i>`, which is no longer in the tree, and the router error page replaces the sheet.
+scope: `app/index.html` (kit script). Owners of the checks: `rewrite-ledger/page3-view.md` (`GearFlag` in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx`, placement in `Gear.css`) and `rewrite-ledger/edit-character.md` (Anointed in `app/src/pages/v2/pageTypes/pageType1/components/Favor/Favor.tsx`, placement in `Favor.css`). Do not add an icon package. Do not add `features/` or `shared/`. Do not edit kit `db12ee03d1` on fontawesome.com.
+steps:
+1. In `app/index.html`, before `https://kit.fontawesome.com/db12ee03d1.js`, set `window.FontAwesomeConfig = { autoReplaceSvg: 'nest' }` in a classic script (not `type="module"`). Leave the kit URL. Do not add `async` or `defer`.
+2. Leave both conditionals: Gear `{checked && <i className="fa-solid fa-check">}` and Anointed `{anointed && <i className="fa-solid fa-check">}`. Do not add `checked` to Anointed’s class. Do not change Gear click-persist or Anointed’s edit-only click. Staff-snake, the arrow, and the meditating `<img>` stay as they are.
+3. Leave the Gear rules that size `.page3-gear-head > strong i` and `.page3-gear-head > strong > svg.svg-inline--fa.fa-staff-snake`, and that place `.page3-flag-box i` and `.page3-flag-box > svg.svg-inline--fa.fa-check`. Leave `.favor-v2 .anointed-box i` (`font-size: 20px`, `position: absolute`, `top: -4px`). Do not add `left`. Do not add a selector that is only `svg` or only `.svg-inline--fa`. Do not set width or height on those svgs.
+4. If headless Chrome shows the kit still replaces the `<i>` (no `<i>` left, svg is the child) or `parent.removeChild` on that `<i>` throws: nest did not fix it. Then always render the check `<i>` in `GearFlag` and in Anointed. Hide it unless the box is on. Gear hides with the existing `.checked` class. Anointed hides with a class that is not `checked`, so the black fill stays unused. `visibility: hidden` on both the `i` and `> svg.svg-inline--fa.fa-check`. Say so in the result.
+done when: `app/index.html` sets `autoReplaceSvg` to `nest` before the kit script. `rg "fa-person-meditating" app/src/pages/v2/pageTypes/pageType3` is 0. `Gear.tsx` and `Favor.tsx` still contain `fa-solid fa-check`. Anointed’s class string does not contain `checked` unless step 4 ran and the result says so. `Gear.css` has no width or height on a selector that is only `svg` or only `.svg-inline--fa`. `npm run build` in `app/` exits 0. Headless Chrome with that config and kit `db12ee03d1`: a `fa-check` `<i>` remains an `i` with an svg inside; removing it does not throw; the Gear check’s positioned node is font-size 20px, position absolute, top -4px; the staff-snake `<i>` is font-size 12px; the meditating img is 18×18.
+depends on: T-123 (done)
+open questions: none
+deviations from design: The design’s first proposal was to keep the check mounted and hide it, and to leave the kit replacing the `<i>`. The designer said to use whatever fixes the error, and to include Anointed. Nest lets the existing unmount succeed on both checkboxes. Step 4 is the keep-mounted fallback only if nest still throws.
+result: `app/index.html` sets `autoReplaceSvg: 'nest'` before kit `db12ee03d1`. Headless Chrome: the check and staff-snake stay an `<i>` with an svg inside; removing the Gear check `<i>` and the Anointed `<i>` does not throw. Gear check `<i>` is 20px, absolute, top -4px; staff-snake `<i>` is 12px; meditating img is 18×18. Step 4 was not used.
+
+
+
+### T-123: Keep staff-snake, the arrow, and the check as kit icons
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: The meditating head is an `<img>` of the Gear SVG. Staff-snake, the Size arrow, and the check are still `<i class="fa-solid">`. Kit `db12ee03d1` has `"method":"js"` and loads `pro.min.js`, so those `<i>` tags are replaced with `<svg class="svg-inline--fa">`. Gear.css sizes the head with `strong i` and places the check with `.page3-flag-box i`. Those selectors do not match the replacement, so the three kit icons lose the box the img still has.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`. Owner: `rewrite-ledger/page3-view.md`. Do not edit `Gear.tsx` icon tags, `app/index.html`, `Favor.css`, or `index.css`. Do not add an img or an inlined svg for staff-snake, the arrow, or the check.
+steps:
+1. Leave `Gear.tsx` as it is: one `<img>` whose src is `person-meditating-solid-full.svg`; `<i class="fa-solid fa-staff-snake">`; `<i class="fa-solid fa-arrow-right-from-line">`; `<i class="fa-solid fa-check">`.
+2. Make `.page3-gear-head > strong i { font-size: 12px }` also match `.page3-gear-head > strong > svg.svg-inline--fa.fa-staff-snake`. Same `font-size: 12px` only. Do not set width or height on that svg. Do not let this rule match the meditating img.
+3. Make `.page3-flag-box i` (`font-size: 20px`, `position: absolute`, `top: -4px`, `left: -4px`) also match `.page3-flag-box > svg.svg-inline--fa.fa-check` with those same four declarations.
+4. Do not add a size rule for the arrow. Do not add a selector that is only `svg` or only `.svg-inline--fa`. The meditating rule stays on `img`, 18×18. Do not change the five-track grid, printed S, arrow placement, or Notes zebra.
+done when: `Gear.tsx` still has one `img` and still has `fa-staff-snake`, `fa-arrow-right-from-line`, and `fa-check`. `rg "fa-person-meditating" app/src/pages/v2/pageTypes/pageType3` is 0. `Gear.css` has `svg.svg-inline--fa.fa-staff-snake` and `svg.svg-inline--fa.fa-check`. `Gear.css` has no width or height on a selector that is only `svg` or only `.svg-inline--fa`. `npm run build` in `app/` exits 0.
+depends on: T-121 (done)
+open questions: none
+deviations from design: none
+result: Gear.css also matches the kit’s `svg.svg-inline--fa` for staff-snake (font-size 12px) and the check (font-size 20px, absolute, top -4px, left -4px). Gear.tsx tags are unchanged; the meditating head stays the 18×18 img. Headless Chrome with kit `db12ee03d1`: those three icons become svg; the arrow inherits 12px from `.page3-gear-chrome` and has no new size rule.
+
+### T-121: Align Gear tracks, use the meditating SVG, and lock printed S
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: The three Gear stacks and the five cells in each row do not share a top edge. The two flag boxes are 12px flex items with `margin: 2px auto`, and the header icon tracks are 18px, so the boxes read as one checkbox column. The meditating head is `fa-person-meditating`, which the kit subset does not define. The arrow is inside the item cell. Printed S is a size input.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`ColumnHead`, `GearRow`, `LEFT_ROWS`, `MIDDLE_ROWS`); `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`; existing `app/src/pages/v2/pageTypes/pageType3/components/Gear/assets/person-meditating-solid-full.svg`. Owner: `rewrite-ledger/page3-view.md`. Do not edit kit `db12ee03d1`, `app/index.html`, coinage inputs, slot order, or Notes height.
+steps:
+1. Set `.page3-gear-columns` to `align-items: start`. Each column’s first child stays `ColumnHead`. Leave **Quarter Mastering** after that head and before `qm1`. Do not move **Carry**, **Tiny & Other**, or **Notes**. Set `margin: 0` on the gear section `h2`.
+2. Give each gear column one grid whose head and rows share five tracks: flexible Type (Item), Size, snake, meditating, **W**. `align-items: start` on those rows. Section `h2`, Notes, the footnote, and coinage span all five tracks. Snake and meditating tracks are equal. Each `GearFlag` is the only control in its track, top-aligned, centered across the track. Remove `margin: 2px auto` from `.page3-flag-box`. Keep the 12×12 borderless box, both flags on every row, and the existing click persist.
+3. Replace the meditating `<i class="fa-solid fa-person-meditating">` with `<img alt="" src>` of `person-meditating-solid-full.svg`, filling that header track. Keep `fa-solid fa-staff-snake` centered in the snake track. Do not inline the SVG path. Do not add a second copy of the file.
+4. On rows with `arrow: true` (`head` through `rHand`, `other2`, `other3`), render `fa-solid fa-arrow-right-from-line` inside the Size cell, not inside `.page3-gear-item`. Keep the size `<input>` in that cell after the arrow. One Size track width for the column, wide enough that the arrow is not clipped.
+5. For `leftS1`–`leftS15`, `midS1`–`midS6`, and `carryM4`–`carryP5`, render `cell.size` as text. No `<input>`, no `readOnly`, no `disabled`, no `character-value`. Do not POST size from those cells. Leave the stored default `'S'`. Every other gear size input, and all four coinage Size inputs, stay.
+done when: `rg "fa-person-meditating" app/src/pages/v2/pageTypes/pageType3` is 0 hits. `rg "person-meditating-solid-full" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` is at least 1. `rg "2px auto" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` is 0. `rg "readOnly|disabled" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` is 0. In `Gear.tsx` the `fa-arrow-right-from-line` element is not inside `page3-gear-item`. `npm run build` in `app/` exits 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: Each gear column is a five-track grid and the three stacks use `align-items: start`. Snake and meditating are separate 18px tracks with 12px boxes. The meditating head is the Gear SVG. The arrow is in the Size cell. Printed-S slots render `cell.size` as text through `isDefaultSSlot`.
+
+### T-122: Stripe Gear Notes and teal-hover Contacts and Notes
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Gear Notes are a flat textarea. Contacts stripes do not turn teal on hover in plain view, because the zebra rule beats `index.css` `textarea:hover`. Edit and quick-edit solid fills would hide a new zebra.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` (`.page3-notes`); `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css` (the textarea). Owner: `rewrite-ledger/page3-view.md`. Do not change Contacts min-height, Gear Notes height, or `app/src/index.css`.
+steps:
+1. Paint `.page3-notes` with the Contacts zebra: `#fff` / `#f3f3f3`, 17.38px bands, `background-attachment: local`. Text stays 15px / line-height 1.2. Do not set the band to `1lh`. Do not change `min-height` or `height` on `.page3-notes`.
+2. Plain view, both `.page3-contacts > textarea` and `.page3-notes`: rest is the unwashed zebra; `:hover` stacks `rgba(145, 181, 194, 0.35)` on the zebra.
+3. `.view-edit` and `.view-quick-edit`, both textareas: rest wash `rgba(173, 216, 230, 0.35)` and hover `rgba(145, 181, 194, 0.35)`, each stacked on the zebra. These rules beat `index.css` solid `textarea:hover`, `.view-edit textarea`, and `.view-quick-edit textarea`. Stripes stay visible.
+done when: `rg "repeating-linear-gradient" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` matches `.page3-notes`. `Contacts.css` has a `:hover` wash that applies when `.view-edit` and `.view-quick-edit` are absent. `rg "1lh" app/src/pages/v2/pageTypes/pageType3` is 0. The Contacts `min-height` value is unchanged. `npm run build` in `app/` exits 0.
+depends on: T-121
+open questions: none
+deviations from design: none
+result: Gear Notes use the Contacts 17.38px zebra. Plain-view hover on Contacts and Notes stacks `rgba(145, 181, 194, 0.35)` on that zebra. Edit and quick-edit rest and hover washes stack on it. Contacts min-height and Notes height are unchanged.
+
+### T-120: Add person-meditating to the Font Awesome kit subset
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Add)
+why: The Gear meditating head is `fa-person-meditating`. Kit `db12ee03d1` loads a By Icon subset that defines `.fa-staff-snake` and does not define `.fa-person-meditating`.
+scope: Font Awesome kit `db12ee03d1`, referenced by `app/index.html`. Owner of the icon name: `rewrite-ledger/page3-view.md`.
+steps:
+1. Add classic solid `person-meditating` to the kit’s By Icon subset and publish the kit.
+2. Leave `Gear.tsx` `ColumnHead` on `fa-solid fa-person-meditating`.
+done when: not executed.
+depends on: T-108 (done)
+open questions: none
+deviations from design: superseded 2026-10-30 before execution. The meditating head is the Gear SVG (T-121).
+result: Not executed. `page3-view.md` revised 2026-10-30: the head is `Gear/assets/person-meditating-solid-full.svg`. The kit was not changed.
+
+### T-119: Wash the Contacts textarea when quick-edit locations are shown
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: the stripes should still be visible)
+why: Show Quick Edit puts `view-quick-edit` on `page-shell`. `index.css` paints `.view-quick-edit textarea` solid teal, and `.v2 .page3-contacts > textarea` paints the zebra with `!important` at higher specificity, so the Contacts box stays unhighlighted.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not change `index.css`, `NotesPanes.css`, `Contacts.tsx`, `V2View.tsx`, or relationship styles. Do not change min-height, zebra pitch, or the text line. Do not add a wrapper. Do not put `view-edit` on the view.
+steps:
+1. Copy the existing `.v2 .view-edit .page3-contacts > textarea` rest rule and its `:hover` rule, with `.view-quick-edit` in place of `.view-edit`. Rest wash `rgba(173, 216, 230, 0.35)` stacked on the same `repeating-linear-gradient` zebra (`#fff` / `#f3f3f3` at 17.38px). Hover wash `rgba(145, 181, 194, 0.35)` on that zebra. `background-color: transparent`, `background-attachment: local`, and the same `!important` as the edit rules.
+2. Leave the toggle-off zebra (`.v2 .page3-contacts > textarea` with no teal layer) and the `.view-edit` rules in place.
+done when: `Contacts.css` has `.v2 .view-quick-edit .page3-contacts > textarea` containing `rgba(173, 216, 230, 0.35)` and `repeating-linear-gradient`, and a `:hover` rule containing `rgba(145, 181, 194, 0.35)`. `.v2 .view-edit .page3-contacts > textarea` is still present. The toggle-off `.v2 .page3-contacts > textarea` rule has no `173, 216, 230`. `git diff` is empty for `index.css`, `NotesPanes.css`, `Contacts.tsx`, and `V2View.tsx`.
+depends on: T-115 (done)
+open questions: none
+deviations from design: none
+result: The Edit wash is copied onto `.v2 .view-quick-edit .page3-contacts > textarea` and its hover. Headless Chrome: toggle off is zebra only. With `view-quick-edit`, the background is the 0.35 teal gradient plus the zebra. Pixels: white band 226,241,246 and gray band 219,234,239.
+
+### T-118: Run the R-column gray rules the full row
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design: no gaps in the gray borders for the R column)
+why: The **R** cell paints `border-left` and `border-right` `1px solid #bdbdbd`, and that cell is `height: 100%` of a span with `padding: 2px 1px`. The rules stop at the padding, so each row shows a white or `#f3f3f3` gap.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not change `Relationships.tsx`, `Contacts.css`, `PageType3.css`, `pageType3Updates.ts`, Gear, `DoubleColumn.css`, `NotesPanes.css`, `View.css`, or `index.css`. Do not change `PAGE3_RELATIONSHIP_CAP`. Do not add a border on the name cell, the **P** cell, or the header. Do not set `line-height: 17.38px`. Do not add `features/`.
+steps:
+1. Remove padding from `.page3-relationships-list>span`. Keep that span at `box-sizing: border-box`, `height: 17.38px`, and `min-height: 17.38px`.
+2. Put `padding: 2px 1px` on `.page3-relationships-list>span>*`. That rule already sets `box-sizing: border-box`, `height: 100%`, and `min-height: 0`. With the span’s padding gone, `height: 100%` is the 17.38px border-box, so the existing `border-left` and `border-right` on `.page3-relationships-list>span>*:nth-child(2)` run the full row (stored, insert, and leftover). Keep those two declarations. Do not add `border-left` on `:nth-child(3)`.
+3. Keep the `input.character-value` restatement (`height: 100%`, `min-height: 0`) so `View.css` filled `height: 1.2em` and placeholder `height: 17.38px` cannot change the row. Keep `background-clip: content-box` on the edit inputs so the teal stays off the rule.
+done when: `.page3-relationships-list>span>*:nth-child(2)` still sets `border-left: 1px solid #bdbdbd` and `border-right: 1px solid #bdbdbd`. `padding: 2px 1px` appears on `span>*` and not on a `span` rule. The list `span` still has `height: 17.38px` and `min-height: 17.38px`, and `span>*` still has `min-height: 0`. No `border` declaration on `:nth-child(3)` or on `.page3-relationships-headers`. `git diff` for `Contacts.css`, `PageType3.css`, `Relationships.tsx`, and `pageType3Updates.ts` is empty.
+depends on: T-114 (done)
+open questions: none
+deviations from design: Both rules stay on the **R** cell (`border-left` and `border-right` on `:nth-child(2)`), which is what `d64787b` already paints. The design snippet put `border-left` on children 2 and 3; a left border on **P** next to **R**’s `border-right` would be 2px. `height: 100%` stays. It is the full row once the span has no padding, and it still beats `View.css` `height: 1.2em`.
+result: Span padding is gone. `padding: 2px 1px` is on `span>*`. Headless Chrome: row and **R** cell are both 17.38px, edge delta 0. Both `#bdbdbd` rules are continuous through four view rows (including a leftover `p`) and two edit rows. **P** `border-left` is 0.
+
+### T-115: Make Contacts a play-time textarea
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Contacts yes)
+why: Contacts is a view `p` until Edit, then a Save. The designer wants the textarea on the view, with blur saving the string. Edit stays local until Save.
+scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; new `backend/server/v2/edit/utilities/pageType3/savePage3Contacts.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts` (the `Exclude` only); `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.tsx`. Do not change `Contacts.css` metrics (T-114). Do not import `NotesPanes`. Do not add `features/`. Do not recreate `v2Page3Contacts`. Do not persist while `isEditing`. Do not add `/quickEdit`.
+steps:
+1. Allowlist `'page3Contacts'`. Value is `string`. The controller writes it before `saveViewField` and adds the attribute to that function's `Exclude`. `savePage3Contacts` upserts `v2Page3Basics.contacts` only: `insert into v2Page3Basics (pageID, contacts) values ($1, $2) on conflict (pageID) do update set contacts = excluded.contacts`. Do not set `notes` in that statement. `String(value ?? '')`. Success `{ success: true }`. Unknown attribute still refuses.
+2. `persistPage3Contacts` copies `persistPage3Notes`: skip when editing, when the viewer does not own the character, or when the snapshot string matches. Patch `revertedCharacter` with `updateContacts`. Do not replace live `character` from the response. Toast on failure. In-flight spinner stays the existing one.
+3. `Contacts.tsx`: always the `textarea.character-value` (`placeholder=" "`, `value`, `onChange` → `updateContacts`, `onBlur` → `persistPage3Contacts`). Remove the view `p` and the `EditingContext` branch. Zebra, min-height, and the `.view-edit` wash stay in CSS. Location highlight is `index.css` `.view-quick-edit textarea`. Do not add a highlight rule.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. `./node_modules/.bin/tsc --noEmit -p app` reports only the missing `frontend-config`. `Contacts.tsx` has no `<p` and no `EditingContext`. `savePage3Contacts` sets `contacts` and does not set `notes`. Grep `page3Contacts` in `viewPersist.ts` and `editV2FieldController.ts` is present. Grep `/quickEdit` under `pageType3/` is 0.
+depends on: T-113 (done). Independent of T-114.
+open questions: none
+deviations from design: none
+result: Contacts is always a `textarea`. Blur POSTs `'page3Contacts'`. `savePage3Contacts` upserts `contacts` only. Edit skips the POST.
+
+### T-116: Make the relationship name and R play-time
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answers: **R** and **P**; then the name too)
+why: **P** already blur-saves on the view. The name and **R** are inputs only while editing. The designer named all three.
+scope: `backend/common/interfaces/v2/page1/viewPersist.ts`; `backend/server/v2/edit/editV2FieldController.ts`; new `backend/server/v2/edit/utilities/pageType3/savePage3RelationshipValue.ts`; new `savePage3RelationshipR.ts`; `saveViewField.ts` (`Exclude` only); `app/src/pages/v2/hooks/characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.tsx`. Do not change `Relationships.css` metrics (T-114). Do not change insert visibility (T-117). Do not add a delete attribute here. Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
+steps:
+1. `'page3RelationshipValue'` is `{ id: number, value: string }`. Refuse unless `id > 0`, `value` is a string, and `value.length <= 500`. `update v2Page3Relationships set value = $1 where id = $2 and pageID = $3`. `'page3RelationshipR'` is `{ id: number, r: SkillNumber }`. Refuse unless `id > 0` and `r` is a SkillNumber. `update ... set r = $1` with `''` stored as null. Copy `savePage3RelationshipP`. Both return `{ success: true }`. Add both attributes to the `saveViewField` `Exclude`. Handle them in the controller before `saveViewField`.
+2. `persistPage3RelationshipValue` and `persistPage3RelationshipR` copy `persistPage3RelationshipP`: skip when editing, when not owner, when the snapshot row is missing, or when that cell already matches. Patch that cell on the snapshot only. Do not replace live `character` from the response.
+3. `Relationships.tsx`: the name and **R** are `input.character-value` on the view and in Edit (same mount as **P**). `onChange` stays `updateRelationship`. `onBlur` persists when `row.id` is set. **P**'s handlers stay. `showInsert` stays `isEditing && leftover > -1`.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. App `tsc` reports only the missing `frontend-config`. The name input and the **R** input in `Relationships.tsx` are outside an `isEditing` ternary. `showInsert` still requires `isEditing`. Grep `page3RelationshipValue` and `page3RelationshipR` in the controller is present. Grep `/quickEdit` under `pageType3/` is 0.
+depends on: T-113 (done). Independent of T-114 and T-115.
+open questions: none
+deviations from design: `showInsert` no longer reads `isEditing`. T-117 changed that in the same Execute.
+result: Name and **R** are inputs on the view. Blur POSTs `'page3RelationshipValue'` and `'page3RelationshipR'` when `id > 0`. **P** is unchanged.
+
+### T-117: Insert and clear a relationship on the view
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: view insert and clear-to-remove; name is a view input)
+why: The insert row is edit-only, so the view cannot add a relationship. Clearing the last stored field removes the row locally, and the input unmounts before a blur POST. A new row's `id` is 0, so the next full Save would drop the persisted row and insert a duplicate.
+scope: `viewPersist.ts`; `editV2FieldController.ts`; new `savePage3RelationshipInsert.ts`; new `savePage3RelationshipDelete.ts`; `saveViewField.ts` (`Exclude` only); `characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `pageType3Updates.ts` only if a helper is required to set an `id` by `key`; `Relationships.tsx`. Do not replace the whole relationship list on a cell blur. Do not change row metrics (T-114). Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
+steps:
+1. `'page3RelationshipInsert'` value is `{ value: string, r: SkillNumber, p: SkillNumber }`. Refuse when `value`, `r`, and `p` are all empty, when `value` is not a string or `value.length > 500`, or when `r` or `p` is not a SkillNumber. `insert into v2Page3Relationships (pageID, value, r, p, index) values (...) returning id`. `index` is the current row count for that `pageID`. `''` numbers store as null. Success `{ success: true, id }` with `id > 0`. No id → `{ success: false }`.
+2. `'page3RelationshipDelete'` value is `{ id: number }`. Refuse unless `id > 0`. `delete from v2Page3Relationships where id = $1 and pageID = $2`. Success `{ success: true }`.
+3. `persistPage3RelationshipInsert(pageID, row)` skips when editing, when not owner, or when `value`, `r`, and `p` are all empty. On success, set `id` on the live row with that client `key` and on the snapshot copy of that row. Keep `key`. Write the snapshot cell values from the posted payload. If the live row's `value` / `r` / `p` then differ, POST `'page3RelationshipValue'` / `'page3RelationshipR'` / `'page3RelationshipP'` for the cells that differ. If the live row with that `key` is already gone, POST `'page3RelationshipDelete'` for the returned `id`.
+4. `persistPage3RelationshipDelete` skips when editing, when not owner, or when `id` is missing. On success, drop that `id` from the snapshot. Live state is already updated by `updateRelationship`.
+5. `Relationships.tsx`: `showInsert` is `rows.length < 18` in both modes. `leftover` is `18 - length - (showInsert ? 1 : 0)`. The insert row's name, **R**, and **P** are inputs. Blur of any of them, when any stored field is non-empty, calls `insertRelationship` and `persistPage3RelationshipInsert`. When `updateRelationship` removes a row with `id > 0`, call `persistPage3RelationshipDelete` from that change, not from blur.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/common` succeeds. App `tsc` reports only the missing `frontend-config`. `Relationships.tsx` `showInsert` does not read `isEditing`. Insert SQL contains `returning id`. Delete SQL names `v2Page3Relationships`. Grep `/quickEdit` under `pageType3/` is 0.
+depends on: T-116
+open questions: none
+deviations from design: none
+result: The insert row shows while `length < 18`. Insert SQL `returning id` merges onto the live row and the snapshot. Clearing the last stored field POSTs `'page3RelationshipDelete'`.
+
+### T-114: Align Contacts and Relationships to the Abilities row; 15px above Gear
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (band matches band; text line matches text line; 15px above the Gear heading)
+why: Contacts bands are 17.38px and the text line is already 15px / 1.2. Each Relationships row is that 17.38px content plus `padding: 2px 1px`, so the columns do not line up. The double column sits flush on the Gear heading.
+scope: view/edit adjacency `app/src/pages/v2/pageTypes/pageType3/PageType3.css`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css`; `app/src/pages/v2/pageTypes/pageType3/components/Relationships/Relationships.css`. Do not change `DoubleColumn.css`, `NotesPanes.css`, `View.css`, `index.css`, Gear, stores, or JSX unless a selector cannot reach the row. Do not add `features/`. Do not set `line-height: 17.38px` on the Contacts pane or on relationship value text. Do not add `field-sizing`.
+steps:
+1. Relationships list row (`span`): `box-sizing: border-box`, `height` and `min-height` `17.38px`. Keep `padding: 2px 1px` inside that box so the painted row is 17.38px, not 17.38px plus padding. `p` and `input` in the row keep `font-size: 15px` and `line-height: 1.2`. Override `span > *` `min-height: 17.38px` and the `index.css` `p` `min-height: 17.38px` on these rows (`min-height: 0` is enough) so the child cannot grow the span. Do not edit `index.css`. Restate height on `input.character-value` so `View.css` filled `height: 1.2em` and placeholder `17.38px` cannot change the row. Same row border-box in view and in edit, including leftover and insert rows.
+2. Contacts pane: keep the 17.38px zebra (white first) and `min-height: calc(18 * 17.38px)` on the mounted control. T-115 removes the view `p`; the zebra and min-height then apply to the `textarea`. Leave the text line at `font-size: 15px` and `line-height: 1.2`. Do not add a `line-height` that equals the band.
+3. One shared border-box on `.page3-contacts > h1` and on `.page3-relationships-headers > h1`: `box-sizing: border-box`, `height` and `min-height` `calc(16px + 8px)` (`.v2 h1` content `min-height: 16px` plus its `padding: 4px` top and bottom; that padding stays and sits inside the box). `line-height: 16px` on those `h1`s. `.page3-relationships-headers` is that same height so the flex row does not add a second bar. Contacts keeps `font-size: 13px` and `white-space: nowrap` inside that bar. Row 1 of each column then starts on the same line, and 18 relationship rows cover the same vertical span as the Contacts pane.
+4. `.page-type-three .double-column { margin-bottom: 15px; }`. That space is above the Gear `h1`. Do not set `gap` or `margin` on shared `DoubleColumn.css`. Do not change Gear row heights.
+done when: `Relationships.css` sets the list `span` to `height: 17.38px` and `min-height: 17.38px`, and sets `span > *` `min-height: 0`. A page-type-3 stylesheet sets `.page3-contacts > h1` and `.page3-relationships-headers > h1` to `height: calc(16px + 8px)`. `Contacts.css` still has pitch `17.38px` and does not set `line-height: 17.38px`. `PageType3.css` sets `.page-type-three .double-column` `margin-bottom: 15px`. `DoubleColumn.css` has no `15px`. `NotesPanes.css` is unchanged (`git diff` empty for that file). No new store or attribute.
+depends on: T-113 (done)
+open questions: none
+deviations from design: Header bar is `calc(16px + 8px)`, taken from `.v2 h1` `min-height: 16px` and `padding: 4px`. The designer named row alignment, not a new header pixel.
+result: Relationship rows are a 17.38px border-box with padding inside. Header bars share `calc(16px + 8px)`. `.page-type-three .double-column` has `margin-bottom: 15px`.
+
+### T-113: Replace the Contacts list with one Abilities-style text box
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (follow Abilities; height 18 × 17.38; join existing rows)
+why: Contacts, Allies, Mentors, & Enemies is an 18-row play-time list. The designer wants one Save-only text box, the same family as Abilities, as tall as the Relationships line count, with existing rows joined into that string.
+scope: page-type-3 owner `rewrite-ledger/page3-view.md` (already revised). Store: `backend/common/interfaces/v2/pageTypes.ts` (`Page3.contacts`); `backend/common/interfaces/v2/page3/page3Interfaces.ts` (drop `Page3Contact`); `backend/common/interfaces/v2/page1/viewPersist.ts` (drop `'page3Contacts'` and `Page3Contact[]`). Boot: unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page3.sql`. View: `backend/server/v2/view/assembleV2Character/utilities/pageType3/assemblePageType3.ts`. Edit: `backend/server/v2/edit/utilities/pageType3/savePageType3.ts`; delete `savePage3Contacts.ts`; `backend/server/v2/edit/editV2FieldController.ts`; `backend/server/v2/edit/utilities/pageType1/utilities/saveViewField.ts` (drop `page3Contacts` from the `Exclude`). Delete: `backend/server/v2/delete/utilities/deletePagesUtilities/pageType3/deletePageType3.ts`. App: `app/src/pages/v2/hooks/updates/emptyPageType3.ts`; `pageType3Updates.ts`; `getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.tsx` and `Contacts.css`. Do not change Relationships, Gear, `addPageType3.ts` (basics INSERT lists `pageID` only; column default `''` covers it), gutter, page type 1, or page type 2. Do not import `NotesPanes`. Do not add `features/`. Do not add a field-POST attribute for this string.
+steps:
+1. `v2Page3Basics.contacts text` default `''`. In `ensureSchema`, `ADD COLUMN IF NOT EXISTS` after the basics table exists. If `v2page3contacts` exists: insert a basics row for any `pageID` that has contact rows and no basics row; `UPDATE` `contacts` from `string_agg(value, E'\n' ORDER BY index, id)` of rows where `value` is not null and `value <> ''`, only where `contacts` is null or `''`; then `DROP TABLE v2page3contacts`. Skip the copy when the table is already gone. Fail closed if the `contacts` column is missing. Remove `v2Page3Contacts` from `createPageType3Tables` and from the fail-closed table list. Do not recreate the table. Match `backupTables/page3.sql` to that end state (basics has `contacts text`; no contacts table).
+2. `Page3.contacts` is `string`. Delete `Page3Contact`. Assemble reads `basics.contacts` (empty → `''`) and stops querying `v2Page3Contacts`. `emptyPageType3` uses `contacts: ''`. `savePageType3` writes `contacts` on the basics upsert and does not call `savePage3Contacts`. Delete `savePage3Contacts.ts`. `deletePageType3` no longer deletes that table.
+3. Remove `'page3Contacts'` from `ViewPersistAttribute`, `ViewPersistValue`, the field-controller allowlist, `isPage3ContactsPayload`, and the `saveViewField` `Exclude`. Delete `persistPage3Contacts` and its `characterHook` / `getV2Updates` wiring (`insertContact` / `updateContact` blur and empty-row posts, the `page3Contacts` switch arms). Unknown attribute still refuses.
+4. Replace `insertContact` / `updateContact` / `applyPage3ContactIds` / `PAGE3_CONTACT_CAP` with `updateContacts(character, pageID, value: string)` (same shape as `updateNotes`). `PageType3Updates.updateContacts(pageID, value)`. No persist call from that writer.
+5. `Contacts.tsx`: keep the `h1`. Under it, `EditingContext` — `textarea.character-value` while editing (`placeholder=" "`, `value`, `onChange` → `updateContacts`), `p.character-value` on the view. No `onBlur` POST. No `DisplaySingleArray`. CSS in `Contacts.css`: `min-height: calc(18 * 17.38px)` on the `p` and the `textarea`; `white-space: pre-wrap`; width 100%; box-sizing border-box. Zebra and edit wash copy the `NotesPanes.css` rules (white then `#f3f3f3` at 17.38px, first band white, `background-attachment: local`; rest wash `rgba(173, 216, 230, 0.35)`; hover wash `rgba(145, 181, 194, 0.35)`; `!important` so `.view-edit textarea` solid teal loses). Do not copy that file’s `height: calc(16 * 17.38px)` or `min-height: calc(19 * 17.38px)`. Do not add `field-sizing`. Drop the even-row input teal rules.
+done when: `npx tsc --noEmit -p backend/common` succeeds. `npx tsc --noEmit -p app` reports only the pre-existing missing `frontend-config`. Grep under `app/` and `backend/` for `page3Contacts`, `v2Page3Contacts`, `Page3Contact`, `PAGE3_CONTACT_CAP`, `savePage3Contacts`, `insertContact`, `updateContact`, `persistPage3Contacts` is 0. Grep `DisplaySingleArray` under `app/src/pages/v2/pageTypes/pageType3/` is 0. `ensureSchema.ts` contains `string_agg` into `contacts` and `drop table` of the old contacts table. No database is required for the join check.
+depends on: T-100–T-112 (done)
+open questions: none
+deviations from design: Copy-then-drop of `v2Page3Contacts` follows the currentEmotions patch (`schema-on-boot.md`): one store after the join. The 18 × 17.38 box is the line count from the design answer. Relationship spans also have `padding: 2px 1px`, so this box is not the padded span’s border-box. No `field-sizing`; `edit-character.md` reserves that for the two page-type-2 discount notes. The boot SQL names the old table `v2page3contacts` (Postgres folds unquoted names). A case-sensitive grep for `v2Page3Contacts` is 0.
+result: `Page3.contacts` is a string on `v2Page3Basics.contacts`. Boot copies non-empty child rows with newlines, then drops `v2page3contacts`. The pane is edit `textarea` / view `p`, min-height `calc(18 * 17.38px)`, zebra, and the Abilities wash. `'page3Contacts'` is gone. `savePage3Contacts.ts` is deleted.
+
+
+### T-100: Add Page3 contract and union member
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-04
+why: Assemble, persist, and the view switch need a `type: 3` payload. `PageV2` is `Page404Error | Page1 | Page2`.
+scope: contracts `backend/common/interfaces/v2/pageTypes.ts`; new `backend/common/interfaces/v2/page3/` (Page3 stores, contact/relationship rows, gear slot keys and `PAGE3_GEAR_SLOTS`, coinage, notes). Do not change page-1 or page-2 interfaces. Do not add `features/`.
+result: `Page3` is `type: 3` with contacts, relationships, keyed gear, coinage, notes. `PAGE3_GEAR_SLOTS` and `PAGE3_DEFAULT_S_SLOTS` export from `page3Interfaces.ts`. `PageV2` includes `Page3`. `tsc --noEmit -p backend/common` succeeds.
+depends on: none
+deviations from design: none
+
+### T-101: Create page-type-3 tables on boot
+status: done
+source: rewrite-ledger/page3-view.md; rewrite-ledger/schema-on-boot.md, 2026-10-04
+why: Live postgres has no type-3 stores. Snapshot and `ensureSchema` must match.
+scope: unindexed `backend/server/db/ensureSchema.ts`; new `backend/server/v2/backupTables/page3.sql`. Do not change `page1.sql` or `page2.sql`. Do not insert `v2CharacterPages` type-3 rows.
+result: `page3.sql` and `createPageType3Tables` create `v2Page3Basics`, `v2Page3Contacts`, `v2Page3Relationships`, `v2Page3Gear`. Fail closed if any table is missing. `grep pageTypeID = 3` in `ensureSchema.ts` is 0.
+depends on: T-100
+deviations from design: none
+
+### T-102: Assemble page type 3 and empty defaults
+status: done
+source: rewrite-ledger/page3-view.md; rewrite-ledger/v2-page-type.md, 2026-10-04
+why: `assembleV2Character` `default` returns `{ type: 404 }`. `getCharacterPages` already loads every `v2CharacterPages` row.
+scope: view primary `backend/server/v2/view/assembleV2Character/assembleV2Character.ts` (`switch` only); new `backend/server/v2/view/assembleV2Character/utilities/pageType3/`; view adjacency `app/src/pages/v2/hooks/updates/emptyPageType3.ts`. Copy structure from `assemblePageType2` / `emptyPageType2`. Do not change `getCharacterName` (still first type-1).
+result: `assemblePageType3` pads all `PAGE3_GEAR_SLOTS`. `assembleV2Character` has `case 3`. `emptyPageType3` matches that skeleton. `getCharacterName` still `pageTypeID = 1`.
+depends on: T-100, T-101
+deviations from design: none
+
+### T-103: Insert one page-type-3 on Create character
+status: done
+source: rewrite-ledger/page3-view.md (Q1 type 3 at index 2), 2026-10-04
+why: `addV2CharacterController` inserts type 1 at 0 and type 2 at 1. The “Add page type 3” comment is not approval; this TODO is.
+scope: create primary `backend/server/v2/add/addV2CharacterController.ts`; new `backend/server/v2/add/pageType3/` (mirror `addPageType2`: insert default basics + one gear row per `PAGE3_GEAR_SLOTS`). Do not backfill existing characters. Do not change home slot limits.
+result: Create inserts type 1 index 0, type 2 index 1, type 3 index 2. `addPageType3` writes basics + every gear slot with the default size set. `grep Add page type 3` in the controller is 0. No type-3 insert in `ensureSchema.ts`.
+depends on: T-101
+deviations from design: none
+
+### T-104: Persist and delete page type 3; gate Save on type-3 count
+status: done
+source: rewrite-ledger/page3-view.md; rewrite-ledger/add-page-type-1.md, 2026-10-04
+why: `savePages` `default` is a no-op. `deletePages` `default` is true. The Save gate counts type 1 and type 2 only.
+scope: edit primary `backend/server/v2/edit/utilities/savePages.ts`; new `backend/server/v2/edit/utilities/persistPageType3.ts` and `backend/server/v2/edit/utilities/pageType3/`; `backend/server/v2/edit/editV2CharacterController.ts` (count gate only); delete `backend/server/v2/delete/utilities/deletePages.ts`; new `backend/server/v2/delete/utilities/deletePagesUtilities/pageType3/`. Copy `persistPageType2` / `savePageType2` / `deletePageType2`. Reuse `backend/server/v2/add/pageType3/`. Do not rewrite `query()`. Do not change `/v2/edit/:characterID/field`.
+result: `savePages` / `deletePages` have `case 3`. Basics and gear upsert. Contacts/relationships delete-not-in. Save refuses if stored type-1 or type-2 or type-3 count is short. `persistPageType3` throws if INSERT yields no `id > 0`.
+depends on: T-100, T-101, T-103
+deviations from design: none
+
+### T-105: Thread pageType3Updates through the v2 hook
+status: done
+source: rewrite-ledger/page3-view.md; rewrite-ledger/v2-page-type.md, 2026-10-04
+why: `getV2Updates` returns type-1, type-2, and gutter. Type-3 cells have no local writers.
+scope: view/edit adjacency `app/src/pages/v2/hooks/updates/pageType3Updates.ts`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `characterHook.tsx`. Do not import v1. Do not add play-time persist attributes here (T-110).
+result: `PageType3Updates` is on `V2UpdateFunctions`. `mapPage3` / find-by-`pageID` copy `mapPage2`. Caps 18 / 18. App tsc reports only the pre-existing missing `frontend-config`.
+depends on: T-100
+deviations from design: none
+
+### T-106: Draw Contacts | Relationships
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-04
+why: Type 3 has no widgets. Official blank page 3 starts with that pair.
+scope: new `app/src/pages/v2/pageTypes/pageType3/` (`PageType3.tsx`, `PageType3.css`, Contacts / Relationships widgets). View adjacency `app/src/pages/v2/V2View.tsx` (`case 3` mount only; gutter is T-111). Reuse `doubleColumn` for this pair only. Do not add `features/`. Do not mount the wordmark.
+result: `V2View` `case 3` mounts `PageType3`. Contacts `DisplaySingleArray` cap 18, `showInsert={true}`. Relationships page-local three-field rows. `grep bonfire-wordmark` / `19.38` / `DisplayTripleArray` under `pageType3/` are 0.
+depends on: T-100, T-105
+deviations from design: none
+
+### T-107: Draw Gear three columns
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-04
+why: Gear is the rest of official blank page 3. Fixed slots, not a v1 list.
+scope: `app/src/pages/v2/pageTypes/pageType3/` Gear widgets. Do not change page type 1 or 2. Do not add `TripleColumn` under `pageTypes/components/`. Flag box look is T-108.
+result: Left 28 / middle 21 / right 20 slots render. Chrome labels, `->`, `*`, Carry Str, QM numbers, coinage, Notes wrap/grow. `grep TripleColumn` and `Gear & Loot` under `pageType3/` are 0.
+depends on: T-106
+deviations from design: none
+
+### T-108: Draw staff-snake and person-meditating flags without a border
+status: done
+source: rewrite-ledger/page3-view.md (Anointed minus border), 2026-10-04
+why: Official blank uses bandage / heart columns. Designer named the FA icons and Anointed-without-border.
+scope: `app/src/pages/v2/pageTypes/pageType3/` Gear flag cells and Gear header icons. Anointed analog is `Favor.tsx` / `Favor.css` (do not import Favor; do not reuse `.anointed-box`).
+result: Header icons `fa-staff-snake` and `fa-person-meditating`. `.page3-flag-box` is 12×12, `fa-check` when true, teal / hover / checked-black. No `border` on that class. `grep anointed-box` under `pageType3/` is 0.
+depends on: T-107
+deviations from design: none
+
+### T-109: Swap page-type-3 edit-only cells to controls
+status: done
+source: rewrite-ledger/page3-view.md; rewrite-ledger/edit-character.md, 2026-10-04
+why: Relationship name and **R** stay `p` on the view. Edit session must swap them without moving boxes.
+scope: `app/src/pages/v2/pageTypes/pageType3/` Relationships (and any other edit-only stored cell). Do not change sidebar or Save POST. Play-time cells already inputs (T-106–T-107).
+result: Relationship `value` and `r` swap to `character-value` inputs in `.view-edit`. Insert-on-blur / clear-to-remove, cap 18. P / Contacts / Gear stay inputs when `!isEditing`.
+depends on: T-106
+deviations from design: none
+
+### T-110: Persist page-type-3 play-time fields
+status: done
+source: rewrite-ledger/page3-view.md; rewrite-ledger/quick-view-inputs.md, 2026-10-04
+why: Named type-3 cells are view controls. Field POST must allowlist them in the same change. Contacts need id-merge like Current Emotions.
+scope: `backend/common/interfaces/v2/page1/viewPersist.ts` (existing home of the allowlist); `backend/server/v2/edit/editV2FieldController.ts`; new writes under `backend/server/v2/edit/utilities/pageType3/`; `app/src/pages/v2/hooks/characterHook.tsx`; `getV2Updates.ts`; `UpdateInterfaces.ts`; `pageType3Updates.ts`; `pageType3` widgets. Same `inFlight` / `isViewSaving` / toast path as `persistViewField`. Do not persist while `isEditing`. Do not add `/quickEdit`. Do not add `features/`.
+result: Allowlist `page3Contacts` (replace-all + `RETURNING id`, merge ids), `page3RelationshipP`, `page3Gear`, `page3Coinage`, `page3Notes`. Unknown attribute still `{ success: false }`. Flag click POSTs while `!isEditing`. `grep /quickEdit` under `pageType3/` is 0.
+depends on: T-104, T-106, T-107, T-108
+deviations from design: attributes live in `page1/viewPersist.ts` because type-2 notes already do.
+
+### T-111: Add + NPCs & Equipment on every card gutter
+status: done
+source: rewrite-ledger/add-page-type-1.md; rewrite-ledger/page3-view.md (Q2 analog, Q3 multiples, Q14 exact label), 2026-10-04
+why: Gutter has Main Info and Skills only. Type 3 needs the playbook labeled add to the right of the last add.
+scope: `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (`spliceBlankAfter` / `addPageType3After`); `getV2Updates.ts`; `UpdateInterfaces.ts` (`PageGutterUpdates`). Do not persist on click. No tooltip. No dropdown.
+result: Third add is `<i class="fa-solid fa-plus"></i> NPCs & Equipment` on every gutter. `addPageType3After` splices `emptyPageType3`. No `data-tooltip` on that button.
+depends on: T-102, T-104, T-105
+deviations from design: `fa-plus` prefix matches Main Info / Skills; Q14 forbids a tooltip, not the plus icon.
+
+### T-112: Index page-type-3 paths on existing L1 keys
+status: done
+source: rewrite-ledger/v2-page-type.md; rewrite-ledger/feature-index.md, 2026-10-04
+why: Indexed files added under view/edit/create/delete must update root YAML in the same body of work. No new user-objective key for “page type 3.”
+scope: repository `00-START-HERE.yaml` `routing` adjacencies for view / edit / create / delete / add sheet page only. Do not add a `page type 3` L1 key.
+result: Root YAML `adjacent` lists `pageType3` / `page3` trees on view, edit, create, add sheet, and delete. `grep "page type 3"` under `00-START-HERE.yaml` `routing` keys is 0.
+depends on: T-100–T-111
+deviations from design: none
+
 ### T-097: Allowlist currentEmotions on the field POST
 status: done
 source: rewrite-ledger/quick-view-inputs.md, rewrite-ledger/page1-view.md, 2026-10-04 (design Q2 A, Q4 max 9, Q6 RETURNING id, Q8 both)

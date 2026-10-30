@@ -79,6 +79,7 @@ export default async function ensureSchema() {
     await dropCharacterIdOnlyUniquesOnPages()
 
     await createPageType2Tables()
+    await createPageType3Tables()
 }
 
 async function createPageType2Tables() {
@@ -139,6 +140,76 @@ async function createPageType2Tables() {
         if (!await tableExists(table)) {
             throw new Error(`ensureSchema: ${table} missing`)
         }
+    }
+}
+
+async function createPageType3Tables() {
+    await query(`create table if not exists v2Page3Basics (
+        id serial primary key,
+        pageID integer unique,
+        contacts text default '',
+        notes text default '',
+        copper integer default 0,
+        copperSize varchar(50) default '',
+        silver integer default 0,
+        silverSize varchar(50) default '',
+        gold integer default 0,
+        goldSize varchar(50) default '',
+        platinum integer default 0,
+        platinumSize varchar(50) default ''
+    )`)
+    await query(`create unique index if not exists v2page3basics_pageid_uidx
+        on v2Page3Basics (pageID)`)
+    await query(`alter table v2Page3Basics add column if not exists contacts text default ''`)
+    if (await tableExists('v2page3contacts')) {
+        await query(`insert into v2Page3Basics (pageID)
+            select distinct pageID from v2page3contacts c
+            where not exists (
+                select 1 from v2Page3Basics b where b.pageID = c.pageID
+            )`)
+        await query(`update v2Page3Basics b
+            set contacts = joined.text
+            from (
+                select pageID,
+                    coalesce(string_agg(value, E'\\n' order by index, id) filter (where value is not null and value <> ''), '') as text
+                from v2page3contacts
+                group by pageID
+            ) joined
+            where b.pageID = joined.pageID
+              and (b.contacts is null or b.contacts = '')`)
+        await query(`drop table v2page3contacts`)
+    }
+    await query(`create table if not exists v2Page3Relationships (
+        id serial primary key,
+        pageID integer,
+        value varchar(500),
+        r integer,
+        p integer,
+        index integer
+    )`)
+    await query(`create table if not exists v2Page3Gear (
+        id serial primary key,
+        pageID integer,
+        slot varchar(50),
+        item varchar(500) default '',
+        size varchar(50) default '',
+        staffSnake boolean default false,
+        meditating boolean default false,
+        w integer,
+        unique (pageID, slot)
+    )`)
+
+    for (const table of [
+        'v2page3basics',
+        'v2page3relationships',
+        'v2page3gear'
+    ]) {
+        if (!await tableExists(table)) {
+            throw new Error(`ensureSchema: ${table} missing`)
+        }
+    }
+    if (!await columnExists('v2page3basics', 'contacts')) {
+        throw new Error('ensureSchema: v2page3basics.contacts missing')
     }
 }
 

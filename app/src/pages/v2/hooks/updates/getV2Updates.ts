@@ -8,10 +8,13 @@ import { Damage, SelfDoubt, Stress } from "@vault/common/interfaces/v2/page1/vit
 import { Dispatch } from "redux"
 import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice"
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
-import { PageGutterUpdates, PageType1Updates, PageType2Updates } from "../interfaces/UpdateInterfaces"
+import { Page3Coinage, Page3Relationship } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { Page3GearValue, Page3RelationshipDeleteValue, Page3RelationshipPValue, Page3RelationshipRValue, Page3RelationshipValue } from "@vault/common/interfaces/v2/page1/viewPersist"
+import { PageGutterUpdates, PageType1Updates, PageType2Updates, PageType3Updates } from "../interfaces/UpdateInterfaces"
 import {
     addPageAfter as insertPageAfter,
     addPageType2After as insertPageType2After,
+    addPageType3After as insertPageType3After,
     movePageToBottom as moveToBottom,
     movePageToTop as moveToTop,
     otherPageType1Names,
@@ -56,6 +59,26 @@ import {
     updateGeneralSuiteField,
     updateNativeLanguage
 } from "./pageType2Updates"
+import {
+    insertRelationship,
+    updateCoinage,
+    updateContacts,
+    updateGearCell,
+    updateNotes,
+    updateRelationship
+} from "./pageType3Updates"
+
+export interface Page3PersistFns {
+    persistPage3Contacts: (pageID: number, value: string) => void
+    persistPage3RelationshipValue: (pageID: number, value: Page3RelationshipValue) => void
+    persistPage3RelationshipR: (pageID: number, value: Page3RelationshipRValue) => void
+    persistPage3RelationshipP: (pageID: number, value: Page3RelationshipPValue) => void
+    persistPage3RelationshipInsert: (pageID: number, row: { key: string, value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }) => void
+    persistPage3RelationshipDelete: (pageID: number, value: Page3RelationshipDeleteValue) => void
+    persistPage3Gear: (pageID: number, value: Page3GearValue) => void
+    persistPage3Coinage: (pageID: number, value: Page3Coinage) => void
+    persistPage3Notes: (pageID: number, value: string) => void
+}
 
 function findPage1(character: CharacterVersion2, pageID: number): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1 && page.pageID === pageID)
@@ -78,8 +101,9 @@ export default function getV2Updates(
     setCharacter: (character: CharacterVersion2) => void,
     dispatch: Dispatch,
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void,
-    persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void
-): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageGutterUpdates: PageGutterUpdates } {
+    persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void,
+    page3Persist: Page3PersistFns
+): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageType3Updates: PageType3Updates, pageGutterUpdates: PageGutterUpdates } {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
         return next
@@ -247,6 +271,42 @@ export default function getV2Updates(
         }
     }
 
+    const pageType3Updates: PageType3Updates = {
+        updateContacts: (pageID, value) => {
+            if (!character) { return }
+            apply(updateContacts(character, pageID, value))
+        },
+        insertRelationship: (pageID, newRow) => {
+            if (!character) { return }
+            apply(insertRelationship(character, pageID, newRow))
+        },
+        updateRelationship: (pageID, index, next) => {
+            if (!character) { return }
+            apply(updateRelationship(character, pageID, index, next))
+        },
+        updateGearCell: (pageID, slot, patch) => {
+            if (!character) { return }
+            apply(updateGearCell(character, pageID, slot, patch))
+        },
+        updateCoinage: (pageID, patch) => {
+            if (!character) { return }
+            apply(updateCoinage(character, pageID, patch))
+        },
+        updateNotes: (pageID, value) => {
+            if (!character) { return }
+            apply(updateNotes(character, pageID, value))
+        },
+        persistPage3Contacts: page3Persist.persistPage3Contacts,
+        persistPage3RelationshipValue: page3Persist.persistPage3RelationshipValue,
+        persistPage3RelationshipR: page3Persist.persistPage3RelationshipR,
+        persistPage3RelationshipP: page3Persist.persistPage3RelationshipP,
+        persistPage3RelationshipInsert: page3Persist.persistPage3RelationshipInsert,
+        persistPage3RelationshipDelete: page3Persist.persistPage3RelationshipDelete,
+        persistPage3Gear: page3Persist.persistPage3Gear,
+        persistPage3Coinage: page3Persist.persistPage3Coinage,
+        persistPage3Notes: page3Persist.persistPage3Notes
+    }
+
     const pageGutterUpdates: PageGutterUpdates = {
         addPageAfter: (afterIndex) => {
             if (!character) { return }
@@ -255,6 +315,10 @@ export default function getV2Updates(
         addPageType2After: (afterIndex) => {
             if (!character) { return }
             apply(insertPageType2After(character, afterIndex))
+        },
+        addPageType3After: (afterIndex) => {
+            if (!character) { return }
+            apply(insertPageType3After(character, afterIndex))
         },
         swapPageWithNext: (index) => {
             if (!character) { return }
@@ -270,7 +334,7 @@ export default function getV2Updates(
         }
     }
 
-    return { pageType1Updates, pageType2Updates, pageGutterUpdates }
+    return { pageType1Updates, pageType2Updates, pageType3Updates, pageGutterUpdates }
 }
 
 function applyReorder(
