@@ -2,6 +2,7 @@ import '../View.css'
 import './V2View.css'
 import { Fragment, useEffect, useState } from "react"
 import { useBlocker } from "react-router-dom"
+import { toast } from "react-toastify"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
@@ -10,6 +11,7 @@ import PageType3 from './pageTypes/pageType3/PageType3'
 import PageType4 from './pageTypes/pageType4/PageType4'
 import EditingContext from './contexts/EditingContext'
 import Sidebar from './components/sidebar/Sidebar'
+import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from '@vault/common/interfaces/v2/sheetPageCap'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -84,6 +86,22 @@ export default function V2View({ setLoading, pathname }: Props) {
         setIsEditing(false)
     }
 
+    const [disclosedPageIDs, setDisclosedPageIDs] = useState<number[]>([])
+
+    useEffect(() => {
+        if (!isEditing) {
+            setDisclosedPageIDs(ids => ids.length === 0 ? ids : [])
+        }
+    }, [isEditing])
+
+    const disclosePage = (pageID: number) => {
+        setDisclosedPageIDs(ids => ids.includes(pageID) ? ids : [...ids, pageID])
+    }
+
+    const restPage = (pageID: number) => {
+        setDisclosedPageIDs(ids => ids.includes(pageID) ? ids.filter(id => id !== pageID) : ids)
+    }
+
     const scrollSheetIntoView = (pageID: number) => {
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -125,62 +143,149 @@ export default function V2View({ setLoading, pathname }: Props) {
                                     </div>
                                     {isEditing &&
                                         <div className="page-gutter">
-                                            {index < character.pages.length - 1 &&
-                                                <button
-                                                    type="button"
-                                                    className="bottom-buttons"
-                                                    data-tooltip-id="my-tooltip"
-                                                    data-tooltip-content="Swap the above sheet with the sheet below"
-                                                    onClick={() => {
-                                                        pageGutterUpdates.swapPageWithNext(index)
-                                                        scrollSheetIntoView(page.pageID)
-                                                    }}
-                                                ><i className="fa-solid fa-arrow-up-arrow-down"></i></button>
-                                            }
-                                            {index > 0 &&
-                                                <button
-                                                    type="button"
-                                                    className="bottom-buttons"
-                                                    data-tooltip-id="my-tooltip"
-                                                    data-tooltip-content="Move the above sheet to the top"
-                                                    onClick={() => {
-                                                        pageGutterUpdates.movePageToTop(index)
-                                                        scrollSheetIntoView(page.pageID)
-                                                    }}
-                                                ><i className="fa-solid fa-up-to-line"></i></button>
-                                            }
-                                            {index < character.pages.length - 1 &&
-                                                <button
-                                                    type="button"
-                                                    className="bottom-buttons"
-                                                    data-tooltip-id="my-tooltip"
-                                                    data-tooltip-content="Move above sheet to the bottom"
-                                                    onClick={() => {
-                                                        pageGutterUpdates.movePageToBottom(index)
-                                                        scrollSheetIntoView(page.pageID)
-                                                    }}
-                                                ><i className="fa-solid fa-down-to-line"></i></button>
-                                            }
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageAfter(index)}
-                                            ><i className="fa-solid fa-plus"></i> Main Info</button>
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageType2After(index)}
-                                            ><i className="fa-solid fa-plus"></i> Skills & Abilities</button>
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageType3After(index)}
-                                            ><i className="fa-solid fa-plus"></i> NPCs & Equipment</button>
-                                            <button
-                                                type="button"
-                                                className="bottom-buttons add-page"
-                                                onClick={() => pageGutterUpdates.addPageType4After(index)}
-                                            ><i className="fa-solid fa-plus"></i> Notes</button>
+                                            {disclosedPageIDs.includes(page.pageID) ? (
+                                                <>
+                                                    {character.pages.length < SHEET_PAGE_MAX &&
+                                                        <h4
+                                                            key="page-count"
+                                                            className="page-count"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}
+                                                        >{character.pages.length} / {SHEET_PAGE_MAX}</h4>
+                                                    }
+                                                    <button
+                                                        key="add-main"
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
+                                                            pageGutterUpdates.addPageAfter(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> Main Info</button>
+                                                    <button
+                                                        key="add-skills"
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
+                                                            pageGutterUpdates.addPageType2After(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> Skills & Abilities</button>
+                                                    <button
+                                                        key="add-npcs"
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
+                                                            pageGutterUpdates.addPageType3After(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> NPCs & Equipment</button>
+                                                    <button
+                                                        key="add-notes"
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
+                                                            pageGutterUpdates.addPageType4After(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> Notes</button>
+                                                    <button
+                                                        key="rest"
+                                                        type="button"
+                                                        className="primary"
+                                                        data-tooltip-id="my-tooltip"
+                                                        data-tooltip-content="Never mind"
+                                                        onClick={() => restPage(page.pageID)}
+                                                    ><i className="fa-solid fa-rotate-left"></i></button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {index < character.pages.length - 1 &&
+                                                        <button
+                                                            key="swap"
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Swap the above sheet with the sheet below"
+                                                            onClick={() => {
+                                                                pageGutterUpdates.swapPageWithNext(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-arrow-up-arrow-down"></i></button>
+                                                    }
+                                                    {index > 0 &&
+                                                        <button
+                                                            key="top"
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Move the above sheet to the top"
+                                                            onClick={() => {
+                                                                pageGutterUpdates.movePageToTop(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-up-to-line"></i></button>
+                                                    }
+                                                    {index < character.pages.length - 1 &&
+                                                        <button
+                                                            key="bottom"
+                                                            type="button"
+                                                            className="bottom-buttons"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Move above sheet to the bottom"
+                                                            onClick={() => {
+                                                                pageGutterUpdates.movePageToBottom(index)
+                                                                scrollSheetIntoView(page.pageID)
+                                                            }}
+                                                        ><i className="fa-solid fa-down-to-line"></i></button>
+                                                    }
+                                                    {character.pages.length >= SHEET_PAGE_MAX ? (
+                                                        <span
+                                                            key="disclose"
+                                                            className="add-page"
+                                                            tabIndex={0}
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                className="bottom-buttons"
+                                                                disabled
+                                                                style={{ pointerEvents: 'none' }}
+                                                            ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            key="disclose"
+                                                            type="button"
+                                                            className="bottom-buttons add-page"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Click to Add New Pages"
+                                                            onClick={() => disclosePage(page.pageID)}
+                                                        ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                    )}
+                                                </>
+                                            )}
                                         </div>
                                     }
                                 </Fragment>

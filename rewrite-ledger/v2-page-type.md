@@ -28,7 +28,7 @@ Sheet-wide session (already on the v2 slice; new pages plug in):
 - New tables/columns: `ensureSchema` idempotent patch + `backupTables/pageN.sql` in the same change (`schema-on-boot.md`). No new migration package.
 - Play-time view controls (always-visible inputs, field POST, location highlight) are **not** automatic. Add them only when that page’s topic names the cells. Mechanics: `quick-view-inputs.md`. New allowlist attributes and column UPDATEs ship in the same change as the control.
 - Two-column shell: reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Do not add `features/`, `widgets/`, or `shared/`.
-- Off-card gutter under each sheet card: **+ Main Info**, **+ Skills & Abilities**, **+ NPCs & Equipment**, and **+ Notes** (`add-page-type-1.md`) and reorder controls (`page-reorder.md`). Main Info inserts type 1. Skills inserts type 2. NPCs & Equipment inserts type 3. Notes inserts type 4 (`page4-view.md`). Every new type adds one labeled add to the right of the last add. Mechanics: `add-page-type-1.md`. Do not put that cluster on the printed blank.
+- Off-card gutter under each sheet card. Resting: reorder (`page-reorder.md`) and `fa-file-circle-plus`. Disclosed: **+ Main Info**, **+ Skills & Abilities**, **+ NPCs & Equipment**, and **+ Notes**, then far-right `fa-rotate-left` (`add-page-type-1.md`). Main Info inserts type 1. Skills inserts type 2. NPCs & Equipment inserts type 3. Notes inserts type 4 (`page4-view.md`). Every new type adds one labeled add to the right of the last add, inside the disclosed set, before the rotate-left button. Mechanics, including the 15-sheet cap: `add-page-type-1.md`. Do not put that cluster on the printed blank.
 
 Vertical slice (every new page type adds all of these):
 
@@ -39,7 +39,7 @@ Vertical slice (every new page type adds all of these):
 | Contracts | `backend/common/interfaces/v2/page1/`; union `PageV2` in `pageTypes.ts` |
 | Assemble | `backend/server/v2/view/assembleV2Character/utilities/pageType1/`; `assembleV2Character.ts` `switch` (`default` → `{ type: 404 }`) |
 | Create defaults | `backend/server/v2/add/pageType1/`; `addV2CharacterController.ts` today inserts `pageTypeID` 1 only |
-| Gutter add | `emptyPageType1` + `addPageAfter`; type 2: `emptyPageType2` + `addPageType2After`; buttons in `V2View` (`add-page-type-1.md`). Type N: `emptyPageTypeN`, `addPageTypeNAfter`, one labeled `+ …` to the right of the last add, on every card, same chrome, insert after that card, no scroll. Label is named on `pageN-view.md`. Save count-gate includes type N. Not Create. Not a dropdown or shared add-button factory. |
+| Gutter add | `emptyPageType1` + `addPageAfter`; type 2: `emptyPageType2` + `addPageType2After`; buttons in `V2View` (`add-page-type-1.md`). Type N: `emptyPageTypeN`, `addPageTypeNAfter`, one labeled `+ …` to the right of the last add, on every card, same chrome, insert after that card, no scroll. That label is in the disclosed set, after file-circle-plus and before the far-right `fa-rotate-left`. Label is named on `pageN-view.md`. Save count-gate includes type N. Not Create. Not a dropdown or shared add-button factory. |
 | Persist | `backend/server/v2/edit/utilities/pageType1/`; `savePages.ts` `switch` (`default` no-op) |
 | Delete | `backend/server/v2/delete/utilities/deletePagesUtilities/pageType1/`; `deletePages.ts` `switch` (`default` true) |
 | Schema snapshot | `backend/server/v2/backupTables/page1.sql` |
@@ -95,5 +95,8 @@ Revised 2026-10-30 (page type 4 general notes):
 - Sheet-wide blank, fonts, and `character-value` on every v2 sheet page — **revised** for type 4 only. Types 1, 2, and 3 **retained**.
 - “Attaches that page’s official blank” before Order — **revised** for type 4: the designer named Excalidraw and no blank. Later types still bring a blank.
 
+Revised 2026-10-30 (gutter disclosure, `add-page-type-1.md`):
+- Gutter lists both clusters as one always-visible row — **revised**: resting versus disclosed. Labeled adds, including **+ Notes**, stay the disclosed set.
+
 Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `page4-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
-TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`)
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`); disclosure: T-145 (done); sheet cap: T-147, T-148 (done); add-click guard: T-149 (done; `add-page-type-1.md`)

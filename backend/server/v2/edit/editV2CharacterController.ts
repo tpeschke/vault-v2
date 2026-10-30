@@ -8,6 +8,7 @@ import { getCharacterOwnerID } from '../view/assembleV2Character/utilities/owner
 import { getV2Character, ViewRequest } from '../view/viewV2CharacterController'
 import savePages from './utilities/savePages'
 import notesScenesWithinCap from './utilities/pageType4/notesScenesWithinCap'
+import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from '@vault/common/interfaces/v2/sheetPageCap'
 
 const countType1PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 1`
 const countType2PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 2`
@@ -49,6 +50,10 @@ export async function editV2Character(request: EditRequest, response: Response) 
     const ownerID = await getCharacterOwnerID(characterID)
 
     if (ownerID === request.user?.id) {
+        if (pages.length > SHEET_PAGE_MAX) {
+            checkForContentTypeBeforeSending(response, { message: SHEET_PAGE_CAP_MESSAGE })
+            return
+        }
         if (!notesScenesWithinCap(pages)) {
             checkForContentTypeBeforeSending(response, { message: 'Notes sheet is limited to 100 MB' })
             return
