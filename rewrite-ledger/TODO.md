@@ -6,8 +6,10 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-123: Keep staff-snake, the arrow, and the check as kit icons
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: The meditating head is an `<img>` of the Gear SVG. Staff-snake, the Size arrow, and the check are still `<i class="fa-solid">`. Kit `db12ee03d1` has `"method":"js"` and loads `pro.min.js`, so those `<i>` tags are replaced with `<svg class="svg-inline--fa">`. Gear.css sizes the head with `strong i` and places the check with `.page3-flag-box i`. Those selectors do not match the replacement, so the three kit icons lose the box the img still has.
 scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`. Owner: `rewrite-ledger/page3-view.md`. Do not edit `Gear.tsx` icon tags, `app/index.html`, `Favor.css`, or `index.css`. Do not add an img or an inlined svg for staff-snake, the arrow, or the check.
@@ -20,9 +22,7 @@ done when: `Gear.tsx` still has one `img` and still has `fa-staff-snake`, `fa-ar
 depends on: T-121 (done)
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: Gear.css also matches the kit’s `svg.svg-inline--fa` for staff-snake (font-size 12px) and the check (font-size 20px, absolute, top -4px, left -4px). Gear.tsx tags are unchanged; the meditating head stays the 18×18 img. Headless Chrome with kit `db12ee03d1`: those three icons become svg; the arrow inherits 12px from `.page3-gear-chrome` and has no new size rule.
 
 ### T-121: Align Gear tracks, use the meditating SVG, and lock printed S
 status: done

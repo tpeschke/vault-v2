@@ -108,7 +108,8 @@
     align-items: flex-start;
 }
 
-.page3-gear-head > strong i {
+.page3-gear-head > strong i,
+.page3-gear-head > strong > svg.svg-inline--fa.fa-staff-snake {
     font-size: 12px;
 }
 
@@ -132,7 +133,8 @@
     background: #e8e8e8;
 }
 
-.page3-flag-box i {
+.page3-flag-box i,
+.page3-flag-box > svg.svg-inline--fa.fa-check {
     font-size: 20px;
     position: absolute;
     top: -4px;
