@@ -4,6 +4,7 @@ import {
     GENERAL_SUITE_KEYS,
     SkillNumber
 } from "@vault/common/interfaces/v2/page2/page2Interfaces"
+import { textareaCaps, textareaCharCount, TextareaLimitError } from "@vault/common/textareaLimits"
 import query from "../../../../db/database"
 
 const upsertBasicsSQL = `insert into v2Page2Basics (
@@ -66,6 +67,13 @@ export default async function savePageType2(page: Page2): Promise<void> {
         abilities,
         burdens
     } = page
+
+    if (textareaCharCount(generalSkillNotes ?? '') > textareaCaps.generalSkillNotes
+        || textareaCharCount(combatSkillNotes ?? '') > textareaCaps.combatSkillNotes
+        || textareaCharCount(abilities ?? '') > textareaCaps.abilities
+        || textareaCharCount(burdens ?? '') > textareaCaps.burdens) {
+        throw new TextareaLimitError()
+    }
 
     await query(upsertBasicsSQL, [
         pageID,

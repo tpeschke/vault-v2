@@ -1,4 +1,5 @@
 import { ShieldInfo } from '@vault/common/interfaces/v1/pageTwo/shieldInterfaces'
+import { holdTextareaScroll } from '@vault/common/textareaLimits'
 import './ShieldWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
@@ -62,7 +63,7 @@ export default function ShieldWorkspace({ shieldInfo, shieldUpdates }: Props) {
                 <span className='bonus-shell'>
                     <strong>Bonus</strong>
                     {isEditing ?
-                        <textarea onChange={(event: any) => updateBasicShieldInfo('bonus', event.target.value)} value={bonus} />
+                        <textarea onScroll={event => holdTextareaScroll(event.currentTarget)} onChange={(event: any) => updateBasicShieldInfo('bonus', event.target.value)} value={bonus} />
                         :
                         <p>{bonus}</p>
                     }

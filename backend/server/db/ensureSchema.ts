@@ -1,3 +1,4 @@
+import { textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import query from './database'
 
 export default async function ensureSchema() {
@@ -210,6 +211,34 @@ async function createPageType3Tables() {
     }
     if (!await columnExists('v2page3basics', 'contacts')) {
         throw new Error('ensureSchema: v2page3basics.contacts missing')
+    }
+
+    await trimTextareaColumn('v2attacks', 'notes', textareaCaps.attackNotes)
+    await trimTextareaColumn('v2defenses', 'notes', textareaCaps.defenseNotes)
+    await trimTextareaColumn('v2favor', 'divinerelationship', textareaCaps.divineRelationship)
+    await trimTextareaColumn('v2page2basics', 'generalskillnotes', textareaCaps.generalSkillNotes)
+    await trimTextareaColumn('v2page2basics', 'combatskillnotes', textareaCaps.combatSkillNotes)
+    await trimTextareaColumn('v2page2basics', 'abilities', textareaCaps.abilities)
+    await trimTextareaColumn('v2page2basics', 'burdens', textareaCaps.burdens)
+    await trimTextareaColumn('v2page3basics', 'contacts', textareaCaps.page3Contacts)
+    await trimTextareaColumn('v2page3basics', 'notes', textareaCaps.page3Notes)
+}
+
+async function trimTextareaColumn(tableName: string, columnName: string, cap: number) {
+    if (!await columnExists(tableName, columnName)) {
+        return
+    }
+    const rows = await query(
+        `select id, ${columnName} as value from ${tableName} where char_length(${columnName}) > $1`,
+        cap
+    )
+    for (const row of rows) {
+        const current = String(row.value ?? '')
+        const next = trimTextarea(current, cap)
+        if (next === current) {
+            continue
+        }
+        await query(`update ${tableName} set ${columnName} = $1 where id = $2`, [next, row.id])
     }
 }
 

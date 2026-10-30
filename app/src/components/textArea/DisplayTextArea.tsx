@@ -7,14 +7,15 @@ import { UpdateAbilitiesFunction } from '../../pages/v1/hooks/interfaces/pageOne
 interface Props {
     lines: number,
     value?: string,
-    onChange?: UpdateAbilitiesFunction
+    onChange?: UpdateAbilitiesFunction,
+    max?: number
 }
 
-export default function DisplayTextArea({ lines, value, onChange }: Props) {
+export default function DisplayTextArea({ lines, value, onChange, max }: Props) {
     const isEditing = useContext(EditingContext)
     
     if (isEditing) {
-        return <TextArea lines={lines} value={value} onChange={onChange}/>
+        return <TextArea lines={lines} value={value} onChange={onChange} max={max}/>
     }
 
     return (
@@ -22,7 +23,7 @@ export default function DisplayTextArea({ lines, value, onChange }: Props) {
             <div>
                 {[...Array(lines).keys()].map((_, index) => <p key={index}></p>)}
             </div>
-            <p className='value' style={{height: `${lines * 19}px`}} >{value}</p>
+            <p className='value' style={{ height: `${lines * 19}px`, maxHeight: `${lines * 19}px` }}>{value}</p>
         </div>
     )
 }

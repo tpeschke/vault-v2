@@ -1,4 +1,5 @@
 import { WeaponInfo } from '@vault/common/interfaces/v1/pageTwo/weaponInterfaces'
+import { holdTextareaScroll } from '@vault/common/textareaLimits'
 import './WeaponWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
@@ -83,7 +84,7 @@ export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, w
                 <span className={`bonus-shell ${isRanged ? 'ranged-bonus' : ''}`}>
                     <strong>Bonus</strong>
                     {isEditing ?
-                        <textarea onChange={(event: any) => updateBasicWeaponInfo(index, 'bonus', event.target.value)} value={bonus} />
+                        <textarea onScroll={event => holdTextareaScroll(event.currentTarget)} onChange={(event: any) => updateBasicWeaponInfo(index, 'bonus', event.target.value)} value={bonus} />
                         :
                         <p>{bonus}</p>
                     }
@@ -91,7 +92,7 @@ export default function WeaponWorkspace({ weaponInfo, index, isRanged = false, w
                 <span className='bonus-shell trait-shell'>
                     <strong>Traits</strong>
                     {isEditing ?
-                        <textarea onChange={(event: any) => updateBasicWeaponInfo(index, 'traits', event.target.value)} value={traits} />
+                        <textarea onScroll={event => holdTextareaScroll(event.currentTarget)} onChange={(event: any) => updateBasicWeaponInfo(index, 'traits', event.target.value)} value={traits} />
                         :
                         <p>{traits}</p>
                     }

@@ -1,6 +1,7 @@
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import { PAGE3_GEAR_SLOTS, Page3Coinage } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
+import { textareaCaps, textareaCharCount, TextareaLimitError } from "@vault/common/textareaLimits"
 import query from "../../../../db/database"
 import savePage3Relationships from "./savePage3Relationships"
 
@@ -48,6 +49,11 @@ function coinageParams(coinage: Page3Coinage) {
 
 export default async function savePageType3(page: Page3): Promise<void> {
     const { pageID, contacts, relationships, gear, coinage, notes } = page
+
+    if (textareaCharCount(contacts ?? '') > textareaCaps.page3Contacts
+        || textareaCharCount(notes ?? '') > textareaCaps.page3Notes) {
+        throw new TextareaLimitError()
+    }
 
     await query(upsertBasicsSQL, [pageID, contacts ?? '', notes ?? '', ...coinageParams(coinage)])
     await savePage3Relationships(pageID, relationships ?? [])

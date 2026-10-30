@@ -1,4 +1,5 @@
 import { ArmorInfo } from '@vault/common/interfaces/v1/pageTwo/combatInterfaces/armorInterfaces'
+import { holdTextareaScroll } from '@vault/common/textareaLimits'
 import './ArmorWorkspace.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
@@ -47,7 +48,7 @@ export default function ArmorWorkspace({ armorInfo, armorUpdates }: Props) {
                 <span className='bonus-shell'>
                     <strong>Bonus</strong>
                     {isEditing ?
-                        <textarea onChange={(event: any) => updateBasicArmorInfo('bonus', event.target.value)} value={bonus} />
+                        <textarea onScroll={event => holdTextareaScroll(event.currentTarget)} onChange={(event: any) => updateBasicArmorInfo('bonus', event.target.value)} value={bonus} />
                         :
                         <p>{bonus}</p>
                     }

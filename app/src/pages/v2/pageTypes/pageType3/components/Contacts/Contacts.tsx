@@ -1,4 +1,5 @@
 import './Contacts.css'
+import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import { PageType3Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
@@ -14,9 +15,12 @@ export default function Contacts({ contacts, pageID, updates }: Props) {
             <textarea
                 className="character-value"
                 placeholder=" "
+                maxLength={textareaCaps.page3Contacts}
                 value={contacts ?? ''}
-                onChange={event => updates.updateContacts(pageID, event.target.value)}
-                onBlur={event => updates.persistPage3Contacts(pageID, event.target.value)}
+                onScroll={event => holdTextareaScroll(event.currentTarget)}
+                onChange={event => updates.updateContacts(pageID, clampTextareaChange(event.target.value, textareaCaps.page3Contacts, isComposingInput(event)))}
+                onCompositionEnd={event => updates.updateContacts(pageID, trimTextarea(event.currentTarget.value, textareaCaps.page3Contacts))}
+                onBlur={event => updates.persistPage3Contacts(pageID, trimTextarea(event.target.value, textareaCaps.page3Contacts))}
             />
         </div>
     )

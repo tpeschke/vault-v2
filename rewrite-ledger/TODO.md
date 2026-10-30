@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+None.
+
+## Done
+
 ### T-134: Put the textarea counter and known caps in @vault/common
-status: proposed
+status: done
 source: rewrite-ledger/textarea-limits.md, 2026-10-30 (Q3 default 1350, tighter caps stay, Contacts is the one replaced max, Q4 code points with newlines as 1, Q6 common area)
 why: Front and server gates diverge if each counts UTF-16 or slices on its own. `@vault/common` is already imported by both.
 scope: new `backend/common/textareaLimits.ts` (owner: `@vault/common`). No `app/src/shared/`. No `features/`. Do not change input caps (Current Emotions 25, description emotions 25, relationship `value` 500).
@@ -20,11 +24,12 @@ steps:
 done when: `npx tsc -p backend/common` exits 0. A one-off node check of the built module (or `tsx`) shows `textareaCharCount('a\r\nb') === 3`, `textareaCharCount('😀') === 1`, `trimTextarea('abcd', 3) === 'abc'`, and `trimTextarea('ab', 3) === 'ab'`.
 depends on: none
 open questions: none
-deviations from design: none
+deviations from design: also exports `clampTextareaChange`, `isComposingInput`, and `TextareaLimitError` so the browser clamp and the server refusal share this file.
 result:
+`textareaLimits.ts` has `TEXTAREA_DEFAULT_MAX` 1350 and the named caps. `tsc -p backend/common` exits 0. tsx: `a\r\nb` counts 3, `😀` counts 1, `trimTextarea('abcd', 3)` is `abc`, `trimTextarea('ab', 3)` is `ab`.
 
 ### T-135: Read v1 textarea column caps; do not guess
-status: proposed
+status: done
 source: rewrite-ledger/textarea-limits.md, 2026-10-30 (Q3 specific limits override 1350)
 why: v1 textarea columns are not in the repo. A guessed cap either rejects legal rows or writes past `varchar(n)`.
 scope: `backend/common/textareaLimits.ts`. Columns: `cvcharactermain.contacts` (Allies, Contacts, & Assets — not the page-type-3 Contacts pane), `abilitiesone`, `abilitiestwo`, `abilitiesthree` (burdens), `generalnotes`; `cvarmor.armorbonus`; `cvshield.shieldbonus`; `weaponone`/`weapontwo`/`weaponthree`/`weaponfour` `bonus` and `traits`. Do not ALTER these columns.
@@ -35,11 +40,12 @@ steps:
 done when: the new caps are exported from `textareaLimits.ts` and match the catalog query, or the TODO result says Postgres was unreachable and no v1 cap was added. `npx tsc -p backend/common` exits 0.
 depends on: T-134
 open questions: none unless the catalog cannot be read or weapon columns disagree
-deviations from design: none
+deviations from design: stopped at step 1. No column length was read and no v1 cap was added.
 result:
+No `server-config` and no reachable Postgres. No v1 cap was added. `tsc -p backend/common` exits 0.
 
 ### T-136: Trim stored textarea values to their caps
-status: proposed
+status: done
 source: rewrite-ledger/textarea-limits.md, 2026-10-30 (Q5 trim); rewrite-ledger/schema-on-boot.md
 why: `text` columns can already hold more than 1350 characters, including page-type-3 Contacts after the row join. The boot script is the only migration path.
 scope: unindexed `backend/server/db/ensureSchema.ts`. Use `trimTextarea` from `@vault/common/textareaLimits`. Do not add `node-pg-migrate`. Do not change column types. `v2Page3Basics.contacts` stays `text`.
@@ -49,11 +55,12 @@ steps:
 done when: a second run of the new statements changes 0 rows. `npx tsc -p backend/server` exits 0. Grep of `ensureSchema.ts` shows no new `varchar(1350)`.
 depends on: T-134. v1 columns also depend on T-135; if T-135 stopped because Postgres was unreachable, trim only the T-134 columns and say so in the result.
 open questions: none
-deviations from design: none
+deviations from design: v1 columns were not trimmed because T-135 stopped. The second run was not executed; this environment has no Postgres.
 result:
+Boot trim selects `char_length` over the cap on the nine T-134 columns, writes `trimTextarea`, and skips a missing column. Grep of `ensureSchema.ts` for `varchar(1350)` is 0. `tsc -p backend/server` reports only the missing `server-config`.
 
 ### T-137: Refuse over-cap textarea writes
-status: proposed
+status: done
 source: rewrite-ledger/textarea-limits.md, 2026-10-30 (gates on the server; do not slice a new write)
 why: `maxLength` is bypassable. `text` columns will store an over-cap string. Current Emotions already refuses an over-long field write.
 scope: v2 `editV2FieldController.ts` for `generalSkillNotes`, `combatSkillNotes`, `page3Contacts`, and `page3Notes`; `saveAttacks.ts`; `saveDefenses.ts`; `saveFavor.ts`; `savePageType2.ts`; `savePageType3.ts` (`contacts`, `notes`). v1 `cultureNAssets.ts`; `abilityNBurdens.ts`; `pageThree/generalNotes.ts` (`generalnotes` only); `armorInfo.ts`; `shieldInfo.ts`; `weaponInfo.ts`; quick-edit `stringUpdates/assets.ts` and `stringUpdates/notes.ts`. Use `textareaCharCount` and the named caps. Do not change input writes. Do not slice the stored string in these handlers.
@@ -66,11 +73,12 @@ steps:
 done when: `npx tsc -p backend/server` exits 0. Grep shows `textareaCharCount` in each file in scope. A too-long `page3Contacts` field POST returns `{ success: false }` and does not change the row (manual or existing request path; say which).
 depends on: T-134. v1 fields also depend on T-135.
 open questions: none
-deviations from design: none
+deviations from design: v1 files in scope were not gated because T-135 stopped. `editV2CharacterController.ts` refuses before `savePages` and catches `TextareaLimitError`, because those saves run in parallel. `savePage3Contacts.ts` and `savePage3Notes.ts` throw the same error. The `page3Contacts` POST was not sent.
 result:
+`textareaCharCount` gates `editV2FieldController.ts`, `saveAttacks.ts`, `saveDefenses.ts`, `saveFavor.ts`, `savePageType2.ts`, and `savePageType3.ts`. Over-cap field POST returns `{ success: false, message: 'Text is too long' }` before the write. Full Save returns `{ message: 'Text is too long' }` before `savePages`. `tsc -p backend/server` reports only the missing `server-config`.
 
 ### T-138: Clamp textarea input to the field cap
-status: proposed
+status: done
 source: rewrite-ledger/textarea-limits.md, 2026-10-30 (front gate; same counter; after composition)
 why: The browser `maxlength` count has disagreed across engines. The shared v1 control is used by fields whose caps are not all 1350.
 scope: `app/src/components/textArea/TextArea.tsx` (add a `max` prop; do not hard-code 1350). Callers pass T-135 caps or omit `max` until T-135: `CharacteristicsDisplay.tsx`, `AbilitiesNBurdensDisplay.tsx`, `pageThree/components/GeneralInfo.tsx`. Raw textareas: v1 armor, shield, and weapon bonus/traits; v2 `Attacks.tsx`, `Defenses.tsx`, `Favor.tsx`, `GeneralSkills.tsx`, `CombatSkills.tsx`, `NotesPanes.tsx`, `pageType3/components/Contacts/Contacts.tsx`, `pageType3/components/Gear/Gear.tsx` Notes. Do not set `maxLength` on inputs.
@@ -81,11 +89,12 @@ steps:
 done when: the app package type-check exits 0. Grep shows `maxLength={1350}` on Contacts, Gear Notes, and the four page-type-2 textareas, `maxLength={150}` on attack and defense notes, `maxLength={500}` on Favor, and no new `maxLength` on an `<input>`.
 depends on: T-134. v1 textareas also depend on T-135.
 open questions: none
-deviations from design: none
+deviations from design: JSX uses `textareaCaps` (1350, 150, 500) instead of numeric `maxLength` literals, so the cap stays in one module. v1 callers omit `max`.
 result:
+Contacts, Gear Notes, and the four page-type-2 textareas use 1350. Attack and defense notes use 150. Favor uses 500. Shared v1 `TextArea` does not hard-code 1350. No new `maxLength` on an `<input>`. App `tsc` reports only the missing `frontend-config`. In the browser, Contacts keeps a composing 1351-code-point value, then trims to 1350 and keeps `😀`; attack notes clamp at 150.
 
 ### T-139: Clip every textarea at its box and do not scroll
-status: proposed
+status: done
 source: rewrite-ledger/textarea-limits.md, 2026-10-30 (Q1 caret may enter hidden text; no scrolling; Q2 view clips; grow revised)
 why: These controls either scroll inside a fixed box or grow with `field-sizing` / a wrapping view `p`. The box stays; the extra text stays; the viewport does not move.
 scope: `app/src/components/textArea/TextArea.tsx` and `TextArea.css` (edit textarea and view `p.value`). v1 `ArmorWorkspace.css`, `ShieldWorkspace.css`, `WeaponWorkspace.css` (bonus/trait textarea and the view `p` in that shell). v2 `Attacks.css`, `Defenses.css`, `Favor.css` (notes `p` and textarea). `GeneralSkills.css` and `CombatSkills.css` (`.leftover-notes`). `NotesPanes.css` (view `p` and textarea). `pageType3/components/Contacts/Contacts.css`. `pageType3/components/Gear/Gear.css` (`.page3-notes` only). Do not change box heights, the 16-vs-19 or Contacts 18-vs-20 numbers, zebra, teal wash, Gear row overflow, or column types. Do not add `app/src/shared/`.
@@ -98,8 +107,7 @@ depends on: T-134
 open questions: none
 deviations from design: none
 result:
-
-## Done
+Grep of `app/src` for `field-sizing` is 0. `holdTextareaScroll` is on every textarea in scope. View `p` max-height matches the box. App `tsc` reports only the missing `frontend-config`. In the browser, those textareas stay at `scrollTop` 0 after a scroll event while the text is taller than the box, and the view `p` clips. Gear row overflow stays visible.
 
 ### T-133: Add a Carry row, a Tiny row, a Notes band, and calculated Coinage size
 status: done

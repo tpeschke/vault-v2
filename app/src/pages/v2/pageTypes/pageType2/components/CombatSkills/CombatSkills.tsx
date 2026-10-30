@@ -1,4 +1,5 @@
 import './CombatSkills.css'
+import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import { useContext } from 'react'
 import {
     COMBAT_SUITE_KEYS,
@@ -71,9 +72,12 @@ export default function CombatSkills({ page, pageID, updates }: Props) {
                     </span>
                     <textarea
                         className="character-value leftover-notes"
+                        maxLength={textareaCaps.combatSkillNotes}
                         value={page.combatSkillNotes}
-                        onChange={event => updates.updateCombatSkillNotes(pageID, event.target.value)}
-                        onBlur={event => updates.persistViewField(pageID, 'combatSkillNotes', event.target.value)}
+                        onScroll={event => holdTextareaScroll(event.currentTarget)}
+                        onChange={event => updates.updateCombatSkillNotes(pageID, clampTextareaChange(event.target.value, textareaCaps.combatSkillNotes, isComposingInput(event)))}
+                        onCompositionEnd={event => updates.updateCombatSkillNotes(pageID, trimTextarea(event.currentTarget.value, textareaCaps.combatSkillNotes))}
+                        onBlur={event => updates.persistViewField(pageID, 'combatSkillNotes', trimTextarea(event.target.value, textareaCaps.combatSkillNotes))}
                     />
                 </div>
                 <div className="adv-col">

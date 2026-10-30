@@ -152,5 +152,5 @@
     box-sizing: border-box;
     resize: none;
     white-space: pre-wrap;
-    field-sizing: content;
+    overflow: hidden;
 }

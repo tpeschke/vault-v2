@@ -16,7 +16,10 @@
 
 .favor-v2 .favor-left>p,
 .favor-v2 .favor-left>textarea {
+    height: calc(2 * 17.38px);
     min-height: calc(2 * 17.38px);
+    max-height: calc(2 * 17.38px);
+    overflow: hidden;
 }
 
 .favor-v2 .favor-left>textarea {

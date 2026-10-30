@@ -1,5 +1,6 @@
 import './Attacks.css'
 import { AttacksArray } from "@vault/common/interfaces/v2/page1/combatInfo"
+import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
@@ -71,7 +72,7 @@ export default function AttacksDisplay({ attacks, pageID, updates }: Props) {
                     </div>
                     <span className="attack-notes">
                         {isEditing ?
-                            <textarea className="character-value" placeholder=" " value={notes ?? ''} onChange={event => updates.updateAttack(pageID, index, { notes: event.target.value })} />
+                            <textarea className="character-value" placeholder=" " maxLength={textareaCaps.attackNotes} value={notes ?? ''} onScroll={event => holdTextareaScroll(event.currentTarget)} onChange={event => updates.updateAttack(pageID, index, { notes: clampTextareaChange(event.target.value, textareaCaps.attackNotes, isComposingInput(event)) })} onCompositionEnd={event => updates.updateAttack(pageID, index, { notes: trimTextarea(event.currentTarget.value, textareaCaps.attackNotes) })} />
                             :
                             <p className="character-value">{notes ?? ''}</p>
                         }
