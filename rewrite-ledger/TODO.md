@@ -6,6 +6,22 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-123: Keep staff-snake, the arrow, and the check as kit icons
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: The meditating head is an `<img>` of the Gear SVG. Staff-snake, the Size arrow, and the check are still `<i class="fa-solid">`. Kit `db12ee03d1` has `"method":"js"` and loads `pro.min.js`, so those `<i>` tags are replaced with `<svg class="svg-inline--fa">`. Gear.css sizes the head with `strong i` and places the check with `.page3-flag-box i`. Those selectors do not match the replacement, so the three kit icons lose the box the img still has.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`. Owner: `rewrite-ledger/page3-view.md`. Do not edit `Gear.tsx` icon tags, `app/index.html`, `Favor.css`, or `index.css`. Do not add an img or an inlined svg for staff-snake, the arrow, or the check.
+steps:
+1. Leave `Gear.tsx` as it is: one `<img>` whose src is `person-meditating-solid-full.svg`; `<i class="fa-solid fa-staff-snake">`; `<i class="fa-solid fa-arrow-right-from-line">`; `<i class="fa-solid fa-check">`.
+2. Make `.page3-gear-head > strong i { font-size: 12px }` also match `.page3-gear-head > strong > svg.svg-inline--fa.fa-staff-snake`. Same `font-size: 12px` only. Do not set width or height on that svg. Do not let this rule match the meditating img.
+3. Make `.page3-flag-box i` (`font-size: 20px`, `position: absolute`, `top: -4px`, `left: -4px`) also match `.page3-flag-box > svg.svg-inline--fa.fa-check` with those same four declarations.
+4. Do not add a size rule for the arrow. Do not add a selector that is only `svg` or only `.svg-inline--fa`. The meditating rule stays on `img`, 18×18. Do not change the five-track grid, printed S, arrow placement, or Notes zebra.
+done when: `Gear.tsx` still has one `img` and still has `fa-staff-snake`, `fa-arrow-right-from-line`, and `fa-check`. `rg "fa-person-meditating" app/src/pages/v2/pageTypes/pageType3` is 0. `Gear.css` has `svg.svg-inline--fa.fa-staff-snake` and `svg.svg-inline--fa.fa-check`. `Gear.css` has no width or height on a selector that is only `svg` or only `.svg-inline--fa`. `npm run build` in `app/` exits 0.
+depends on: T-121 (done)
+open questions: none
+deviations from design: none
+result:
+
 ## Done
 
 ### T-121: Align Gear tracks, use the meditating SVG, and lock printed S
