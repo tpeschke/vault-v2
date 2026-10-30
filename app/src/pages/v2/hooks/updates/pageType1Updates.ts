@@ -10,6 +10,7 @@ import { SkillPair } from "@vault/common/interfaces/v2/pairInterfaces"
 import emptyPageType1 from "./emptyPageType1"
 import emptyPageType2 from "./emptyPageType2"
 import emptyPageType3 from "./emptyPageType3"
+import emptyPageType4 from "./emptyPageType4"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -71,7 +72,7 @@ function nextTempPageID(character: CharacterVersion2): number {
     return Math.min(0, ...character.pages.map(page => 'pageID' in page ? page.pageID : 0)) - 1
 }
 
-function spliceBlankAfter(character: CharacterVersion2, afterIndex: number, blank: ReturnType<typeof emptyPageType1> | ReturnType<typeof emptyPageType2> | ReturnType<typeof emptyPageType3>): CharacterVersion2 {
+function spliceBlankAfter(character: CharacterVersion2, afterIndex: number, blank: ReturnType<typeof emptyPageType1> | ReturnType<typeof emptyPageType2> | ReturnType<typeof emptyPageType3> | ReturnType<typeof emptyPageType4>): CharacterVersion2 {
     if (!character.pages[afterIndex]) {
         return character
     }
@@ -90,6 +91,10 @@ export function addPageType2After(character: CharacterVersion2, afterIndex: numb
 
 export function addPageType3After(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
     return spliceBlankAfter(character, afterIndex, emptyPageType3(nextTempPageID(character)))
+}
+
+export function addPageType4After(character: CharacterVersion2, afterIndex: number): CharacterVersion2 {
+    return spliceBlankAfter(character, afterIndex, emptyPageType4(nextTempPageID(character)))
 }
 
 function withFirstPage1Name(character: CharacterVersion2): CharacterVersion2 {

@@ -7,10 +7,12 @@ import { Response, Request } from '../../interfaces/apiInterfaces'
 import { getCharacterOwnerID } from '../view/assembleV2Character/utilities/ownerInfo'
 import { getV2Character, ViewRequest } from '../view/viewV2CharacterController'
 import savePages from './utilities/savePages'
+import notesScenesWithinCap from './utilities/pageType4/notesScenesWithinCap'
 
 const countType1PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 1`
 const countType2PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 2`
 const countType3PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 3`
+const countType4PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 4`
 
 interface EditRequest extends Request {
     params: {
@@ -47,6 +49,11 @@ export async function editV2Character(request: EditRequest, response: Response) 
     const ownerID = await getCharacterOwnerID(characterID)
 
     if (ownerID === request.user?.id) {
+        if (!notesScenesWithinCap(pages)) {
+            checkForContentTypeBeforeSending(response, { message: 'Notes sheet is limited to 100 MB' })
+            return
+        }
+        await savePages(characterID, pages)
         if (postedTextareaTooLong(pages)) {
             checkForContentTypeBeforeSending(response, { message: 'Text is too long' })
             return
@@ -63,10 +70,12 @@ export async function editV2Character(request: EditRequest, response: Response) 
         const storedType1 = await query(countType1PagesSQL, characterID)
         const storedType2 = await query(countType2PagesSQL, characterID)
         const storedType3 = await query(countType3PagesSQL, characterID)
+        const storedType4 = await query(countType4PagesSQL, characterID)
         const postedType1 = pages.filter(page => page.type === 1).length
         const postedType2 = pages.filter(page => page.type === 2).length
         const postedType3 = pages.filter(page => page.type === 3).length
-        if (storedType1.length < postedType1 || storedType2.length < postedType2 || storedType3.length < postedType3) {
+        const postedType4 = pages.filter(page => page.type === 4).length
+        if (storedType1.length < postedType1 || storedType2.length < postedType2 || storedType3.length < postedType3 || storedType4.length < postedType4) {
             checkForContentTypeBeforeSending(response, { message: 'Could not save all sheets' })
             return
         }

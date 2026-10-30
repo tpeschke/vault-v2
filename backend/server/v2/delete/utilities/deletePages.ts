@@ -2,6 +2,7 @@ import query from "../../../db/database"
 import deletePageType1 from "./deletePagesUtilities/deletePageType1"
 import deletePageType2 from "./deletePagesUtilities/pageType2/deletePageType2"
 import deletePageType3 from "./deletePagesUtilities/pageType3/deletePageType3"
+import deletePageType4 from "./deletePagesUtilities/pageType4/deletePageType4"
 
 const getPagesSQL = `select * from v2CharacterPages where characterID = $1`
 
@@ -21,6 +22,8 @@ export default async function deletePages(characterID: number) {
                 return deletePageType2(pageID)
             case 3:
                 return deletePageType3(pageID)
+            case 4:
+                return deletePageType4(pageID)
             default:
                 return true
         }

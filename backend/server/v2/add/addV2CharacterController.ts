@@ -5,6 +5,7 @@ import { addCharacterToOwnerTable } from '../view/assembleV2Character/utilities/
 import addPageType1 from './pageType1/addPageType1'
 import addPageType2 from './pageType2/addPageType2'
 import addPageType3 from './pageType3/addPageType3'
+import addPageType4 from './pageType4/addPageType4'
 
 const addPageSQL = `insert into v2CharacterPages (index, pageTypeID, characterID) values ($1, $2, $3) returning id`
 
@@ -20,11 +21,13 @@ export default async function addV2Character(request: Request, response: Respons
         const [{ id: pageID }] = await query(addPageSQL, [0, 1, characterID])
         const [{ id: pageType2ID }] = await query(addPageSQL, [1, 2, characterID])
         const [{ id: pageType3ID }] = await query(addPageSQL, [2, 3, characterID])
+        const [{ id: pageType4ID }] = await query(addPageSQL, [3, 4, characterID])
 
         await Promise.all([
             addPageType1(pageID),
             addPageType2(pageType2ID),
-            addPageType3(pageType3ID)
+            addPageType3(pageType3ID),
+            addPageType4(pageType4ID)
         ])
 
         checkForContentTypeBeforeSending(response, characterID)

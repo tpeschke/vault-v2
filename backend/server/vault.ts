@@ -30,11 +30,12 @@ import homeRoutes from './controllers/home/HomeRoutes'
 import deleteV2Routes from './v2/delete/deleteV2CharacterRoutes'
 import editV2Routes from './v2/edit/editV2CharacterRoutes'
 
+import { NOTES_STROKE_OVER_REQUEST } from '@vault/common/interfaces/v2/page4/notesScene'
 import { secret, domain, clientID, clientSecret, callbackURL, fakeAuth, server } from './server-config'
 
 const app = express()
-app.use(bodyParser.json({ limit: '10mb' }))
 app.use(cors())
+app.use(bodyParser.json({ limit: '10mb' }))
 
 app.use(session({
     secret,
@@ -89,6 +90,20 @@ app.use('/v2/edit', editV2Routes)
 app.use(express.static(__dirname + `/../../app/dist`));
 app.all('/{*any}', (_: Request, response: Response) => {
     response.sendFile(path.join(__dirname + '/../../app/dist/index.html'))
+})
+
+app.use((
+    err: { type?: string },
+    request: { originalUrl?: string },
+    response: { status: (code: number) => { json: (body: { success: false, message: string }) => void } },
+    next: (error?: unknown) => void
+) => {
+    const pathOnly = (request.originalUrl ?? '').split('?')[0]
+    if (err?.type === 'entity.too.large' && /^\/v2\/edit\/[^/]+\/field\/?$/.test(pathOnly)) {
+        response.status(413).json({ success: false, message: NOTES_STROKE_OVER_REQUEST })
+        return
+    }
+    next(err)
 })
 
 // ================================== \\

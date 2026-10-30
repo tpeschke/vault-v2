@@ -12,7 +12,7 @@ const saveStressDieIndexSQL = `update v2Stress set dieIndex = $1 where pageID = 
 const saveGeneralSkillNotesSQL = `update v2Page2Basics set generalSkillNotes = $1 where pageID = $2`
 const saveCombatSkillNotesSQL = `update v2Page2Basics set combatSkillNotes = $1 where pageID = $2`
 
-export default async function saveViewField(pageID: number, attribute: Exclude<ViewPersistAttribute, 'currentEmotions' | 'page3Contacts' | 'page3RelationshipValue' | 'page3RelationshipR' | 'page3RelationshipP' | 'page3RelationshipInsert' | 'page3RelationshipDelete' | 'page3Gear' | 'page3Coinage' | 'page3Notes'>, value: number | string) {
+export default async function saveViewField(pageID: number, attribute: Exclude<ViewPersistAttribute, 'currentEmotions' | 'page3Contacts' | 'page3RelationshipValue' | 'page3RelationshipR' | 'page3RelationshipP' | 'page3RelationshipInsert' | 'page3RelationshipDelete' | 'page3Gear' | 'page3Coinage' | 'page3Notes' | 'page4Scene'>, value: number | string) {
     switch (attribute) {
         case 'unspent':
             return query(saveUnspentSQL, [value, pageID])

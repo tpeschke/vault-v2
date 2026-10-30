@@ -20,7 +20,7 @@ import {
 
 export type PageV2 = {
     type: number
-} & (Page404Error | Page1 | Page2 | Page3)
+} & (Page404Error | Page1 | Page2 | Page3 | Page4)
 
 export interface Page404Error {
     type: 404
@@ -63,4 +63,11 @@ export interface Page3 {
     gear: Page3Gear
     coinage: Page3Coinage
     notes: string
+}
+
+export interface Page4 {
+    type: 4
+    pageID: number
+    scene: string
+    key?: string
 }

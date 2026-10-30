@@ -44,6 +44,7 @@ routing:
       - app/src/pages/home/components/V2CharacterDisplay/
       - backend/server/v2/add/pageType2/
       - backend/server/v2/add/pageType3/
+      - backend/server/v2/add/pageType4/
   view character sheet / view character / open character:
     primary: backend/server/v2/view/
     adjacent:
@@ -53,8 +54,10 @@ routing:
       - backend/common/interfaces/v2/
       - backend/common/interfaces/v2/page2/
       - backend/common/interfaces/v2/page3/
+      - backend/common/interfaces/v2/page4/
       - backend/server/v2/view/assembleV2Character/utilities/pageType2/
       - backend/server/v2/view/assembleV2Character/utilities/pageType3/
+      - backend/server/v2/view/assembleV2Character/utilities/pageType4/
       - backend/common/textareaLimits.ts
   edit character sheet / save character / edit character:
     primary: backend/server/v2/edit/
@@ -64,8 +67,10 @@ routing:
       - backend/common/interfaces/v2/
       - backend/common/interfaces/v2/page2/
       - backend/common/interfaces/v2/page3/
+      - backend/common/interfaces/v2/page4/
       - backend/server/v2/edit/utilities/pageType2/
       - backend/server/v2/edit/utilities/pageType3/
+      - backend/server/v2/edit/utilities/pageType4/
       - backend/common/textareaLimits.ts
   add page-type-1 sheet / add page / add another sheet / add sheet page:
     primary: backend/server/v2/edit/
@@ -74,6 +79,7 @@ routing:
       - backend/server/v2/add/pageType1/
       - backend/server/v2/add/pageType2/
       - backend/server/v2/add/pageType3/
+      - backend/server/v2/add/pageType4/
       - backend/common/interfaces/v2/
       - backend/server/controllers/home/v2/getCharacters.ts
   delete character / remove character:
@@ -84,6 +90,7 @@ routing:
       - app/src/pages/home/components/charactersRowDisplay/
       - backend/server/v2/delete/utilities/deletePagesUtilities/pageType2/
       - backend/server/v2/delete/utilities/deletePagesUtilities/pageType3/
+      - backend/server/v2/delete/utilities/deletePagesUtilities/pageType4/
   list v1 characters / ancient characters / list ancient:
     primary: backend/server/controllers/home/v1/getCharacters.ts
     adjacent:

@@ -81,6 +81,7 @@ export default async function ensureSchema() {
 
     await createPageType2Tables()
     await createPageType3Tables()
+    await createPageType4Tables()
 }
 
 async function createPageType2Tables() {
@@ -241,6 +242,17 @@ async function trimTextareaColumn(tableName: string, columnName: string, cap: nu
             continue
         }
         await query(`update ${tableName} set ${columnName} = $1 where id = $2`, [next, row.id])
+    }
+}
+
+async function createPageType4Tables() {
+    await query(`create table if not exists v2Page4Notes (
+        id serial primary key,
+        pageID integer unique,
+        scene text default ''
+    )`)
+    if (!await tableExists('v2page4notes')) {
+        throw new Error('ensureSchema: v2page4notes missing')
     }
 }
 

@@ -1,0 +1,25 @@
+.page-type-four .notes-editor {
+    height: 100%;
+    width: 100%;
+}
+
+.page-type-four .zoom-actions,
+.page-type-four .main-menu-trigger,
+.page-type-four .default-sidebar-trigger {
+    display: none !important;
+}
+
+.page-type-four .App-toolbar,
+.page-type-four .undo-redo-buttons,
+.page-type-four .help-icon {
+    display: none !important;
+}
+
+.page-type-four.notes-editable:hover .App-toolbar,
+.page-type-four.notes-editable:hover .undo-redo-buttons {
+    display: block !important;
+}
+
+.page-type-four.notes-editable:hover .help-icon {
+    display: flex !important;
+}

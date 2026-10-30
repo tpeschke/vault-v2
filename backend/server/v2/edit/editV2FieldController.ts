@@ -25,14 +25,17 @@ import savePage3RelationshipDelete from './utilities/pageType3/savePage3Relation
 import savePage3GearField, { isPage3GearSlot } from './utilities/pageType3/savePage3GearField'
 import savePage3Coinage from './utilities/pageType3/savePage3Coinage'
 import savePage3Notes from './utilities/pageType3/savePage3Notes'
+import { NOTES_STROKE_UNREADABLE } from '@vault/common/interfaces/v2/page4/notesScene'
 import { textareaCaps, textareaCharCount } from '@vault/common/textareaLimits'
+import savePage4Scene from './utilities/pageType4/savePage4Scene'
 
 const attributes: ViewPersistAttribute[] = [
     'unspent', 'currentFavor', 'diePenalty', 'damage', 'stress',
     'selfDoubtDieIndex', 'damageDieIndex', 'stressDieIndex',
     'generalSkillNotes', 'combatSkillNotes', 'currentEmotions',
     'page3Contacts', 'page3RelationshipValue', 'page3RelationshipR', 'page3RelationshipP',
-    'page3RelationshipInsert', 'page3RelationshipDelete', 'page3Gear', 'page3Coinage', 'page3Notes'
+    'page3RelationshipInsert', 'page3RelationshipDelete', 'page3Gear', 'page3Coinage', 'page3Notes',
+    'page4Scene'
 ]
 const textAttributes: ViewPersistAttribute[] = ['generalSkillNotes', 'combatSkillNotes']
 
@@ -265,6 +268,22 @@ export async function editV2Field(request: FieldRequest, response: Response) {
         }
         await savePage3Notes(+pageID, notes)
         checkForContentTypeBeforeSending(response, { success: true })
+        return
+    }
+
+    if (attribute === 'page4Scene') {
+        if (typeof value !== 'string') {
+            checkForContentTypeBeforeSending(response, { success: false, message: NOTES_STROKE_UNREADABLE })
+            return
+        }
+        const written = await savePage4Scene(characterID, +pageID, value, request.body.index)
+        if (!written.ok) {
+            checkForContentTypeBeforeSending(response, { success: false, message: written.message })
+            return
+        }
+        checkForContentTypeBeforeSending(response, written.pageID
+            ? { success: true, pageID: written.pageID }
+            : { success: true })
         return
     }
 
