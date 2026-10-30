@@ -10,11 +10,12 @@ import { updateCatalogInfo } from "../../../../redux/slices/usersCharactersSlice
 import { Page1 } from "@vault/common/interfaces/v2/pageTypes"
 import { Page3Coinage, Page3Relationship } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { Page3GearValue, Page3RelationshipDeleteValue, Page3RelationshipPValue, Page3RelationshipRValue, Page3RelationshipValue } from "@vault/common/interfaces/v2/page1/viewPersist"
-import { PageGutterUpdates, PageType1Updates, PageType2Updates, PageType3Updates } from "../interfaces/UpdateInterfaces"
+import { PageGutterUpdates, PageType1Updates, PageType2Updates, PageType3Updates, PageType4Updates } from "../interfaces/UpdateInterfaces"
 import {
     addPageAfter as insertPageAfter,
     addPageType2After as insertPageType2After,
     addPageType3After as insertPageType3After,
+    addPageType4After as insertPageType4After,
     movePageToBottom as moveToBottom,
     movePageToTop as moveToTop,
     otherPageType1Names,
@@ -67,6 +68,7 @@ import {
     updateNotes,
     updateRelationship
 } from "./pageType3Updates"
+import { updateNotesScene } from "./pageType4Updates"
 
 export interface Page3PersistFns {
     persistPage3Contacts: (pageID: number, value: string) => void
@@ -103,7 +105,7 @@ export default function getV2Updates(
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void,
     persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void,
     page3Persist: Page3PersistFns
-): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageType3Updates: PageType3Updates, pageGutterUpdates: PageGutterUpdates } {
+): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageType3Updates: PageType3Updates, pageType4Updates: PageType4Updates, pageGutterUpdates: PageGutterUpdates } {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
         return next
@@ -307,6 +309,13 @@ export default function getV2Updates(
         persistPage3Notes: page3Persist.persistPage3Notes
     }
 
+    const pageType4Updates: PageType4Updates = {
+        updateNotesScene: (pageID, scene) => {
+            if (!character) { return }
+            apply(updateNotesScene(character, pageID, scene))
+        }
+    }
+
     const pageGutterUpdates: PageGutterUpdates = {
         addPageAfter: (afterIndex) => {
             if (!character) { return }
@@ -319,6 +328,10 @@ export default function getV2Updates(
         addPageType3After: (afterIndex) => {
             if (!character) { return }
             apply(insertPageType3After(character, afterIndex))
+        },
+        addPageType4After: (afterIndex) => {
+            if (!character) { return }
+            apply(insertPageType4After(character, afterIndex))
         },
         swapPageWithNext: (index) => {
             if (!character) { return }
@@ -334,7 +347,7 @@ export default function getV2Updates(
         }
     }
 
-    return { pageType1Updates, pageType2Updates, pageType3Updates, pageGutterUpdates }
+    return { pageType1Updates, pageType2Updates, pageType3Updates, pageType4Updates, pageGutterUpdates }
 }
 
 function applyReorder(

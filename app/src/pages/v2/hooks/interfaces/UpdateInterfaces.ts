@@ -84,10 +84,15 @@ export interface PageType3Updates {
     persistPage3Notes: (pageID: number, value: string) => void
 }
 
+export interface PageType4Updates {
+    updateNotesScene: (pageID: number, scene: string) => void
+}
+
 export interface PageGutterUpdates {
     addPageAfter: (afterIndex: number) => void
     addPageType2After: (afterIndex: number) => void
     addPageType3After: (afterIndex: number) => void
+    addPageType4After: (afterIndex: number) => void
     swapPageWithNext: (index: number) => void
     movePageToTop: (index: number) => void
     movePageToBottom: (index: number) => void
@@ -99,5 +104,6 @@ export interface V2UpdateFunctions {
     pageType1Updates: PageType1Updates
     pageType2Updates: PageType2Updates
     pageType3Updates: PageType3Updates
+    pageType4Updates: PageType4Updates
     pageGutterUpdates: PageGutterUpdates
 }

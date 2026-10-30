@@ -80,6 +80,7 @@ export default async function ensureSchema() {
 
     await createPageType2Tables()
     await createPageType3Tables()
+    await createPageType4Tables()
 }
 
 async function createPageType2Tables() {
@@ -210,6 +211,17 @@ async function createPageType3Tables() {
     }
     if (!await columnExists('v2page3basics', 'contacts')) {
         throw new Error('ensureSchema: v2page3basics.contacts missing')
+    }
+}
+
+async function createPageType4Tables() {
+    await query(`create table if not exists v2Page4Notes (
+        id serial primary key,
+        pageID integer unique,
+        scene text default ''
+    )`)
+    if (!await tableExists('v2page4notes')) {
+        throw new Error('ensureSchema: v2page4notes missing')
     }
 }
 

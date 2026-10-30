@@ -7,6 +7,7 @@ import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
 import PageType2 from './pageTypes/pageType2/PageType2'
 import PageType3 from './pageTypes/pageType3/PageType3'
+import PageType4 from './pageTypes/pageType4/PageType4'
 import EditingContext from './contexts/EditingContext'
 import Sidebar from './components/sidebar/Sidebar'
 
@@ -20,8 +21,8 @@ export default function V2View({ setLoading, pathname }: Props) {
     const [isEditing, setIsEditing] = useState(false)
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
 
-    const { character, isDirty, isViewSaving, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing)
-    const { saveCharacterToBackend, revertCharacter, pageType1Updates, pageType2Updates, pageType3Updates, pageGutterUpdates } = updateFunctions
+    const { character, isDirty, isViewSaving, notesEpoch, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing)
+    const { saveCharacterToBackend, revertCharacter, pageType1Updates, pageType2Updates, pageType3Updates, pageType4Updates, pageGutterUpdates } = updateFunctions
     const warnOnLeave = isDirty && isEditing
 
     useEffect(() => {
@@ -108,6 +109,9 @@ export default function V2View({ setLoading, pathname }: Props) {
                                 case 3:
                                     card = <PageType3 pageInfo={page} updates={pageType3Updates} />
                                     break
+                                case 4:
+                                    card = <PageType4 key={`${page.pageID}:${notesEpoch}`} pageInfo={page} updates={pageType4Updates} notesEpoch={notesEpoch} />
+                                    break
                                 default:
                                     return <Fragment key={`${page.type}-${index}`}></Fragment>
                             }
@@ -169,6 +173,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                 className="bottom-buttons add-page"
                                                 onClick={() => pageGutterUpdates.addPageType3After(index)}
                                             ><i className="fa-solid fa-plus"></i> NPCs & Equipment</button>
+                                            <button
+                                                type="button"
+                                                className="bottom-buttons add-page"
+                                                onClick={() => pageGutterUpdates.addPageType4After(index)}
+                                            ><i className="fa-solid fa-plus"></i> Notes</button>
                                         </div>
                                     }
                                 </Fragment>

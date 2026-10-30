@@ -1,0 +1,20 @@
+.page-type-four .notes-editor {
+    height: 100%;
+    width: 100%;
+}
+
+.page-type-four .zoom-actions,
+.page-type-four .main-menu-trigger,
+.page-type-four .default-sidebar-trigger {
+    display: none !important;
+}
+
+.page-type-four .App-toolbar,
+.page-type-four .undo-redo-buttons {
+    display: none !important;
+}
+
+.view-edit .page-type-four:hover .App-toolbar,
+.view-edit .page-type-four:hover .undo-redo-buttons {
+    display: block !important;
+}

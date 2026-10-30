@@ -115,6 +115,7 @@ function patchViewField(character: CharacterVersion2, pageID: number, attribute:
 export default function characterHook(pathname: string, isEditing: boolean) {
     const [character, setCharacter] = useState<CharacterVersion2 | null>(null)
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion2 | null>(null)
+    const [notesEpoch, setNotesEpoch] = useState(0)
     const revertedRef = useRef<CharacterVersion2 | null>(null)
     revertedRef.current = revertedCharacter
     const characterRef = useRef<CharacterVersion2 | null>(null)
@@ -129,6 +130,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
         setCharacter(data)
         setRevertedCharacter(data)
         revertedRef.current = data
+        setNotesEpoch(epoch => epoch + 1)
     }
 
     useEffect(() => {
@@ -156,6 +158,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
 
     function revertCharacter() {
         setCharacter(revertedCharacter)
+        setNotesEpoch(epoch => epoch + 1)
     }
 
     const restoreCatalogFromSnapshot = useCallback(() => {
@@ -772,6 +775,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
         pageType1Updates: updates.pageType1Updates,
         pageType2Updates: updates.pageType2Updates,
         pageType3Updates: updates.pageType3Updates,
+        pageType4Updates: updates.pageType4Updates,
         pageGutterUpdates: updates.pageGutterUpdates
     }
 
@@ -779,6 +783,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
         character,
         isDirty: !!(character && revertedCharacter && character !== revertedCharacter),
         isViewSaving: inFlight > 0,
+        notesEpoch,
         restoreCatalogFromSnapshot,
         updateFunctions
     }
