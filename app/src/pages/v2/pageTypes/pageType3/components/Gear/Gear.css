@@ -26,6 +26,11 @@
     box-sizing: border-box;
 }
 
+.page3-gear-head {
+    background: #bdbdbd;
+    border-bottom: 1px solid whitesmoke;
+}
+
 .page3-gear-col > h2,
 .page3-notes,
 .page3-footnote,
