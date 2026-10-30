@@ -15,11 +15,57 @@ steps:
 2. Set `bodyParser.json({ limit })` to that string. Leave every other parser untouched.
 done when: grep of `vault.ts` shows the named limit. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing.
 depends on: none
-open questions: What `limit` string replaces `'10mb'`? Page count is uncapped, so no single limit accepts every character that stays under the per-page cap. A Save larger than the chosen limit still fails before the per-page check.
+open questions: What `limit` string replaces `'10mb'`? Sheet count is at most 15 (`add-page-type-1.md`). Fifteen notes scenes can still exceed one body limit. A Save larger than the chosen limit still fails before the per-page check.
 deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
 result:
 
 ## Done
+
+### T-149: Refuse a labeled add that would pass 15 sheets
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-30 (add click at the cap; Q1 default toast)
+why: A row opened below the cap can still insert a 16th sheet. The click has to refuse that before the insert.
+scope: the four labeled `onClick` handlers in `app/src/pages/v2/V2View.tsx` (`addPageAfter`, `addPageType2After`, `addPageType3After`, `addPageType4After`). Owner: `rewrite-ledger/add-page-type-1.md`. Import `toast` from `react-toastify`. `SHEET_PAGE_CAP_MESSAGE` and `SHEET_PAGE_MAX` are already imported. Do not change file-circle-plus, Save, `savePage4Scene`, or the disclosure flags of other cards. Do not pass `{ autoClose: false }`.
+steps:
+1. In each labeled click, when `character.pages.length >= SHEET_PAGE_MAX`, call `toast.error(SHEET_PAGE_CAP_MESSAGE)` with no second argument, then `restPage(page.pageID)`, and do not call the add helper.
+2. Otherwise keep today’s order: the add helper, then `restPage(page.pageID)`, and no toast.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0. Each of `addPageAfter`, `addPageType2After`, `addPageType3After`, and `addPageType4After` appears after a `SHEET_PAGE_MAX` check in its handler. Grep of `V2View.tsx` for `autoClose` is 0.
+depends on: T-147
+open questions: none
+deviations from design: none
+result: At 14 sheets a labeled add inserts and the other open row stays open. The next labeled click leaves the sheet count at 15, closes that row, and toasts `You can only have 15 pages per character sheet.` `tsc --noEmit -p app` exits 0. `autoClose` is absent from `V2View.tsx`.
+
+### T-148: Refuse a sheet list longer than 15
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-30 (Q4, Q6)
+why: The gutter can still insert past 15 from a row that was already open, and a stored character may already be over 15. Full Save and the Notes mint must refuse that.
+scope: `backend/server/v2/edit/editV2CharacterController.ts` (`editV2Character`). `backend/server/v2/edit/utilities/pageType4/savePage4Scene.ts` (the `pageID <= 0` branch only). Import `SHEET_PAGE_MAX` and `SHEET_PAGE_CAP_MESSAGE` from `@vault/common/interfaces/v2/sheetPageCap`. Owner: `rewrite-ledger/add-page-type-1.md`. Do not change `addV2Character`. Do not change a `pageID > 0` notes update. Do not change field saves of existing pages. Do not change `vault.ts` or T-139.
+steps:
+1. In `editV2Character`, after the owner check and before `notesScenesWithinCap` and the first `await savePages`, when `pages.length > SHEET_PAGE_MAX`, send `{ message: SHEET_PAGE_CAP_MESSAGE }` with no `pages` key and return. Write nothing.
+2. In `savePage4Scene`, on the `pageID <= 0` path, before `shiftIndexSQL`, count `v2CharacterPages` rows for this `characterID` (`select id …` and use the row count, same style as the type-count queries in the edit controller). When that count is `>= SHEET_PAGE_MAX`, return `{ ok: false, message: SHEET_PAGE_CAP_MESSAGE }` and do not insert. The existing field controller already sends that message and the stroke toast already shows it.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`. Grep shows `SHEET_PAGE_CAP_MESSAGE` in `editV2CharacterController.ts` above the first `savePages(`, and in `savePage4Scene.ts` above `shiftIndexSQL`.
+depends on: T-147
+open questions: none
+deviations from design: none
+result: `editV2Character` sends `SHEET_PAGE_CAP_MESSAGE` before `notesScenesWithinCap` and the first `savePages`. `savePage4Scene` returns that message before `shiftIndexSQL` when the stored sheet count is at least 15. `tsc --noEmit -p backend/server` reports only the pre-existing missing `server-config`.
+
+### T-147: Show the 15-sheet cap on the gutter
+status: done
+source: rewrite-ledger/add-page-type-1.md, 2026-10-30 (Q1–Q3, Q5)
+why: At 15 sheets the file-circle-plus control must stop disclosing, and a disclosed row under the cap must show the count.
+scope: new `backend/common/interfaces/v2/sheetPageCap.ts` (meaning owner: `rewrite-ledger/add-page-type-1.md`). `app/src/pages/v2/V2View.tsx` gutter. `app/src/pages/v2/V2View.css`. Do not add a routing key (`backend/common/interfaces/v2/` is already adjacent). Do not add `features/`. Do not change the labeled-add handlers, disclosure flags, or Save.
+steps:
+1. Export `SHEET_PAGE_MAX = 15` and `SHEET_PAGE_CAP_MESSAGE = 'You can only have 15 pages per character sheet.'` from `sheetPageCap.ts`.
+2. In the resting gutter, when `character.pages.length >= SHEET_PAGE_MAX`, render file-circle-plus inside a wrapper that has `key="disclose"`, class `add-page`, `tabIndex={0}`, `data-tooltip-id="my-tooltip"`, and `data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}`. The button is `type="button"`, class `bottom-buttons` only, native `disabled`, `pointer-events: none`, no click handler, icon `fa-solid fa-file-circle-plus`.
+3. Under the cap, the resting control stays the current button: `key="disclose"`, class `bottom-buttons add-page`, tooltip `Click to Add New Pages`, click discloses.
+4. Change the gutter margin rule so `.page-gutter .add-page` has `margin-left: auto` (the wrapper is not `.bottom-buttons`). Keep `.add-page + .add-page { margin-left: 0 }`.
+5. `.bottom-buttons` sets whitesmoke `!important`, and `:hover` sets orange `!important`. Add a `:disabled` rule in `V2View.css` that wins over both, using the user-agent button face, so the inactive control is not whitesmoke and does not turn orange.
+6. In the disclosed gutter, when `character.pages.length < SHEET_PAGE_MAX`, the first flex child is a text node, `key="page-count"`, text `${length} / ${SHEET_PAGE_MAX}` with spaces around the slash. Not a button. Not `.bottom-buttons`. Same tooltip id and `SHEET_PAGE_CAP_MESSAGE`. At 15 or more, omit that node. Do not close the row. Do not disable the four labeled buttons.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0. Grep of `V2View.tsx` shows `SHEET_PAGE_CAP_MESSAGE`, `disabled`, and `page-count`. Grep of `V2View.css` shows a `:disabled` rule. Grep of `sheetPageCap.ts` shows `SHEET_PAGE_MAX`.
+depends on: T-145
+open questions: none
+deviations from design: The gutter’s whitesmoke and orange rules are `!important`, so native `disabled` would still look like an active add button. Step 5 adds a `:disabled` override. The designer chose native `disabled` (the wrapper option) so the tooltip still shows.
+result: A disclosed gutter shows `4 / 15` to the left of Main Info, with the cap sentence as its tooltip. At 15 sheets every file-circle-plus is native `disabled`, still `file-circle-plus`, tooltip on the wrapper, background `rgb(239, 239, 239)`. Clicking the wrapper does not disclose. `tsc --noEmit -p app` exits 0.
 
 ### T-146: Remount gutter icons when the add row opens
 status: done

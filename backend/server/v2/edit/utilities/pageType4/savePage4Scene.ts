@@ -1,4 +1,5 @@
 import { NOTES_SCENE_MAX_BYTES, NOTES_STROKE_MINT_FAILED, NOTES_STROKE_MISSING_PAGE, NOTES_STROKE_OVER_CAP, NOTES_STROKE_UNREADABLE } from "@vault/common/interfaces/v2/page4/notesScene"
+import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from "@vault/common/interfaces/v2/sheetPageCap"
 import query from "../../../../db/database"
 
 const updateSceneSQL = `update v2Page4Notes as notes
@@ -10,6 +11,7 @@ where notes.pageID = pages.id
   and pages.pageTypeID = 4
 returning notes.pageID`
 
+const countSheetsSQL = `select id from v2CharacterPages where characterID = $1`
 const shiftIndexSQL = `update v2CharacterPages set index = index + 1 where characterID = $1 and index >= $2`
 const insertPageSQL = `insert into v2CharacterPages (index, pageTypeID, characterID) values ($1, 4, $2) returning id`
 const insertNotesSQL = `insert into v2Page4Notes (pageID, scene) values ($1, $2) returning pageID`
@@ -69,6 +71,11 @@ export default async function savePage4Scene(characterID: number, pageID: number
 
     if (typeof index !== 'number' || !Number.isInteger(index) || index < 0) {
         return { ok: false, message: NOTES_STROKE_MINT_FAILED }
+    }
+
+    const storedSheets = await query(countSheetsSQL, characterID)
+    if (storedSheets.length >= SHEET_PAGE_MAX) {
+        return { ok: false, message: SHEET_PAGE_CAP_MESSAGE }
     }
 
     await query(shiftIndexSQL, [characterID, index])

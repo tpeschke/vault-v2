@@ -2,6 +2,7 @@ import '../View.css'
 import './V2View.css'
 import { Fragment, useEffect, useState } from "react"
 import { useBlocker } from "react-router-dom"
+import { toast } from "react-toastify"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
@@ -10,6 +11,7 @@ import PageType3 from './pageTypes/pageType3/PageType3'
 import PageType4 from './pageTypes/pageType4/PageType4'
 import EditingContext from './contexts/EditingContext'
 import Sidebar from './components/sidebar/Sidebar'
+import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from '@vault/common/interfaces/v2/sheetPageCap'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -143,11 +145,24 @@ export default function V2View({ setLoading, pathname }: Props) {
                                         <div className="page-gutter">
                                             {disclosedPageIDs.includes(page.pageID) ? (
                                                 <>
+                                                    {character.pages.length < SHEET_PAGE_MAX &&
+                                                        <h4
+                                                            key="page-count"
+                                                            className="page-count"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}
+                                                        >{character.pages.length} / {SHEET_PAGE_MAX}</h4>
+                                                    }
                                                     <button
                                                         key="add-main"
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageAfter(index)
                                                             restPage(page.pageID)
                                                         }}
@@ -157,6 +172,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageType2After(index)
                                                             restPage(page.pageID)
                                                         }}
@@ -166,6 +186,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageType3After(index)
                                                             restPage(page.pageID)
                                                         }}
@@ -175,6 +200,11 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
+                                                            if (character.pages.length >= SHEET_PAGE_MAX) {
+                                                                toast.error(SHEET_PAGE_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
                                                             pageGutterUpdates.addPageType4After(index)
                                                             restPage(page.pageID)
                                                         }}
@@ -229,14 +259,31 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                             }}
                                                         ><i className="fa-solid fa-down-to-line"></i></button>
                                                     }
-                                                    <button
-                                                        key="disclose"
-                                                        type="button"
-                                                        className="bottom-buttons add-page"
-                                                        data-tooltip-id="my-tooltip"
-                                                        data-tooltip-content="Click to Add New Pages"
-                                                        onClick={() => disclosePage(page.pageID)}
-                                                    ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                    {character.pages.length >= SHEET_PAGE_MAX ? (
+                                                        <span
+                                                            key="disclose"
+                                                            className="add-page"
+                                                            tabIndex={0}
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                className="bottom-buttons"
+                                                                disabled
+                                                                style={{ pointerEvents: 'none' }}
+                                                            ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            key="disclose"
+                                                            type="button"
+                                                            className="bottom-buttons add-page"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Click to Add New Pages"
+                                                            onClick={() => disclosePage(page.pageID)}
+                                                        ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                    )}
                                                 </>
                                             )}
                                         </div>
