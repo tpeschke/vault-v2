@@ -6,7 +6,23 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-133: Add a Carry row, a Tiny row, a Notes band, and calculated Coinage size
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Carry, Tiny & Other, and Notes each gain one row. The footnote leaves Notes for the bottom of the third column. The Coinage header does not sit on the cells under it, the coin rows are not striped, and Size is a typed string instead of the printed `100 coins = 1s` ratio.
+scope: `rewrite-ledger/page3-view.md` (done in Order). `backend/common/interfaces/v2/page3/page3Interfaces.ts` (`PAGE3_GEAR_SLOTS`, `PAGE3_DEFAULT_S_SLOTS`). `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` and `Gear.css`. Do not edit Characteristics. Do not add `features/` or `shared/`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not touch `page3.sql`, `ensureSchema.ts`, or the size columns. Do not POST Coinage Size. Do not write the ratio into a Carry slot.
+steps:
+1. Append `carry18` after `carry17` and `tiny13` after `tiny12` in `PAGE3_GEAR_SLOTS`. Add `carry18` to `PAGE3_DEFAULT_S_SLOTS`. Do not add `tiny13`.
+2. Render `carry18` like `carry17` (item, printed **S**, both flags, **W**). Render `tiny13` like `tiny1` (item, size input, both flags, **W**).
+3. Set the Notes textarea to `height: calc(6 * 17.38px)`. Leave `min-height: calc(2 * 17.38px)` and the zebra. Move `<p class="page3-footnote">` to the end of the third column, after `other4`.
+4. Give `.page3-coinage-head` and each coin `span` one grid: `22px 28% 28% minmax(0, 1fr)`. **Coinage** `h2` spans the first two columns. **Size** and `100 coins = 1s` are `h2.minor-heading` (`oldClaude`, 10px, aligned to the bottom of the bar). Do not use an `h1` or `#323232`.
+5. Stripe `.page3-coinage > span:nth-child(even)` `#f3f3f3`. Keep the count input transparent at rest. Leave the view-edit teal.
+6. Replace each Size input with `<p class="character-value">`. Text is the row count divided by 100, from integer arithmetic: no space, lowercase `s`, drop a trailing `.0`, at most two decimals. `0` → `0s`, `1` → `0.01s`, `10` → `0.1s`, `99` → `0.99s`, `100` → `1s`, `150` → `1.5s`, `250` → `2.5s`. A negative count keeps the minus. Empty is `0`. Amount blur still sends the stored size strings unchanged.
+done when: Carry has 18 printed-S rows ending at `carry18`. Tiny & Other has 13 rows ending at `tiny13`. Notes is six bands tall and has no footnote under it. The footnote is the last child of the third column. Coinage **Size** and `100 coins = 1s` sit on the size cell and the note. **cc** is gray, **sc** is white, **gc** is gray, **pc** is white. A count of 150 shows `1.5s` in `Kalam` and does not POST. `npm run build` in `app/` exits 0. `page3.sql` has no diff.
+depends on: T-132
+open questions: none
+deviations: none yet
+result:
 
 ## Done
 
