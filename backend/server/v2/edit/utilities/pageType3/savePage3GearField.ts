@@ -1,4 +1,4 @@
-import { PAGE3_GEAR_SLOTS, Page3GearSlot, emptyGearCell } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { PAGE3_GEAR_SLOTS, Page3GearSlot, emptyGearCell, isQuarterMasteringSlot } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import { Page3GearValue } from "@vault/common/interfaces/v2/page1/viewPersist"
 import query from "../../../../db/database"
@@ -25,7 +25,7 @@ export default async function savePage3GearField(pageID: number, patch: Page3Gea
     const fallback = emptyGearCell(patch.slot)
     const row = existing[0]
     const item = patch.item ?? row?.item ?? fallback.item
-    const size = patch.size ?? row?.size ?? fallback.size
+    const size = isQuarterMasteringSlot(patch.slot) ? 'S' : (patch.size ?? row?.size ?? fallback.size)
     const staffSnake = patch.staffSnake ?? row?.staffsnake ?? fallback.staffSnake
     const meditating = patch.meditating ?? row?.meditating ?? fallback.meditating
     const w: SkillNumber = patch.w !== undefined
