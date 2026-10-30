@@ -9,6 +9,7 @@ import { getV2Character, ViewRequest } from '../view/viewV2CharacterController'
 import savePages from './utilities/savePages'
 import notesScenesWithinCap from './utilities/pageType4/notesScenesWithinCap'
 import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from '@vault/common/interfaces/v2/sheetPageCap'
+import { deleteOmittedPages, omittedPageIDs, omittedPagesRemain } from './utilities/deleteOmittedPages'
 
 const countType1PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 1`
 const countType2PagesSQL = `select id from v2CharacterPages where characterID = $1 and pageTypeID = 2`
@@ -54,10 +55,15 @@ export async function editV2Character(request: EditRequest, response: Response) 
             checkForContentTypeBeforeSending(response, { message: SHEET_PAGE_CAP_MESSAGE })
             return
         }
+        if (!pages.some(page => page.type === 1)) {
+            checkForContentTypeBeforeSending(response, { message: "Pages weren't able to be removed" })
+            return
+        }
         if (!notesScenesWithinCap(pages)) {
             checkForContentTypeBeforeSending(response, { message: 'Notes sheet is limited to 100 MB' })
             return
         }
+        const omittedIDs = await omittedPageIDs(characterID, pages)
         await savePages(characterID, pages)
         if (postedTextareaTooLong(pages)) {
             checkForContentTypeBeforeSending(response, { message: 'Text is too long' })
@@ -71,6 +77,11 @@ export async function editV2Character(request: EditRequest, response: Response) 
                 return
             }
             throw error
+        }
+        await deleteOmittedPages(characterID, omittedIDs)
+        if (await omittedPagesRemain(characterID, omittedIDs)) {
+            checkForContentTypeBeforeSending(response, { message: "Pages weren't able to be removed" })
+            return
         }
         const storedType1 = await query(countType1PagesSQL, characterID)
         const storedType2 = await query(countType2PagesSQL, characterID)

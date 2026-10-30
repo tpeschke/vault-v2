@@ -97,6 +97,7 @@ export interface PageGutterUpdates {
     swapPageWithNext: (index: number) => void
     movePageToTop: (index: number) => void
     movePageToBottom: (index: number) => void
+    removePageAt: (index: number) => void
 }
 
 export interface V2UpdateFunctions {

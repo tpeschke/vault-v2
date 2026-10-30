@@ -21,6 +21,43 @@ result:
 
 ## Done
 
+### T-151: Delete omitted sheets on Save and refuse a character with no Main Info
+status: done
+source: rewrite-ledger/delete-sheet-page.md, 2026-10-30 (Q2 extras only after Save; Q3 toast sentence)
+why: Save upserts posted sheets and treats extra stored sheets as success, so a local removal comes back on reassemble. The tooltip says the removal lasts once the sheet is saved.
+scope: `backend/server/v2/edit/editV2CharacterController.ts`; new helper under `backend/server/v2/edit/utilities/` (same owner as `savePages`). Reuse `deletePageType1`, `deletePageType2`, `deletePageType3`, and `deletePageType4`. Do not call `deleteFromCharacterPages` or `deleteV2Character`. Do not edit `savePage4Scene.ts`. Do not rewrite `query()`. Do not add a route or a transaction. Do not edit the app toast branch. Do not change `Could not save all sheets`. Keep the 15-sheet refusal (`add-page-type-1.md`, T-148) ahead of this check.
+steps:
+1. If the owner check passes and `pages.length > SHEET_PAGE_MAX`, keep the existing `SHEET_PAGE_CAP_MESSAGE` return. Do not delete.
+2. If the owner check passes and `pages` has no `type === 1`, send `{ message: "Pages weren't able to be removed" }` through `checkForContentTypeBeforeSending` and return. Do not call `savePages`, do not delete, do not call `getV2Character`.
+3. Before the first `savePages`, read this character’s `v2CharacterPages` ids and `pageTypeID`s. Omitted ids are those with `pageTypeID` 1, 2, 3, or 4 whose id is not among posted `pageID` values `> 0`. Hold that list. Do not rebuild it after `savePages`.
+4. After the second `savePages` returns and the textarea check has not returned, delete each omitted id: the matching `deletePageTypeN`, then `delete from v2CharacterPages where id = $1 and characterID = $2`. Skip any other `pageTypeID`.
+5. Read the ids again. If any omitted id is still stored, send `{ message: "Pages weren't able to be removed" }` and return. No `pages` key. Do not call `getV2Character`.
+6. Leave the stored-count `<` posted-count gate on `Could not save all sheets`. A sheet this Save inserted is not an omitted id.
+done when: `./node_modules/.bin/tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`. Grep of `Pages weren't able to be removed` in `editV2CharacterController.ts` finds the zero-type-1 return and the leftover-id return. Grep of `deleteFromCharacterPages` under `backend/server/v2/edit/` is 0. Grep of `Could not save all sheets` in that controller is still 1. `SHEET_PAGE_CAP_MESSAGE` is still sent before `savePages` when `pages.length > 15`.
+depends on: none
+open questions: none
+deviations from design: none
+result: `deleteOmittedPages.ts` captures omitted type 1–4 ids before `savePages` and deletes them only after the second write. No type 1, and a leftover omitted id, both return `Pages weren't able to be removed` with no `pages` key. The 15-sheet refusal still returns before either of those. Server tsc reports only the missing `server-config`. `Could not save all sheets` remains one hit. `deleteFromCharacterPages` is absent under `backend/server/v2/edit/`.
+
+### T-150: Add the gutter delete button and splice the sheet above it
+status: done
+source: rewrite-ledger/delete-sheet-page.md, 2026-10-30 (Q1 protection moves with the uppermost Main Info)
+why: Edit mode can add and reorder sheets. It cannot remove the sheet above a gutter, and the uppermost Main Info sheet must stay.
+scope: `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/V2View.css`; `app/src/pages/v2/hooks/updates/pageType1Updates.ts` (`removePageAt` next to the reorder splices); `app/src/pages/v2/hooks/updates/getV2Updates.ts`; `app/src/pages/v2/hooks/interfaces/UpdateInterfaces.ts` (`PageGutterUpdates`). Owner: the sheet gutter (`delete-sheet-page.md`). Do not add a file, a route, or `features/`. Do not edit `PageType1.tsx`, `PageType2.tsx`, `PageType3.tsx`, or `PageType4.tsx`. Do not dispatch `updateCatalogInfo` from this path. Do not change reorder scroll, the disclosure row, or the 15-sheet cap. Do not POST.
+steps:
+1. Export `removePageAt(character, index)`. Out of range, or `index` equal to `pages.findIndex(page => page.type === 1)`, returns the same character. Otherwise splice that index and return the next character. Do not call `withFirstPage1Name`. Do not read `pageID` with truthiness (`-1` is truthy).
+2. Add `removePageAt` to `PageGutterUpdates`. In `getV2Updates`, the handler calls `apply(removePageAt(character, index))` only. Do not call `applyReorder`.
+3. Keep arming state in `V2View` as `armedDeletePageIDs`, keyed by `page.pageID`, cleared when `isEditing` becomes false, same as `disclosedPageIDs`. Arming also calls `restPage` for that id. Do not key by index. Do not mount delete on the disclosed row.
+4. Resting row, immediately after file-circle-plus: idle button, `type="button"`, `key="delete"`, class `bottom-buttons delete-page`, icon `fa-trash`. Tooltip `data-tooltip-id="my-tooltip"` and exact `data-tooltip-content`: `This deletes the page above this button`. Click arms that gutter and does not splice.
+5. Armed: do not render reorder, file-circle-plus, or the disclosed adds. Two buttons, keys `delete-confirm` and `delete-cancel`, class `bottom-buttons delete-page confirm` then `bottom-buttons delete-page-cancel`. Icons `fa-trash-check` and `fa-rotate-left`. Check tooltip exact: `This deletes the page above this button. This delete isn't permanent until you save the sheet`. Cancel tooltip exact: `Never mind`. Check calls `removePageAt` for this index. Cancel clears armed. No scroll.
+6. When `index` is the first type 1, render one `fa-trash` button with class `bottom-buttons delete-page disabled`, `aria-disabled="true"`, and no HTML `disabled` attribute. Click returns. Tooltip exact: `You can never remove this page.` The other resting gutter buttons stay. This gutter cannot arm.
+7. In `V2View.css`, `delete-page` is `#990000` with white text, hover `#5a0000`, both beating the whitesmoke and orange `#b45f06` gutter rules. `delete-page.confirm` has `margin-left: auto`. `delete-page.disabled` stays whitesmoke, `color: gray`, `cursor: not-allowed`, including hover. `delete-page-cancel` is `#06465b`, hover `#032530`, white text. Idle and disabled delete buttons do not set `margin-left: auto`.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `V2View.tsx` finds `You can never remove this page.` once and the full confirm sentence once. Grep of `removePageAt` finds the export, the interface, and the `getV2Updates` handler. Grep of `updateCatalogInfo` in `pageType1Updates.ts` is 0. `fa-file-circle-plus` and the disclosed keys stay.
+depends on: none
+open questions: none
+deviations from design: Main replaced the always-visible four adds with a per-card disclosure before this landed. Delete sits on the resting row to the right of `fa-file-circle-plus` and is not mounted while disclosed. Armed delete hides reorder and file-circle-plus as well as the adds. Arming state is the parent `armedDeletePageIDs` list, not a nested gutter component. TODO ids are T-150 and T-151 because T-145–T-149 are the disclosure and cap work.
+result: Resting gutters show `fa-trash` after file-circle-plus. The first type-1 gutter uses `aria-disabled="true"` and does not arm. Other gutters arm to `fa-trash-check` and `fa-rotate-left` and hide the rest of that gutter. `removePageAt` splices unless the index is the first type 1, and it does not dispatch catalog updates. App tsc reports only the missing `frontend-config`. The idle sentence is also the first sentence of the confirm tooltip, so that grep is 2; the full confirm sentence and `You can never remove this page.` are each 1. `disabled=` is not zero: the protected control uses `aria-disabled="true"`, and the 15-sheet cap button keeps its native `disabled`.
+
 ### T-149: Refuse a labeled add that would pass 15 sheets
 status: done
 source: rewrite-ledger/add-page-type-1.md, 2026-10-30 (add click at the cap; Q1 default toast)

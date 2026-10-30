@@ -28,7 +28,7 @@ Sheet-wide session (already on the v2 slice; new pages plug in):
 - New tables/columns: `ensureSchema` idempotent patch + `backupTables/pageN.sql` in the same change (`schema-on-boot.md`). No new migration package.
 - Play-time view controls (always-visible inputs, field POST, location highlight) are **not** automatic. Add them only when that page’s topic names the cells. Mechanics: `quick-view-inputs.md`. New allowlist attributes and column UPDATEs ship in the same change as the control.
 - Two-column shell: reuse `app/src/pages/v2/pageTypes/components/doubleColumn/`. Do not add `features/`, `widgets/`, or `shared/`.
-- Off-card gutter under each sheet card. Resting: reorder (`page-reorder.md`) and `fa-file-circle-plus`. Disclosed: **+ Main Info**, **+ Skills & Abilities**, **+ NPCs & Equipment**, and **+ Notes**, then far-right `fa-rotate-left` (`add-page-type-1.md`). Main Info inserts type 1. Skills inserts type 2. NPCs & Equipment inserts type 3. Notes inserts type 4 (`page4-view.md`). Every new type adds one labeled add to the right of the last add, inside the disclosed set, before the rotate-left button. Mechanics, including the 15-sheet cap: `add-page-type-1.md`. Do not put that cluster on the printed blank.
+- Off-card gutter under each sheet card. Resting: reorder (`page-reorder.md`), `fa-file-circle-plus`, then delete of the sheet above (`delete-sheet-page.md`). Disclosed: **+ Main Info**, **+ Skills & Abilities**, **+ NPCs & Equipment**, and **+ Notes**, then far-right `fa-rotate-left` (`add-page-type-1.md`). Main Info inserts type 1. Skills inserts type 2. NPCs & Equipment inserts type 3. Notes inserts type 4 (`page4-view.md`). Every new type adds one labeled add to the right of the last add, inside the disclosed set, before the rotate-left button. Mechanics, including the 15-sheet cap: `add-page-type-1.md`. Do not put that cluster on the printed blank.
 
 Vertical slice (every new page type adds all of these):
 
@@ -90,6 +90,9 @@ Revised 2026-10-04 (page type 3; Design Q1–Q14):
 - Gutter two labeled adds — **revised**: third add **+ NPCs & Equipment** (`add-page-type-1.md`).
 - Page-local decision list — **revised**: includes `page3-view.md`.
 
+Revised 2026-10-30 (delete the sheet above the gutter):
+- Gutter is adds plus reorder only — **revised**: delete of the sheet above is `delete-sheet-page.md`. A new type’s labeled add still sits to the right of the last add, inside the disclosed set, before `fa-rotate-left`. Delete stays on the resting row, after file-circle-plus.
+
 Revised 2026-10-30 (page type 4 general notes):
 - Create-character note stopped at type 3 — **revised**: type 4 yes, index 3 (`page4-view.md`).
 - Sheet-wide blank, fonts, and `character-value` on every v2 sheet page — **revised** for type 4 only. Types 1, 2, and 3 **retained**.
@@ -99,4 +102,4 @@ Revised 2026-10-30 (gutter disclosure, `add-page-type-1.md`):
 - Gutter lists both clusters as one always-visible row — **revised**: resting versus disclosed. Labeled adds, including **+ Notes**, stay the disclosed set.
 
 Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `page4-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
-TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`); disclosure: T-145 (done); sheet cap: T-147, T-148 (done); add-click guard: T-149 (done; `add-page-type-1.md`)
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`); disclosure: T-145 (done); sheet cap: T-147, T-148 (done); add-click guard: T-149 (done; `add-page-type-1.md`); sheet delete: T-150, T-151 (`delete-sheet-page.md`)

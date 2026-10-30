@@ -31,6 +31,7 @@ routing:
   edit-character: edit-character.md
   add-page-type-1 / add another page-type-1 / add sheet page / add page type 2 sheet / add page type 3 sheet: add-page-type-1.md
   page reorder / swap sheets / move sheet to top / move sheet to bottom: page-reorder.md
+  delete sheet / delete the page above / remove sheet page: delete-sheet-page.md
   quick-view-inputs: quick-view-inputs.md
   session-phases: phases.md
   schema-on-boot: schema-on-boot.md
