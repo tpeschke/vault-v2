@@ -144,6 +144,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                             {disclosedPageIDs.includes(page.pageID) ? (
                                                 <>
                                                     <button
+                                                        key="add-main"
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
@@ -152,6 +153,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         }}
                                                     ><i className="fa-solid fa-plus"></i> Main Info</button>
                                                     <button
+                                                        key="add-skills"
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
@@ -160,6 +162,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         }}
                                                     ><i className="fa-solid fa-plus"></i> Skills & Abilities</button>
                                                     <button
+                                                        key="add-npcs"
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
@@ -168,6 +171,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         }}
                                                     ><i className="fa-solid fa-plus"></i> NPCs & Equipment</button>
                                                     <button
+                                                        key="add-notes"
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         onClick={() => {
@@ -176,6 +180,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         }}
                                                     ><i className="fa-solid fa-plus"></i> Notes</button>
                                                     <button
+                                                        key="rest"
                                                         type="button"
                                                         className="primary"
                                                         data-tooltip-id="my-tooltip"
@@ -187,6 +192,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                 <>
                                                     {index < character.pages.length - 1 &&
                                                         <button
+                                                            key="swap"
                                                             type="button"
                                                             className="bottom-buttons"
                                                             data-tooltip-id="my-tooltip"
@@ -199,6 +205,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                     }
                                                     {index > 0 &&
                                                         <button
+                                                            key="top"
                                                             type="button"
                                                             className="bottom-buttons"
                                                             data-tooltip-id="my-tooltip"
@@ -211,6 +218,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                     }
                                                     {index < character.pages.length - 1 &&
                                                         <button
+                                                            key="bottom"
                                                             type="button"
                                                             className="bottom-buttons"
                                                             data-tooltip-id="my-tooltip"
@@ -222,6 +230,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                         ><i className="fa-solid fa-down-to-line"></i></button>
                                                     }
                                                     <button
+                                                        key="disclose"
                                                         type="button"
                                                         className="bottom-buttons add-page"
                                                         data-tooltip-id="my-tooltip"

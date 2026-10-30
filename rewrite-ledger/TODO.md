@@ -21,6 +21,19 @@ result:
 
 ## Done
 
+### T-146: Remount gutter icons when the add row opens
+status: done
+source: Design 2026-10-30 (disclosed adds showed the resting glyphs). Designer: Execute. No open questions.
+why: `autoReplaceSvg: 'nest'` keeps the previous SVG when React reuses an `<i>` and only changes its class. The labeled adds must show `fa-plus`.
+scope: `app/src/pages/v2/V2View.tsx` gutter buttons. Owner: `rewrite-ledger/add-page-type-1.md`. Do not change `app/index.html`, the kit, or the icon classes.
+steps:
+1. Give each gutter button a stable `key` that differs between the resting set (`swap`, `top`, `bottom`, `disclose`) and the disclosed set (`add-main`, `add-skills`, `add-npcs`, `add-notes`, `rest`).
+done when: Opening the add row shows `data-icon="plus"` on each labeled button’s SVG, and `data-icon="rotate-left"` on the exit. `./node_modules/.bin/tsc --noEmit -p app` exits 0.
+depends on: T-145
+open questions: none
+deviations from design: none
+result: Disclosed labeled buttons draw `data-icon="plus"`. The exit draws `rotate-left`. Other cards keep swap, up-to-line, down-to-line, and file-circle-plus. `tsc --noEmit -p app` exits 0.
+
 ### T-145: Disclose sheet adds from file-circle-plus
 status: done
 source: rewrite-ledger/add-page-type-1.md; rewrite-ledger/page-reorder.md, 2026-10-30 (Q1 every page type, each card; Q2 entry icon leaves; Q3 exit far right; Q4 `Click to Add New Pages` / `Nevermind`; Q5 add returns to resting; Q6 do not check the kit). Exit class named 2026-10-30: `primary`.
