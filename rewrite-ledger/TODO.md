@@ -6,7 +6,21 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-131: Move Carry, the containers, and the right-hand sections
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Carry renders in the second column. Backpack, the Pouches, and the Held Bags render in the first. Quarter Mastering and Tiny & Other render in the third. The designer moved Carry under the worn rows, moved those container blocks to the third column, moved Quarter Mastering and Tiny & Other to the second, and put Other Containers at the bottom of the third column.
+scope: the three `.page3-gear-col` stacks in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`LEFT_ROWS`, `OTHER_ROWS`, `CARRY_ROWS`, `QM_ROWS`, `TINY_ROWS`, the Notes block, the footnote, and `.page3-coinage`). Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3Interfaces.ts`, `page3.sql`, or `ensureSchema.ts`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not rename a slot. Do not add or remove a row. Do not change tracks, row height, tooltips, Notes height, or coinage fields. Do not add `features/` or `shared/`.
+steps:
+1. First column, under `ColumnHead`: Head through R. Hand (`head`, `chest`, `coat`, `gloves`, `pants`, `shoes`, `armor`, `lHand`, `rHand`), then `<h2>Carry</h2>`, then `CARRY_ROWS` (`carryM4` through `carry17`, 17 printed-S rows). No backpack, pouch, held bag, Other Containers, Quarter Mastering, Tiny & Other, Notes, or Coinage in this column.
+2. Second column, under `ColumnHead`: `<h2>Quarter Mastering</h2>`, `QM_ROWS` (`qm1`–`qm15`), `<h2>Tiny &amp; Other</h2>`, `TINY_ROWS` (`tiny1`–`tiny12`), `<h2>Notes</h2>`, the Notes textarea, then the footnote. No Carry. No Other Containers. No Coinage.
+3. Third column, under `ColumnHead`: the container block in its current order (`backpack`, `leftS1`–`leftS9`, `pouch1`, `leftS10`, `leftS11`, `pouch2`, `leftS12`, `leftS13`, `pouch3`, `leftS14`, `leftS15`, `heldBag1`, `midS1`–`midS3`, `heldBag2`, `midS4`–`midS6`), then the existing `.page3-coinage` block, then `OTHER_ROWS` (`other1` bar **Other Containers**, `other2`, `other3`, `other4` arrows).
+4. Leave each block’s fields as they are. Bars stay labels. Printed S stays text. Arrow rows stay the arrow only. Quarter Mastering numbers stay **1**–**15**. Do not split a block with `slice`.
+done when: In `Gear.tsx`, the first `.page3-gear-col` contains `rHand` and then the Carry heading’s 17 rows, and does not contain `backpack`, `heldBag1`, `other1`, or `qm1`. The second `.page3-gear-col` contains `qm1` before `tiny1`, and the Notes heading after `tiny12`, and does not contain `carryM4` or `other1`. The third `.page3-gear-col` contains `backpack` before `page3-coinage`, and `other1` after `page3-coinage`. `PAGE3_GEAR_SLOTS` is unchanged. `rg "carry11|other4|qm15" backend/server/v2/backupTables/page3.sql` is 0. `npm run build` in `app/` exits 0.
+depends on: T-130 (done)
+open questions: none
+deviations from design: The design notes put Other Containers at the top of the second column. The designer put it at the bottom of the third column. The container block still precedes Coinage, so Other Containers follows Coinage.
+result:
 
 ## Done
 
