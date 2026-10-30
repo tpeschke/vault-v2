@@ -69,7 +69,8 @@ const RIGHT_ROWS: GearRowSpec[] = [
     { slot: 'qm1', qm: 1 }, { slot: 'qm2', qm: 2 }, { slot: 'qm3', qm: 3 }, { slot: 'qm4', qm: 4 }, { slot: 'qm5', qm: 5 },
     { slot: 'qm6', qm: 6 }, { slot: 'qm7', qm: 7 }, { slot: 'qm8', qm: 8 }, { slot: 'qm9', qm: 9 }, { slot: 'qm10', qm: 10 },
     { slot: 'tiny1' }, { slot: 'tiny2' }, { slot: 'tiny3' }, { slot: 'tiny4' }, { slot: 'tiny5' },
-    { slot: 'tiny6' }, { slot: 'tiny7' }, { slot: 'tiny8' }, { slot: 'tiny9' }, { slot: 'tiny10' }
+    { slot: 'tiny6' }, { slot: 'tiny7' }, { slot: 'tiny8' }, { slot: 'tiny9' }, { slot: 'tiny10' },
+    { slot: 'tiny11' }, { slot: 'tiny12' }
 ]
 
 function numberFromInput(raw: string): SkillNumber {
@@ -135,22 +136,26 @@ function GearRow({
                     />
                 )}
             </span>
-            <GearFlag
-                checked={cell.staffSnake}
-                onToggle={() => {
-                    const staffSnake = !cell.staffSnake
-                    updates.updateGearCell(pageID, spec.slot, { staffSnake })
-                    updates.persistPage3Gear(pageID, { slot: spec.slot, staffSnake })
-                }}
-            />
-            <GearFlag
-                checked={cell.meditating}
-                onToggle={() => {
-                    const meditating = !cell.meditating
-                    updates.updateGearCell(pageID, spec.slot, { meditating })
-                    updates.persistPage3Gear(pageID, { slot: spec.slot, meditating })
-                }}
-            />
+            <span className="page3-gear-flag">
+                <GearFlag
+                    checked={cell.staffSnake}
+                    onToggle={() => {
+                        const staffSnake = !cell.staffSnake
+                        updates.updateGearCell(pageID, spec.slot, { staffSnake })
+                        updates.persistPage3Gear(pageID, { slot: spec.slot, staffSnake })
+                    }}
+                />
+            </span>
+            <span className="page3-gear-flag">
+                <GearFlag
+                    checked={cell.meditating}
+                    onToggle={() => {
+                        const meditating = !cell.meditating
+                        updates.updateGearCell(pageID, spec.slot, { meditating })
+                        updates.persistPage3Gear(pageID, { slot: spec.slot, meditating })
+                    }}
+                />
+            </span>
             <input
                 className="character-value page3-gear-w"
                 type="number"

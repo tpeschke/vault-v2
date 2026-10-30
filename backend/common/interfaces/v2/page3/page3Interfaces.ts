@@ -11,7 +11,8 @@ export const PAGE3_GEAR_SLOTS = [
     'other1', 'other2', 'other3',
     'carryM4', 'carryM3', 'carryM2', 'carryM1', 'carry0', 'carryP1', 'carryP2', 'carryP3', 'carryP4', 'carryP5',
     'qm1', 'qm2', 'qm3', 'qm4', 'qm5', 'qm6', 'qm7', 'qm8', 'qm9', 'qm10',
-    'tiny1', 'tiny2', 'tiny3', 'tiny4', 'tiny5', 'tiny6', 'tiny7', 'tiny8', 'tiny9', 'tiny10'
+    'tiny1', 'tiny2', 'tiny3', 'tiny4', 'tiny5', 'tiny6', 'tiny7', 'tiny8', 'tiny9', 'tiny10',
+    'tiny11', 'tiny12'
 ] as const
 
 export type Page3GearSlot = typeof PAGE3_GEAR_SLOTS[number]
