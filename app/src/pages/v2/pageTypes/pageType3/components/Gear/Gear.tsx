@@ -28,9 +28,9 @@ const LEFT_ROWS: GearRowSpec[] = [
     { slot: 'head', label: 'Head', arrow: true },
     { slot: 'chest', label: 'Chest', arrow: true },
     { slot: 'coat', label: 'Coat', arrow: true },
-    { slot: 'gloves', label: 'gloves', arrow: true },
-    { slot: 'pants', label: 'pants', arrow: true },
-    { slot: 'shoes', label: 'shoes', arrow: true },
+    { slot: 'gloves', label: 'Gloves', arrow: true },
+    { slot: 'pants', label: 'Pants', arrow: true },
+    { slot: 'shoes', label: 'Shoes', arrow: true },
     { slot: 'armor', label: 'Armor', arrow: true },
     { slot: 'lHand', label: 'L. Hand', arrow: true },
     { slot: 'rHand', label: 'R. Hand', arrow: true },
@@ -46,9 +46,9 @@ const LEFT_ROWS: GearRowSpec[] = [
 ]
 
 const MIDDLE_ROWS: GearRowSpec[] = [
-    { slot: 'heldBag1', label: 'held bag', bar: true },
+    { slot: 'heldBag1', label: 'Held Bag', bar: true },
     { slot: 'midS1' }, { slot: 'midS2' }, { slot: 'midS3' },
-    { slot: 'heldBag2', label: 'held bag', bar: true },
+    { slot: 'heldBag2', label: 'Held Bag', bar: true },
     { slot: 'midS4' }, { slot: 'midS5' }, { slot: 'midS6' },
     { slot: 'other1', label: 'Other Containers', bar: true },
     { slot: 'other2', arrow: true },
