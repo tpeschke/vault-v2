@@ -32,7 +32,10 @@ const LEFT_ROWS: GearRowSpec[] = [
     { slot: 'shoes', label: 'Shoes', arrow: true },
     { slot: 'armor', label: 'Armor', arrow: true },
     { slot: 'lHand', label: 'L. Hand', arrow: true },
-    { slot: 'rHand', label: 'R. Hand', arrow: true },
+    { slot: 'rHand', label: 'R. Hand', arrow: true }
+]
+
+const CONTAINER_ROWS: GearRowSpec[] = [
     { slot: 'backpack', label: 'Backpack', bar: true },
     { slot: 'leftS1' }, { slot: 'leftS2' }, { slot: 'leftS3' }, { slot: 'leftS4' }, { slot: 'leftS5' },
     { slot: 'leftS6' }, { slot: 'leftS7' }, { slot: 'leftS8' }, { slot: 'leftS9' },
@@ -196,14 +199,19 @@ export default function Gear({ page, pageID, updates }: Props) {
                     {LEFT_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
+                    <h2>Carry</h2>
+                    {CARRY_ROWS.map(spec => (
+                        <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
+                    ))}
                 </div>
                 <div className="page3-gear-col">
                     <ColumnHead />
-                    {OTHER_ROWS.map(spec => (
+                    <h2>Quarter Mastering</h2>
+                    {QM_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
-                    <h2>Carry</h2>
-                    {CARRY_ROWS.map(spec => (
+                    <h2>Tiny &amp; Other</h2>
+                    {TINY_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
                     <h2>Notes</h2>
@@ -218,12 +226,7 @@ export default function Gear({ page, pageID, updates }: Props) {
                 </div>
                 <div className="page3-gear-col">
                     <ColumnHead />
-                    <h2>Quarter Mastering</h2>
-                    {QM_ROWS.map(spec => (
-                        <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
-                    ))}
-                    <h2>Tiny &amp; Other</h2>
-                    {TINY_ROWS.map(spec => (
+                    {CONTAINER_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
                     <div className="page3-coinage">
@@ -309,6 +312,9 @@ export default function Gear({ page, pageID, updates }: Props) {
                             <em>x100 gc</em>
                         </span>
                     </div>
+                    {OTHER_ROWS.map(spec => (
+                        <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
+                    ))}
                 </div>
             </div>
         </div>

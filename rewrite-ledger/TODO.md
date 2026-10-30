@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-131: Move Carry, the containers, and the right-hand sections
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Carry renders in the second column. Backpack, the Pouches, and the Held Bags render in the first. Quarter Mastering and Tiny & Other render in the third. The designer moved Carry under the worn rows, moved those container blocks to the third column, moved Quarter Mastering and Tiny & Other to the second, and put Other Containers at the bottom of the third column.
 scope: the three `.page3-gear-col` stacks in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`LEFT_ROWS`, `OTHER_ROWS`, `CARRY_ROWS`, `QM_ROWS`, `TINY_ROWS`, the Notes block, the footnote, and `.page3-coinage`). Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3Interfaces.ts`, `page3.sql`, or `ensureSchema.ts`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not rename a slot. Do not add or remove a row. Do not change tracks, row height, tooltips, Notes height, or coinage fields. Do not add `features/` or `shared/`.
@@ -20,9 +24,7 @@ done when: In `Gear.tsx`, the first `.page3-gear-col` contains `rHand` and then 
 depends on: T-130 (done)
 open questions: none
 deviations from design: The design notes put Other Containers at the top of the second column. The designer put it at the bottom of the third column. The container block still precedes Coinage, so Other Containers follows Coinage.
-result:
-
-## Done
+result: The first column is Head through R. Hand, then Carry’s 17 printed-S rows. The second column is Quarter Mastering, Tiny & Other, Notes, and the footnote. The third column is Backpack through the Held Bags, then Coinage, then Other Containers. Headless Chrome: those sections sit in that order; a data row is 17.38px; Notes is 86.89px. `PAGE3_GEAR_SLOTS` and `page3.sql` are unchanged. `npm run build` in `app/` exits 0.
 
 ### T-130: Move Held Bags, restack Carry, extend Quarter Mastering
 status: done
