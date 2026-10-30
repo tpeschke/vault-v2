@@ -62,7 +62,7 @@ const CARRY_ROWS: GearRowSpec[] = [
     { slot: 'carryM4' }, { slot: 'carryM3' }, { slot: 'carryM2' }, { slot: 'carryM1' }, { slot: 'carry0' },
     { slot: 'carryP1' }, { slot: 'carryP2' }, { slot: 'carryP3' }, { slot: 'carryP4' }, { slot: 'carryP5' },
     { slot: 'carry11' }, { slot: 'carry12' }, { slot: 'carry13' }, { slot: 'carry14' },
-    { slot: 'carry15' }, { slot: 'carry16' }, { slot: 'carry17' }
+    { slot: 'carry15' }, { slot: 'carry16' }, { slot: 'carry17' }, { slot: 'carry18' }
 ]
 
 const QM_ROWS: GearRowSpec[] = [
@@ -74,11 +74,22 @@ const QM_ROWS: GearRowSpec[] = [
 const TINY_ROWS: GearRowSpec[] = [
     { slot: 'tiny1' }, { slot: 'tiny2' }, { slot: 'tiny3' }, { slot: 'tiny4' }, { slot: 'tiny5' },
     { slot: 'tiny6' }, { slot: 'tiny7' }, { slot: 'tiny8' }, { slot: 'tiny9' }, { slot: 'tiny10' },
-    { slot: 'tiny11' }, { slot: 'tiny12' }
+    { slot: 'tiny11' }, { slot: 'tiny12' }, { slot: 'tiny13' }
 ]
 
 function numberFromInput(raw: string): SkillNumber {
     return raw === '' ? '' : +raw
+}
+
+function coinSizeText(count: SkillNumber): string {
+    const n = typeof count === 'number' && Number.isFinite(count) ? Math.trunc(count) : 0
+    const sign = n < 0 ? '-' : ''
+    const abs = Math.abs(n)
+    const whole = Math.floor(abs / 100)
+    const rem = abs % 100
+    if (rem === 0) return `${sign}${whole}s`
+    const frac = String(rem).padStart(2, '0').replace(/0+$/, '')
+    return `${sign}${whole}.${frac}s`
 }
 
 function GearFlag({ checked, onToggle }: { checked: boolean, onToggle: () => void }) {
@@ -215,7 +226,6 @@ export default function Gear({ page, pageID, updates }: Props) {
                         onChange={event => updates.updateNotes(pageID, event.target.value)}
                         onBlur={event => updates.persistPage3Notes(pageID, event.target.value)}
                     />
-                    <p className="page3-footnote">* Item is recorded in either clothing or other containers</p>
                 </div>
                 <div className="page3-gear-col">
                     <ColumnHead />
@@ -234,8 +244,8 @@ export default function Gear({ page, pageID, updates }: Props) {
                     <div className="page3-coinage">
                         <div className="page3-coinage-head">
                             <h2>Coinage</h2>
-                            <strong>Size</strong>
-                            <em>100 coins = 1s</em>
+                            <h2 className="minor-heading">Size</h2>
+                            <h2 className="minor-heading">100 coins = 1s</h2>
                         </div>
                         <span>
                             <em>cc</em>
@@ -247,13 +257,7 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 onChange={event => updates.updateCoinage(pageID, { copper: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, copper: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <input
-                                className="character-value"
-                                placeholder=" "
-                                value={coinage.copperSize}
-                                onChange={event => updates.updateCoinage(pageID, { copperSize: event.target.value })}
-                                onBlur={event => persistCoinage(pageID, { ...coinage, copperSize: event.target.value }, updates)}
-                            />
+                            <p className="character-value">{coinSizeText(coinage.copper)}</p>
                             <em></em>
                         </span>
                         <span>
@@ -266,13 +270,7 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 onChange={event => updates.updateCoinage(pageID, { silver: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, silver: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <input
-                                className="character-value"
-                                placeholder=" "
-                                value={coinage.silverSize}
-                                onChange={event => updates.updateCoinage(pageID, { silverSize: event.target.value })}
-                                onBlur={event => persistCoinage(pageID, { ...coinage, silverSize: event.target.value }, updates)}
-                            />
+                            <p className="character-value">{coinSizeText(coinage.silver)}</p>
                             <em>x100 cc</em>
                         </span>
                         <span>
@@ -285,13 +283,7 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 onChange={event => updates.updateCoinage(pageID, { gold: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, gold: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <input
-                                className="character-value"
-                                placeholder=" "
-                                value={coinage.goldSize}
-                                onChange={event => updates.updateCoinage(pageID, { goldSize: event.target.value })}
-                                onBlur={event => persistCoinage(pageID, { ...coinage, goldSize: event.target.value }, updates)}
-                            />
+                            <p className="character-value">{coinSizeText(coinage.gold)}</p>
                             <em>x100 sc</em>
                         </span>
                         <span>
@@ -304,13 +296,7 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 onChange={event => updates.updateCoinage(pageID, { platinum: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, platinum: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <input
-                                className="character-value"
-                                placeholder=" "
-                                value={coinage.platinumSize}
-                                onChange={event => updates.updateCoinage(pageID, { platinumSize: event.target.value })}
-                                onBlur={event => persistCoinage(pageID, { ...coinage, platinumSize: event.target.value }, updates)}
-                            />
+                            <p className="character-value">{coinSizeText(coinage.platinum)}</p>
                             <em>x100 gc</em>
                         </span>
                     </div>
@@ -323,6 +309,7 @@ export default function Gear({ page, pageID, updates }: Props) {
                     {OTHER_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
+                    <p className="page3-footnote">* Item is recorded in either clothing or other containers</p>
                 </div>
             </div>
         </div>

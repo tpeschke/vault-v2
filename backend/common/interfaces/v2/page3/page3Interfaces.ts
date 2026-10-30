@@ -10,11 +10,11 @@ export const PAGE3_GEAR_SLOTS = [
     'heldBag1', 'midS1', 'midS2', 'midS3', 'heldBag2', 'midS4', 'midS5', 'midS6',
     'other1', 'other2', 'other3', 'other4',
     'carryM4', 'carryM3', 'carryM2', 'carryM1', 'carry0', 'carryP1', 'carryP2', 'carryP3', 'carryP4', 'carryP5',
-    'carry11', 'carry12', 'carry13', 'carry14', 'carry15', 'carry16', 'carry17',
+    'carry11', 'carry12', 'carry13', 'carry14', 'carry15', 'carry16', 'carry17', 'carry18',
     'qm1', 'qm2', 'qm3', 'qm4', 'qm5', 'qm6', 'qm7', 'qm8', 'qm9', 'qm10',
     'qm11', 'qm12', 'qm13', 'qm14', 'qm15',
     'tiny1', 'tiny2', 'tiny3', 'tiny4', 'tiny5', 'tiny6', 'tiny7', 'tiny8', 'tiny9', 'tiny10',
-    'tiny11', 'tiny12'
+    'tiny11', 'tiny12', 'tiny13'
 ] as const
 
 export type Page3GearSlot = typeof PAGE3_GEAR_SLOTS[number]
@@ -24,7 +24,7 @@ export const PAGE3_DEFAULT_S_SLOTS: readonly Page3GearSlot[] = [
     'leftS10', 'leftS11', 'leftS12', 'leftS13', 'leftS14', 'leftS15',
     'midS1', 'midS2', 'midS3', 'midS4', 'midS5', 'midS6',
     'carryM4', 'carryM3', 'carryM2', 'carryM1', 'carry0', 'carryP1', 'carryP2', 'carryP3', 'carryP4', 'carryP5',
-    'carry11', 'carry12', 'carry13', 'carry14', 'carry15', 'carry16', 'carry17'
+    'carry11', 'carry12', 'carry13', 'carry14', 'carry15', 'carry16', 'carry17', 'carry18'
 ]
 
 const defaultS = new Set<string>(PAGE3_DEFAULT_S_SLOTS)

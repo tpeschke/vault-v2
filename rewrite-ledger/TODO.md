@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-133: Add a Carry row, a Tiny row, a Notes band, and calculated Coinage size
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Carry, Tiny & Other, and Notes each gain one row. The footnote leaves Notes for the bottom of the third column. The Coinage header does not sit on the cells under it, the coin rows are not striped, and Size is a typed string instead of the printed `100 coins = 1s` ratio.
 scope: `rewrite-ledger/page3-view.md` (done in Order). `backend/common/interfaces/v2/page3/page3Interfaces.ts` (`PAGE3_GEAR_SLOTS`, `PAGE3_DEFAULT_S_SLOTS`). `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` and `Gear.css`. Do not edit Characteristics. Do not add `features/` or `shared/`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not touch `page3.sql`, `ensureSchema.ts`, or the size columns. Do not POST Coinage Size. Do not write the ratio into a Carry slot.
@@ -21,10 +25,8 @@ steps:
 done when: Carry has 18 printed-S rows ending at `carry18`. Tiny & Other has 13 rows ending at `tiny13`. Notes is six bands tall and has no footnote under it. The footnote is the last child of the third column. Coinage **Size** and `100 coins = 1s` sit on the size cell and the note. **cc** is gray, **sc** is white, **gc** is gray, **pc** is white. A count of 150 shows `1.5s` in `Kalam` and does not POST. `npm run build` in `app/` exits 0. `page3.sql` has no diff.
 depends on: T-132
 open questions: none
-deviations: none yet
-result:
-
-## Done
+deviations: The size `p` margin is cleared and each coin row is a 17.38px track, so the paragraph does not grow the row. Notes is `border-box` with padding and border 0, so `calc(6 * 17.38px)` is the border box. Coinage `h2`s use that same 17.38px bar.
+result: `carry18` is printed S. `tiny13` matches `tiny1`. Notes is 104.27px and the footnote is the last child of the third column. Coinage Size for 150 is `1.5s` in Kalam and is not an input. Size and `100 coins = 1s` share the size and note columns. cc and gc are `#f3f3f3`. `npm run build` exits 0. `page3.sql` has no diff.
 
 ### T-132: Move Notes under Carry and Coinage under Tiny & Other
 status: done
