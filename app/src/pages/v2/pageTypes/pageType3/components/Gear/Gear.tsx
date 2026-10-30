@@ -86,10 +86,7 @@ function coinSizeText(count: SkillNumber): string {
     const sign = n < 0 ? '-' : ''
     const abs = Math.abs(n)
     const whole = Math.floor(abs / 100)
-    const rem = abs % 100
-    if (rem === 0) return `${sign}${whole}s`
-    const frac = String(rem).padStart(2, '0').replace(/0+$/, '')
-    return `${sign}${whole}.${frac}s`
+    return `${sign}${whole}s`
 }
 
 function GearFlag({ checked, onToggle }: { checked: boolean, onToggle: () => void }) {

@@ -333,6 +333,7 @@
     padding: 2px 1px;
     box-sizing: border-box;
     background: transparent;
+    text-align: center;
 }
 
 .page3-coinage>span>p.character-value {
@@ -340,6 +341,7 @@
     line-height: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .page3-coinage>span>em:last-child {
