@@ -134,7 +134,7 @@ export default function V2View({ setLoading, pathname, blank = false }: Props) {
             <BlankContext value={blank}>
             <EditingContext value={isEditing}>
                 <div className="version-two-shell">
-                    <div className={`page-shell ${isEditing ? 'view-edit' : viewQuickEdit ? 'view-quick-edit' : ''}`}>
+                    <div className={`page-shell${blank ? ' blank' : ''} ${isEditing ? 'view-edit' : viewQuickEdit ? 'view-quick-edit' : ''}`}>
                         {character && character.pages.map((page, index) => {
                             let card = <></>
                             const sheetKey = page.type === 4

@@ -34,7 +34,7 @@ Rejected:
 - Owner-gating changes for a real character. Non-owners still keep play-time controls (`quick-view-inputs.md`). This sheet is not a non-owner.
 
 Touches: `app/src/routes/AllRoutes.tsx`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/emptyPageType1.ts`; `emptyPageType2.ts`; `emptyPageType3.ts`; `app/src/pages/v2/components/sidebar/Sidebar.tsx`; `app/src/pages/v2/contexts/` (new blank context); mounted `character-value` widgets under `pageType1/`, `pageType2/`, `pageType3/`; `backend/server/v2/view/viewV2CharacterController.ts`; `00-START-HERE.yaml`; `feature-inventory.md`
-TODOs: T-152, T-153 (done); hover rest: T-154
+TODOs: T-152, T-153 (done); hover rest: T-154 (done)
 
 Revised 2026-10-30 (hover rest):
 - Read-only meant clicks and Quick Edit only — **revised**: this URL also keeps hover at the resting paint, uses the arrow on die cells and flag boxes, and shows no focus ring on sheet fields.

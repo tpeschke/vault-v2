@@ -69,3 +69,39 @@
     background: #032530 !important;
     color: white;
 }
+
+.v2 .page-shell.blank input:hover,
+.v2 .page-shell.blank textarea:hover {
+    background: transparent !important;
+}
+
+.v2 .page-shell.blank .page3-contacts > textarea:hover,
+.v2 .page-shell.blank .page3-notes:hover {
+    background-color: transparent !important;
+    background-image: repeating-linear-gradient(to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px) !important;
+    background-attachment: local !important;
+}
+
+.v2 .page-shell.blank .vitals-v2 .die-row p:hover:not(.selected) img {
+    filter: none;
+}
+
+.v2 .page-shell.blank .page3-flag-box:hover {
+    background: transparent;
+}
+
+.v2 .page-shell.blank .vitals-v2 .die-row p,
+.v2 .page-shell.blank .page3-flag-box {
+    cursor: default;
+}
+
+.v2 .page-shell.blank input:focus,
+.v2 .page-shell.blank input:focus-visible,
+.v2 .page-shell.blank textarea:focus,
+.v2 .page-shell.blank textarea:focus-visible {
+    outline: none;
+}
