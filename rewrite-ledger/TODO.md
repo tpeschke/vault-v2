@@ -19,6 +19,38 @@ open questions: What `limit` string replaces `'10mb'`? Page count is uncapped, s
 deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
 result:
 
+### T-143: Name the reason a notes stroke was refused
+status: proposed
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: A notes stroke that the server refuses toasts **Save failed** whenever the body has no `message`. A scene over the 10 MB parser ceiling never reaches the route, and the response is HTML.
+scope: `backend/common/interfaces/v2/page4/notesScene.ts` (the sentences); `backend/server/v2/edit/utilities/pageType4/savePage4Scene.ts`; `backend/server/v2/edit/editV2FieldController.ts`; unindexed `backend/server/vault.ts` (CORS order and one error middleware). Do not change `bodyParser.json({ limit: '10mb' })`. Do not change full Save’s `Notes sheet is limited to 100 MB` message. Do not change other field attributes. Do not add a route.
+steps:
+1. Export these sentences from `notesScene.ts`: over 100 MB `The notes sheet is over 100 MB, so this stroke was not saved.`; request over 10 MB `The notes sheet is larger than 10 MB, so this stroke was not saved.`; unreadable `The notes sheet could not be read, so this stroke was not saved.`; missing page `This notes sheet is not on the character, so the stroke was not saved.`; mint failed `The notes sheet could not be created, so this stroke was not saved.`
+2. `savePage4Scene` returns which of those four write-refusals it is (the 10 MB sentence is not its job). Over the byte cap is the 100 MB sentence. A non-string, bad JSON, or a JSON value without an `elements` array is unreadable. `pageID` not finite, or `pageID > 0` with no matching type-4 row for this character, is the missing-page sentence. A bad `index` or a mint that does not return an id is the create sentence. Still do not call `savePages`. Still do not write on a refusal.
+3. The `'page4Scene'` branch sends `{ success: false, message }` with that sentence. A non-string `value` uses the unreadable sentence.
+4. In `vault.ts`, register `cors()` before `bodyParser.json`. Leave the limit string `'10mb'`. After the routes, add an error middleware. When `err.type === 'entity.too.large'` and `originalUrl` matches `/v2/edit/` plus an id plus `/field`, respond 413 JSON `{ success: false, message }` using the 10 MB sentence. Any other error calls `next(err)`.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep `limit: '10mb'` in `vault.ts` is 1. Grep `Save failed` in `savePage4Scene.ts` is 0. Grep of the 10 MB sentence finds it in `notesScene.ts` and `vault.ts`.
+depends on: none
+open questions: none
+deviations from design: Full Save’s unguarded `savePages` and its HTML 500 on `TextareaLimitError` are not this TODO. The designer named a notes stroke. The parser rejects the body before the attribute is known, so every oversized `/field` POST uses the notes sentence. Full Save’s 413 stays HTML.
+result:
+
+### T-144: Keep the notes-stroke failure toast until it is dismissed
+status: proposed
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: The stroke toast closes itself, and a request that never arrives still says **Save failed**.
+scope: `app/src/pages/v2/hooks/characterHook.tsx` (`pumpNotes` only); `app/src/pages/v2/pageTypes/pageType4/PageType4.tsx` (the cap toast). Import the sentences from `@vault/common/interfaces/v2/page4/notesScene`. Do not change other `toast.error` calls. Do not set `autoClose` on `ToastContainer`.
+steps:
+1. Export `The notes sheet was not saved because the request did not reach the server.` from `notesScene.ts` if T-143 did not.
+2. On a `'page4Scene'` failure, toast `data.message` when it is a string, otherwise the no-response sentence. Pass `{ autoClose: false }`.
+3. In the stroke `catch`, toast `error.response.data.message` when it is a string, otherwise the no-response sentence. Pass `{ autoClose: false }`.
+4. The client cap toast uses the 100 MB sentence and `{ autoClose: false }`.
+done when: `npx tsc --noEmit -p app` exits 0. Grep `Save failed` in `pumpNotes` is 0. Grep `autoClose: false` finds the stroke toasts and the cap toast. Grep `Notes sheet is limited to 100 MB` in `PageType4.tsx` is 0.
+depends on: T-143
+open questions: none
+deviations from design: none
+result:
+
 ## Done
 
 ### T-141: Field-POST a notes stroke, and mint a new notes page
