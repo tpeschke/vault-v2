@@ -19,8 +19,10 @@ open questions: What `limit` string replaces `'10mb'`? Page count is uncapped, s
 deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
 result:
 
+## Done
+
 ### T-143: Name the reason a notes stroke was refused
-status: proposed
+status: done
 source: rewrite-ledger/page4-view.md, 2026-10-30
 why: A notes stroke that the server refuses toasts **Save failed** whenever the body has no `message`. A scene over the 10 MB parser ceiling never reaches the route, and the response is HTML.
 scope: `backend/common/interfaces/v2/page4/notesScene.ts` (the sentences); `backend/server/v2/edit/utilities/pageType4/savePage4Scene.ts`; `backend/server/v2/edit/editV2FieldController.ts`; unindexed `backend/server/vault.ts` (CORS order and one error middleware). Do not change `bodyParser.json({ limit: '10mb' })`. Do not change full Save’s `Notes sheet is limited to 100 MB` message. Do not change other field attributes. Do not add a route.
@@ -32,11 +34,11 @@ steps:
 done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep `limit: '10mb'` in `vault.ts` is 1. Grep `Save failed` in `savePage4Scene.ts` is 0. Grep of the 10 MB sentence finds it in `notesScene.ts` and `vault.ts`.
 depends on: none
 open questions: none
-deviations from design: Full Save’s unguarded `savePages` and its HTML 500 on `TextareaLimitError` are not this TODO. The designer named a notes stroke. The parser rejects the body before the attribute is known, so every oversized `/field` POST uses the notes sentence. Full Save’s 413 stays HTML.
-result:
+deviations from design: Full Save’s unguarded `savePages` and its HTML 500 on `TextareaLimitError` are not this TODO. The designer named a notes stroke. The parser rejects the body before the attribute is known, so every oversized `/field` POST uses the notes sentence. Full Save’s 413 stays HTML. The 10 MB sentence text lives in `notesScene.ts`; `vault.ts` imports `NOTES_STROKE_OVER_REQUEST` instead of pasting it.
+result: `savePage4Scene` returns the refusal sentence. The `'page4Scene'` branch sends it. `cors()` is registered before `bodyParser.json({ limit: '10mb' })`. An oversized `/v2/edit/:id/field` answers 413 JSON with `NOTES_STROKE_OVER_REQUEST`. `npx tsc --noEmit -p backend/common` exits 0. Server tsc reports only the missing `server-config`. Grep `limit: '10mb'` in `vault.ts` is 1. Grep `Save failed` in `savePage4Scene.ts` is 0.
 
 ### T-144: Keep the notes-stroke failure toast until it is dismissed
-status: proposed
+status: done
 source: rewrite-ledger/page4-view.md, 2026-10-30
 why: The stroke toast closes itself, and a request that never arrives still says **Save failed**.
 scope: `app/src/pages/v2/hooks/characterHook.tsx` (`pumpNotes` only); `app/src/pages/v2/pageTypes/pageType4/PageType4.tsx` (the cap toast). Import the sentences from `@vault/common/interfaces/v2/page4/notesScene`. Do not change other `toast.error` calls. Do not set `autoClose` on `ToastContainer`.
@@ -49,9 +51,7 @@ done when: `npx tsc --noEmit -p app` exits 0. Grep `Save failed` in `pumpNotes` 
 depends on: T-143
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: `pumpNotes` toasts `data.message` or `NOTES_STROKE_NO_RESPONSE`, and the catch toasts `error.response.data.message` or that same sentence, both with `{ autoClose: false }`. The cap toast uses `NOTES_STROKE_OVER_CAP` with `{ autoClose: false }`. `npx tsc --noEmit -p app` exits 0. `Save failed` is absent from `pumpNotes`. `Notes sheet is limited to 100 MB` is absent from `PageType4.tsx`.
 
 ### T-141: Field-POST a notes stroke, and mint a new notes page
 status: done

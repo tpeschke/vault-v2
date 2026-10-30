@@ -25,6 +25,7 @@ import savePage3RelationshipDelete from './utilities/pageType3/savePage3Relation
 import savePage3GearField, { isPage3GearSlot } from './utilities/pageType3/savePage3GearField'
 import savePage3Coinage from './utilities/pageType3/savePage3Coinage'
 import savePage3Notes from './utilities/pageType3/savePage3Notes'
+import { NOTES_STROKE_UNREADABLE } from '@vault/common/interfaces/v2/page4/notesScene'
 import { textareaCaps, textareaCharCount } from '@vault/common/textareaLimits'
 import savePage4Scene from './utilities/pageType4/savePage4Scene'
 
@@ -272,14 +273,12 @@ export async function editV2Field(request: FieldRequest, response: Response) {
 
     if (attribute === 'page4Scene') {
         if (typeof value !== 'string') {
-            checkForContentTypeBeforeSending(response, { success: false })
+            checkForContentTypeBeforeSending(response, { success: false, message: NOTES_STROKE_UNREADABLE })
             return
         }
         const written = await savePage4Scene(characterID, +pageID, value, request.body.index)
         if (!written.ok) {
-            checkForContentTypeBeforeSending(response, written.capped
-                ? { success: false, message: 'Notes sheet is limited to 100 MB' }
-                : { success: false })
+            checkForContentTypeBeforeSending(response, { success: false, message: written.message })
             return
         }
         checkForContentTypeBeforeSending(response, written.pageID

@@ -3,6 +3,7 @@ import { Page1, Page2, Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import { Emotion } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
 import { Page3GearValue, Page3RelationshipDeleteValue, Page3RelationshipPValue, Page3RelationshipRValue, Page3RelationshipValue, ViewPersistAttribute } from "@vault/common/interfaces/v2/page1/viewPersist"
 import { Page3Coinage, Page3Relationship } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { NOTES_STROKE_NO_RESPONSE } from "@vault/common/interfaces/v2/page4/notesScene"
 import axios from "axios"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -787,7 +788,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
         axios.post(editV2URL + job.characterID + '/field', body)
             .then(({ data }) => {
                 if (!data.success) {
-                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    toast.error(typeof data.message === 'string' ? data.message : NOTES_STROKE_NO_RESPONSE, { autoClose: false })
                     return
                 }
                 const minted = typeof data.pageID === 'number' && data.pageID > 0 ? data.pageID : undefined
@@ -817,7 +818,10 @@ export default function characterHook(pathname: string, isEditing: boolean) {
                 }
             })
             .catch(error => {
-                toast.error(persistFailureMessage(error))
+                const message = axios.isAxiosError(error) && typeof error.response?.data?.message === 'string'
+                    ? error.response.data.message
+                    : NOTES_STROKE_NO_RESPONSE
+                toast.error(message, { autoClose: false })
             })
             .finally(() => {
                 slot.holding = false

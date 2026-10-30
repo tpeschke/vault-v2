@@ -1,4 +1,4 @@
-import notesScenesWithinCap from "./notesScenesWithinCap"
+import { NOTES_SCENE_MAX_BYTES, NOTES_STROKE_MINT_FAILED, NOTES_STROKE_MISSING_PAGE, NOTES_STROKE_OVER_CAP, NOTES_STROKE_UNREADABLE } from "@vault/common/interfaces/v2/page4/notesScene"
 import query from "../../../../db/database"
 
 const updateSceneSQL = `update v2Page4Notes as notes
@@ -22,40 +22,65 @@ export interface Page4SceneWrite {
 
 export interface Page4SceneRefusal {
     ok: false
-    capped: boolean
+    message: string
 }
 
-function sceneWithinCap(scene: string): boolean {
-    return notesScenesWithinCap([{ type: 4, pageID: 0, scene }])
+function sceneRefusal(scene: string): string | null {
+    if (typeof scene !== 'string') {
+        return NOTES_STROKE_UNREADABLE
+    }
+    if (Buffer.byteLength(scene, 'utf8') > NOTES_SCENE_MAX_BYTES) {
+        return NOTES_STROKE_OVER_CAP
+    }
+    if (scene === '') {
+        return null
+    }
+    let parsed: unknown
+    try {
+        parsed = JSON.parse(scene)
+    } catch {
+        return NOTES_STROKE_UNREADABLE
+    }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        return NOTES_STROKE_UNREADABLE
+    }
+    if (!Array.isArray((parsed as { elements?: unknown }).elements)) {
+        return NOTES_STROKE_UNREADABLE
+    }
+    return null
 }
 
 export default async function savePage4Scene(characterID: number, pageID: number, scene: string, index: unknown): Promise<Page4SceneWrite | Page4SceneRefusal> {
-    if (!Number.isFinite(pageID) || typeof scene !== 'string' || !sceneWithinCap(scene)) {
-        return { ok: false, capped: typeof scene === 'string' && !sceneWithinCap(scene) }
+    const refused = sceneRefusal(scene)
+    if (refused) {
+        return { ok: false, message: refused }
+    }
+    if (!Number.isFinite(pageID)) {
+        return { ok: false, message: NOTES_STROKE_MISSING_PAGE }
     }
 
     if (pageID > 0) {
         const updated = await query(updateSceneSQL, [scene, pageID, characterID])
         if (!updated.length) {
-            return { ok: false, capped: false }
+            return { ok: false, message: NOTES_STROKE_MISSING_PAGE }
         }
         return { ok: true }
     }
 
     if (typeof index !== 'number' || !Number.isInteger(index) || index < 0) {
-        return { ok: false, capped: false }
+        return { ok: false, message: NOTES_STROKE_MINT_FAILED }
     }
 
     await query(shiftIndexSQL, [characterID, index])
     const minted = await query(insertPageSQL, [index, characterID])
     const id = minted[0]?.id
     if (typeof id !== 'number' || id <= 0) {
-        return { ok: false, capped: false }
+        return { ok: false, message: NOTES_STROKE_MINT_FAILED }
     }
     const notes = await query(insertNotesSQL, [id, scene])
     if (!notes.length) {
         await query(deletePageSQL, [id, characterID])
-        return { ok: false, capped: false }
+        return { ok: false, message: NOTES_STROKE_MINT_FAILED }
     }
     return { ok: true, pageID: id }
 }

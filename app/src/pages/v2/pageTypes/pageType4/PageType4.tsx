@@ -1,6 +1,6 @@
 import '@excalidraw/excalidraw/index.css'
 import './PageType4.css'
-import { NOTES_SCENE_MAX_BYTES } from '@vault/common/interfaces/v2/page4/notesScene'
+import { NOTES_SCENE_MAX_BYTES, NOTES_STROKE_OVER_CAP } from '@vault/common/interfaces/v2/page4/notesScene'
 import { Page4 } from '@vault/common/interfaces/v2/pageTypes'
 import { CaptureUpdateAction, Excalidraw } from '@excalidraw/excalidraw'
 import type { AppState, BinaryFiles, ExcalidrawImperativeAPI, NormalizedZoomValue } from '@excalidraw/excalidraw/types'
@@ -28,8 +28,6 @@ const NOTES_UI_OPTIONS = {
 
 const ZOOM_EPSILON = 0.0001
 const SCROLL_EPSILON = 0.5
-const CAP_MESSAGE = 'Notes sheet is limited to 100 MB'
-
 interface AcceptedScene {
     elements: readonly ExcalidrawElement[]
     files: BinaryFiles
@@ -164,7 +162,7 @@ export default function PageType4({ pageInfo, updates, notesEpoch, ownsThisChara
             return
         }
         capToastRef.current = true
-        toast.error(CAP_MESSAGE)
+        toast.error(NOTES_STROKE_OVER_CAP, { autoClose: false })
         window.setTimeout(() => {
             capToastRef.current = false
         }, 300)

@@ -53,4 +53,4 @@ Revised 2026-10-30 (stroke failure must say why):
 - One cap sentence for an unreadable scene and an over-cap scene — **retained** on full Save. **Revised** for a stroke: unreadable and over-cap are different sentences.
 
 Touches: `app/src/pages/v2/pageTypes/pageType4/`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/`; `backend/common/interfaces/v2/page4/`; `backend/common/interfaces/v2/pageTypes.ts`; `backend/server/v2/{view,edit,add,delete}/`; unindexed `backend/server/db/ensureSchema.ts`; `backend/server/v2/backupTables/page4.sql`; unindexed `backend/server/vault.ts` (T-139 limit; T-143 CORS and the field-POST 413); root `package.json`; `00-START-HERE.yaml`; `rewrite-ledger/add-page-type-1.md`; `rewrite-ledger/edit-character.md`; `rewrite-ledger/feature-inventory.md`; `rewrite-ledger/schema-on-boot.md`; `rewrite-ledger/v2-page-type.md`
-TODOs: T-134–T-138, T-140 (done); T-139 (blocked); quick edit: T-141, T-142 (done); stroke failure text: T-143, T-144
+TODOs: T-134–T-138, T-140 (done); T-139 (blocked); quick edit: T-141, T-142 (done); stroke failure text: T-143, T-144 (done)
