@@ -199,11 +199,15 @@ export default function Gear({ page, pageID, updates }: Props) {
                     {LEFT_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
-                    <h2>Carry</h2>
+                    <span className="page3-gear-row page3-gear-bar-row">
+                        <em className="page3-gear-label">Carry</em>
+                    </span>
                     {CARRY_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
-                    <h2>Notes</h2>
+                    <span className="page3-gear-row page3-gear-bar-row">
+                        <em className="page3-gear-label">Notes</em>
+                    </span>
                     <textarea
                         className="character-value page3-notes"
                         placeholder=" "
@@ -215,11 +219,15 @@ export default function Gear({ page, pageID, updates }: Props) {
                 </div>
                 <div className="page3-gear-col">
                     <ColumnHead />
-                    <h2>Quarter Mastering</h2>
+                    <span className="page3-gear-row page3-gear-bar-row">
+                        <em className="page3-gear-label">Quarter Mastering</em>
+                    </span>
                     {QM_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
-                    <h2>Tiny &amp; Other</h2>
+                    <span className="page3-gear-row page3-gear-bar-row">
+                        <em className="page3-gear-label">Tiny &amp; Other</em>
+                    </span>
                     {TINY_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
