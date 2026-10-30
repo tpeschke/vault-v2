@@ -6,8 +6,10 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-121: Align Gear tracks, use the meditating SVG, and lock printed S
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: The three Gear stacks and the five cells in each row do not share a top edge. The two flag boxes are 12px flex items with `margin: 2px auto`, and the header icon tracks are 18px, so the boxes read as one checkbox column. The meditating head is `fa-person-meditating`, which the kit subset does not define. The arrow is inside the item cell. Printed S is a size input.
 scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`ColumnHead`, `GearRow`, `LEFT_ROWS`, `MIDDLE_ROWS`); `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`; existing `app/src/pages/v2/pageTypes/pageType3/components/Gear/assets/person-meditating-solid-full.svg`. Owner: `rewrite-ledger/page3-view.md`. Do not edit kit `db12ee03d1`, `app/index.html`, coinage inputs, slot order, or Notes height.
@@ -21,10 +23,10 @@ done when: `rg "fa-person-meditating" app/src/pages/v2/pageTypes/pageType3` is 0
 depends on: none
 open questions: none
 deviations from design: none
-result:
+result: Each gear column is a five-track grid and the three stacks use `align-items: start`. Snake and meditating are separate 18px tracks with 12px boxes. The meditating head is the Gear SVG. The arrow is in the Size cell. Printed-S slots render `cell.size` as text through `isDefaultSSlot`.
 
 ### T-122: Stripe Gear Notes and teal-hover Contacts and Notes
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Gear Notes are a flat textarea. Contacts stripes do not turn teal on hover in plain view, because the zebra rule beats `index.css` `textarea:hover`. Edit and quick-edit solid fills would hide a new zebra.
 scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` (`.page3-notes`); `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css` (the textarea). Owner: `rewrite-ledger/page3-view.md`. Do not change Contacts min-height, Gear Notes height, or `app/src/index.css`.
@@ -36,9 +38,7 @@ done when: `rg "repeating-linear-gradient" app/src/pages/v2/pageTypes/pageType3/
 depends on: T-121
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: Gear Notes use the Contacts 17.38px zebra. Plain-view hover on Contacts and Notes stacks `rgba(145, 181, 194, 0.35)` on that zebra. Edit and quick-edit rest and hover washes stack on it. Contacts min-height and Notes height are unchanged.
 
 ### T-120: Add person-meditating to the Font Awesome kit subset
 status: done

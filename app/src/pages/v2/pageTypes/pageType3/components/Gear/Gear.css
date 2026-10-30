@@ -1,8 +1,13 @@
 .page3-gear-columns {
     display: flex;
+    align-items: start;
 }
 
 .page3-gear-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 64px 18px 18px 28px;
+    align-items: start;
+    align-content: start;
     width: 33.333%;
     min-width: 0;
     box-sizing: border-box;
@@ -14,10 +19,18 @@
 
 .page3-gear-head,
 .page3-gear-row {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: stretch;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: start;
     box-sizing: border-box;
+}
+
+.page3-gear-col > h2,
+.page3-notes,
+.page3-footnote,
+.page3-coinage {
+    grid-column: 1 / -1;
 }
 
 .page3-gear-row:nth-child(even) {
@@ -25,7 +38,7 @@
 }
 
 .page3-gear-head > *,
-.page3-gear-row > * {
+.page3-gear-row > *:not(.page3-flag-box) {
     min-width: 0;
     min-height: 17.38px;
     box-sizing: border-box;
@@ -34,16 +47,14 @@
 .page3-gear-head > strong,
 .page3-gear-item,
 .page3-gear-size,
-.page3-gear-w,
-.page3-flag-box {
+.page3-gear-w {
     padding: 2px 1px;
     background-clip: content-box;
 }
 
 .page3-gear-item {
-    flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     min-width: 0;
 }
 
@@ -70,44 +81,53 @@
     font-size: 13px;
 }
 
-.page3-gear-size,
-.page3-gear-head > strong:nth-child(2) {
-    flex: 0 0 32px;
-    width: 32px;
+.page3-gear-size {
+    display: flex;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.page3-gear-size > input {
+    flex: 1;
+    min-width: 0;
+    width: 0;
+    height: 17.38px;
     text-align: center;
 }
 
-.page3-gear-w,
-.page3-gear-head > strong:nth-child(5) {
-    flex: 0 0 28px;
-    width: 28px;
+.page3-gear-w {
+    width: 100%;
+    height: 17.38px;
     text-align: center;
 }
 
 .page3-gear-head > strong:nth-child(3),
 .page3-gear-head > strong:nth-child(4) {
-    flex: 0 0 18px;
-    width: 18px;
-    text-align: center;
-}
-
-.page3-gear-size,
-.page3-gear-w {
-    height: 17.38px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .page3-gear-head > strong i {
     font-size: 12px;
 }
 
+.page3-gear-head > strong img {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
 .page3-flag-box {
-    display: inline-block;
+    display: block;
     width: 12px;
     height: 12px;
-    margin: 2px auto;
+    min-height: 12px;
+    margin: 0;
+    justify-self: center;
+    align-self: start;
     position: relative;
     cursor: pointer;
-    flex: 0 0 12px;
     padding: 0;
     background: #e8e8e8;
 }
@@ -137,6 +157,7 @@
 }
 
 .page3-gear-col > h2 {
+    margin: 0;
     min-height: 17.38px;
 }
 
@@ -145,6 +166,71 @@
     min-height: calc(2 * 17.38px);
     height: calc(5 * 17.38px);
     white-space: pre-wrap;
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        #fff 0,
+        #fff 17.38px,
+        #f3f3f3 17.38px,
+        #f3f3f3 34.76px
+    );
+    background-attachment: local;
+}
+
+.v2 .page3-notes {
+    background-color: transparent !important;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        #fff 0,
+        #fff 17.38px,
+        #f3f3f3 17.38px,
+        #f3f3f3 34.76px
+    ) !important;
+    background-attachment: local !important;
+}
+
+.v2 .page3-notes:hover {
+    background-color: transparent !important;
+    background-image:
+        linear-gradient(rgba(145, 181, 194, 0.35), rgba(145, 181, 194, 0.35)),
+        repeating-linear-gradient(
+            to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px
+        ) !important;
+    background-attachment: local !important;
+}
+
+.v2 .view-edit .page3-notes,
+.v2 .view-quick-edit .page3-notes {
+    background-color: transparent !important;
+    background-image:
+        linear-gradient(rgba(173, 216, 230, 0.35), rgba(173, 216, 230, 0.35)),
+        repeating-linear-gradient(
+            to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px
+        ) !important;
+    background-attachment: local !important;
+}
+
+.v2 .view-edit .page3-notes:hover,
+.v2 .view-quick-edit .page3-notes:hover {
+    background-color: transparent !important;
+    background-image:
+        linear-gradient(rgba(145, 181, 194, 0.35), rgba(145, 181, 194, 0.35)),
+        repeating-linear-gradient(
+            to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px
+        ) !important;
+    background-attachment: local !important;
 }
 
 .page3-footnote {

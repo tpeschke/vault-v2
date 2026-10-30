@@ -1,11 +1,13 @@
 import './Gear.css'
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import {
+    isDefaultSSlot,
     Page3Coinage,
     Page3GearSlot
 } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import { PageType3Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
+import personMeditating from './assets/person-meditating-solid-full.svg'
 
 interface Props {
     page: Page3
@@ -101,7 +103,6 @@ function GearRow({
         <span className={`page3-gear-row${spec.bar ? ' page3-gear-bar-row' : ''}`}>
             <span className="page3-gear-item">
                 {spec.label && <em className="page3-gear-label">{spec.label}</em>}
-                {spec.arrow && <em className="page3-gear-chrome"><i className="fa-solid fa-arrow-right-from-line"></i></em>}
                 {spec.carryStr && <em className="page3-gear-label">{spec.carryStr}</em>}
                 {spec.qm !== undefined && <em className="page3-gear-label">{spec.qm}</em>}
                 <input
@@ -112,13 +113,20 @@ function GearRow({
                     onBlur={event => updates.persistPage3Gear(pageID, { slot: spec.slot, item: event.target.value })}
                 />
             </span>
-            <input
-                className="character-value page3-gear-size"
-                placeholder=" "
-                value={cell.size}
-                onChange={event => updates.updateGearCell(pageID, spec.slot, { size: event.target.value })}
-                onBlur={event => updates.persistPage3Gear(pageID, { slot: spec.slot, size: event.target.value })}
-            />
+            <span className="page3-gear-size">
+                {spec.arrow && <em className="page3-gear-chrome"><i className="fa-solid fa-arrow-right-from-line"></i></em>}
+                {isDefaultSSlot(spec.slot) ? (
+                    <em className="page3-gear-label">{cell.size}</em>
+                ) : (
+                    <input
+                        className="character-value"
+                        placeholder=" "
+                        value={cell.size}
+                        onChange={event => updates.updateGearCell(pageID, spec.slot, { size: event.target.value })}
+                        onBlur={event => updates.persistPage3Gear(pageID, { slot: spec.slot, size: event.target.value })}
+                    />
+                )}
+            </span>
             <GearFlag
                 checked={cell.staffSnake}
                 onToggle={() => {
@@ -153,7 +161,7 @@ function ColumnHead() {
             <strong>Type (Item)</strong>
             <strong>Size</strong>
             <strong><i className="fa-solid fa-staff-snake"></i></strong>
-            <strong><i className="fa-solid fa-person-meditating"></i></strong>
+            <strong><img alt="" src={personMeditating} /></strong>
             <strong>W</strong>
         </span>
     )
