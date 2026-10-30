@@ -1,5 +1,6 @@
 import './Defenses.css'
 import { Defense } from "@vault/common/interfaces/v2/page1/combatInfo"
+import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
@@ -82,7 +83,7 @@ export default function DefensesDisplay({ defenses, pageID, updates }: Props) {
                 </span>
             </div>
             {isEditing ?
-                <textarea className="character-value" placeholder=" " value={notes ?? ''} onChange={event => updates.updateDefense(pageID, { notes: event.target.value })} />
+                <textarea className="character-value" placeholder=" " maxLength={textareaCaps.defenseNotes} value={notes ?? ''} onScroll={event => holdTextareaScroll(event.currentTarget)} onChange={event => updates.updateDefense(pageID, { notes: clampTextareaChange(event.target.value, textareaCaps.defenseNotes, isComposingInput(event)) })} onCompositionEnd={event => updates.updateDefense(pageID, { notes: trimTextarea(event.currentTarget.value, textareaCaps.defenseNotes) })} />
                 :
                 <p className="character-value">{notes ?? ''}</p>
             }

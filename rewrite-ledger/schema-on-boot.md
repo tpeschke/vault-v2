@@ -14,6 +14,8 @@ Constraints it imposes:
 - Keep `rank` on the renamed descriptions table (player-facing number, not list order).
 - Update `backupTables/page1.sql` in the same change as each page-1 rename so the snapshot matches live names. Page-type-2 snapshot is `backupTables/page2.sql` (`page2-view.md`). Page-type-3 snapshot is `backupTables/page3.sql` (`page3-view.md`). Page-type-4 snapshot is `backupTables/page4.sql` (`page4-view.md`).
 - Page-type-4 table `v2Page4Notes` (`pageID` unique, `scene` text default `''`) via `CREATE TABLE IF NOT EXISTS` plus that snapshot (`page4-view.md`). Do not insert type-4 page rows for existing characters.
+- Update `backupTables/page1.sql` in the same change as each page-1 rename so the snapshot matches live names. Page-type-2 snapshot is `backupTables/page2.sql` (`page2-view.md`). Page-type-3 snapshot is `backupTables/page3.sql` (`page3-view.md`).
+- Textarea trim: `textarea-limits.md`. This script trims stored textarea strings to their caps. `v2Page3Basics.contacts` stays `text`. Skip a statement when the table or column is absent. Do not add a second migration path.
 
 Rejected:
 - `node-pg-migrate` / a versioned history table (four renames and one column).
@@ -27,3 +29,5 @@ Revised 2026-10-28 (`page3-view.md` Contacts string):
 
 Touches: `backend/server/db/` (unindexed); `backend/server/vault.ts` (unindexed); `backend/server/v2/backupTables/page1.sql` (unindexed); `backend/server/v2/backupTables/page2.sql`; `backend/server/v2/backupTables/page3.sql`; `backend/server/v2/backupTables/page4.sql`
 TODOs: T-017, T-018, T-022, T-036 (done); Descriptions columns: T-041 (done); basics pageID: T-055 (done); pages characterid unique: T-068 (done); page type 2 tables: T-077 (done); leftover notes columns: T-094 (done); page type 3 tables: T-101 (done); contacts string: T-113 (done); page type 4 table: T-135
+Touches: `backend/server/db/` (unindexed); `backend/server/vault.ts` (unindexed); `backend/server/v2/backupTables/page1.sql` (unindexed); `backend/server/v2/backupTables/page2.sql`; `backend/server/v2/backupTables/page3.sql`
+TODOs: T-017, T-018, T-022, T-036 (done); Descriptions columns: T-041 (done); basics pageID: T-055 (done); pages characterid unique: T-068 (done); page type 2 tables: T-077 (done); leftover notes columns: T-094 (done); page type 3 tables: T-101 (done); contacts string: T-113 (done); textarea trim: T-136

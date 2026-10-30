@@ -58,6 +58,7 @@ routing:
       - backend/server/v2/view/assembleV2Character/utilities/pageType2/
       - backend/server/v2/view/assembleV2Character/utilities/pageType3/
       - backend/server/v2/view/assembleV2Character/utilities/pageType4/
+      - backend/common/textareaLimits.ts
   edit character sheet / save character / edit character:
     primary: backend/server/v2/edit/
     adjacent:
@@ -70,6 +71,7 @@ routing:
       - backend/server/v2/edit/utilities/pageType2/
       - backend/server/v2/edit/utilities/pageType3/
       - backend/server/v2/edit/utilities/pageType4/
+      - backend/common/textareaLimits.ts
   add page-type-1 sheet / add page / add another sheet / add sheet page:
     primary: backend/server/v2/edit/
     adjacent:
@@ -117,6 +119,7 @@ routing:
       - app/src/pages/v1/
       - app/src/components/displayArray/
       - app/src/components/textArea/
+      - backend/common/textareaLimits.ts
       - backend/common/interfaces/v1/
       - backend/common/dictionaries/v1/
       - backend/server/v1/queries/basic/

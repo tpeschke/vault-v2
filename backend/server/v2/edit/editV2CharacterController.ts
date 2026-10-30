@@ -1,4 +1,6 @@
 import { CharacterVersion2 } from '@vault/common/interfaces/characterInterfaces'
+import { PageV2 } from '@vault/common/interfaces/v2/pageTypes'
+import { textareaCaps, textareaCharCount, TextareaLimitError } from '@vault/common/textareaLimits'
 import { checkForContentTypeBeforeSending } from '../../controllers/common/sendingFunctions'
 import query from '../../db/database'
 import { Response, Request } from '../../interfaces/apiInterfaces'
@@ -19,6 +21,27 @@ interface EditRequest extends Request {
     body: CharacterVersion2
 }
 
+function postedTextareaTooLong(pages: PageV2[]) {
+    return pages.some(page => {
+        if (page.type === 1) {
+            return textareaCharCount(page.favor.divineRelationship ?? '') > textareaCaps.divineRelationship
+                || textareaCharCount(page.combatInfo.defenses.notes ?? '') > textareaCaps.defenseNotes
+                || page.combatInfo.attacks.some(attack => textareaCharCount(attack.notes ?? '') > textareaCaps.attackNotes)
+        }
+        if (page.type === 2) {
+            return textareaCharCount(page.generalSkillNotes ?? '') > textareaCaps.generalSkillNotes
+                || textareaCharCount(page.combatSkillNotes ?? '') > textareaCaps.combatSkillNotes
+                || textareaCharCount(page.abilities ?? '') > textareaCaps.abilities
+                || textareaCharCount(page.burdens ?? '') > textareaCaps.burdens
+        }
+        if (page.type === 3) {
+            return textareaCharCount(page.contacts ?? '') > textareaCaps.page3Contacts
+                || textareaCharCount(page.notes ?? '') > textareaCaps.page3Notes
+        }
+        return false
+    })
+}
+
 export async function editV2Character(request: EditRequest, response: Response) {
     const characterID = +request.params.characterID
     const { pages } = request.body
@@ -31,6 +54,19 @@ export async function editV2Character(request: EditRequest, response: Response) 
             return
         }
         await savePages(characterID, pages)
+        if (postedTextareaTooLong(pages)) {
+            checkForContentTypeBeforeSending(response, { message: 'Text is too long' })
+            return
+        }
+        try {
+            await savePages(characterID, pages)
+        } catch (error) {
+            if (error instanceof TextareaLimitError) {
+                checkForContentTypeBeforeSending(response, { message: 'Text is too long' })
+                return
+            }
+            throw error
+        }
         const storedType1 = await query(countType1PagesSQL, characterID)
         const storedType2 = await query(countType2PagesSQL, characterID)
         const storedType3 = await query(countType3PagesSQL, characterID)

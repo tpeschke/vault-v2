@@ -1,4 +1,5 @@
 import './Gear.css'
+import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import {
     isDefaultSSlot,
@@ -219,9 +220,12 @@ export default function Gear({ page, pageID, updates }: Props) {
                     <textarea
                         className="character-value page3-notes"
                         placeholder=" "
+                        maxLength={textareaCaps.page3Notes}
                         value={notes}
-                        onChange={event => updates.updateNotes(pageID, event.target.value)}
-                        onBlur={event => updates.persistPage3Notes(pageID, event.target.value)}
+                        onScroll={event => holdTextareaScroll(event.currentTarget)}
+                        onChange={event => updates.updateNotes(pageID, clampTextareaChange(event.target.value, textareaCaps.page3Notes, isComposingInput(event)))}
+                        onCompositionEnd={event => updates.updateNotes(pageID, trimTextarea(event.currentTarget.value, textareaCaps.page3Notes))}
+                        onBlur={event => updates.persistPage3Notes(pageID, trimTextarea(event.target.value, textareaCaps.page3Notes))}
                     />
                 </div>
                 <div className="page3-gear-col">

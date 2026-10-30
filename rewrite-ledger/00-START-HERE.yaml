@@ -34,6 +34,7 @@ routing:
   quick-view-inputs: quick-view-inputs.md
   session-phases: phases.md
   schema-on-boot: schema-on-boot.md
+  textarea / textarea height / textarea limit / 1350: textarea-limits.md
   observed_code_paths:
     app: ../app
     backend: ../backend

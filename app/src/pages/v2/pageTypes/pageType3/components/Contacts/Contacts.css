@@ -11,6 +11,8 @@
 .page3-contacts > textarea {
     width: 100%;
     min-height: calc(20 * 17.38px);
+    max-height: calc(20 * 17.38px);
+    overflow: hidden;
     padding: 0 1px;
     box-sizing: border-box;
     white-space: pre-wrap;

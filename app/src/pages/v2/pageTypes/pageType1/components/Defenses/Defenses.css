@@ -102,7 +102,10 @@
 
 .defenses-v2>p,
 .defenses-v2>textarea {
+    height: calc(2 * 17.38px);
     min-height: calc(2 * 17.38px);
+    max-height: calc(2 * 17.38px);
+    overflow: hidden;
 }
 
 .defenses-v2>textarea {
