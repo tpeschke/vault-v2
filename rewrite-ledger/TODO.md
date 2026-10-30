@@ -6,8 +6,10 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-125: Draw Gear bar headers as labels only
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: **Backpack**, **Pouch**, **held bag**, and **Other Containers** are gray bars and still render an item input, a size input, both flag boxes, and **W**.
 scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`GearRow` when `spec.bar`); `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` (the bar label spans the five tracks). Owner: `rewrite-ledger/page3-view.md`. Do not edit schema, coinage, Notes, `ColumnHead`, the `h2` bars, or any row with `bar` unset. Do not add `features/` or `shared/`.
@@ -19,9 +21,7 @@ done when: In `Gear.tsx`, the `spec.bar` branch contains `spec.label` and does n
 depends on: T-121 (done)
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: The seven bar rows render only `spec.label` across all five tracks. No item, size, flag, or W control, and no POST from that row. Headless Chrome: the Backpack bar is one oldClaude 13px label on `#bdbdbd` with `grid-column: 1 / -1` and no inputs; a Head row still has its fields and a printed-S row still shows S.
 
 ### T-124: Nest kit icons so unchecking a check does not throw
 status: done

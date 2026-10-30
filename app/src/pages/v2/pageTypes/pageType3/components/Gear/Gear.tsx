@@ -98,9 +98,16 @@ function GearRow({
     pageID: number
     updates: PageType3Updates
 }) {
+    if (spec.bar) {
+        return (
+            <span className="page3-gear-row page3-gear-bar-row">
+                <em className="page3-gear-label">{spec.label}</em>
+            </span>
+        )
+    }
     const cell = page.gear[spec.slot]
     return (
-        <span className={`page3-gear-row${spec.bar ? ' page3-gear-bar-row' : ''}`}>
+        <span className="page3-gear-row">
             <span className="page3-gear-item">
                 {spec.label && <em className="page3-gear-label">{spec.label}</em>}
                 {spec.carryStr && <em className="page3-gear-label">{spec.carryStr}</em>}
