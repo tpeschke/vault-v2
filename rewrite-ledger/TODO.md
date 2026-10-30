@@ -21,6 +21,55 @@ result:
 
 ## Done
 
+### T-154: Keep `/v/blank` hover at the resting paint
+status: done
+source: rewrite-ledger/blank-sheet.md, 2026-10-30 (hover rest)
+why: The blank sheet is read-only, but hover still paints teal and the pointer still says the dice and flags can be used. A focused field still shows a ring.
+scope: `app/src/pages/v2/V2View.tsx` (marker class on `.page-shell` only); `app/src/pages/v2/V2View.css` (one override block). Owner: the blank v2 view (`blank-sheet.md`). Do not edit `app/src/index.css`. Do not edit widget CSS unless a selector in `V2View.css` cannot beat that widget’s rule. Do not edit `backend/`. Do not edit `app/src/pages/v1/`. Do not change when `view-edit` or `view-quick-edit` is applied. Do not change a real character. Do not set `pointer-events` or `inert`. Do not change the Positions Weak 1 `.outlined` box.
+steps:
+1. When `blank` is true, add the class `blank` on `.page-shell`. Leave the sidebar, header, and footer unmarked.
+2. Under `.v2 .page-shell.blank`, sheet `input:hover` and `textarea:hover` keep the resting background (transparent, or the Contacts / Gear Notes zebra with no wash). Beat `!important` where the live rule uses it. Unselected die hover uses `filter: none`. Flag hover has no fill.
+3. Under that same class, `.die-row p` and `.page3-flag-box` use `cursor: default`. Leave the text caret on inputs and textareas. Leave gear arrow tooltips.
+4. Under that same class, `input` and `textarea` `:focus` and `:focus-visible` use `outline: none`. Do not set `outline` on `.positions-row.outlined`.
+done when: `npx tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. In `V2View.tsx`, `view-quick-edit` is still applied only from `viewQuickEdit`, and `blank` is a separate class on `.page-shell`. Grep of `cursor: default` and `outline: none` in `V2View.css` is under `.page-shell.blank`. On `/v/blank`, hovering an input, a leftover textarea, Contacts, Gear Notes, an unselected die, and a flag box does not add teal; the die and the flag use the arrow; focusing a field shows no ring; a gear arrow tooltip still appears. A real character view still turns teal on hover and still uses the pointer on a die. `/view/blank` is unchanged.
+depends on: T-153
+open questions: none
+deviations from design: The marker is `blank` on `.page-shell`, not on `.v2`, so a later sidebar control is outside it. Anointed’s pointer is already edit-only, so this sheet does not restyle it.
+result: `.page-shell` gains `blank` only on `/v/blank`. Hover on inputs, leftover notes, Contacts, and Gear Notes stays at rest. Unselected dice and flag boxes do not turn teal and use the arrow. Field focus outline is `none`. The gear arrow tooltip still shows. A real character still hovers teal and uses the pointer on a die. `/view/blank` still renders the v1 sheet. App tsc exits 0.
+
+### T-152: Open `/v/blank` without a character
+status: done
+source: rewrite-ledger/blank-sheet.md, 2026-10-30
+why: `/v/:characterID` always fetches. The id `blank` hits `getV2Character`, which sends no response. The sheet has to render signed out, with types 1–3 only, and `/view/blank` must keep the v1 assembler.
+scope: `app/src/routes/AllRoutes.tsx`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/emptyPageType1.ts`, `emptyPageType2.ts`, `emptyPageType3.ts` (call them; do not change their defaults). `backend/server/v2/view/viewV2CharacterController.ts`. Owner: v2 view (`blank-sheet.md`). Do not edit the gutter block in `V2View.tsx` (it already mounts only while `isEditing`, including reorder, file-circle-plus, delete, and the disclosed adds). Do not edit `backend/server/v1/`. Do not edit `app/src/pages/v1/`. Do not add `assembleBlankCharacter` on v2. Do not add `features/`. Do not mount page type 4. Do not add `isBlank` to `CharacterVersion2`.
+steps:
+1. Add `path="v/blank"` rendering `V2View` with a blank flag. Leave `path="v/:characterID"` and `path="view/:characterID"` as they are.
+2. When that flag is set, build one in-memory character: `version: 2`, `id: 0`, `name: ''`, `userInfo: { userID: 0, ownsThisCharacter: false }`, pages `emptyPageType1(-1)`, `emptyPageType2(-2)`, `emptyPageType3(-3)`. Set it as the loaded character before any request. Do not call `axios.get`, `cacheCharacterV2`, or `navigate`.
+3. Pass the flag into `characterHook`. `isEditing` stays false. Do not call `saveCharacterToBackend` or any field POST for this character; return before `axios` if one is reached.
+4. In `getV2Character`, any non-numeric id, including `blank` in any case, uses `checkForContentTypeBeforeSending(response, { message: 'Bad ID' })`. Delete the `BLANK` branch and the `assembleBlankCharacter` comment.
+5. Leave the document-title line that uses `'Blank'` when the name is empty. Leave `Header` and `Footer`. Leave the `view blank sheet` key in `00-START-HERE.yaml`. `app/src/pages/v2/` already covers a context file added under that tree.
+done when: `npx tsc --noEmit -p app` exits 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`. Grep `assembleBlankCharacter` under `backend/server/v2` is 0. Grep `assembleBlankCharacter` under `backend/server/v1` is unchanged. Grep `path="v/blank"` in `AllRoutes.tsx` is 1. Grep `path="view/blank"` in `AllRoutes.tsx` is 0. Grep `emptyPageType4` in `characterHook.tsx` is 0. Repository `00-START-HERE.yaml` has `view blank sheet` with `primary: app/src/pages/v2/V2View.tsx`.
+depends on: none
+open questions: none
+deviations from design: The v2 controller already special-cased `BLANK` and sent nothing. This TODO closes that branch. It does not build a server sheet. Ids are T-152 and T-153 because T-145–T-151 are the gutter disclosure, cap, and delete work.
+result: `v/blank` renders an in-memory character (`id` 0, pages −1/−2/−3) and does not fetch. A non-numeric id returns `{ message: 'Bad ID' }`. App tsc exits 0 with the gitignored `frontend-config` present. Server tsc reports only the missing `server-config`. `assembleBlankCharacter` is absent under `backend/server/v2` and still present under v1. `emptyPageType4` is absent from `characterHook`.
+
+### T-153: Show the blank sheet with empty handwriting and no edit controls
+status: done
+source: rewrite-ledger/blank-sheet.md, 2026-10-30
+why: Create-empty still paints `0`, capacity formulas, and coinage `0s` in Kalam. Play-time controls stay interactive for a non-owner. The sidebar still shows Show / Hide Quick Edit Locations. The designer wants empty handwriting, a read-only sheet, and the sidebar shell kept for later controls.
+scope: new `app/src/pages/v2/contexts/BlankContext.tsx` (context default `false`, plus a helper that returns `''` when blank and the value otherwise). `V2View.tsx` provides it around the sheet and the sidebar. `app/src/pages/v2/components/sidebar/Sidebar.tsx`. Mounted widgets that render `character-value`: `pageType1` GeneralInfo, Stats, Capacity, Characteristics (Current Emotions), SocialSuite, ReputationDisplay, StrengthNDiscount, Descriptions, Flaws, Favor, Vitals, Defenses, Attacks; `pageType2` GeneralSkills, CombatSkills, NotesPanes; `pageType3` Contacts, Relationships, Gear. `characterHook.tsx` persist functions. Do not edit unmounted `Temperaments.tsx`, `MovementDisplay.tsx`, or page-type-1 `relationships/Relationships.tsx`. Do not import v1 `IsBlankContext`. Do not add a second layout branch. Do not add `features/`. Do not change a real character’s view, Edit, or Quick Edit.
+steps:
+1. When the blank flag is on, every `.character-value` text node and control value is `''`. That includes stored numbers, `toLvl`, capacity band strings (`<0`, `≤…`, `>…`), and coinage size (do not paint `0s`). Keep `placeholder=" "`. Leave printed **S**, slashes, die images, Positions, the wordmark, labels, gear bars, arrows, and `100 coins = 1s`.
+2. Play-time `input` and `textarea` nodes that remain mounted when `isEditing` is false get `readOnly` when blank, including insert rows an empty view already shows. Do not remove those rows. Do not turn on `isEditing` or `viewQuickEdit`.
+3. Die `onSelect`, gear flag clicks, and Anointed do nothing when blank. Each persist function in `characterHook` returns before `axios` when the sheet is blank.
+4. In `Sidebar`, keep `.sidebar-shell`. When blank, do not render Edit, Save, Revert, or Show / Hide Quick Edit Locations. Do not wrap the shell in a blank check. A button added beside those stays visible.
+done when: `npx tsc --noEmit -p app` exits 0. Grep `IsBlankContext` under `app/src/pages/v2` is 0. Grep `view-quick-edit` is still applied only from `viewQuickEdit` in `V2View.tsx`. On `/v/blank`, every `.character-value` element’s trimmed text is empty, Show Quick Edit Locations is absent, the header is present, and die clicks do not mark a die. A signed-in character view still shows handwritten values and the Quick Edit button. `/view/blank` still renders the v1 sheet.
+depends on: T-152
+open questions: none
+deviations from design: none
+result: On `/v/blank`, every `.character-value` value is empty (188 read-only controls), including `0`, capacity bands, and coinage size. Die and gear-flag clicks do nothing, and the sidebar shell hides Edit, Save, Revert, and Quick Edit. A character view still shows handwriting, Edit, and Show Quick Edit Locations. `/view/blank` still renders the v1 sheet. `IsBlankContext` is absent under `app/src/pages/v2`.
+
 ### T-151: Delete omitted sheets on Save and refuse a character with no Main Info
 status: done
 source: rewrite-ledger/delete-sheet-page.md, 2026-10-30 (Q2 extras only after Save; Q3 toast sentence)

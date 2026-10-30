@@ -21,6 +21,11 @@ export default function AllRoutes({ pathname }: Props) {
                     <V1View pathname={pathname} />
                 </Loading>
             } />
+            <Route path="v/blank" element={
+                <Loading>
+                    <V2View pathname={pathname} blank />
+                </Loading>
+            } />
             <Route path="v/:characterID" element={
                 <Loading>
                     <V2View pathname={pathname} />

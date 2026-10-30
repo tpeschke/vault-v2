@@ -2,6 +2,7 @@ import './ReputationDisplay.css'
 import { CharacteristicPair } from "@vault/common/interfaces/v2/page1/characteristicsInfo";
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
 import DisplayPairArray from '../../../../../../components/displayArray/DisplayPairArray'
 
@@ -13,6 +14,7 @@ interface Props {
 
 export default function ReputationDisplay({ reputations, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const rows = reputations ?? []
 
     return (
@@ -32,22 +34,22 @@ export default function ReputationDisplay({ reputations, pageID, updates }: Prop
                     <span>
                         <em>I'm Known For</em>
                         {isEditing ?
-                            <input className="character-value" placeholder=" " value={item.value} onChange={event => onChange({ ...item, value: event.target.value })} />
+                            <input className="character-value" placeholder=" " value={blankInk(isBlank, item.value)} onChange={event => onChange({ ...item, value: event.target.value })} />
                             :
-                            <p className="character-value">{item.value}</p>
+                            <p className="character-value">{blankInk(isBlank, item.value)}</p>
                         }
                         {isEditing ?
-                            <input className="character-value" placeholder=" " value={item.rank} onChange={event => onChange({ ...item, rank: event.target.value })} />
+                            <input className="character-value" placeholder=" " value={blankInk(isBlank, item.rank)} onChange={event => onChange({ ...item, rank: event.target.value })} />
                             :
-                            <p className="character-value">{item.rank}</p>
+                            <p className="character-value">{blankInk(isBlank, item.rank)}</p>
                         }
                     </span>
                 )}
                 renderInsert={(onBlurValue, onBlurRank) => (
                     <span>
                         <em>I'm Known For</em>
-                        <input className="character-value" placeholder=" " onBlur={onBlurValue} />
-                        <input className="character-value" placeholder=" " onBlur={onBlurRank} />
+                        <input className="character-value" placeholder=" " readOnly={isBlank} onBlur={onBlurValue} />
+                        <input className="character-value" placeholder=" " readOnly={isBlank} onBlur={onBlurRank} />
                     </span>
                 )}
                 renderLeftover={() => (

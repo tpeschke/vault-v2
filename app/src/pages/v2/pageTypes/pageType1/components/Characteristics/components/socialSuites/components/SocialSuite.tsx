@@ -1,6 +1,7 @@
 import { SkillSuiteInfo, SocialSkillSuites } from "@vault/common/interfaces/v2/page1/characteristicsInfo"
 import { useContext } from 'react'
 import EditingContext from '../../../../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../../../../hooks/interfaces/UpdateInterfaces'
 import DisplayPairArray from '../../../../../../../components/displayArray/DisplayPairArray'
 
@@ -14,6 +15,7 @@ interface Props {
 
 export default function SocialSuiteDisplay({ suiteName, suiteKey, socialSuite, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const { stat, rank, descriptions } = socialSuite
     const rows = descriptions ?? []
 
@@ -22,14 +24,14 @@ export default function SocialSuiteDisplay({ suiteName, suiteKey, socialSuite, p
             <span className="suite-title">
                 <em>{suiteName}</em>
                 {isEditing ?
-                    <input className="character-value" type="number" placeholder=" " value={stat} onChange={event => updates.updateSocialSuiteField(pageID, suiteKey, 'stat', +event.target.value)} />
+                    <input className="character-value" type="number" placeholder=" " value={blankInk(isBlank, stat)} onChange={event => updates.updateSocialSuiteField(pageID, suiteKey, 'stat', +event.target.value)} />
                     :
-                    <p className="character-value">{stat}</p>
+                    <p className="character-value">{blankInk(isBlank, stat)}</p>
                 }
                 {isEditing ?
-                    <input className="character-value" type="number" placeholder=" " value={rank} onChange={event => updates.updateSocialSuiteField(pageID, suiteKey, 'rank', +event.target.value)} />
+                    <input className="character-value" type="number" placeholder=" " value={blankInk(isBlank, rank)} onChange={event => updates.updateSocialSuiteField(pageID, suiteKey, 'rank', +event.target.value)} />
                     :
-                    <p className="character-value">{rank}</p>
+                    <p className="character-value">{blankInk(isBlank, rank)}</p>
                 }
             </span>
             <DisplayPairArray
@@ -49,30 +51,30 @@ export default function SocialSuiteDisplay({ suiteName, suiteKey, socialSuite, p
                 renderRow={(item, _index, onChange) => (
                     <span className="description-row">
                         {isEditing ?
-                            <input className="character-value" placeholder=" " value={item.value} onChange={event => onChange({ ...item, value: event.target.value })} />
+                            <input className="character-value" placeholder=" " value={blankInk(isBlank, item.value)} onChange={event => onChange({ ...item, value: event.target.value })} />
                             :
-                            <p className="character-value">{item.value}</p>
+                            <p className="character-value">{blankInk(isBlank, item.value)}</p>
                         }
                         {isEditing ?
                             <input
                                 className="character-value"
                                 type="number"
                                 placeholder=" "
-                                value={item.rank}
+                                value={blankInk(isBlank, item.rank)}
                                 onChange={event => onChange({
                                     ...item,
                                     rank: event.target.value === '' ? '' : +event.target.value
                                 })}
                             />
                             :
-                            <p className="character-value">{item.rank}</p>
+                            <p className="character-value">{blankInk(isBlank, item.rank)}</p>
                         }
                     </span>
                 )}
                 renderInsert={(onBlurValue, onBlurRank) => (
                     <span className="description-row">
-                        <input className="character-value" placeholder=" " onBlur={onBlurValue} />
-                        <input className="character-value" type="number" placeholder=" " onBlur={onBlurRank} />
+                        <input className="character-value" placeholder=" " readOnly={isBlank} onBlur={onBlurValue} />
+                        <input className="character-value" type="number" placeholder=" " readOnly={isBlank} onBlur={onBlurRank} />
                     </span>
                 )}
                 renderLeftover={() => (

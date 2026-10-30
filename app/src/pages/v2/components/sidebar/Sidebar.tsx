@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import './Sidebar.css'
 import EditingContext from '../../contexts/EditingContext'
+import BlankContext from '../../contexts/BlankContext'
 import LoadingIndicator from '../../../../components/loading/components/LoadingIndicator'
 
 interface Props {
@@ -23,6 +24,7 @@ export default function Sidebar({
     isViewSaving
 }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
 
     if (isViewSaving) {
         return (
@@ -34,13 +36,13 @@ export default function Sidebar({
 
     return (
         <div className='sidebar-shell'>
-            {isEditing &&
+            {!isBlank && isEditing &&
                 <>
                     <button onClick={saveCharacter}><i className="fa-solid fa-floppy-disk"></i> Save</button>
                     <button onClick={revertCharacterToUnedited}><i className="fa-solid fa-arrow-rotate-left"></i> Revert</button>
                 </>
             }
-            {!isEditing &&
+            {!isBlank && !isEditing &&
                 <>
                     {ownsThisCharacter && <button onClick={toggleIsEditing}><i className="fa-solid fa-pen-nib"></i> Edit</button>}
                     {viewQuickEdit ?

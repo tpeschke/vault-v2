@@ -2,6 +2,7 @@ import './Stats.css'
 import { Stats } from "@vault/common/interfaces/v2/page1/statsInterface";
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 export default function StatsDisplay({ stats, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const { str, dex, con, mem, ins, pre } = stats
 
     function statCell(label: string, key: keyof Stats, value: number) {
@@ -19,9 +21,9 @@ export default function StatsDisplay({ stats, pageID, updates }: Props) {
             <span>
                 <strong>{label}</strong>
                 {isEditing ?
-                    <input className="character-value" type="number" placeholder=" " value={value} onChange={event => updates.updateStat(pageID, key, +event.target.value)} />
+                    <input className="character-value" type="number" placeholder=" " value={blankInk(isBlank, value)} onChange={event => updates.updateStat(pageID, key, +event.target.value)} />
                     :
-                    <p className="character-value">{value}</p>
+                    <p className="character-value">{blankInk(isBlank, value)}</p>
                 }
             </span>
         )

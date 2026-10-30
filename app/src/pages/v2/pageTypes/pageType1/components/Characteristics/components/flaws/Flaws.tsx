@@ -2,6 +2,7 @@ import { Flaw } from '@vault/common/interfaces/v2/page1/characteristicsInfo'
 import './Flaws.css'
 import { useContext } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
 import DisplaySingleArray from '../../../../../../components/displayArray/DisplaySingleArray'
 
@@ -13,6 +14,7 @@ interface Props {
 
 export default function FlawsDisplay({ flaws, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const rows = flaws ?? []
 
     return (
@@ -26,15 +28,15 @@ export default function FlawsDisplay({ flaws, pageID, updates }: Props) {
                 renderRow={(item, _index, onChange) => (
                     <span>
                         {isEditing ?
-                            <input className="character-value" placeholder=" " value={item.value} onChange={event => onChange({ ...item, value: event.target.value })} />
+                            <input className="character-value" placeholder=" " value={blankInk(isBlank, item.value)} onChange={event => onChange({ ...item, value: event.target.value })} />
                             :
-                            <p className="character-value">{item.value}</p>
+                            <p className="character-value">{blankInk(isBlank, item.value)}</p>
                         }
                     </span>
                 )}
                 renderInsert={onBlur => (
                     <span>
-                        <input className="character-value" placeholder=" " onBlur={onBlur} />
+                        <input className="character-value" placeholder=" " readOnly={isBlank} onBlur={onBlur} />
                     </span>
                 )}
                 renderLeftover={() => (

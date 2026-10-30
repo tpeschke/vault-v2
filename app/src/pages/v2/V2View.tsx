@@ -10,20 +10,22 @@ import PageType2 from './pageTypes/pageType2/PageType2'
 import PageType3 from './pageTypes/pageType3/PageType3'
 import PageType4 from './pageTypes/pageType4/PageType4'
 import EditingContext from './contexts/EditingContext'
+import BlankContext from './contexts/BlankContext'
 import Sidebar from './components/sidebar/Sidebar'
 import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from '@vault/common/interfaces/v2/sheetPageCap'
 
 interface Props {
     setLoading?: SetLoadingFunction,
-    pathname: string
+    pathname: string,
+    blank?: boolean
 }
 
-export default function V2View({ setLoading, pathname }: Props) {
+export default function V2View({ setLoading, pathname, blank = false }: Props) {
     const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
 
-    const { character, isDirty, isViewSaving, notesEpoch, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing)
+    const { character, isDirty, isViewSaving, notesEpoch, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing, blank)
     const { saveCharacterToBackend, revertCharacter, pageType1Updates, pageType2Updates, pageType3Updates, pageType4Updates, pageGutterUpdates } = updateFunctions
     const warnOnLeave = isDirty && isEditing
 
@@ -67,10 +69,16 @@ export default function V2View({ setLoading, pathname }: Props) {
     }, [blocker, restoreCatalogFromSnapshot])
 
     const toggleIsEditing = () => {
+        if (blank) {
+            return
+        }
         setIsEditing(!isEditing)
     }
 
     const toggleViewQuickEdit = () => {
+        if (blank) {
+            return
+        }
         setViewQuickEdit(!viewQuickEdit)
     }
 
@@ -123,9 +131,10 @@ export default function V2View({ setLoading, pathname }: Props) {
 
     return (
         <div className="home-shell v2">
+            <BlankContext value={blank}>
             <EditingContext value={isEditing}>
                 <div className="version-two-shell">
-                    <div className={`page-shell ${isEditing ? 'view-edit' : viewQuickEdit ? 'view-quick-edit' : ''}`}>
+                    <div className={`page-shell${blank ? ' blank' : ''} ${isEditing ? 'view-edit' : viewQuickEdit ? 'view-quick-edit' : ''}`}>
                         {character && character.pages.map((page, index) => {
                             let card = <></>
                             const sheetKey = page.type === 4
@@ -355,6 +364,7 @@ export default function V2View({ setLoading, pathname }: Props) {
                     }
                 </div>
             </EditingContext>
+            </BlankContext>
         </div>
     )
 }

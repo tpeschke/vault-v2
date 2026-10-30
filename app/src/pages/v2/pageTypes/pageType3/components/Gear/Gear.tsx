@@ -1,5 +1,7 @@
 import './Gear.css'
+import { useContext } from 'react'
 import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import {
     isDefaultSSlot,
@@ -113,6 +115,7 @@ function GearRow({
     pageID: number
     updates: PageType3Updates
 }) {
+    const isBlank = useContext(BlankContext)
     if (spec.bar) {
         return (
             <span className="page3-gear-row page3-gear-bar-row">
@@ -129,7 +132,8 @@ function GearRow({
                 <input
                     className="character-value"
                     placeholder=" "
-                    value={cell.item}
+                    readOnly={isBlank}
+                    value={blankInk(isBlank, cell.item)}
                     onChange={event => updates.updateGearCell(pageID, spec.slot, { item: event.target.value })}
                     onBlur={event => updates.persistPage3Gear(pageID, { slot: spec.slot, item: event.target.value })}
                 />
@@ -143,7 +147,8 @@ function GearRow({
                     <input
                         className="character-value"
                         placeholder=" "
-                        value={cell.size}
+                        readOnly={isBlank}
+                        value={blankInk(isBlank, cell.size)}
                         onChange={event => updates.updateGearCell(pageID, spec.slot, { size: event.target.value })}
                         onBlur={event => updates.persistPage3Gear(pageID, { slot: spec.slot, size: event.target.value })}
                     />
@@ -153,6 +158,7 @@ function GearRow({
                 <GearFlag
                     checked={cell.staffSnake}
                     onToggle={() => {
+                        if (isBlank) return
                         const staffSnake = !cell.staffSnake
                         updates.updateGearCell(pageID, spec.slot, { staffSnake })
                         updates.persistPage3Gear(pageID, { slot: spec.slot, staffSnake })
@@ -163,6 +169,7 @@ function GearRow({
                 <GearFlag
                     checked={cell.meditating}
                     onToggle={() => {
+                        if (isBlank) return
                         const meditating = !cell.meditating
                         updates.updateGearCell(pageID, spec.slot, { meditating })
                         updates.persistPage3Gear(pageID, { slot: spec.slot, meditating })
@@ -173,7 +180,8 @@ function GearRow({
                 className="character-value page3-gear-w"
                 type="number"
                 placeholder=" "
-                value={cell.w}
+                readOnly={isBlank}
+                value={blankInk(isBlank, cell.w)}
                 onChange={event => updates.updateGearCell(pageID, spec.slot, { w: numberFromInput(event.target.value) })}
                 onBlur={event => updates.persistPage3Gear(pageID, { slot: spec.slot, w: numberFromInput(event.target.value) })}
             />
@@ -198,6 +206,7 @@ function persistCoinage(pageID: number, coinage: Page3Coinage, updates: PageType
 }
 
 export default function Gear({ page, pageID, updates }: Props) {
+    const isBlank = useContext(BlankContext)
     const { coinage, notes } = page
 
     return (
@@ -221,8 +230,9 @@ export default function Gear({ page, pageID, updates }: Props) {
                     <textarea
                         className="character-value page3-notes"
                         placeholder=" "
+                        readOnly={isBlank}
                         maxLength={textareaCaps.page3Notes}
-                        value={notes}
+                        value={blankInk(isBlank, notes)}
                         onScroll={event => holdTextareaScroll(event.currentTarget)}
                         onChange={event => updates.updateNotes(pageID, clampTextareaChange(event.target.value, textareaCaps.page3Notes, isComposingInput(event)))}
                         onCompositionEnd={event => updates.updateNotes(pageID, trimTextarea(event.currentTarget.value, textareaCaps.page3Notes))}
@@ -255,11 +265,12 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 className="character-value"
                                 type="number"
                                 placeholder=" "
-                                value={coinage.copper}
+                                readOnly={isBlank}
+                                value={blankInk(isBlank, coinage.copper)}
                                 onChange={event => updates.updateCoinage(pageID, { copper: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, copper: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <p className="character-value">{coinSizeText(coinage.copper)}</p>
+                            <p className="character-value">{blankInk(isBlank, coinSizeText(coinage.copper))}</p>
                             <em></em>
                         </span>
                         <span>
@@ -268,11 +279,12 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 className="character-value"
                                 type="number"
                                 placeholder=" "
-                                value={coinage.silver}
+                                readOnly={isBlank}
+                                value={blankInk(isBlank, coinage.silver)}
                                 onChange={event => updates.updateCoinage(pageID, { silver: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, silver: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <p className="character-value">{coinSizeText(coinage.silver)}</p>
+                            <p className="character-value">{blankInk(isBlank, coinSizeText(coinage.silver))}</p>
                             <em>x100 cc</em>
                         </span>
                         <span>
@@ -281,11 +293,12 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 className="character-value"
                                 type="number"
                                 placeholder=" "
-                                value={coinage.gold}
+                                readOnly={isBlank}
+                                value={blankInk(isBlank, coinage.gold)}
                                 onChange={event => updates.updateCoinage(pageID, { gold: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, gold: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <p className="character-value">{coinSizeText(coinage.gold)}</p>
+                            <p className="character-value">{blankInk(isBlank, coinSizeText(coinage.gold))}</p>
                             <em>x100 sc</em>
                         </span>
                         <span>
@@ -294,11 +307,12 @@ export default function Gear({ page, pageID, updates }: Props) {
                                 className="character-value"
                                 type="number"
                                 placeholder=" "
-                                value={coinage.platinum}
+                                readOnly={isBlank}
+                                value={blankInk(isBlank, coinage.platinum)}
                                 onChange={event => updates.updateCoinage(pageID, { platinum: event.target.value === '' ? 0 : +event.target.value })}
                                 onBlur={event => persistCoinage(pageID, { ...coinage, platinum: event.target.value === '' ? 0 : +event.target.value }, updates)}
                             />
-                            <p className="character-value">{coinSizeText(coinage.platinum)}</p>
+                            <p className="character-value">{blankInk(isBlank, coinSizeText(coinage.platinum))}</p>
                             <em>x100 gc</em>
                         </span>
                     </div>

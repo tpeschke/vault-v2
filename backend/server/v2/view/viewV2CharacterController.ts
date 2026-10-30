@@ -16,19 +16,14 @@ export async function getV2Character(request: ViewRequest, response: Response) {
     const characterID = +request.params.characterID
 
     if (isNaN(characterID)) {
-            if (request.params.characterID.toUpperCase() === 'BLANK') {
-                // TODO Blank
-                // assembleBlankCharacter(response)
-            } else {
-                checkForContentTypeBeforeSending(response, { message: 'Bad ID' })
-            }
+        checkForContentTypeBeforeSending(response, { message: 'Bad ID' })
+    } else {
+        const characterPages: CharacterPageReturns[] = await query(getCharacterPages, characterID)
+
+        if (characterPages.length === 0) {
+            checkForContentTypeBeforeSending(response, { message: 'No Pages' })
         } else {
-            const characterPages: CharacterPageReturns[] = await query(getCharacterPages, characterID)
-            
-            if (characterPages.length === 0) {
-                checkForContentTypeBeforeSending(response, { message: 'No Pages' })
-            } else {
-                assembleV2Character(request, response, characterID, characterPages)
-            }
+            assembleV2Character(request, response, characterID, characterPages)
         }
+    }
 }

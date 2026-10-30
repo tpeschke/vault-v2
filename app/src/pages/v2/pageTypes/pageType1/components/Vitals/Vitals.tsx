@@ -8,6 +8,7 @@ import d12 from '../../../../../../assets/images/d12.png'
 import d20 from '../../../../../../assets/images/d20.png'
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
@@ -18,63 +19,64 @@ interface Props {
 
 export default function VitalsDisplay({ vitals, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const { selfDoubt, damage, stress } = vitals
 
     return (
         <div className="vitals-v2">
             <section>
                 <h1>Doom</h1>
-                <DieRow dieIndex={selfDoubt.dieIndex} onSelect={index => { updates.updateSelfDoubt(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'selfDoubtDieIndex', index) }} />
+                <DieRow dieIndex={selfDoubt.dieIndex} onSelect={index => { if (isBlank) { return } updates.updateSelfDoubt(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'selfDoubtDieIndex', index) }} />
                 <div className="vitals-split">
                     <span>
                         <h2>Integrity Threshold</h2>
                         {isEditing ?
-                            <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.threshold} onChange={event => updates.updateSelfDoubt(pageID, { threshold: +event.target.value })} />
+                            <input className="center-text character-value" type="number" placeholder=" " value={blankInk(isBlank, selfDoubt.threshold)} onChange={event => updates.updateSelfDoubt(pageID, { threshold: +event.target.value })} />
                             :
-                            <p className="center-text character-value">{selfDoubt.threshold}</p>
+                            <p className="center-text character-value">{blankInk(isBlank, selfDoubt.threshold)}</p>
                         }
                     </span>
                     <span>
                         <h2>Die Penalty</h2>
-                        <input className="center-text character-value" type="number" placeholder=" " value={selfDoubt.diePenalty} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'diePenalty', +event.target.value)} />
+                        <input className="center-text character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, selfDoubt.diePenalty)} onChange={event => updates.updateSelfDoubt(pageID, { diePenalty: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'diePenalty', +event.target.value)} />
                     </span>
                 </div>
             </section>
             <section>
                 <h1>Damage</h1>
-                <DieRow dieIndex={damage.dieIndex} onSelect={index => { updates.updateDamage(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'damageDieIndex', index) }} />
+                <DieRow dieIndex={damage.dieIndex} onSelect={index => { if (isBlank) { return } updates.updateDamage(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'damageDieIndex', index) }} />
                 <div className="damage-values">
                     <span className='vitals-split'>
                         <h2>Trauma</h2>
-                        <p className="center-text character-value">{damage.threshold * 2}</p>
+                        <p className="center-text character-value">{blankInk(isBlank, damage.threshold * 2)}</p>
                     </span>
                     <span className='vitals-split'>
                         <h2>Knock Back</h2>
                         {isEditing ?
-                            <input className="center-text character-value" type="number" placeholder=" " value={damage.knockback} onChange={event => updates.updateDamage(pageID, { knockback: +event.target.value })} />
+                            <input className="center-text character-value" type="number" placeholder=" " value={blankInk(isBlank, damage.knockback)} onChange={event => updates.updateDamage(pageID, { knockback: +event.target.value })} />
                             :
-                            <p className="center-text character-value">{damage.knockback}</p>
+                            <p className="center-text character-value">{blankInk(isBlank, damage.knockback)}</p>
                         }
                     </span>
-                    <input className="center-text character-value" type="number" placeholder=" " value={damage.damage} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'damage', +event.target.value)} />
+                    <input className="center-text character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, damage.damage)} onChange={event => updates.updateDamage(pageID, { damage: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'damage', +event.target.value)} />
                     <span className="slash">/</span>
                     {isEditing ?
-                        <input className="center-text character-value" type="number" placeholder=" " value={damage.threshold} onChange={event => updates.updateDamage(pageID, { threshold: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={blankInk(isBlank, damage.threshold)} onChange={event => updates.updateDamage(pageID, { threshold: +event.target.value })} />
                         :
-                        <p className="center-text character-value">{damage.threshold}</p>
+                        <p className="center-text character-value">{blankInk(isBlank, damage.threshold)}</p>
                     }
                 </div>
             </section>
             <section>
                 <h1>Stress</h1>
-                <DieRow dieIndex={stress.dieIndex} onSelect={index => { updates.updateStress(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'stressDieIndex', index) }} />
+                <DieRow dieIndex={stress.dieIndex} onSelect={index => { if (isBlank) { return } updates.updateStress(pageID, { dieIndex: index }); updates.persistViewField(pageID, 'stressDieIndex', index) }} />
                 <div className="stress-values">
-                    <input className="center-text character-value" type="number" placeholder=" " value={stress.stress} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'stress', +event.target.value)} />
+                    <input className="center-text character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, stress.stress)} onChange={event => updates.updateStress(pageID, { stress: +event.target.value })} onBlur={event => updates.persistViewField(pageID, 'stress', +event.target.value)} />
                     <span className="slash">/</span>
                     {isEditing ?
-                        <input className="center-text character-value" type="number" placeholder=" " value={stress.threshold} onChange={event => updates.updateStress(pageID, { threshold: +event.target.value })} />
+                        <input className="center-text character-value" type="number" placeholder=" " value={blankInk(isBlank, stress.threshold)} onChange={event => updates.updateStress(pageID, { threshold: +event.target.value })} />
                         :
-                        <p className="center-text character-value">{stress.threshold}</p>
+                        <p className="center-text character-value">{blankInk(isBlank, stress.threshold)}</p>
                     }
                 </div>
             </section>

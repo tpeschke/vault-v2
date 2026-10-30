@@ -6,6 +6,8 @@ import StrengthNDiscount from './components/strengthNDiscount/StrengthNDiscount'
 import ReputationDisplay from './components/reputation/ReputationDisplay'
 import FlawsDisplay from './components/flaws/Flaws'
 import DescriptionsDisplay from './components/descriptions/Descriptions'
+import { useContext } from 'react'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 import DisplaySingleArray from '../../../../components/displayArray/DisplaySingleArray'
 
@@ -16,6 +18,7 @@ interface Props {
 }
 
 export default function CharacteristicsDisplay({ characteristicsInfo, pageID, updates }: Props) {
+    const isBlank = useContext(BlankContext)
     const { capacity, socialSuites, culturalStrength, socialSkillDiscount, currentEmotions, reputations, descriptions, flaws } = characteristicsInfo
     const rows = currentEmotions ?? []
 
@@ -36,8 +39,9 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
                             <input
                                 className="character-value"
                                 placeholder=" "
+                                readOnly={isBlank}
                                 maxLength={25}
-                                value={item.value}
+                                value={blankInk(isBlank, item.value)}
                                 onChange={event => onChange({ ...item, value: event.target.value })}
                                 onBlur={event => {
                                     const value = event.target.value
@@ -52,7 +56,7 @@ export default function CharacteristicsDisplay({ characteristicsInfo, pageID, up
                     )}
                     renderInsert={onBlur => (
                         <span>
-                            <input className="character-value" placeholder=" " maxLength={25} onBlur={onBlur} />
+                            <input className="character-value" placeholder=" " readOnly={isBlank} maxLength={25} onBlur={onBlur} />
                         </span>
                     )}
                     renderLeftover={() => (

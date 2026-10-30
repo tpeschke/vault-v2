@@ -1,6 +1,7 @@
 import { Fragment, useContext } from 'react'
 import './Capacity.css'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
@@ -20,6 +21,7 @@ const BANDS = (capacity: number) => [
 
 export default function CapacityDisplay({ capacity, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const bands = BANDS(capacity)
 
     return (
@@ -42,7 +44,7 @@ export default function CapacityDisplay({ capacity, pageID, updates }: Props) {
                                     className="character-value"
                                     type="number"
                                     placeholder=" "
-                                    value={capacity}
+                                    value={blankInk(isBlank, capacity)}
                                     onChange={event => {
                                         const n = +event.target.value
                                         updates.updateCapacity(pageID, Number.isFinite(n) ? n : 0)
@@ -50,7 +52,7 @@ export default function CapacityDisplay({ capacity, pageID, updates }: Props) {
                                 />
                             </span>
                             :
-                            <p className="character-value">{value}</p>
+                            <p className="character-value">{blankInk(isBlank, value)}</p>
                         }
                     </Fragment>
                 ))}

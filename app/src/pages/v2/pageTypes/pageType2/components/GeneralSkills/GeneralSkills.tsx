@@ -8,6 +8,7 @@ import {
 } from '@vault/common/interfaces/v2/page2/page2Interfaces'
 import { Page2 } from '@vault/common/interfaces/v2/pageTypes'
 import EditingContext from '../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { PageType2Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 import { ADV_GENERAL_CAP } from '../../../../hooks/updates/pageType2Updates'
 import makeTempID from '../../../../../../utilities/makeTempId'
@@ -48,13 +49,15 @@ function NumberCell({
     value: SkillNumber
     onChange: (value: SkillNumber) => void
 }) {
+    const isBlank = useContext(BlankContext)
     return isEditing
-        ? <input className="character-value" type="number" placeholder=" " value={value} onChange={event => onChange(event.target.value === '' ? '' : +event.target.value)} />
-        : <p className="character-value">{value}</p>
+        ? <input className="character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, value)} onChange={event => onChange(event.target.value === '' ? '' : +event.target.value)} />
+        : <p className="character-value">{blankInk(isBlank, value)}</p>
 }
 
 export default function GeneralSkills({ page, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const rows = page.advancedGeneralSkills ?? []
     const leftover = ADV_GENERAL_CAP - rows.length - (isEditing ? 1 : 0)
     const showInsert = isEditing && leftover > -1
@@ -104,8 +107,8 @@ export default function GeneralSkills({ page, pageID, updates }: Props) {
                         <em>Native Language</em>
                         <span className="native-language-name">
                             {isEditing
-                                ? <input className="character-value" placeholder=" " value={page.nativeLanguage.name} onChange={event => updates.updateNativeLanguage(pageID, { name: event.target.value })} />
-                                : <p className="character-value">{page.nativeLanguage.name}</p>
+                                ? <input className="character-value" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, page.nativeLanguage.name)} onChange={event => updates.updateNativeLanguage(pageID, { name: event.target.value })} />
+                                : <p className="character-value">{blankInk(isBlank, page.nativeLanguage.name)}</p>
                             }
                             <NumberCell
                                 isEditing={isEditing}
@@ -122,21 +125,22 @@ export default function GeneralSkills({ page, pageID, updates }: Props) {
                     <span className="discount-row">
                         <strong>Armor Skill Adj</strong>
                         {isEditing
-                            ? <input className="character-value" type="number" placeholder=" " value={page.armorSkillAdj} onChange={event => updates.updateArmorSkillAdj(pageID, +event.target.value)} />
-                            : <p className="character-value">{page.armorSkillAdj}</p>
+                            ? <input className="character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, page.armorSkillAdj)} onChange={event => updates.updateArmorSkillAdj(pageID, +event.target.value)} />
+                            : <p className="character-value">{blankInk(isBlank, page.armorSkillAdj)}</p>
                         }
                     </span>
                     <span className="discount-row">
                         <em>Gen. Skill Discount</em>
                         {isEditing
-                            ? <input className="character-value" type="number" placeholder=" " value={page.genSkillDiscount} onChange={event => updates.updateGenSkillDiscount(pageID, +event.target.value)} />
-                            : <p className="character-value">{page.genSkillDiscount}</p>
+                            ? <input className="character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, page.genSkillDiscount)} onChange={event => updates.updateGenSkillDiscount(pageID, +event.target.value)} />
+                            : <p className="character-value">{blankInk(isBlank, page.genSkillDiscount)}</p>
                         }
                     </span>
                     <textarea
                         className="character-value leftover-notes"
                         maxLength={textareaCaps.generalSkillNotes}
-                        value={page.generalSkillNotes}
+                        readOnly={isBlank}
+                        value={blankInk(isBlank, page.generalSkillNotes)}
                         onScroll={event => holdTextareaScroll(event.currentTarget)}
                         onChange={event => updates.updateGeneralSkillNotes(pageID, clampTextareaChange(event.target.value, textareaCaps.generalSkillNotes, isComposingInput(event)))}
                         onCompositionEnd={event => updates.updateGeneralSkillNotes(pageID, trimTextarea(event.currentTarget.value, textareaCaps.generalSkillNotes))}
@@ -161,8 +165,8 @@ export default function GeneralSkills({ page, pageID, updates }: Props) {
                             <Fragment key={item.key ?? item.id ?? index}>
                                 <span>
                                     {isEditing
-                                        ? <input className="character-value" placeholder=" " value={item.name} onChange={event => updates.updateAdvancedGeneralSkill(pageID, index, { ...item, name: event.target.value })} />
-                                        : <p className="character-value">{item.name}</p>
+                                        ? <input className="character-value" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, item.name)} onChange={event => updates.updateAdvancedGeneralSkill(pageID, index, { ...item, name: event.target.value })} />
+                                        : <p className="character-value">{blankInk(isBlank, item.name)}</p>
                                     }
                                     <NumberCell
                                         isEditing={isEditing}
@@ -180,9 +184,9 @@ export default function GeneralSkills({ page, pageID, updates }: Props) {
                         {showInsert && (
                             <Fragment key={insertReset}>
                                 <span>
-                                    <input className="character-value" placeholder=" " onBlur={event => handleInsertBlur('name', event)} />
-                                    <input className="character-value" type="number" placeholder=" " onBlur={event => handleInsertBlur('stat', event)} />
-                                    <input className="character-value" type="number" placeholder=" " onBlur={event => handleInsertBlur('rank', event)} />
+                                    <input className="character-value" placeholder=" " readOnly={isBlank} onBlur={event => handleInsertBlur('name', event)} />
+                                    <input className="character-value" type="number" placeholder=" " readOnly={isBlank} onBlur={event => handleInsertBlur('stat', event)} />
+                                    <input className="character-value" type="number" placeholder=" " readOnly={isBlank} onBlur={event => handleInsertBlur('rank', event)} />
                                 </span>
                             </Fragment>
                         )}

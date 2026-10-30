@@ -8,6 +8,7 @@ import {
 } from '@vault/common/interfaces/v2/page2/page2Interfaces'
 import { Page2 } from '@vault/common/interfaces/v2/pageTypes'
 import EditingContext from '../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { PageType2Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 import { ADV_COMBAT_CAP } from '../../../../hooks/updates/pageType2Updates'
 import DisplayPairArray from '../../../../components/displayArray/DisplayPairArray'
@@ -35,13 +36,15 @@ function NumberCell({
     value: SkillNumber
     onChange: (value: SkillNumber) => void
 }) {
+    const isBlank = useContext(BlankContext)
     return isEditing
-        ? <input className="character-value" type="number" placeholder=" " value={value} onChange={event => onChange(event.target.value === '' ? '' : +event.target.value)} />
-        : <p className="character-value">{value}</p>
+        ? <input className="character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, value)} onChange={event => onChange(event.target.value === '' ? '' : +event.target.value)} />
+        : <p className="character-value">{blankInk(isBlank, value)}</p>
 }
 
 export default function CombatSkills({ page, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const rows = page.advancedCombatSkills ?? []
 
     return (
@@ -66,14 +69,15 @@ export default function CombatSkills({ page, pageID, updates }: Props) {
                     <span className="discount-row">
                         <em>Combat Skill Discount</em>
                         {isEditing
-                            ? <input className="character-value" type="number" placeholder=" " value={page.combatSkillDiscount} onChange={event => updates.updateCombatSkillDiscount(pageID, +event.target.value)} />
-                            : <p className="character-value">{page.combatSkillDiscount}</p>
+                            ? <input className="character-value" type="number" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, page.combatSkillDiscount)} onChange={event => updates.updateCombatSkillDiscount(pageID, +event.target.value)} />
+                            : <p className="character-value">{blankInk(isBlank, page.combatSkillDiscount)}</p>
                         }
                     </span>
                     <textarea
                         className="character-value leftover-notes"
                         maxLength={textareaCaps.combatSkillNotes}
-                        value={page.combatSkillNotes}
+                        readOnly={isBlank}
+                        value={blankInk(isBlank, page.combatSkillNotes)}
                         onScroll={event => holdTextareaScroll(event.currentTarget)}
                         onChange={event => updates.updateCombatSkillNotes(pageID, clampTextareaChange(event.target.value, textareaCaps.combatSkillNotes, isComposingInput(event)))}
                         onCompositionEnd={event => updates.updateCombatSkillNotes(pageID, trimTextarea(event.currentTarget.value, textareaCaps.combatSkillNotes))}
@@ -114,28 +118,29 @@ export default function CombatSkills({ page, pageID, updates }: Props) {
                             renderRow={(item, _index, onChange) => (
                                 <span>
                                     {isEditing
-                                        ? <input className="character-value" placeholder=" " value={item.value} onChange={event => onChange({ ...item, value: event.target.value })} />
-                                        : <p className="character-value">{item.value}</p>
+                                        ? <input className="character-value" placeholder=" " readOnly={isBlank} value={blankInk(isBlank, item.value)} onChange={event => onChange({ ...item, value: event.target.value })} />
+                                        : <p className="character-value">{blankInk(isBlank, item.value)}</p>
                                     }
                                     {isEditing
                                         ? <input
                                             className="character-value"
                                             type="number"
                                             placeholder=" "
-                                            value={item.rank}
+                                            readOnly={isBlank}
+                                            value={blankInk(isBlank, item.rank)}
                                             onChange={event => onChange({
                                                 ...item,
                                                 rank: event.target.value === '' ? '' : +event.target.value
                                             })}
                                         />
-                                        : <p className="character-value">{item.rank}</p>
+                                        : <p className="character-value">{blankInk(isBlank, item.rank)}</p>
                                     }
                                 </span>
                             )}
                             renderInsert={(onBlurValue, onBlurRank) => (
                                 <span>
-                                    <input className="character-value" placeholder=" " onBlur={onBlurValue} />
-                                    <input className="character-value" type="number" placeholder=" " onBlur={onBlurRank} />
+                                    <input className="character-value" placeholder=" " readOnly={isBlank} onBlur={onBlurValue} />
+                                    <input className="character-value" type="number" placeholder=" " readOnly={isBlank} onBlur={onBlurRank} />
                                 </span>
                             )}
                             renderLeftover={() => (
