@@ -152,7 +152,11 @@
     position: relative;
     cursor: pointer;
     padding: 0;
-    background: #e8e8e8;
+    border-radius: 3px;
+}
+
+.page3-flag-box:hover {
+    background: rgba(173, 216, 230);
 }
 
 .page3-flag-box i,
