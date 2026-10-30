@@ -145,11 +145,12 @@ export default function V2View({ setLoading, pathname }: Props) {
                                             {disclosedPageIDs.includes(page.pageID) ? (
                                                 <>
                                                     {character.pages.length < SHEET_PAGE_MAX &&
-                                                        <span
+                                                        <h4
                                                             key="page-count"
+                                                            className="page-count"
                                                             data-tooltip-id="my-tooltip"
                                                             data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}
-                                                        >{character.pages.length} / {SHEET_PAGE_MAX}</span>
+                                                        >{character.pages.length} / {SHEET_PAGE_MAX}</h4>
                                                     }
                                                     <button
                                                         key="add-main"
