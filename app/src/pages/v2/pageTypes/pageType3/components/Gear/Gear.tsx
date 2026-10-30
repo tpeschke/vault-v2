@@ -123,7 +123,7 @@ function GearRow({
             </span>
             <span className="page3-gear-size">
                 {spec.arrow ? (
-                    <em className="page3-gear-chrome"><i className="fa-solid fa-arrow-right-from-line"></i></em>
+                    <em className="page3-gear-chrome" data-tooltip-id="my-tooltip" data-tooltip-content="This item's weight is recorded somewhere else."><i className="fa-solid fa-arrow-right-from-line"></i></em>
                 ) : isDefaultSSlot(spec.slot) ? (
                     <em className="page3-gear-label">{cell.size}</em>
                 ) : (
@@ -173,9 +173,9 @@ function ColumnHead() {
         <span className="page3-gear-head">
             <strong>Type (Item)</strong>
             <strong>Size</strong>
-            <strong><i className="fa-solid fa-staff-snake"></i></strong>
-            <strong><img alt="" src={personMeditating} /></strong>
-            <strong>W</strong>
+            <strong data-tooltip-id="my-tooltip" data-tooltip-content="Does this item heal Damage?"><i className="fa-solid fa-staff-snake"></i></strong>
+            <strong data-tooltip-id="my-tooltip" data-tooltip-content="Does this item heal Stress?"><img alt="" src={personMeditating} /></strong>
+            <strong data-tooltip-id="my-tooltip" data-tooltip-content="Item's Wear">W</strong>
         </span>
     )
 }
