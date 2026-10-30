@@ -86,6 +86,7 @@ export interface PageType3Updates {
 
 export interface PageType4Updates {
     updateNotesScene: (pageID: number, scene: string) => void
+    persistNotesScene: (pageID: number, scene: string, key?: string) => void
 }
 
 export interface PageGutterUpdates {

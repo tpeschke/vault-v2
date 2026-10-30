@@ -104,7 +104,8 @@ export default function getV2Updates(
     dispatch: Dispatch,
     persistViewField: (pageID: number, attribute: ViewPersistAttribute, value: number | string) => void,
     persistCurrentEmotions: (pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) => void,
-    page3Persist: Page3PersistFns
+    page3Persist: Page3PersistFns,
+    persistNotesScene: (pageID: number, scene: string, key?: string) => void
 ): { pageType1Updates: PageType1Updates, pageType2Updates: PageType2Updates, pageType3Updates: PageType3Updates, pageType4Updates: PageType4Updates, pageGutterUpdates: PageGutterUpdates } {
     function apply(next: CharacterVersion2) {
         setCharacter(next)
@@ -313,7 +314,8 @@ export default function getV2Updates(
         updateNotesScene: (pageID, scene) => {
             if (!character) { return }
             apply(updateNotesScene(character, pageID, scene))
-        }
+        },
+        persistNotesScene
     }
 
     const pageGutterUpdates: PageGutterUpdates = {

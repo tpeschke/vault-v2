@@ -99,6 +99,9 @@ export default function V2View({ setLoading, pathname }: Props) {
                     <div className={`page-shell ${isEditing ? 'view-edit' : viewQuickEdit ? 'view-quick-edit' : ''}`}>
                         {character && character.pages.map((page, index) => {
                             let card = <></>
+                            const sheetKey = page.type === 4
+                                ? (page.key ?? page.pageID)
+                                : 'pageID' in page ? page.pageID : index
                             switch (page.type) {
                                 case 1:
                                     card = <PageType1 pageInfo={page} index={index} updates={pageType1Updates} />
@@ -110,13 +113,13 @@ export default function V2View({ setLoading, pathname }: Props) {
                                     card = <PageType3 pageInfo={page} updates={pageType3Updates} />
                                     break
                                 case 4:
-                                    card = <PageType4 key={`${page.pageID}:${notesEpoch}`} pageInfo={page} updates={pageType4Updates} notesEpoch={notesEpoch} />
+                                    card = <PageType4 key={`${page.key ?? page.pageID}:${notesEpoch}`} pageInfo={page} updates={pageType4Updates} notesEpoch={notesEpoch} ownsThisCharacter={character.userInfo.ownsThisCharacter} />
                                     break
                                 default:
                                     return <Fragment key={`${page.type}-${index}`}></Fragment>
                             }
                             return (
-                                <Fragment key={page.pageID}>
+                                <Fragment key={sheetKey}>
                                     <div id={'sheet-' + page.pageID}>
                                         {card}
                                     </div>

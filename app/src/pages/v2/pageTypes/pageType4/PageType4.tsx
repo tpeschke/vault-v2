@@ -6,15 +6,15 @@ import { CaptureUpdateAction, Excalidraw } from '@excalidraw/excalidraw'
 import type { AppState, BinaryFiles, ExcalidrawImperativeAPI, NormalizedZoomValue } from '@excalidraw/excalidraw/types'
 import type { ClipboardData } from '@excalidraw/excalidraw/clipboard'
 import type { ExcalidrawElement } from '@excalidraw/excalidraw/element/types'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
-import EditingContext from '../../contexts/EditingContext'
 import { PageType4Updates } from '../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
     pageInfo: Page4
     updates: PageType4Updates
     notesEpoch: number
+    ownsThisCharacter: boolean
 }
 
 const NOTES_UI_OPTIONS = {
@@ -83,14 +83,15 @@ function overCap(scene: string): boolean {
     return utf8Bytes(scene) > NOTES_SCENE_MAX_BYTES
 }
 
-export default function PageType4({ pageInfo, updates, notesEpoch }: Props) {
-    const isEditing = useContext(EditingContext)
-    const isEditingRef = useRef(isEditing)
-    isEditingRef.current = isEditing
+export default function PageType4({ pageInfo, updates, notesEpoch, ownsThisCharacter }: Props) {
     const updatesRef = useRef(updates)
     updatesRef.current = updates
     const pageIDRef = useRef(pageInfo.pageID)
     pageIDRef.current = pageInfo.pageID
+    const keyRef = useRef(pageInfo.key)
+    keyRef.current = pageInfo.key
+    const ownsRef = useRef(ownsThisCharacter)
+    ownsRef.current = ownsThisCharacter
 
     const loaded = useState(() => readScene(pageInfo.scene))[0]
     const [initialData] = useState(() => ({
@@ -212,7 +213,7 @@ export default function PageType4({ pageInfo, updates, notesEpoch }: Props) {
     }, [])
 
     const onChange = useCallback((elements: readonly ExcalidrawElement[], appState: AppState, files: BinaryFiles) => {
-        if (appState.newElement || appState.resizingElement || appState.multiElement || appState.selectedElementsAreBeingDragged) {
+        if (appState.newElement || appState.resizingElement || appState.multiElement || appState.selectedElementsAreBeingDragged || appState.editingTextElement) {
             return
         }
         const next = persistedScene(elements, files)
@@ -236,10 +237,10 @@ export default function PageType4({ pageInfo, updates, notesEpoch }: Props) {
             return
         }
         lastAcceptedRef.current = next
-        if (!isEditingRef.current) {
+        if (!ownsRef.current) {
             return
         }
-        updatesRef.current.updateNotesScene(pageIDRef.current, next.scene)
+        updatesRef.current.persistNotesScene(pageIDRef.current, next.scene, keyRef.current)
     }, [rejectCap])
 
     const onPaste = useCallback((data: ClipboardData) => {
@@ -269,17 +270,18 @@ export default function PageType4({ pageInfo, updates, notesEpoch }: Props) {
 
     return (
         <div
-            className="page card page-type-four"
+            className={`page card page-type-four${ownsThisCharacter ? ' notes-editable' : ''}`}
             data-notes-epoch={notesEpoch}
             ref={cardRef}
         >
             <div className="notes-editor">
                 <Excalidraw
+                    key={`${pageInfo.key ?? pageInfo.pageID}:${notesEpoch}`}
                     excalidrawAPI={onApi}
                     initialData={initialData}
                     theme="light"
                     aiEnabled={false}
-                    viewModeEnabled={!isEditing}
+                    viewModeEnabled={!ownsThisCharacter}
                     UIOptions={NOTES_UI_OPTIONS}
                     onChange={onChange}
                     onScrollChange={onScrollChange}
