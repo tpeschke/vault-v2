@@ -5,6 +5,41 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-155: Size the v2 card border box to letter
+status: proposed
+source: rewrite-ledger/download-character.md, 2026-10-30 (HTML page matches the PDF page)
+why: html2pdf captures the `.page` border box. That box is 828×1068 today (content 796×1036 plus 16px card padding on each side). jsPDF letter with unit `px` and hotfix `px_scaling` is 816×1056. The card has to be that box or the PDF page and the sheet differ.
+scope: `app/src/pages/View.css` (`.v2 .page` only). Owner: `rewrite-ledger/v2-page-type.md`. Do not edit the unscoped `.page` rule. Do not edit v1 CSS. Do not edit `App.css` `.card` padding. Do not recompress page-type widgets. Do not add a file.
+steps:
+1. Add `.v2 .page` with `box-sizing: border-box`, `width: 816px`, and `height: 1056px`. Leave `.page` at `height: 1036px` and `width: 796px`.
+2. Do not change `.card` padding. The 16px stays inside the border box. The content box becomes 784×1024. Do not restack sections to absorb that.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `View.css` shows `.v2 .page` with `816px`, `1056px`, and `border-box`, and the unscoped `.page` rule still has `796px` and `1036px`. In the browser, a v2 `.page` `getBoundingClientRect` is 816×1056 within 1px. A v1 `.page` border box stays 828×1068.
+depends on: none
+open questions: none
+deviations from design: The size change is `.v2 .page` only. The unscoped `.page` rule also sizes v1, and v1’s PDF stamps that screenshot onto letter millimeters. Resizing it is outside this feature.
+result:
+
+### T-156: Download the viewed character as one PDF
+status: proposed
+source: rewrite-ledger/download-character.md, 2026-10-30 (`pdf-lib` confirmed; pregen left out)
+why: The view has no download. v1’s pipeline is per-id `html2canvas` plus `jsPDF.addImage`, which this feature does not use.
+scope: new `app/src/pages/v2/hooks/utilities/downloadCharacter.ts`; `app/src/pages/v2/components/sidebar/Sidebar.tsx`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/V2View.css`; root `package.json`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`. Owner: the v2 view (`download-character.md`). Do not edit `app/src/pages/v1/`. Do not add `features/`. Do not add a backend route. Do not change the root `"jspdf"` range. Do not put the worker in `characterHook`.
+steps:
+1. Add dependencies `html2pdf.js` at `0.14.0` and `pdf-lib` at `1.17.1` on the root `package.json`. Install. `npm ls jspdf` must still show a 3.x instance for the root `jspdf` dependency. `html2pdf.js` 0.14.0’s `jspdf` 4 stays nested. If the root import resolves to 4, stop.
+2. In `downloadCharacter.ts`, export `pdfFileName(name: string)`: strip `\ / : * ? " < > |` and characters U+0000–U+001F, trim, use `Blank` when empty, append `.pdf`. Export `downloadPages(pages: HTMLElement[], fileName: string): Promise<void>`.
+3. `downloadPages` runs one html2pdf worker per element, in order, not `Promise.all`. Dynamic-import `html2pdf.js` and `pdf-lib` inside the function. Options: `margin: 0`, `image: { type: 'jpeg', quality: 0.95 }`, `html2canvas: { scale: 2 }`, `enableLinks: false`, no `pagebreak`. `jsPDF`: `{ unit: 'px', format: 'letter', orientation: 'portrait', hotfixes: ['px_scaling'] }`. Cast that object if the package’s option type omits `hotfixes`.
+4. Chain `.from(page).toContainer()`. Read `.value` from the live page’s `input` and `textarea` nodes in tree order. In `.html2pdf__container`, walk the same list. If the counts differ, remove the container and throw. Replace each clone `textarea`, and each clone `input` whose type is empty, `text`, `number`, or `search`, with a `div` that has the live value as `textContent`, the same `className`, `white-space: pre-wrap`, `box-sizing: border-box`, and the live element’s `offsetWidth` and `offsetHeight` in px. Leave checkbox, radio, button, file, and hidden inputs. Then, in tree order, draw each live `canvas` onto the clone canvas with `drawImage`. After `toPdf()`, read the page size. If it is not 816 by 1056, remove the container and throw. `outputPdf('arraybuffer')`. Remove every `.html2pdf__container` before the next card.
+5. `PDFDocument.create()`, then `load` and `copyPages` each buffer in order. `save()`. Trigger one download of `fileName` with object URL `application/pdf`, then revoke the URL. Do not call html2pdf `.save()` per card.
+6. `Sidebar` gains `onDownload: () => void`. Render `<button onClick={onDownload}><i className="fa-solid fa-download"></i> Download</button>` when `!isEditing`, including when `isBlank`. On a real character it sits after Edit and before the quick-edit toggle. Do not put it inside the `!isBlank` group (`blank-sheet.md`: a button beside those stays visible). Do not wrap it in `ownsThisCharacter`. Do not add a pregen button.
+7. `V2View` holds `isDownloading`. The click sets quick-edit off and `isDownloading` true. An effect runs the download after that paint: `await document.fonts.ready`, then `downloadPages` of `[...document.querySelectorAll('.version-two-shell .page')]` with `pdfFileName(character.name)`. A ref makes one click produce one file even if the effect runs twice. `finally` clears `isDownloading`. An empty node list throws nothing and clears the flag.
+8. While `isDownloading`, do not render `Sidebar`. Render the banner above the sheet: class `download-banner`, an `h1` whose text is `Downloading`, and `LoadingIndicator` with `stylings=""` and `secondary={true}`. Copy the v1 `.download-banner` rule into `V2View.css` (sticky, `top: 0`, `width: 1000px`, `margin: 30px auto`, `padding: 8px 0`, background `#b45f06`, centered white text, the same three-layer shadow as the v1 rule). Do not import `V1Body.css`.
+9. Inventory: under Character (v2), add Download character as PDF and drop `download PDF` from the “Not present” line. One sentence: view sidebar, not owner-gated, one letter page per card, no pregen. Canonical: `download-character.md`. In `00-START-HERE.yaml` add key `download character as pdf / character pdf` with primary `app/src/pages/v2/hooks/utilities/downloadCharacter.ts` and adjacent `Sidebar.tsx`, `V2View.tsx`, `V2View.css`, and `View.css`. Leave the v1 pdf key as it is.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Sidebar.tsx` finds `Download` once, and that button is not inside `ownsThisCharacter`. Grep of `app/src/pages/v1` for `html2pdf` is 0. Root `package.json` lists `html2pdf.js` `0.14.0` and `pdf-lib` `1.17.1`, and `"jspdf"` is still `^3.0.3`. `npm ls jspdf` shows 3.x for the root dependency. In the browser, a character with more than one sheet, a filled textarea, a filled text input, and a mark on the notes canvas downloads one PDF: one page per card, sidebar absent, notes mark visible, textarea text visible. A non-owner gets the button and a file. A second click during the banner does not start another file. Quick-edit highlighting is off in the file. On `/v/blank`, Download is visible and Edit and Show Quick Edit Locations stay absent (`blank-sheet.md`).
+depends on: T-155
+open questions: none
+deviations from design: The worker lives in a v2 utility called from `V2View`, not in `characterHook`. v1’s hook owns download because pregen mutates the character, and pregen is out. `html2pdf.js` 0.14.0 depends on `jspdf` 4 while this repo’s direct `jspdf` is 3; the TODO keeps both rather than upgrading v1.
+result:
+
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
