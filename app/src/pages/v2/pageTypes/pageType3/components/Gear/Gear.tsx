@@ -123,7 +123,7 @@ function GearRow({
             </span>
             <span className="page3-gear-size">
                 {spec.arrow ? (
-                    <em className="page3-gear-chrome" data-tooltip-id="my-tooltip" data-tooltip-content="This item's weight is recorded somewhere else."><i className="fa-solid fa-arrow-right-from-line"></i></em>
+                    <em className="page3-gear-chrome" data-tooltip-id="my-tooltip" data-tooltip-content="This item's weight is recorded somewhere else (if applicable)."><i className="fa-solid fa-arrow-right-from-line"></i></em>
                 ) : isDefaultSSlot(spec.slot) ? (
                     <em className="page3-gear-label">{cell.size}</em>
                 ) : (
