@@ -10,6 +10,7 @@ import PageType3 from './pageTypes/pageType3/PageType3'
 import PageType4 from './pageTypes/pageType4/PageType4'
 import EditingContext from './contexts/EditingContext'
 import Sidebar from './components/sidebar/Sidebar'
+import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from '@vault/common/interfaces/v2/sheetPageCap'
 
 interface Props {
     setLoading?: SetLoadingFunction,
@@ -143,6 +144,13 @@ export default function V2View({ setLoading, pathname }: Props) {
                                         <div className="page-gutter">
                                             {disclosedPageIDs.includes(page.pageID) ? (
                                                 <>
+                                                    {character.pages.length < SHEET_PAGE_MAX &&
+                                                        <span
+                                                            key="page-count"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}
+                                                        >{character.pages.length} / {SHEET_PAGE_MAX}</span>
+                                                    }
                                                     <button
                                                         key="add-main"
                                                         type="button"
@@ -229,14 +237,31 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                             }}
                                                         ><i className="fa-solid fa-down-to-line"></i></button>
                                                     }
-                                                    <button
-                                                        key="disclose"
-                                                        type="button"
-                                                        className="bottom-buttons add-page"
-                                                        data-tooltip-id="my-tooltip"
-                                                        data-tooltip-content="Click to Add New Pages"
-                                                        onClick={() => disclosePage(page.pageID)}
-                                                    ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                    {character.pages.length >= SHEET_PAGE_MAX ? (
+                                                        <span
+                                                            key="disclose"
+                                                            className="add-page"
+                                                            tabIndex={0}
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content={SHEET_PAGE_CAP_MESSAGE}
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                className="bottom-buttons"
+                                                                disabled
+                                                                style={{ pointerEvents: 'none' }}
+                                                            ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            key="disclose"
+                                                            type="button"
+                                                            className="bottom-buttons add-page"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="Click to Add New Pages"
+                                                            onClick={() => disclosePage(page.pageID)}
+                                                        ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                    )}
                                                 </>
                                             )}
                                         </div>

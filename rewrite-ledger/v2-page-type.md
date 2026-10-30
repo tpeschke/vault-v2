@@ -99,4 +99,4 @@ Revised 2026-10-30 (gutter disclosure, `add-page-type-1.md`):
 - Gutter lists both clusters as one always-visible row — **revised**: resting versus disclosed. Labeled adds, including **+ Notes**, stay the disclosed set.
 
 Touches: `rewrite-ledger/v2-page-type.md`; ledger front panels; pointers on `page1-view.md`, `page2-view.md`, `page3-view.md`, `page4-view.md`, `edit-character.md`, `quick-view-inputs.md`, `add-page-type-1.md`
-TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`); disclosure: T-145 (done); sheet cap: T-147, T-148 (`add-page-type-1.md`)
+TODOs: T-076–T-087 (page type 2, done); labeled adds: T-092 (done); playbook gutter add: T-093 (done); page type 3: T-100–T-112 (done); page type 4: T-134–T-140 (`page4-view.md`); disclosure: T-145 (done); sheet cap: T-147, T-148 (done; `add-page-type-1.md`)
