@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-129: Match Gear row height to the sheet band
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Gear data rows paint about 21.38px and the column head about 22px. A Relationships row and a Gear bar header are 17.38px. `min-height: 17.38px` does not cap a cell that also has `padding: 2px 1px` and an input `height: 17.38px`.
 scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` only. Owner: `rewrite-ledger/page3-view.md`. Do not edit `Gear.tsx`, `Relationships.css`, `Contacts.css`, `View.css`, `index.css`, Notes height, coinage, or section `h2` text. Do not add `features/` or `shared/`. Do not remove the column head’s `background: #bdbdbd` or its `border-bottom: 1px solid whitesmoke`. Do not put a rest `background` back on `.page3-flag-box`. Leave its `border-radius: 3px` and its hover wash.
@@ -22,9 +26,7 @@ done when: `Gear.css` sets `height: 17.38px` on `.page3-gear-head` and `.page3-g
 depends on: T-127 (done)
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: The column head and each data row, including bar headers, are a 17.38px border-box. Inputs fill the cell and no longer set `height: 17.38px`. Item and Size labels use a 13.38px line box so they fit inside the padding. The meditating image stays 18×18 and paints outside the head. Headless Chrome: head, data row, empty row, and Backpack are 17.38px; a Relationships row is 17.38px; Notes is 86.89px; the flag box is 12×12 with no border.
 
 ### T-128: Add two Tiny & Other rows
 status: done
