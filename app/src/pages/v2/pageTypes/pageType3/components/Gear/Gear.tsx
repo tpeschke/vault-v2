@@ -153,7 +153,7 @@ function ColumnHead() {
             <strong>Type (Item)</strong>
             <strong>Size</strong>
             <strong><i className="fa-solid fa-staff-snake"></i></strong>
-            <strong></strong>
+            <strong><i className="fa-solid fa-person-meditating"></i></strong>
             <strong>W</strong>
         </span>
     )
