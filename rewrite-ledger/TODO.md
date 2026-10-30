@@ -6,8 +6,10 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+## Done
+
 ### T-124: Nest kit icons so unchecking a check does not throw
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Kit `db12ee03d1` replaces `<i class="fa-solid">` with `<svg class="svg-inline--fa">`. `GearFlag` and v2 Anointed render `fa-check` only while checked. Uncheck asks React to `removeChild` that `<i>`, which is no longer in the tree, and the router error page replaces the sheet.
 scope: `app/index.html` (kit script). Owners of the checks: `rewrite-ledger/page3-view.md` (`GearFlag` in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx`, placement in `Gear.css`) and `rewrite-ledger/edit-character.md` (Anointed in `app/src/pages/v2/pageTypes/pageType1/components/Favor/Favor.tsx`, placement in `Favor.css`). Do not add an icon package. Do not add `features/` or `shared/`. Do not edit kit `db12ee03d1` on fontawesome.com.
@@ -20,9 +22,9 @@ done when: `app/index.html` sets `autoReplaceSvg` to `nest` before the kit scrip
 depends on: T-123 (done)
 open questions: none
 deviations from design: The design’s first proposal was to keep the check mounted and hide it, and to leave the kit replacing the `<i>`. The designer said to use whatever fixes the error, and to include Anointed. Nest lets the existing unmount succeed on both checkboxes. Step 4 is the keep-mounted fallback only if nest still throws.
-result:
+result: `app/index.html` sets `autoReplaceSvg: 'nest'` before kit `db12ee03d1`. Headless Chrome: the check and staff-snake stay an `<i>` with an svg inside; removing the Gear check `<i>` and the Anointed `<i>` does not throw. Gear check `<i>` is 20px, absolute, top -4px; staff-snake `<i>` is 12px; meditating img is 18×18. Step 4 was not used.
 
-## Done
+
 
 ### T-123: Keep staff-snake, the arrow, and the check as kit icons
 status: done
