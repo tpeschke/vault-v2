@@ -37,7 +37,7 @@ export function mapPage1(character: CharacterVersion2, pageID: number, updater: 
 
 function getToLvl(level: number): number {
     if (level < 1 || level > 9) { return 0 }
-    const spentCrPToLevel = [0, 40, 80, 120, 190, 260, 330, 420, 520, 630]
+    const spentCrPToLevel = [0, 65, 145, 245, 360, 490, 620, 720, 785, 820]
     return spentCrPToLevel[level]
 }
 
