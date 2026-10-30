@@ -2,6 +2,7 @@ import { Description } from '@vault/common/interfaces/v2/page1/characteristicsIn
 import './Descriptions.css'
 import { FocusEvent, Fragment, useContext, useState } from 'react'
 import EditingContext from '../../../../../../contexts/EditingContext'
+import BlankContext, { blankInk } from '../../../../../../contexts/BlankContext'
 import { PageType1Updates } from '../../../../../../hooks/interfaces/UpdateInterfaces'
 import makeTempID from '../../../../../../../../utilities/makeTempId'
 
@@ -32,6 +33,7 @@ function hasContent(row: Pick<Description, 'label' | 'attackEmotion' | 'defenseE
 
 export default function DescriptionsDisplay({ descriptions, pageID, updates }: Props) {
     const isEditing = useContext(EditingContext)
+    const isBlank = useContext(BlankContext)
     const rows = descriptions ?? []
     const max = 7
     const leftOver = max - rows.length - (isEditing ? 1 : 0)
@@ -73,7 +75,7 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
                                 onChange={event => updates.updateDescription(pageID, index, { ...item, label: event.target.value })}
                             />
                             :
-                            <p className="character-value">{item.label}</p>
+                            <p className="character-value">{blankInk(isBlank, item.label)}</p>
                         }
                         {isEditing ?
                             <input
@@ -84,7 +86,7 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
                                 onChange={event => updates.updateDescription(pageID, index, { ...item, attackEmotion: event.target.value })}
                             />
                             :
-                            <p className="character-value">{item.attackEmotion}</p>
+                            <p className="character-value">{blankInk(isBlank, item.attackEmotion)}</p>
                         }
                         {isEditing ?
                             <input
@@ -95,7 +97,7 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
                                 onChange={event => updates.updateDescription(pageID, index, { ...item, defenseEmotion: event.target.value })}
                             />
                             :
-                            <p className="character-value">{item.defenseEmotion}</p>
+                            <p className="character-value">{blankInk(isBlank, item.defenseEmotion)}</p>
                         }
                         {isEditing ?
                             <input
@@ -109,7 +111,7 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
                                 })}
                             />
                             :
-                            <p className="character-value">{item.rank}</p>
+                            <p className="character-value">{blankInk(isBlank, item.rank)}</p>
                         }
                     </span>
                 </Fragment>
@@ -117,10 +119,10 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
             {showEditInputs && (
                 <Fragment key={insertReset}>
                     <span>
-                        <input className="character-value" placeholder=" " onBlur={event => handleBlur('label', event)} />
-                        <input className="character-value" placeholder=" " maxLength={25} onBlur={event => handleBlur('attackEmotion', event)} />
-                        <input className="character-value" placeholder=" " maxLength={25} onBlur={event => handleBlur('defenseEmotion', event)} />
-                        <input className="character-value" type="number" placeholder=" " onBlur={event => handleBlur('rank', event)} />
+                        <input className="character-value" placeholder=" " readOnly={isBlank} onBlur={event => handleBlur('label', event)} />
+                        <input className="character-value" placeholder=" " maxLength={25} readOnly={isBlank} onBlur={event => handleBlur('attackEmotion', event)} />
+                        <input className="character-value" placeholder=" " maxLength={25} readOnly={isBlank} onBlur={event => handleBlur('defenseEmotion', event)} />
+                        <input className="character-value" type="number" placeholder=" " readOnly={isBlank} onBlur={event => handleBlur('rank', event)} />
                     </span>
                 </Fragment>
             )}

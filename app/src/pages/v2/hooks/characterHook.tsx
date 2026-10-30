@@ -18,6 +18,19 @@ import { applyCurrentEmotionIds, otherPageType1Names, updateCrP, updateDamage, u
 import { updateCombatSkillNotes, updateGeneralSkillNotes } from "./updates/pageType2Updates"
 import { dropPage3RelationshipId, mapPage3, putPage3RelationshipSnapshot, setPage3RelationshipId, updateCoinage, updateContacts, updateGearCell, updateNotes } from "./updates/pageType3Updates"
 import { findNotesPage, replaceNotesPageID, updateNotesScene } from "./updates/pageType4Updates"
+import emptyPageType1 from "./updates/emptyPageType1"
+import emptyPageType2 from "./updates/emptyPageType2"
+import emptyPageType3 from "./updates/emptyPageType3"
+
+function blankCharacter(): CharacterVersion2 {
+    return {
+        version: 2,
+        id: 0,
+        name: '',
+        userInfo: { userID: 0, ownsThisCharacter: false },
+        pages: [emptyPageType1(-1), emptyPageType2(-2), emptyPageType3(-3)]
+    }
+}
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -116,8 +129,8 @@ function patchViewField(character: CharacterVersion2, pageID: number, attribute:
     }
 }
 
-export default function characterHook(pathname: string, isEditing: boolean) {
-    const [character, setCharacter] = useState<CharacterVersion2 | null>(null)
+export default function characterHook(pathname: string, isEditing: boolean, blank = false) {
+    const [character, setCharacter] = useState<CharacterVersion2 | null>(() => blank ? blankCharacter() : null)
     const [revertedCharacter, setRevertedCharacter] = useState<CharacterVersion2 | null>(null)
     const [notesEpoch, setNotesEpoch] = useState(0)
     const revertedRef = useRef<CharacterVersion2 | null>(null)
@@ -138,6 +151,11 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     useEffect(() => {
+        if (blank) {
+            captureLoaded(blankCharacter())
+            return
+        }
+
         const [_, baseURL, characterID] = pathname.split('/')
 
         if (charactersCache[+characterID]) {
@@ -158,7 +176,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
                 })
             }))
         }
-    }, [pathname])
+    }, [pathname, blank])
 
     function revertCharacter() {
         setCharacter(revertedCharacter)
@@ -177,7 +195,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }, [dispatch, revertedCharacter])
 
     async function saveCharacterToBackend(): Promise<boolean> {
-        if (!character) {
+        if (blank || !character) {
             return false
         }
 
@@ -228,7 +246,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     const [inFlight, setInFlight] = useState(0)
 
     function persistViewField(pageID: number, attribute: ViewPersistAttribute, value: number | string) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         if (viewFieldValue(revertedCharacter, pageID, attribute) === value) {
@@ -267,7 +285,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistCurrentEmotions(pageID: number, nextRows: Emotion[], blurred: { index: number, value: string } | { insert: true, value: string }) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         const snapshotPage = revertedCharacter?.pages.find((candidate): candidate is Page1 => candidate.type === 1 && candidate.pageID === pageID)
@@ -342,7 +360,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3Contacts(pageID: number, value: string) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         if ((findPage3(revertedCharacter, pageID)?.contacts ?? '') === value) {
@@ -371,7 +389,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3RelationshipValue(pageID: number, value: Page3RelationshipValue) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         const snapshotRow = findPage3(revertedCharacter, pageID)?.relationships.find(row => row.id === value.id)
@@ -404,7 +422,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3RelationshipR(pageID: number, value: Page3RelationshipRValue) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         const snapshotRow = findPage3(revertedCharacter, pageID)?.relationships.find(row => row.id === value.id)
@@ -437,7 +455,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3RelationshipP(pageID: number, value: Page3RelationshipPValue) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         const snapshotRow = findPage3(revertedCharacter, pageID)?.relationships.find(row => row.id === value.id)
@@ -480,7 +498,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3Gear(pageID: number, value: Page3GearValue) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         const snapshotCell = findPage3(revertedCharacter, pageID)?.gear[value.slot]
@@ -532,7 +550,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3Coinage(pageID: number, value: Page3Coinage) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         const snapshot = findPage3(revertedCharacter, pageID)?.coinage
@@ -581,7 +599,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3Notes(pageID: number, value: string) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         if ((findPage3(revertedCharacter, pageID)?.notes ?? '') === value) {
@@ -620,7 +638,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3RelationshipInsert(pageID: number, row: { key: string, value: string, r: Page3Relationship['r'], p: Page3Relationship['p'] }) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter) {
             return
         }
         if (row.value === '' && row.r === '' && row.p === '') {
@@ -730,7 +748,7 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistPage3RelationshipDelete(pageID: number, value: Page3RelationshipDeleteValue) {
-        if (!character || isEditing || !character.userInfo.ownsThisCharacter || !(value.id > 0)) {
+        if (blank || !character || isEditing || !character.userInfo.ownsThisCharacter || !(value.id > 0)) {
             return
         }
 
@@ -766,6 +784,9 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     const notesFlight = useRef(new Map<string, { holding: boolean, counted: boolean, pending: NotesJob | null }>())
 
     function pumpNotes(queueId: string) {
+        if (blank) {
+            return
+        }
         const slot = notesFlight.current.get(queueId)
         if (!slot || slot.holding || !slot.pending) {
             return
@@ -835,6 +856,9 @@ export default function characterHook(pathname: string, isEditing: boolean) {
     }
 
     function persistNotesScene(pageID: number, scene: string, key?: string) {
+        if (blank) {
+            return
+        }
         const current = characterRef.current
         if (!current?.userInfo.ownsThisCharacter) {
             return

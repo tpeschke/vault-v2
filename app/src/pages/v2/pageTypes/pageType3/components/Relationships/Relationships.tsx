@@ -1,5 +1,6 @@
 import './Relationships.css'
-import { FocusEvent, Fragment, useState } from 'react'
+import { FocusEvent, Fragment, useContext, useState } from 'react'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { Page3Relationship } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import { PageType3Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
@@ -27,6 +28,7 @@ function isEmpty(row: { value: string, r: SkillNumber, p: SkillNumber }) {
 }
 
 export default function Relationships({ relationships, pageID, updates }: Props) {
+    const isBlank = useContext(BlankContext)
     const rows = relationships ?? []
     const showInsert = rows.length < PAGE3_RELATIONSHIP_CAP
     const leftover = PAGE3_RELATIONSHIP_CAP - rows.length - (showInsert ? 1 : 0)
@@ -69,7 +71,8 @@ export default function Relationships({ relationships, pageID, updates }: Props)
                         <input
                             className="character-value"
                             placeholder=" "
-                            value={row.value}
+                            readOnly={isBlank}
+                            value={blankInk(isBlank, row.value)}
                             onChange={event => commitRow(index, row, { ...row, value: event.target.value })}
                             onBlur={event => {
                                 if (!row.id) { return }
@@ -80,7 +83,8 @@ export default function Relationships({ relationships, pageID, updates }: Props)
                             className="character-value"
                             type="number"
                             placeholder=" "
-                            value={row.r}
+                            readOnly={isBlank}
+                            value={blankInk(isBlank, row.r)}
                             onChange={event => commitRow(index, row, { ...row, r: numberFromInput(event.target.value) })}
                             onBlur={event => {
                                 if (!row.id) { return }
@@ -91,7 +95,8 @@ export default function Relationships({ relationships, pageID, updates }: Props)
                             className="character-value"
                             type="number"
                             placeholder=" "
-                            value={row.p}
+                            readOnly={isBlank}
+                            value={blankInk(isBlank, row.p)}
                             onChange={event => commitRow(index, row, { ...row, p: numberFromInput(event.target.value) })}
                             onBlur={event => {
                                 if (!row.id) { return }
@@ -106,6 +111,7 @@ export default function Relationships({ relationships, pageID, updates }: Props)
                             <input
                                 className="character-value"
                                 placeholder=" "
+                                readOnly={isBlank}
                                 defaultValue={draft.value}
                                 onBlur={event => handleInsertBlur('value', event)}
                             />
@@ -113,6 +119,7 @@ export default function Relationships({ relationships, pageID, updates }: Props)
                                 className="character-value"
                                 type="number"
                                 placeholder=" "
+                                readOnly={isBlank}
                                 defaultValue={draft.r}
                                 onBlur={event => handleInsertBlur('r', event)}
                             />
@@ -120,6 +127,7 @@ export default function Relationships({ relationships, pageID, updates }: Props)
                                 className="character-value"
                                 type="number"
                                 placeholder=" "
+                                readOnly={isBlank}
                                 defaultValue={draft.p}
                                 onBlur={event => handleInsertBlur('p', event)}
                             />

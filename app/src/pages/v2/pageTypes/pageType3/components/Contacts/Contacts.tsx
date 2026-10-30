@@ -1,5 +1,7 @@
 import './Contacts.css'
 import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
+import { useContext } from 'react'
+import BlankContext, { blankInk } from '../../../../contexts/BlankContext'
 import { PageType3Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
 
 interface Props {
@@ -9,14 +11,16 @@ interface Props {
 }
 
 export default function Contacts({ contacts, pageID, updates }: Props) {
+    const isBlank = useContext(BlankContext)
     return (
         <div className="page3-contacts">
             <h1>Contacts, Allies, Mentors, & Enemies</h1>
             <textarea
                 className="character-value"
                 placeholder=" "
+                readOnly={isBlank}
                 maxLength={textareaCaps.page3Contacts}
-                value={contacts ?? ''}
+                value={blankInk(isBlank, contacts ?? '')}
                 onScroll={event => holdTextareaScroll(event.currentTarget)}
                 onChange={event => updates.updateContacts(pageID, clampTextareaChange(event.target.value, textareaCaps.page3Contacts, isComposingInput(event)))}
                 onCompositionEnd={event => updates.updateContacts(pageID, trimTextarea(event.currentTarget.value, textareaCaps.page3Contacts))}
