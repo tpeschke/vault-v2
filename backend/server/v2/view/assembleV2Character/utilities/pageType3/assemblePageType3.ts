@@ -6,7 +6,8 @@ import {
     Page3Relationship,
     emptyGearCell,
     emptyPage3Coinage,
-    emptyPage3Gear
+    emptyPage3Gear,
+    isQuarterMasteringSlot
 } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import query from "../../../../../db/database"
@@ -59,7 +60,7 @@ function mapGear(rows: GearReturn[]): Page3Gear {
         gear[slot] = {
             slot,
             item: row.item ?? '',
-            size: row.size ?? fallback.size,
+            size: isQuarterMasteringSlot(slot) ? 'S' : (row.size ?? fallback.size),
             staffSnake: !!row.staffsnake,
             meditating: !!row.meditating,
             w: numberOrEmpty(row.w)

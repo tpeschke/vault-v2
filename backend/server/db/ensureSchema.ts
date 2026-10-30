@@ -214,6 +214,8 @@ async function createPageType3Tables() {
         throw new Error('ensureSchema: v2page3basics.contacts missing')
     }
 
+    await query(`update v2Page3Gear set size = 'S' where slot in ('qm1','qm2','qm3','qm4','qm5','qm6','qm7','qm8','qm9','qm10','qm11','qm12','qm13','qm14','qm15') and size is distinct from 'S'`)
+
     await trimTextareaColumn('v2attacks', 'notes', textareaCaps.attackNotes)
     await trimTextareaColumn('v2defenses', 'notes', textareaCaps.defenseNotes)
     await trimTextareaColumn('v2favor', 'divinerelationship', textareaCaps.divineRelationship)
