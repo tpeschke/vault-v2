@@ -6,8 +6,12 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+none
+
+## Done
+
 ### T-130: Move Held Bags, restack Carry, extend Quarter Mastering
-status: proposed
+status: done
 source: rewrite-ledger/page3-view.md, 2026-10-30
 why: Held Bags render at the top of the middle column. Carry prints a strength label on ten rows. Quarter Mastering stops at `qm10`. The designer moved the bags to the first column, added one Other Containers row, set Carry to 17 printed-S rows with no strength label, and set Quarter Mastering to 15.
 scope: `LEFT_ROWS`, the middle lists, and `RIGHT_ROWS` in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx`; `PAGE3_GEAR_SLOTS` and `PAGE3_DEFAULT_S_SLOTS` in `backend/common/interfaces/v2/page3/page3Interfaces.ts`. Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3.sql` or `ensureSchema.ts`. Do not add a migration. Do not rename `heldBag1`, `heldBag2`, `midS1`–`midS6`, or `carryM4`–`carryP5`. Do not move the **Carry**, **Notes**, **Quarter Mastering**, or **Tiny & Other** headings into another column. Do not change row height, tracks, or coinage. Do not add `features/` or `shared/`. Do not remove the `data-tooltip-id` / `data-tooltip-content` attributes on the arrow, the staff-snake head, the meditating head, or **W**.
@@ -23,9 +27,7 @@ done when: In `Gear.tsx`, `heldBag1` is after `leftS15`, and `Str` does not appe
 depends on: T-125 (done), T-126 (done), T-128 (done)
 open questions: none
 deviations from design: The designer said to add a row to Other Containers and did not name its fields. It is an arrow row, `other4`, like `other2` and `other3`.
-result:
-
-## Done
+result: Both Held Bag bars and `midS1`–`midS6` follow `leftS15`. Above Carry the middle column is Other Containers plus `other2`, `other3`, and `other4` (arrow). Carry is 17 printed-S rows and has no strength label. Quarter Mastering is `qm1`–`qm15`. The arrow, snake, meditating, and W tooltips stay. The letters Str remain only inside the meditating tooltip “Does this item heal Stress?”. `page3.sql` is unchanged. `npm run build` in `app/` exits 0.
 
 ### T-129: Match Gear row height to the sheet band
 status: done

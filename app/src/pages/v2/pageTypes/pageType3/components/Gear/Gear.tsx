@@ -20,7 +20,6 @@ interface GearRowSpec {
     label?: string
     arrow?: boolean
     bar?: boolean
-    carryStr?: string
     qm?: number
 }
 
@@ -42,32 +41,34 @@ const LEFT_ROWS: GearRowSpec[] = [
     { slot: 'pouch2', label: 'Pouch', bar: true },
     { slot: 'leftS12' }, { slot: 'leftS13' },
     { slot: 'pouch3', label: 'Pouch', bar: true },
-    { slot: 'leftS14' }, { slot: 'leftS15' }
-]
-
-const MIDDLE_ROWS: GearRowSpec[] = [
+    { slot: 'leftS14' }, { slot: 'leftS15' },
     { slot: 'heldBag1', label: 'Held Bag', bar: true },
     { slot: 'midS1' }, { slot: 'midS2' }, { slot: 'midS3' },
     { slot: 'heldBag2', label: 'Held Bag', bar: true },
-    { slot: 'midS4' }, { slot: 'midS5' }, { slot: 'midS6' },
+    { slot: 'midS4' }, { slot: 'midS5' }, { slot: 'midS6' }
+]
+
+const OTHER_ROWS: GearRowSpec[] = [
     { slot: 'other1', label: 'Other Containers', bar: true },
     { slot: 'other2', arrow: true },
     { slot: 'other3', arrow: true },
-    { slot: 'carryM4', carryStr: '−4 Str' },
-    { slot: 'carryM3', carryStr: '−3 Str' },
-    { slot: 'carryM2', carryStr: '−2 Str' },
-    { slot: 'carryM1', carryStr: '−1 Str' },
-    { slot: 'carry0', carryStr: '0 Str' },
-    { slot: 'carryP1', carryStr: '1 Str' },
-    { slot: 'carryP2', carryStr: '2 Str' },
-    { slot: 'carryP3', carryStr: '3 Str' },
-    { slot: 'carryP4', carryStr: '4 Str' },
-    { slot: 'carryP5', carryStr: '5 Str' }
+    { slot: 'other4', arrow: true }
 ]
 
-const RIGHT_ROWS: GearRowSpec[] = [
+const CARRY_ROWS: GearRowSpec[] = [
+    { slot: 'carryM4' }, { slot: 'carryM3' }, { slot: 'carryM2' }, { slot: 'carryM1' }, { slot: 'carry0' },
+    { slot: 'carryP1' }, { slot: 'carryP2' }, { slot: 'carryP3' }, { slot: 'carryP4' }, { slot: 'carryP5' },
+    { slot: 'carry11' }, { slot: 'carry12' }, { slot: 'carry13' }, { slot: 'carry14' },
+    { slot: 'carry15' }, { slot: 'carry16' }, { slot: 'carry17' }
+]
+
+const QM_ROWS: GearRowSpec[] = [
     { slot: 'qm1', qm: 1 }, { slot: 'qm2', qm: 2 }, { slot: 'qm3', qm: 3 }, { slot: 'qm4', qm: 4 }, { slot: 'qm5', qm: 5 },
     { slot: 'qm6', qm: 6 }, { slot: 'qm7', qm: 7 }, { slot: 'qm8', qm: 8 }, { slot: 'qm9', qm: 9 }, { slot: 'qm10', qm: 10 },
+    { slot: 'qm11', qm: 11 }, { slot: 'qm12', qm: 12 }, { slot: 'qm13', qm: 13 }, { slot: 'qm14', qm: 14 }, { slot: 'qm15', qm: 15 }
+]
+
+const TINY_ROWS: GearRowSpec[] = [
     { slot: 'tiny1' }, { slot: 'tiny2' }, { slot: 'tiny3' }, { slot: 'tiny4' }, { slot: 'tiny5' },
     { slot: 'tiny6' }, { slot: 'tiny7' }, { slot: 'tiny8' }, { slot: 'tiny9' }, { slot: 'tiny10' },
     { slot: 'tiny11' }, { slot: 'tiny12' }
@@ -111,7 +112,6 @@ function GearRow({
         <span className="page3-gear-row">
             <span className="page3-gear-item">
                 {spec.label && <em className="page3-gear-label">{spec.label}</em>}
-                {spec.carryStr && <em className="page3-gear-label">{spec.carryStr}</em>}
                 {spec.qm !== undefined && <em className="page3-gear-label">{spec.qm}</em>}
                 <input
                     className="character-value"
@@ -199,11 +199,11 @@ export default function Gear({ page, pageID, updates }: Props) {
                 </div>
                 <div className="page3-gear-col">
                     <ColumnHead />
-                    {MIDDLE_ROWS.slice(0, 11).map(spec => (
+                    {OTHER_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
                     <h2>Carry</h2>
-                    {MIDDLE_ROWS.slice(11).map(spec => (
+                    {CARRY_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
                     <h2>Notes</h2>
@@ -219,11 +219,11 @@ export default function Gear({ page, pageID, updates }: Props) {
                 <div className="page3-gear-col">
                     <ColumnHead />
                     <h2>Quarter Mastering</h2>
-                    {RIGHT_ROWS.slice(0, 10).map(spec => (
+                    {QM_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
                     <h2>Tiny &amp; Other</h2>
-                    {RIGHT_ROWS.slice(10).map(spec => (
+                    {TINY_ROWS.map(spec => (
                         <GearRow key={spec.slot} spec={spec} page={page} pageID={pageID} updates={updates} />
                     ))}
                     <div className="page3-coinage">
