@@ -6,6 +6,20 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-126: Drop the Size input on arrow rows
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Head through R. Hand, `other2`, and `other3` already draw the arrow in Size and still draw a size input after it.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (the Size cell when `spec.arrow`). Owner: `rewrite-ledger/page3-view.md`. Do not edit schema, coinage, printed-S slots, bar headers, the Size track width, or rows without `arrow`. Do not add `features/` or `shared/`.
+steps:
+1. When `spec.arrow` is set, the Size cell is only `<i class="fa-solid fa-arrow-right-from-line">` inside `.page3-gear-size`. Slots: `head`, `chest`, `coat`, `gloves`, `pants`, `shoes`, `armor`, `lHand`, `rHand`, `other2`, `other3`. No size `input`, no `readOnly`, no `disabled`, no `character-value`, and no `cell.size` text. Do not call `updateGearCell` or `persistPage3Gear` for `size` from that cell.
+2. Leave item, both flags, and **W** on those rows. Leave printed **S** as text. Leave coinage Size inputs. Leave every non-arrow size input. Leave the stored size column. Do not add a migration. Do not change the Size track width. Do not add a size rule for the arrow.
+done when: In `Gear.tsx`, an `arrow` Size cell contains `fa-arrow-right-from-line` and does not contain `input` or `cell.size`. A non-arrow size path still has a size `input`. `isDefaultSSlot` still renders `cell.size` as text. `rg "fa-arrow-right-from-line" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` is at least 1, and that element is not inside `page3-gear-item`. `npm run build` in `app/` exits 0.
+depends on: T-121 (done), T-125 (done)
+open questions: none
+deviations from design: none
+result:
+
 ## Done
 
 ### T-125: Draw Gear bar headers as labels only
