@@ -1,5 +1,5 @@
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
-import { PAGE3_GEAR_SLOTS, Page3Coinage } from "@vault/common/interfaces/v2/page3/page3Interfaces"
+import { PAGE3_GEAR_SLOTS, Page3Coinage, isQuarterMasteringSlot } from "@vault/common/interfaces/v2/page3/page3Interfaces"
 import { SkillNumber } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import { textareaCaps, textareaCharCount, TextareaLimitError } from "@vault/common/textareaLimits"
 import query from "../../../../db/database"
@@ -63,7 +63,7 @@ export default async function savePageType3(page: Page3): Promise<void> {
             pageID,
             slot,
             cell?.item ?? '',
-            cell?.size ?? '',
+            isQuarterMasteringSlot(slot) ? 'S' : (cell?.size ?? ''),
             !!cell?.staffSnake,
             !!cell?.meditating,
             numberParam(cell?.w ?? '')

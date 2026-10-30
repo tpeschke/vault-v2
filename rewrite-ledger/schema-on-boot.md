@@ -28,4 +28,4 @@ Revised 2026-10-30 (`page3-view.md` Quarter Mastering size):
 - `page3.sql` changes in the same change as a page-3 schema edit — **retained**. This size write is not a schema edit.
 
 Touches: `backend/server/db/` (unindexed); `backend/server/vault.ts` (unindexed); `backend/server/v2/backupTables/page1.sql` (unindexed); `backend/server/v2/backupTables/page2.sql`; `backend/server/v2/backupTables/page3.sql`
-TODOs: T-017, T-018, T-022, T-036 (done); Descriptions columns: T-041 (done); basics pageID: T-055 (done); pages characterid unique: T-068 (done); page type 2 tables: T-077 (done); leftover notes columns: T-094 (done); page type 3 tables: T-101 (done); contacts string: T-113 (done); textarea trim: T-136; Quarter Mastering size `'S'`: T-140 (proposed)
+TODOs: T-017, T-018, T-022, T-036 (done); Descriptions columns: T-041 (done); basics pageID: T-055 (done); pages characterid unique: T-068 (done); page type 2 tables: T-077 (done); leftover notes columns: T-094 (done); page type 3 tables: T-101 (done); contacts string: T-113 (done); textarea trim: T-136; Quarter Mastering size `'S'`: T-140 (done)
