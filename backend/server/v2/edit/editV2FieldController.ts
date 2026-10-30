@@ -25,6 +25,7 @@ import savePage3RelationshipDelete from './utilities/pageType3/savePage3Relation
 import savePage3GearField, { isPage3GearSlot } from './utilities/pageType3/savePage3GearField'
 import savePage3Coinage from './utilities/pageType3/savePage3Coinage'
 import savePage3Notes from './utilities/pageType3/savePage3Notes'
+import { textareaCaps, textareaCharCount } from '@vault/common/textareaLimits'
 
 const attributes: ViewPersistAttribute[] = [
     'unspent', 'currentFavor', 'diePenalty', 'damage', 'stress',
@@ -172,7 +173,12 @@ export async function editV2Field(request: FieldRequest, response: Response) {
     }
 
     if (attribute === 'page3Contacts') {
-        await savePage3Contacts(+pageID, String(value ?? ''))
+        const contacts = String(value ?? '')
+        if (textareaCharCount(contacts) > textareaCaps.page3Contacts) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Text is too long' })
+            return
+        }
+        await savePage3Contacts(+pageID, contacts)
         checkForContentTypeBeforeSending(response, { success: true })
         return
     }
@@ -252,7 +258,12 @@ export async function editV2Field(request: FieldRequest, response: Response) {
     }
 
     if (attribute === 'page3Notes') {
-        await savePage3Notes(+pageID, String(value ?? ''))
+        const notes = String(value ?? '')
+        if (textareaCharCount(notes) > textareaCaps.page3Notes) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Text is too long' })
+            return
+        }
+        await savePage3Notes(+pageID, notes)
         checkForContentTypeBeforeSending(response, { success: true })
         return
     }
@@ -260,6 +271,13 @@ export async function editV2Field(request: FieldRequest, response: Response) {
     const nextValue = textAttributes.includes(attribute)
         ? String(value ?? '')
         : Number.isFinite(+value) ? +value : 0
+    if (typeof nextValue === 'string' && textAttributes.includes(attribute)) {
+        const cap = attribute === 'generalSkillNotes' ? textareaCaps.generalSkillNotes : textareaCaps.combatSkillNotes
+        if (textareaCharCount(nextValue) > cap) {
+            checkForContentTypeBeforeSending(response, { success: false, message: 'Text is too long' })
+            return
+        }
+    }
     await saveViewField(+pageID, attribute, nextValue)
     checkForContentTypeBeforeSending(response, { success: true })
 }

@@ -1,4 +1,5 @@
 import './GeneralSkills.css'
+import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import { FocusEvent, Fragment, useContext, useState } from 'react'
 import {
     GENERAL_SUITE_KEYS,
@@ -134,9 +135,12 @@ export default function GeneralSkills({ page, pageID, updates }: Props) {
                     </span>
                     <textarea
                         className="character-value leftover-notes"
+                        maxLength={textareaCaps.generalSkillNotes}
                         value={page.generalSkillNotes}
-                        onChange={event => updates.updateGeneralSkillNotes(pageID, event.target.value)}
-                        onBlur={event => updates.persistViewField(pageID, 'generalSkillNotes', event.target.value)}
+                        onScroll={event => holdTextareaScroll(event.currentTarget)}
+                        onChange={event => updates.updateGeneralSkillNotes(pageID, clampTextareaChange(event.target.value, textareaCaps.generalSkillNotes, isComposingInput(event)))}
+                        onCompositionEnd={event => updates.updateGeneralSkillNotes(pageID, trimTextarea(event.currentTarget.value, textareaCaps.generalSkillNotes))}
+                        onBlur={event => updates.persistViewField(pageID, 'generalSkillNotes', trimTextarea(event.target.value, textareaCaps.generalSkillNotes))}
                     />
                 </div>
                 <div className="adv-col">

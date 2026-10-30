@@ -1,5 +1,6 @@
 import './Favor.css'
 import { Favor } from "@vault/common/interfaces/v2/page1/favor"
+import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps, trimTextarea } from '@vault/common/textareaLimits'
 import { useContext } from 'react'
 import EditingContext from '../../../../contexts/EditingContext'
 import { PageType1Updates } from '../../../../hooks/interfaces/UpdateInterfaces'
@@ -21,7 +22,7 @@ export default function FavorDisplay({ favor, pageID, updates }: Props) {
                 <div className="favor-left">
                     <em className="favor-prompt">What is your relationship to the Divine?</em>
                     {isEditing ?
-                        <textarea className="character-value" placeholder=" " value={divineRelationship ?? ''} onChange={event => updates.updateFavor(pageID, { divineRelationship: event.target.value })} />
+                        <textarea className="character-value" placeholder=" " maxLength={textareaCaps.divineRelationship} value={divineRelationship ?? ''} onScroll={event => holdTextareaScroll(event.currentTarget)} onChange={event => updates.updateFavor(pageID, { divineRelationship: clampTextareaChange(event.target.value, textareaCaps.divineRelationship, isComposingInput(event)) })} onCompositionEnd={event => updates.updateFavor(pageID, { divineRelationship: trimTextarea(event.currentTarget.value, textareaCaps.divineRelationship) })} />
                         :
                         <p className="character-value">{divineRelationship ?? ''}</p>
                     }

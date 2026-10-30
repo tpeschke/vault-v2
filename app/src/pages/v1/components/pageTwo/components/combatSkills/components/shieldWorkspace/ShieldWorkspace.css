@@ -46,6 +46,7 @@
     resize: none;
     border: none;
     height: 100%;
+    overflow: hidden;
 }
 
 .shield-workspace-shell tr>*>* {
