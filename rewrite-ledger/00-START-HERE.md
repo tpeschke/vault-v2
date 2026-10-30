@@ -63,6 +63,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Quick view inputs (page type 1) | `quick-view-inputs.md` |
 | Session phases | `phases.md` |
 | Schema on boot | `schema-on-boot.md` |
+| Textarea height and length | `textarea-limits.md` |
 | Code | `../00-START-HERE.yaml` `routing` |
 | Layout standard | later transformation uses FSD layer names; skill fallback `CODE-LAYOUT-STANDARD.md` is not the target taxonomy |
 
