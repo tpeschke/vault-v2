@@ -61,6 +61,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Edit character sheet | `edit-character.md` |
 | Add sheet page (same type as the card) | `add-page-type-1.md` |
 | Page reorder | `page-reorder.md` |
+| Delete the sheet above a gutter | `delete-sheet-page.md` |
 | Quick view inputs (page type 1) | `quick-view-inputs.md` |
 | Session phases | `phases.md` |
 | Schema on boot | `schema-on-boot.md` |

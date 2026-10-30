@@ -136,6 +136,16 @@ export function movePageToBottom(character: CharacterVersion2, index: number): C
     return withFirstPage1Name({ ...character, pages })
 }
 
+export function removePageAt(character: CharacterVersion2, index: number): CharacterVersion2 {
+    const firstType1 = character.pages.findIndex(page => page.type === 1)
+    if (index < 0 || index >= character.pages.length || index === firstType1) {
+        return character
+    }
+    const pages = [...character.pages]
+    pages.splice(index, 1)
+    return { ...character, pages }
+}
+
 export function updateCrP(character: CharacterVersion2, pageID: number, key: 'unspent' | 'spent', value: number): CharacterVersion2 {
     return mapPage1(character, pageID, page => ({
         ...page,

@@ -87,10 +87,12 @@ export default function V2View({ setLoading, pathname }: Props) {
     }
 
     const [disclosedPageIDs, setDisclosedPageIDs] = useState<number[]>([])
+    const [armedDeletePageIDs, setArmedDeletePageIDs] = useState<number[]>([])
 
     useEffect(() => {
         if (!isEditing) {
             setDisclosedPageIDs(ids => ids.length === 0 ? ids : [])
+            setArmedDeletePageIDs(ids => ids.length === 0 ? ids : [])
         }
     }, [isEditing])
 
@@ -100,6 +102,15 @@ export default function V2View({ setLoading, pathname }: Props) {
 
     const restPage = (pageID: number) => {
         setDisclosedPageIDs(ids => ids.includes(pageID) ? ids.filter(id => id !== pageID) : ids)
+    }
+
+    const armDelete = (pageID: number) => {
+        restPage(pageID)
+        setArmedDeletePageIDs(ids => ids.includes(pageID) ? ids : [...ids, pageID])
+    }
+
+    const disarmDelete = (pageID: number) => {
+        setArmedDeletePageIDs(ids => ids.filter(id => id !== pageID))
     }
 
     const scrollSheetIntoView = (pageID: number) => {
@@ -143,7 +154,26 @@ export default function V2View({ setLoading, pathname }: Props) {
                                     </div>
                                     {isEditing &&
                                         <div className="page-gutter">
-                                            {disclosedPageIDs.includes(page.pageID) ? (
+                                            {armedDeletePageIDs.includes(page.pageID) && index !== character.pages.findIndex(candidate => candidate.type === 1) ? (
+                                                <>
+                                                    <button
+                                                        key="delete-confirm"
+                                                        type="button"
+                                                        className="bottom-buttons delete-page confirm"
+                                                        data-tooltip-id="my-tooltip"
+                                                        data-tooltip-content="This deletes the page above this button. This delete isn't permanent until you save the sheet"
+                                                        onClick={() => pageGutterUpdates.removePageAt(index)}
+                                                    ><i className="fa-solid fa-trash-check"></i></button>
+                                                    <button
+                                                        key="delete-cancel"
+                                                        type="button"
+                                                        className="bottom-buttons delete-page-cancel"
+                                                        data-tooltip-id="my-tooltip"
+                                                        data-tooltip-content="Never mind"
+                                                        onClick={() => disarmDelete(page.pageID)}
+                                                    ><i className="fa-solid fa-rotate-left"></i></button>
+                                                </>
+                                            ) : disclosedPageIDs.includes(page.pageID) ? (
                                                 <>
                                                     {character.pages.length < SHEET_PAGE_MAX &&
                                                         <h4
@@ -283,6 +313,26 @@ export default function V2View({ setLoading, pathname }: Props) {
                                                             data-tooltip-content="Click to Add New Pages"
                                                             onClick={() => disclosePage(page.pageID)}
                                                         ><i className="fa-solid fa-file-circle-plus"></i></button>
+                                                    )}
+                                                    {index === character.pages.findIndex(candidate => candidate.type === 1) ? (
+                                                        <button
+                                                            key="delete"
+                                                            type="button"
+                                                            className="bottom-buttons delete-page disabled"
+                                                            aria-disabled="true"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="You can never remove this page."
+                                                            onClick={() => { return }}
+                                                        ><i className="fa-solid fa-trash"></i></button>
+                                                    ) : (
+                                                        <button
+                                                            key="delete"
+                                                            type="button"
+                                                            className="bottom-buttons delete-page"
+                                                            data-tooltip-id="my-tooltip"
+                                                            data-tooltip-content="This deletes the page above this button"
+                                                            onClick={() => armDelete(page.pageID)}
+                                                        ><i className="fa-solid fa-trash"></i></button>
                                                     )}
                                                 </>
                                             )}

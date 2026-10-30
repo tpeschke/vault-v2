@@ -18,6 +18,7 @@ import {
     addPageType4After as insertPageType4After,
     movePageToBottom as moveToBottom,
     movePageToTop as moveToTop,
+    removePageAt,
     otherPageType1Names,
     swapPageWithNext as swapWithNext,
     insertDescription,
@@ -346,6 +347,10 @@ export default function getV2Updates(
         movePageToBottom: (index) => {
             if (!character) { return }
             applyReorder(character, moveToBottom(character, index), dispatch, apply)
+        },
+        removePageAt: (index) => {
+            if (!character) { return }
+            apply(removePageAt(character, index))
         }
     }
 

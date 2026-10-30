@@ -33,3 +33,39 @@
     font-size: 25px;
     margin-top: 6px;
 }
+
+.v2 .page-shell .page-gutter .bottom-buttons.delete-page {
+    background: #990000 !important;
+    color: white;
+}
+
+.v2 .page-shell .page-gutter .bottom-buttons.delete-page:hover {
+    background: #5a0000 !important;
+    color: white;
+}
+
+.v2 .page-shell .page-gutter .bottom-buttons.delete-page.confirm {
+    margin-left: auto;
+}
+
+.v2 .page-shell .page-gutter .bottom-buttons.delete-page.disabled {
+    background: whitesmoke !important;
+    color: gray;
+    cursor: not-allowed;
+}
+
+.v2 .page-shell .page-gutter .bottom-buttons.delete-page.disabled:hover {
+    background: whitesmoke !important;
+    color: gray;
+    cursor: not-allowed;
+}
+
+.v2 .page-shell .page-gutter .bottom-buttons.delete-page-cancel {
+    background: #06465b !important;
+    color: white;
+}
+
+.v2 .page-shell .page-gutter .bottom-buttons.delete-page-cancel:hover {
+    background: #032530 !important;
+    color: white;
+}
