@@ -6,7 +6,21 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-none
+### T-132: Move Notes under Carry and Coinage under Tiny & Other
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Notes renders at the bottom of the second column. Coinage renders in the third column, between the Held Bags and Other Containers. The designer moved Notes under Carry, and Coinage under Tiny & Other.
+scope: the three `.page3-gear-col` stacks in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (the Notes heading, the Notes textarea, the footnote, and `.page3-coinage`). Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3Interfaces.ts`, `page3.sql`, or `ensureSchema.ts`. Do not reorder `PAGE3_GEAR_SLOTS`. Do not rename a slot. Do not add or remove a row. Do not change tracks, row height, tooltips, Notes height, or coinage fields. Do not add `features/` or `shared/`.
+steps:
+1. In the first column, after `CARRY_ROWS`, render `<h2>Notes</h2>`, the Notes textarea, and the footnote. Leave the textarea class `character-value page3-notes` and its handlers.
+2. In the second column, after `TINY_ROWS`, render the existing `.page3-coinage` block. Quarter Mastering and Tiny & Other stay above it. This column has no Notes heading, no Notes textarea, and no footnote.
+3. In the third column, `OTHER_ROWS` follows `CONTAINER_ROWS`. No `.page3-coinage` between `midS6` and `other1`.
+4. Leave Carry, the worn rows, the container rows, Quarter Mastering, and Tiny & Other where T-131 put them. Do not change a field inside Notes or Coinage.
+done when: In `Gear.tsx`, the first `.page3-gear-col` contains `CARRY_ROWS` and then `page3-notes` and `page3-footnote`, and does not contain `page3-coinage`. The second `.page3-gear-col` contains `TINY_ROWS` and then `page3-coinage`, and does not contain `page3-notes`. The third `.page3-gear-col` contains `CONTAINER_ROWS` and then `OTHER_ROWS`, and does not contain `page3-coinage`. `PAGE3_GEAR_SLOTS` is unchanged. `rg "carry11|other4|qm15" backend/server/v2/backupTables/page3.sql` is 0. `npm run build` in `app/` exits 0.
+depends on: T-131 (done)
+open questions: none
+deviations from design: none
+result:
 
 ## Done
 
