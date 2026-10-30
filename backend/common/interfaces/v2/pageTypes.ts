@@ -69,4 +69,5 @@ export interface Page4 {
     type: 4
     pageID: number
     scene: string
+    key?: string
 }

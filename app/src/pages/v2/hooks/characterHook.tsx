@@ -16,6 +16,7 @@ import getV2Updates from "./updates/getV2Updates"
 import { applyCurrentEmotionIds, otherPageType1Names, updateCrP, updateDamage, updateFavor, updateSelfDoubt, updateStress } from "./updates/pageType1Updates"
 import { updateCombatSkillNotes, updateGeneralSkillNotes } from "./updates/pageType2Updates"
 import { dropPage3RelationshipId, mapPage3, putPage3RelationshipSnapshot, setPage3RelationshipId, updateCoinage, updateContacts, updateGearCell, updateNotes } from "./updates/pageType3Updates"
+import { findNotesPage, replaceNotesPageID, updateNotesScene } from "./updates/pageType4Updates"
 
 function firstPage1(character: CharacterVersion2): Page1 | undefined {
     return character.pages.find((page): page is Page1 => page.type === 1)
@@ -59,6 +60,7 @@ function viewFieldValue(character: CharacterVersion2 | null, pageID: number, att
             case 'page3Gear':
             case 'page3Coinage':
             case 'page3Notes':
+            case 'page4Scene':
                 return undefined
         }
     }
@@ -108,6 +110,7 @@ function patchViewField(character: CharacterVersion2, pageID: number, attribute:
         case 'page3Gear':
         case 'page3Coinage':
         case 'page3Notes':
+        case 'page4Scene':
             return character
     }
 }
@@ -751,6 +754,111 @@ export default function characterHook(pathname: string, isEditing: boolean) {
             })
     }
 
+    interface NotesJob {
+        pageID: number
+        scene: string
+        index: number
+        key?: string
+        characterID: number
+    }
+
+    const notesFlight = useRef(new Map<string, { holding: boolean, counted: boolean, pending: NotesJob | null }>())
+
+    function pumpNotes(queueId: string) {
+        const slot = notesFlight.current.get(queueId)
+        if (!slot || slot.holding || !slot.pending) {
+            return
+        }
+        const job = slot.pending
+        slot.pending = null
+        slot.holding = true
+        if (!slot.counted) {
+            slot.counted = true
+            setInFlight(count => count + 1)
+        }
+        const body: { pageID: number, attribute: 'page4Scene', value: string, index?: number } = {
+            pageID: job.pageID,
+            attribute: 'page4Scene',
+            value: job.scene
+        }
+        if (job.pageID <= 0) {
+            body.index = job.index
+        }
+        axios.post(editV2URL + job.characterID + '/field', body)
+            .then(({ data }) => {
+                if (!data.success) {
+                    toast.error(typeof data.message === 'string' ? data.message : 'Save failed')
+                    return
+                }
+                const minted = typeof data.pageID === 'number' && data.pageID > 0 ? data.pageID : undefined
+                const live = characterRef.current
+                if (minted && live) {
+                    const nextLive = replaceNotesPageID(live, job.pageID, job.key, minted, job.scene, job.index)
+                    characterRef.current = nextLive
+                    setCharacter(nextLive)
+                    if (slot.pending && slot.pending.pageID <= 0) {
+                        slot.pending = { ...slot.pending, pageID: minted }
+                    }
+                }
+                const snapshot = revertedRef.current
+                if (!snapshot) {
+                    return
+                }
+                const nextPageID = minted ?? job.pageID
+                let patched = minted
+                    ? replaceNotesPageID(snapshot, job.pageID, job.key, minted, job.scene, job.index)
+                    : snapshot
+                const liveScene = findNotesPage(characterRef.current, nextPageID, job.key)?.scene
+                if (liveScene === job.scene) {
+                    patched = updateNotesScene(patched, nextPageID, job.scene, job.key)
+                }
+                if (patched !== snapshot) {
+                    commitSnapshot(patched)
+                }
+            })
+            .catch(error => {
+                toast.error(persistFailureMessage(error))
+            })
+            .finally(() => {
+                slot.holding = false
+                if (slot.pending) {
+                    pumpNotes(queueId)
+                    return
+                }
+                slot.counted = false
+                setInFlight(count => Math.max(0, count - 1))
+            })
+    }
+
+    function persistNotesScene(pageID: number, scene: string, key?: string) {
+        const current = characterRef.current
+        if (!current?.userInfo.ownsThisCharacter) {
+            return
+        }
+        const index = current.pages.findIndex(page => page.type === 4 && (key ? page.key === key : page.pageID === pageID))
+        if (index < 0) {
+            return
+        }
+        const notesPage = current.pages[index]
+        if (notesPage.type !== 4) {
+            return
+        }
+        if (notesPage.scene !== scene) {
+            const next = updateNotesScene(current, pageID, scene, key)
+            characterRef.current = next
+            setCharacter(next)
+        }
+        const snapshotPage = findNotesPage(revertedRef.current, notesPage.pageID, key)
+        if (snapshotPage?.scene === scene) {
+            return
+        }
+        const queueId = key ?? `id:${notesPage.pageID}`
+        const slot = notesFlight.current.get(queueId) ?? { holding: false, counted: false, pending: null }
+        notesFlight.current.set(queueId, slot)
+        slot.pending = { pageID: notesPage.pageID, scene, index, key, characterID: current.id }
+        pumpNotes(queueId)
+    }
+
     const page3Persist = {
         persistPage3Contacts,
         persistPage3RelationshipValue,
@@ -763,10 +871,10 @@ export default function characterHook(pathname: string, isEditing: boolean) {
         persistPage3Notes
     }
 
-    const [updates, setUpdates] = useState(() => getV2Updates(character, setCharacter, dispatch, persistViewField, persistCurrentEmotions, page3Persist))
+    const [updates, setUpdates] = useState(() => getV2Updates(character, setCharacter, dispatch, persistViewField, persistCurrentEmotions, page3Persist, persistNotesScene))
 
     useEffect(() => {
-        setUpdates(getV2Updates(character, setCharacter, dispatch, persistViewField, persistCurrentEmotions, page3Persist))
+        setUpdates(getV2Updates(character, setCharacter, dispatch, persistViewField, persistCurrentEmotions, page3Persist, persistNotesScene))
     }, [character, isEditing, revertedCharacter])
 
     const updateFunctions: V2UpdateFunctions = {

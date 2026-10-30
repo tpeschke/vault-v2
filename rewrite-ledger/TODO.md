@@ -19,8 +19,10 @@ open questions: What `limit` string replaces `'10mb'`? Page count is uncapped, s
 deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
 result:
 
+## Done
+
 ### T-141: Field-POST a notes stroke, and mint a new notes page
-status: proposed
+status: done
 source: rewrite-ledger/page4-view.md, 2026-10-30
 why: The owner’s finished strokes must persist without a full-character Save, including the first stroke on a sheet that **+ Notes** has only created locally.
 scope: `backend/common/interfaces/v2/page1/viewPersist.ts` (`ViewPersistAttribute`); `backend/server/v2/edit/editV2FieldController.ts`; new writer under `backend/server/v2/edit/utilities/pageType4/`. Owner: the existing field POST (`quick-view-inputs.md`) and the type-4 persist slice (`page4-view.md`). Do not add a route. Do not call `savePages`. Do not change `bodyParser.json`. Do not change type-1, type-2, or type-3 field writes.
@@ -34,10 +36,10 @@ done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are 
 depends on: none
 open questions: none
 deviations from design: A scene larger than the live `10mb` JSON limit never reaches this write until T-139. The check is still required for a bypass under that limit.
-result:
+result: `'page4Scene'` is on the allowlist and in `editV2FieldController.ts`. `savePage4Scene.ts` updates an owned type-4 row or mints one, and does not call `savePages`. `npx tsc --noEmit -p backend/server` reports only the pre-existing missing `server-config`.
 
 ### T-142: Draw notes on the view and save each finished stroke
-status: proposed
+status: done
 source: rewrite-ledger/page4-view.md, 2026-10-30
 why: The notes board is play-time for the owner. The help button shows with the tool bar, and a new sheet is minted by the first stroke instead of waiting for Save.
 scope: `app/src/pages/v2/pageTypes/pageType4/PageType4.tsx`; `app/src/pages/v2/pageTypes/pageType4/PageType4.css`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/emptyPageType4.ts`; the v2 update thread that already carries `updateNotesScene` (`getV2Updates.ts`, `UpdateInterfaces.ts`). Owner: the notes card and the view field-POST hook. Do not persist from the **+ Notes** click. Do not POST types 1–3 while `isEditing`. Do not add `features/`. Do not change the pan hint.
@@ -50,9 +52,7 @@ done when: `npm run build` in `app/` exits 0, or fails only on the pre-existing 
 depends on: T-141
 open questions: none
 deviations from design: none
-result:
-
-## Done
+result: An owned notes card is editable on the view. A finished stroke POSTs `page4Scene`, and the first stroke on a blank sheet sends the array index so the server can mint it. `.help-icon` shows on hover with the tool bar. `npm run build` in `app/` exits 0. `npx tsc --noEmit -p app` exits 0 after the last hook edit. Grep `viewModeEnabled={!isEditing}` in `PageType4.tsx` is 0.
 
 ### T-134: Add the Page4 contract and scene cap
 status: done
