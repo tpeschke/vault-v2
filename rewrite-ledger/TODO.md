@@ -6,6 +6,36 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-127: Set Gear track width, centering, and left rules
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Size is 64px. Size, snake, meditating, and **W** sit on the top edge. Those four tracks have no `#bdbdbd` left rule.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`. `GearFlag`’s caller in `Gear.tsx` only if the 12×12 box cannot both fill the track for the rule and stay a centered borderless box. Owner: `rewrite-ledger/page3-view.md`. Do not edit coinage, Notes height, the stack divider `#323232`, bar-header markup, or section `h2` text. Do not add `features/` or `shared/`.
+steps:
+1. Set `.page3-gear-col` tracks to `minmax(0, 1fr) 30px 18px 18px 28px`.
+2. Center the contents of Size, snake, meditating, and **W** on both axes in the column head and in each data row. Leave Type (Item) top-aligned. The 12×12 flag box stays borderless and stays 12×12, centered in its track. The meditating image stays 18×18. The arrow gets no new size rule. Size and **W** text stay `text-align: center`.
+3. `border-left: 1px solid #bdbdbd` on those four track cells in the column head and in each data row, inside the track (`border-box`). The rule is the track edge. Do not put it on the 12×12 box. Do not paint it on a bar row or on Carry, Notes, Quarter Mastering, or Tiny & Other.
+done when: `Gear.css` has `30px 18px 18px 28px` and does not have `64px` in `.page3-gear-col`. `border-left: 1px solid #bdbdbd` applies to the Size cell, both flag tracks, and **W**, and to the matching head cells. `.page3-flag-box` has no `border` declaration. A bar row and `.page3-gear-col > h2` do not receive that rule. `npm run build` in `app/` exits 0.
+depends on: T-125 (done), T-126 (done)
+open questions: none
+deviations from design: The design ran the four rules through bar headers and section `h2`s. The designer said to stop at the header.
+result:
+
+### T-128: Add two Tiny & Other rows
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Tiny & Other is `tiny1`–`tiny10`. The designer asked for two more rows.
+scope: `PAGE3_GEAR_SLOTS` in `backend/common/interfaces/v2/page3/page3Interfaces.ts`; `RIGHT_ROWS` in `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx`. Owner: `rewrite-ledger/page3-view.md`. Do not edit `page3.sql` or `ensureSchema.ts`. Do not add a migration. Do not mark the new slots printed **S**, arrow, or bar. Do not add `features/` or `shared/`.
+steps:
+1. Append `'tiny11'` and `'tiny12'` to `PAGE3_GEAR_SLOTS` after `'tiny10'`. Leave `PAGE3_DEFAULT_S_SLOTS` unchanged.
+2. Append `{ slot: 'tiny11' }` and `{ slot: 'tiny12' }` to `RIGHT_ROWS` after `tiny10`, so they render under **Tiny & Other** with the same fields as `tiny1`: item input, size input, both flags, **W**.
+3. Do not insert rows by hand. `emptyPage3Gear` and assemble already fill a slot that has no database row. `addPageType3` inserts every `PAGE3_GEAR_SLOTS` entry. Save and field POST already upsert by that list.
+done when: `PAGE3_GEAR_SLOTS` and `RIGHT_ROWS` both contain `tiny11` and `tiny12`. `PAGE3_DEFAULT_S_SLOTS` does not. `rg "tiny11|tiny12" backend/server/v2/backupTables/page3.sql` is 0. `npm run build` in `app/` exits 0.
+depends on: none
+open questions: none
+deviations from design: The column design did not include new rows. The designer added two Tiny & Other rows in the same reply.
+result:
+
 ## Done
 
 ### T-126: Drop the Size input on arrow rows
