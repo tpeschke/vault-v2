@@ -6,6 +6,21 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
+### T-125: Draw Gear bar headers as labels only
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: **Backpack**, **Pouch**, **held bag**, and **Other Containers** are gray bars and still render an item input, a size input, both flag boxes, and **W**.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`GearRow` when `spec.bar`); `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` (the bar label spans the five tracks). Owner: `rewrite-ledger/page3-view.md`. Do not edit schema, coinage, Notes, `ColumnHead`, the `h2` bars, or any row with `bar` unset. Do not add `features/` or `shared/`.
+steps:
+1. When `spec.bar` is set, render one row whose only content is `spec.label` (**Backpack**, **Pouch**, **held bag**, **Other Containers**). Slots: `backpack`, `pouch1`, `pouch2`, `pouch3`, `heldBag1`, `heldBag2`, `other1`. The label spans `grid-column: 1 / -1`. Keep `page3-gear-bar-row` (`#bdbdbd`) and the oldClaude 13px label. No `input`, no `textarea`, no `GearFlag`, no **W**, no arrow, no `character-value`. Do not render `cell.item`, `cell.size`, `cell.staffSnake`, `cell.meditating`, or `cell.w`.
+2. Do not call `updateGearCell` or `persistPage3Gear` from that row. Leave the slot keys and any stored rows. Do not add a migration.
+3. Leave every non-bar `GearRow` as it is, including Head through R. Hand, the Carry strength lines, the QM numbers, printed **S**, `other2`, and `other3`.
+done when: In `Gear.tsx`, the `spec.bar` branch contains `spec.label` and does not contain `input`, `GearFlag`, or `cell.`. The non-bar path still has an item `input`. `backpack`, `pouch1`, `heldBag1`, and `other1` are still slot keys in `Gear.tsx`. `Gear.css` sets `grid-column: 1 / -1` on the bar label (or the bar row’s only child). `npm run build` in `app/` exits 0.
+depends on: T-121 (done)
+open questions: none
+deviations from design: none
+result:
+
 ## Done
 
 ### T-124: Nest kit icons so unchecking a check does not throw
