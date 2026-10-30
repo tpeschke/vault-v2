@@ -6,21 +6,53 @@ Order writes `proposed`. Execute approval is the designer naming TODOs, not the 
 
 ## Active
 
-### T-120: Add person-meditating to the Font Awesome kit subset
+### T-121: Align Gear tracks, use the meditating SVG, and lock printed S
 status: proposed
-source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Add)
-why: The Gear meditating head is `fa-solid fa-person-meditating`. Kit `db12ee03d1` loads a By Icon subset (`subsetPath` `assets/db12ee03d1/7158220/kit.css`, version 6.7.2, method css). That file defines `.fa-staff-snake` and does not define `.fa-person-meditating`, so the head is an empty `<i>`. The 18px cell is large enough for the 12px glyph.
-scope: Font Awesome kit `db12ee03d1`, referenced by `app/index.html`. Owner of the icon name: `rewrite-ledger/page3-view.md`. Do not change `Gear.tsx` or `Gear.css`. Do not rename the class to `person-praying`. Do not add an SVG or another icon font.
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: The three Gear stacks and the five cells in each row do not share a top edge. The two flag boxes are 12px flex items with `margin: 2px auto`, and the header icon tracks are 18px, so the boxes read as one checkbox column. The meditating head is `fa-person-meditating`, which the kit subset does not define. The arrow is inside the item cell. Printed S is a size input.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` (`ColumnHead`, `GearRow`, `LEFT_ROWS`, `MIDDLE_ROWS`); `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css`; existing `app/src/pages/v2/pageTypes/pageType3/components/Gear/assets/person-meditating-solid-full.svg`. Owner: `rewrite-ledger/page3-view.md`. Do not edit kit `db12ee03d1`, `app/index.html`, coinage inputs, slot order, or Notes height.
 steps:
-1. Add classic solid `person-meditating` to the kit’s By Icon subset and publish the kit. Leave `fa-staff-snake` in the subset.
-2. Leave `Gear.tsx` `ColumnHead` on `fa-solid fa-person-meditating`.
-done when: the subset CSS for kit `db12ee03d1` contains `.fa-person-meditating` with a `--fa` value, and still contains `.fa-staff-snake`. `Gear.tsx` still has `fa-person-meditating`. `git diff` is empty for `Gear.tsx` and `Gear.css`.
-depends on: T-108 (done)
+1. Set `.page3-gear-columns` to `align-items: start`. Each column’s first child stays `ColumnHead`. Leave **Quarter Mastering** after that head and before `qm1`. Do not move **Carry**, **Tiny & Other**, or **Notes**. Set `margin: 0` on the gear section `h2`.
+2. Give each gear column one grid whose head and rows share five tracks: flexible Type (Item), Size, snake, meditating, **W**. `align-items: start` on those rows. Section `h2`, Notes, the footnote, and coinage span all five tracks. Snake and meditating tracks are equal. Each `GearFlag` is the only control in its track, top-aligned, centered across the track. Remove `margin: 2px auto` from `.page3-flag-box`. Keep the 12×12 borderless box, both flags on every row, and the existing click persist.
+3. Replace the meditating `<i class="fa-solid fa-person-meditating">` with `<img alt="" src>` of `person-meditating-solid-full.svg`, filling that header track. Keep `fa-solid fa-staff-snake` centered in the snake track. Do not inline the SVG path. Do not add a second copy of the file.
+4. On rows with `arrow: true` (`head` through `rHand`, `other2`, `other3`), render `fa-solid fa-arrow-right-from-line` inside the Size cell, not inside `.page3-gear-item`. Keep the size `<input>` in that cell after the arrow. One Size track width for the column, wide enough that the arrow is not clipped.
+5. For `leftS1`–`leftS15`, `midS1`–`midS6`, and `carryM4`–`carryP5`, render `cell.size` as text. No `<input>`, no `readOnly`, no `disabled`, no `character-value`. Do not POST size from those cells. Leave the stored default `'S'`. Every other gear size input, and all four coinage Size inputs, stay.
+done when: `rg "fa-person-meditating" app/src/pages/v2/pageTypes/pageType3` is 0 hits. `rg "person-meditating-solid-full" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` is at least 1. `rg "2px auto" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` is 0. `rg "readOnly|disabled" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.tsx` is 0. In `Gear.tsx` the `fa-arrow-right-from-line` element is not inside `page3-gear-item`. `npm run build` in `app/` exits 0.
+depends on: none
+open questions: none
+deviations from design: none
+result:
+
+### T-122: Stripe Gear Notes and teal-hover Contacts and Notes
+status: proposed
+source: rewrite-ledger/page3-view.md, 2026-10-30
+why: Gear Notes are a flat textarea. Contacts stripes do not turn teal on hover in plain view, because the zebra rule beats `index.css` `textarea:hover`. Edit and quick-edit solid fills would hide a new zebra.
+scope: `app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` (`.page3-notes`); `app/src/pages/v2/pageTypes/pageType3/components/Contacts/Contacts.css` (the textarea). Owner: `rewrite-ledger/page3-view.md`. Do not change Contacts min-height, Gear Notes height, or `app/src/index.css`.
+steps:
+1. Paint `.page3-notes` with the Contacts zebra: `#fff` / `#f3f3f3`, 17.38px bands, `background-attachment: local`. Text stays 15px / line-height 1.2. Do not set the band to `1lh`. Do not change `min-height` or `height` on `.page3-notes`.
+2. Plain view, both `.page3-contacts > textarea` and `.page3-notes`: rest is the unwashed zebra; `:hover` stacks `rgba(145, 181, 194, 0.35)` on the zebra.
+3. `.view-edit` and `.view-quick-edit`, both textareas: rest wash `rgba(173, 216, 230, 0.35)` and hover `rgba(145, 181, 194, 0.35)`, each stacked on the zebra. These rules beat `index.css` solid `textarea:hover`, `.view-edit textarea`, and `.view-quick-edit textarea`. Stripes stay visible.
+done when: `rg "repeating-linear-gradient" app/src/pages/v2/pageTypes/pageType3/components/Gear/Gear.css` matches `.page3-notes`. `Contacts.css` has a `:hover` wash that applies when `.view-edit` and `.view-quick-edit` are absent. `rg "1lh" app/src/pages/v2/pageTypes/pageType3` is 0. The Contacts `min-height` value is unchanged. `npm run build` in `app/` exits 0.
+depends on: T-121
 open questions: none
 deviations from design: none
 result:
 
 ## Done
+
+### T-120: Add person-meditating to the Font Awesome kit subset
+status: done
+source: rewrite-ledger/page3-view.md, 2026-10-28 (Design answer: Add)
+why: The Gear meditating head is `fa-person-meditating`. Kit `db12ee03d1` loads a By Icon subset that defines `.fa-staff-snake` and does not define `.fa-person-meditating`.
+scope: Font Awesome kit `db12ee03d1`, referenced by `app/index.html`. Owner of the icon name: `rewrite-ledger/page3-view.md`.
+steps:
+1. Add classic solid `person-meditating` to the kit’s By Icon subset and publish the kit.
+2. Leave `Gear.tsx` `ColumnHead` on `fa-solid fa-person-meditating`.
+done when: not executed.
+depends on: T-108 (done)
+open questions: none
+deviations from design: superseded 2026-10-30 before execution. The meditating head is the Gear SVG (T-121).
+result: Not executed. `page3-view.md` revised 2026-10-30: the head is `Gear/assets/person-meditating-solid-full.svg`. The kit was not changed.
 
 ### T-119: Wash the Contacts textarea when quick-edit locations are shown
 status: done
