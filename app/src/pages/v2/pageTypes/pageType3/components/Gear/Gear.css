@@ -13,7 +13,7 @@
     box-sizing: border-box;
 }
 
-.page3-gear-col + .page3-gear-col {
+.page3-gear-col+.page3-gear-col {
     border-left: 1px solid #323232;
 }
 
@@ -34,7 +34,7 @@
     border-bottom: 1px solid whitesmoke;
 }
 
-.page3-gear-col > h2,
+.page3-gear-col>h2,
 .page3-notes,
 .page3-footnote,
 .page3-coinage {
@@ -45,15 +45,15 @@
     background: #f3f3f3;
 }
 
-.page3-gear-head > *,
-.page3-gear-row > *:not(.page3-flag-box) {
+.page3-gear-head>*,
+.page3-gear-row>*:not(.page3-flag-box) {
     min-width: 0;
     height: 100%;
     min-height: 0;
     box-sizing: border-box;
 }
 
-.page3-gear-head > strong,
+.page3-gear-head>strong,
 .page3-gear-item,
 .page3-gear-size,
 .page3-gear-w {
@@ -67,7 +67,7 @@
     min-width: 0;
 }
 
-.page3-gear-item > input {
+.page3-gear-item>input {
     flex: 1;
     min-width: 0;
     height: 100%;
@@ -93,9 +93,9 @@
     line-height: 17.38px;
 }
 
-.page3-gear-item > .page3-gear-label,
-.page3-gear-size > .page3-gear-label,
-.page3-gear-size > .page3-gear-chrome {
+.page3-gear-item>.page3-gear-label,
+.page3-gear-size>.page3-gear-label,
+.page3-gear-size>.page3-gear-chrome {
     line-height: 13.38px;
     min-height: 0;
 }
@@ -105,7 +105,7 @@
     min-width: 0;
 }
 
-.page3-gear-head > strong:nth-child(n + 2),
+.page3-gear-head>strong:nth-child(n + 2),
 .page3-gear-size,
 .page3-gear-flag,
 .page3-gear-w {
@@ -113,7 +113,7 @@
     border-left: 1px solid #bdbdbd;
 }
 
-.page3-gear-head > strong:nth-child(n + 2),
+.page3-gear-head>strong:nth-child(n + 2),
 .page3-gear-size,
 .page3-gear-flag {
     display: flex;
@@ -125,12 +125,12 @@
     min-width: 0;
 }
 
-.page3-gear-size > .page3-gear-label,
-.page3-gear-size > .page3-gear-chrome {
+.page3-gear-size>.page3-gear-label,
+.page3-gear-size>.page3-gear-chrome {
     padding-right: 0;
 }
 
-.page3-gear-size > input {
+.page3-gear-size>input {
     flex: 1;
     min-width: 0;
     width: 0;
@@ -139,7 +139,7 @@
     text-align: center;
 }
 
-.v2 .page3-gear-row > input.page3-gear-w {
+.v2 .page3-gear-row>input.page3-gear-w {
     width: 100%;
     height: 100%;
     min-height: 0;
@@ -151,12 +151,12 @@
     box-sizing: border-box;
 }
 
-.page3-gear-head > strong i,
-.page3-gear-head > strong > svg.svg-inline--fa.fa-staff-snake {
+.page3-gear-head>strong i,
+.page3-gear-head>strong>svg.svg-inline--fa.fa-staff-snake {
     font-size: 12px;
 }
 
-.page3-gear-head > strong img {
+.page3-gear-head>strong img {
     display: block;
     width: 18px;
     height: 18px;
@@ -179,7 +179,7 @@
 }
 
 .page3-flag-box i,
-.page3-flag-box > svg.svg-inline--fa.fa-check {
+.page3-flag-box>svg.svg-inline--fa.fa-check {
     font-size: 20px;
     position: absolute;
     top: -4px;
@@ -203,8 +203,10 @@
     background: black !important;
 }
 
-.page3-gear-col > h2 {
+.page3-gear-col>h2 {
     margin: 0;
+    height: 17.38px;
+    padding: 0 2px;
 }
 
 .page3-notes {
@@ -213,25 +215,21 @@
     height: calc(5 * 17.38px);
     white-space: pre-wrap;
     background-color: transparent;
-    background-image: repeating-linear-gradient(
-        to bottom,
-        #fff 0,
-        #fff 17.38px,
-        #f3f3f3 17.38px,
-        #f3f3f3 34.76px
-    );
+    background-image: repeating-linear-gradient(to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px);
     background-attachment: local;
 }
 
 .v2 .page3-notes {
     background-color: transparent !important;
-    background-image: repeating-linear-gradient(
-        to bottom,
-        #fff 0,
-        #fff 17.38px,
-        #f3f3f3 17.38px,
-        #f3f3f3 34.76px
-    ) !important;
+    background-image: repeating-linear-gradient(to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px) !important;
     background-attachment: local !important;
 }
 
@@ -239,13 +237,11 @@
     background-color: transparent !important;
     background-image:
         linear-gradient(rgba(145, 181, 194, 0.35), rgba(145, 181, 194, 0.35)),
-        repeating-linear-gradient(
-            to bottom,
+        repeating-linear-gradient(to bottom,
             #fff 0,
             #fff 17.38px,
             #f3f3f3 17.38px,
-            #f3f3f3 34.76px
-        ) !important;
+            #f3f3f3 34.76px) !important;
     background-attachment: local !important;
 }
 
@@ -254,13 +250,11 @@
     background-color: transparent !important;
     background-image:
         linear-gradient(rgba(173, 216, 230, 0.35), rgba(173, 216, 230, 0.35)),
-        repeating-linear-gradient(
-            to bottom,
+        repeating-linear-gradient(to bottom,
             #fff 0,
             #fff 17.38px,
             #f3f3f3 17.38px,
-            #f3f3f3 34.76px
-        ) !important;
+            #f3f3f3 34.76px) !important;
     background-attachment: local !important;
 }
 
@@ -269,13 +263,11 @@
     background-color: transparent !important;
     background-image:
         linear-gradient(rgba(145, 181, 194, 0.35), rgba(145, 181, 194, 0.35)),
-        repeating-linear-gradient(
-            to bottom,
+        repeating-linear-gradient(to bottom,
             #fff 0,
             #fff 17.38px,
             #f3f3f3 17.38px,
-            #f3f3f3 34.76px
-        ) !important;
+            #f3f3f3 34.76px) !important;
     background-attachment: local !important;
 }
 
@@ -290,28 +282,28 @@
     align-items: center;
 }
 
-.page3-coinage-head > h2 {
+.page3-coinage-head>h2 {
     flex: 1;
 }
 
-.page3-coinage-head > strong,
-.page3-coinage-head > em {
+.page3-coinage-head>strong,
+.page3-coinage-head>em {
     width: 28%;
     font-size: 11px;
     padding: 0 2px;
 }
 
-.page3-coinage > span {
+.page3-coinage>span {
     display: flex;
     align-items: center;
 }
 
-.page3-coinage > span > em:first-child {
+.page3-coinage>span>em:first-child {
     width: 22px;
     padding: 0 2px;
 }
 
-.page3-coinage > span > input {
+.page3-coinage>span>input {
     width: 28%;
     min-height: 17.38px;
     height: 17.38px;
@@ -320,7 +312,7 @@
     background-clip: content-box;
 }
 
-.page3-coinage > span > em:last-child {
+.page3-coinage>span>em:last-child {
     flex: 1;
     font-size: 11px;
     padding: 0 2px;
