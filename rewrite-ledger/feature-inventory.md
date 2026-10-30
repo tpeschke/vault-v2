@@ -17,6 +17,7 @@ Home is one page; list objectives stay split by version. Create character stays 
 - View character sheet
 - View blank sheet
 - Edit character sheet
+- Download character as PDF
 - Add sheet page
 - Delete character
 
@@ -26,9 +27,11 @@ View blank sheet: `/v/blank` only. One type 1, one type 2, one type 3, same comp
 
 Edit character sheet: v2 view sidebar → new v2 edit owner. Canonical: `edit-character.md`.
 
+Download character as PDF: view sidebar, not owner-gated, one letter page per card, no pregen, other sidebar buttons locked and Quick Edit view left off while the file is built. Canonical: `download-character.md`.
+
 Add sheet page: while editing, each sheet card’s gutter rests on reorder plus `fa-file-circle-plus`, then a delete of the sheet above that gutter. The uppermost Main Info sheet cannot be removed (`delete-sheet-page.md`). That icon discloses **+ Main Info**, **+ Skills & Abilities**, **+ NPCs & Equipment**, and **+ Notes** for that card only; a far-right `fa-rotate-left` closes them. A character holds at most 15 sheets. Each labeled add inserts a blank of that button’s type; local until Save; catalog stays the first page-type-1. Extra persisted type-1 names are a catalog `fa-user` tooltip on that row, not a second character. Type 2, type 3, and type 4 have no catalog name. Canonical: `add-page-type-1.md`. Type 4: `page4-view.md`. Reorder: `page-reorder.md`. Page type 2 layout: `page2-view.md`. Page type 3 layout: `page3-view.md`. Page type 4 layout: `page4-view.md`.
 
-Not present: quick-edit, download PDF.
+Not present: quick-edit.
 
 Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current Damage, Current Stress, Current Emotions; type-2 leftover notes; type-3 Relationship P and Gear) are view controls, not a feature. View inputs persist on blur; view die clicks persist `dieIndex`; type-3 flag clicks persist the boolean. A v1-matched sidebar button highlights those locations. Canonical: `quick-view-inputs.md`.
 

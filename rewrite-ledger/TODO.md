@@ -5,8 +5,24 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-139: Raise the JSON body limit for a notes scene
+status: blocked
+source: rewrite-ledger/page4-view.md, 2026-10-30
+why: `backend/server/vault.ts` sets `bodyParser.json({ limit: '10mb' })`. A legal notes scene is up to 100 MB and rides the full-character POST. The request is rejected before T-136’s cap check.
+scope: unindexed `backend/server/vault.ts` only. Do not add a scene route. Do not change the per-page cap.
+steps:
+1. Wait until the designer names the `limit` string.
+2. Set `bodyParser.json({ limit })` to that string. Leave every other parser untouched.
+done when: grep of `vault.ts` shows the named limit. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing.
+depends on: none
+open questions: What `limit` string replaces `'10mb'`? Sheet count is at most 15 (`add-page-type-1.md`). Fifteen notes scenes can still exceed one body limit. A Save larger than the chosen limit still fails before the per-page check.
+deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
+result:
+
+## Done
+
 ### T-155: Size the v2 card border box to letter
-status: proposed
+status: done
 source: rewrite-ledger/download-character.md, 2026-10-30 (HTML page matches the PDF page)
 why: html2pdf captures the `.page` border box. That box is 828×1068 today (content 796×1036 plus 16px card padding on each side). jsPDF letter with unit `px` and hotfix `px_scaling` is 816×1056. The card has to be that box or the PDF page and the sheet differ.
 scope: `app/src/pages/View.css` (`.v2 .page` only). Owner: `rewrite-ledger/v2-page-type.md`. Do not edit the unscoped `.page` rule. Do not edit v1 CSS. Do not edit `App.css` `.card` padding. Do not recompress page-type widgets. Do not add a file.
@@ -17,10 +33,10 @@ done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error 
 depends on: none
 open questions: none
 deviations from design: The size change is `.v2 .page` only. The unscoped `.page` rule also sizes v1, and v1’s PDF stamps that screenshot onto letter millimeters. Resizing it is outside this feature.
-result:
+result: `.v2 .page` is border-box 816×1056. Unscoped `.page` stays 796×1036. Three blank cards measure 816×1056. A `.page.card` outside `.v2` measures 828×1068. App tsc exits 0.
 
 ### T-156: Download the viewed character as one PDF
-status: proposed
+status: done
 source: rewrite-ledger/download-character.md, 2026-10-30 (`pdf-lib` confirmed; pregen left out; sidebar stays locked; Quick Edit view stays off)
 why: The view has no download. v1’s pipeline is per-id `html2canvas` plus `jsPDF.addImage`, which this feature does not use.
 scope: new `app/src/pages/v2/hooks/utilities/downloadCharacter.ts`; `app/src/pages/v2/components/sidebar/Sidebar.tsx`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/V2View.css`; root `package.json`; `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`. Owner: the v2 view (`download-character.md`). Do not edit `app/src/pages/v1/`. Do not add `features/`. Do not add a backend route. Do not change the root `"jspdf"` range. Do not put the worker in `characterHook`.
@@ -37,24 +53,9 @@ steps:
 done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Sidebar.tsx` finds `Download` once, and that button is not inside `ownsThisCharacter`. Grep of `app/src/pages/v1` for `html2pdf` is 0. Root `package.json` lists `html2pdf.js` `0.14.0` and `pdf-lib` `1.17.1`, and `"jspdf"` is still `^3.0.3`. `npm ls jspdf` shows 3.x for the root dependency. In the browser, a character with more than one sheet, a filled textarea, a filled text input, and a mark on the notes canvas downloads one PDF: one page per card, sidebar buttons absent from the file, notes mark visible, textarea text visible. A non-owner gets the button and a file. During the banner, on a real character, Edit and the quick-edit toggle are present with HTML `disabled`, the toggle reads `Show Quick Edit Locations`, and `.page-shell` has no `view-quick-edit` class. Download is `disabled` for that same interval. After the file, those buttons operate again and Quick Edit view is still off. A second click during the banner does not start another file. On `/v/blank`, Download is the locked button while the banner shows, and Edit and Show Quick Edit Locations stay absent (`blank-sheet.md`).
 depends on: T-155
 open questions: none
-deviations from design: The worker lives in a v2 utility called from `V2View`, not in `characterHook`. v1’s hook owns download because pregen mutates the character, and pregen is out. `html2pdf.js` 0.14.0 depends on `jspdf` 4 while this repo’s direct `jspdf` is 3; the TODO keeps both rather than upgrading v1.
-result:
+deviations from design: The worker lives in a v2 utility called from `V2View`, not in `characterHook`. v1’s hook owns download because pregen mutates the character, and pregen is out. `html2pdf.js` 0.14.0 depends on `jspdf` 4 while this repo’s direct `jspdf` is 3; the TODO keeps both rather than upgrading v1. The clone sits outside `.v2`, so the worker adds class `v2` on the html2pdf container or the card is 828×1068 and a second page is emitted. Cleanup also removes `.html2pdf__overlay`. `.download-banner h1` clears the `.v2 h1` bar. A thrown capture toasts `The character could not be downloaded.`
+result: One letter page per card. `Blank.pdf` is 3 pages. `AdaLovelace.pdf` is 4 pages with the notes textarea, the gear text input, and the notes mark. Sidebar stays; Edit, Download, and the quick-edit toggle are disabled while the banner shows, and Quick Edit stays off. A non-owner gets the file and no Edit button. App tsc exits 0.
 
-### T-139: Raise the JSON body limit for a notes scene
-status: blocked
-source: rewrite-ledger/page4-view.md, 2026-10-30
-why: `backend/server/vault.ts` sets `bodyParser.json({ limit: '10mb' })`. A legal notes scene is up to 100 MB and rides the full-character POST. The request is rejected before T-136’s cap check.
-scope: unindexed `backend/server/vault.ts` only. Do not add a scene route. Do not change the per-page cap.
-steps:
-1. Wait until the designer names the `limit` string.
-2. Set `bodyParser.json({ limit })` to that string. Leave every other parser untouched.
-done when: grep of `vault.ts` shows the named limit. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing.
-depends on: none
-open questions: What `limit` string replaces `'10mb'`? Sheet count is at most 15 (`add-page-type-1.md`). Fifteen notes scenes can still exceed one body limit. A Save larger than the chosen limit still fails before the per-page check.
-deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
-result:
-
-## Done
 
 ### T-154: Keep `/v/blank` hover at the resting paint
 status: done

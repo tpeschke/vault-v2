@@ -138,6 +138,13 @@ routing:
     adjacent:
       - app/src/pages/v1/
       - backend/common/interfaces/v1/
+  download character as pdf / character pdf:
+    primary: app/src/pages/v2/hooks/utilities/downloadCharacter.ts
+    adjacent:
+      - app/src/pages/v2/components/sidebar/Sidebar.tsx
+      - app/src/pages/v2/V2View.tsx
+      - app/src/pages/v2/V2View.css
+      - app/src/pages/View.css
   download v1 character as pdf / v1 pdf:
     primary: app/src/pages/v1/hooks/utilities/downloadUtilities.ts
     adjacent:

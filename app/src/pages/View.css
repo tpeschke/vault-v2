@@ -3,6 +3,12 @@
     width: 796px;
 }
 
+.v2 .page {
+    box-sizing: border-box;
+    width: 816px;
+    height: 1056px;
+}
+
 .v2 h1 {
     color: white;
     background: #323232;
