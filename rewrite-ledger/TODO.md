@@ -19,6 +19,25 @@ open questions: What `limit` string replaces `'10mb'`? Page count is uncapped, s
 deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
 result:
 
+### T-145: Disclose sheet adds from file-circle-plus
+status: proposed
+source: rewrite-ledger/add-page-type-1.md; rewrite-ledger/page-reorder.md, 2026-10-30 (Q1 every page type, each card; Q2 entry icon leaves; Q3 exit far right; Q4 `Click to Add New Pages` / `Nevermind`; Q5 add returns to resting; Q6 do not check the kit)
+why: The resting gutter shows reorder and the labeled adds at once. The designer wants those adds, including **+ Notes**, behind one file-circle-plus button, with a catalog-style exit.
+scope: `app/src/pages/v2/V2View.tsx` and `app/src/pages/v2/V2View.css`. Owner: `rewrite-ledger/add-page-type-1.md` (disclosure) and `rewrite-ledger/page-reorder.md` (reorder visibility). Do not change `PageType1.tsx`, `PageType2.tsx`, `PageType3.tsx`, `PageType4.tsx`, the sidebar, `CharacterRow.tsx`, insert/reorder helpers, or Save. Do not add `features/`. Do not add a route or persist-on-click.
+steps:
+1. In `V2View`, keep a per-card flag keyed by `page.pageID`. A card with no flag is resting. One card’s flag does not change another card. Type 1, 2, 3, and 4 cards all use this gutter.
+2. Resting gutter: existing reorder buttons and omit rules, then `<i className="fa-solid fa-file-circle-plus">` inside a `.bottom-buttons` button with `margin-left: auto`. `data-tooltip-id="my-tooltip"` and `data-tooltip-content="Click to Add New Pages"`. No text label. Click sets this card disclosed and does not call an add helper. Do not mount the labeled adds.
+3. Do not start these steps while the open question is unanswered. Disclosed gutter: do not mount reorder or file-circle-plus. Mount the four labeled adds in today’s order, handlers, and chrome (`addPageAfter`, `addPageType2After`, `addPageType3After`, `addPageType4After`). After those, mount `fa-solid fa-rotate-left` as the last button. Tooltip `Nevermind`. Give that button the CSS class named in the open-question answer. Do not choose `primary` or `.bottom-buttons` on your own.
+4. The rotate-left click clears this card’s flag only. It does not call `revertCharacter`.
+5. Each labeled-add click runs today’s insert, then clears this card’s flag (the card that was clicked). The new page has a new `pageID` and starts resting.
+6. Clear every flag when `isEditing` becomes false (Edit toggle, successful Save, sidebar Revert).
+7. Hidden controls are absent from the tree. Do not leave them disabled or `visibility` hidden.
+done when: `npx tsc --noEmit -p app` exits 0. Grep of `app/src/pages/v2/V2View.tsx` shows `fa-file-circle-plus`, `Click to Add New Pages`, `fa-rotate-left`, and `Nevermind`. Grep of `CharacterRow.tsx` still shows `Never mind` (catalog string unchanged). The exit button’s class matches the answer to the open question.
+depends on: none
+open questions: CSS class of the far-right `fa-rotate-left` button. Catalog revert uses `primary` (teal `#06465b`, white text, `app/src/index.css`). Gutter icon buttons use `.bottom-buttons` (whitesmoke, orange hover, `V2View.css`). Reorder icons and the four labeled adds stay `.bottom-buttons` either way.
+deviations from design: Q1 “every page type” is recorded as each card independently, including type 1, 2, 3, and 4. A shared flag for all cards is rejected in `add-page-type-1.md`. Page type 4’s **+ Notes** was already on `main` and is the fourth disclosed add.
+result:
+
 ## Done
 
 ### T-143: Name the reason a notes stroke was refused
@@ -184,10 +203,6 @@ depends on: T-136, T-137, T-138
 open questions: none
 deviations from design: none
 result: `00-START-HERE.yaml` lists `page4/`, assemble `pageType4/`, edit `pageType4/`, add `pageType4/`, and delete `pageType4/` on the existing view, edit, create, add-sheet, and delete keys. `app/src/pages/v2/` already covers the widget. A key line whose text is only `notes sheet` or `page type 4` is absent.
-
-None.
-
-## Done
 
 ### T-140: Make Quarter Mastering Size a printed S
 status: done
