@@ -3,6 +3,7 @@ import { clampTextareaChange, holdTextareaScroll, isComposingInput, textareaCaps
 import { Page3 } from "@vault/common/interfaces/v2/pageTypes"
 import {
     isDefaultSSlot,
+    isQuarterMasteringSlot,
     Page3Coinage,
     Page3GearSlot
 } from "@vault/common/interfaces/v2/page3/page3Interfaces"
@@ -137,7 +138,7 @@ function GearRow({
                 {spec.arrow ? (
                     <em className="page3-gear-chrome" data-tooltip-id="my-tooltip" data-tooltip-content="This item's weight is recorded somewhere else (if applicable)."><i className="fa-solid fa-arrow-right-long"></i></em>
                 ) : isDefaultSSlot(spec.slot) ? (
-                    <em className="page3-gear-label">{cell.size}</em>
+                    <em className="page3-gear-label">{isQuarterMasteringSlot(spec.slot) ? 'S' : cell.size}</em>
                 ) : (
                     <input
                         className="character-value"
