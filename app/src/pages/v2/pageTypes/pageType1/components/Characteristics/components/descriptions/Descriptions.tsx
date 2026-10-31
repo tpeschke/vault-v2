@@ -35,7 +35,7 @@ export default function DescriptionsDisplay({ descriptions, pageID, updates }: P
     const isEditing = useContext(EditingContext)
     const isBlank = useContext(BlankContext)
     const rows = descriptions ?? []
-    const max = 7
+    const max = 6
     const leftOver = max - rows.length - (isEditing ? 1 : 0)
     const showEditInputs = isEditing && leftOver > -1
 

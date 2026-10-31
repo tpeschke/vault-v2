@@ -78,7 +78,7 @@ const QM_ROWS: GearRowSpec[] = [
 const TINY_ROWS: GearRowSpec[] = [
     { slot: 'tiny1' }, { slot: 'tiny2' }, { slot: 'tiny3' }, { slot: 'tiny4' }, { slot: 'tiny5' },
     { slot: 'tiny6' }, { slot: 'tiny7' }, { slot: 'tiny8' }, { slot: 'tiny9' }, { slot: 'tiny10' },
-    { slot: 'tiny11' }, { slot: 'tiny12' }, { slot: 'tiny13' }
+    { slot: 'tiny11' }, { slot: 'tiny12' }
 ]
 
 function numberFromInput(raw: string): SkillNumber {

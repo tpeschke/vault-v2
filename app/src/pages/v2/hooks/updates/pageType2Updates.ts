@@ -9,7 +9,7 @@ import {
 } from "@vault/common/interfaces/v2/page2/page2Interfaces"
 import { Page2 } from "@vault/common/interfaces/v2/pageTypes"
 
-export const ADV_GENERAL_CAP = 40
+export const ADV_GENERAL_CAP = 38
 export const ADV_COMBAT_CAP = 24
 
 export function mapPage2(character: CharacterVersion2, pageID: number, updater: (page: Page2) => Page2): CharacterVersion2 {
