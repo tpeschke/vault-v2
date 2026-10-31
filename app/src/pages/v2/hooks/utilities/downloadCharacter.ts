@@ -218,6 +218,61 @@ async function bakeFrameLabels(livePage: HTMLElement, container: HTMLElement) {
     }))
 }
 
+function notesMismatch(): never {
+    removeClones()
+    throw new Error('Download notes canvas does not match the sheet.')
+}
+
+async function pinNotesCanvas(live: HTMLCanvasElement, clone: Element) {
+    if (!(clone instanceof HTMLImageElement) && !(clone instanceof HTMLCanvasElement)) notesMismatch()
+    const editor = live.closest('.excalidraw')
+    if (!(editor instanceof HTMLElement)) notesMismatch()
+    const liveRect = live.getBoundingClientRect()
+    const editorRect = editor.getBoundingClientRect()
+    clone.style.position = 'absolute'
+    clone.style.margin = '0'
+    clone.style.zIndex = getComputedStyle(live).zIndex
+    clone.style.top = `${liveRect.top - editorRect.top}px`
+    clone.style.left = `${liveRect.left - editorRect.left}px`
+    clone.style.width = `${liveRect.width}px`
+    clone.style.height = `${liveRect.height}px`
+    if (clone instanceof HTMLImageElement) {
+        clone.removeAttribute('width')
+        clone.removeAttribute('height')
+        await clone.decode()
+        return
+    }
+    const context = clone.getContext('2d')
+    if (!context) notesMismatch()
+    context.drawImage(live, 0, 0)
+}
+
+async function walkNotes(live: Element, clone: Element) {
+    if (live instanceof HTMLCanvasElement) {
+        await pinNotesCanvas(live, clone)
+        return
+    }
+    let cloneChildren = [...clone.children]
+    if (live instanceof HTMLElement && (live.scrollLeft || live.scrollTop)) {
+        if (cloneChildren.length !== 1) notesMismatch()
+        cloneChildren = [...cloneChildren[0].children]
+    }
+    const liveChildren = [...live.children]
+    if (liveChildren.length !== cloneChildren.length) notesMismatch()
+    for (let index = 0; index < liveChildren.length; index += 1) {
+        await walkNotes(liveChildren[index], cloneChildren[index])
+    }
+}
+
+async function pinNotesScenes(livePage: HTMLElement, container: HTMLElement) {
+    const liveEditors = [...livePage.querySelectorAll('.excalidraw')]
+    const cloneEditors = [...container.querySelectorAll('.excalidraw')]
+    if (liveEditors.length !== cloneEditors.length) notesMismatch()
+    for (let index = 0; index < liveEditors.length; index += 1) {
+        await walkNotes(liveEditors[index], cloneEditors[index])
+    }
+}
+
 async function copyFields(livePage: HTMLElement, container: HTMLElement) {
     const liveFields = [...livePage.querySelectorAll('input, textarea')]
     const cloneFields = [...container.querySelectorAll('input, textarea')]
@@ -232,15 +287,7 @@ async function copyFields(livePage: HTMLElement, container: HTMLElement) {
         if (!(clone instanceof HTMLElement)) return
         copyControlStyle(live, clone)
     })
-    const liveCanvases = [...livePage.querySelectorAll('canvas')]
-    const cloneCanvases = [...container.querySelectorAll('canvas')]
-    liveCanvases.forEach((live, index) => {
-        const clone = cloneCanvases[index]
-        if (!(clone instanceof HTMLCanvasElement) || !(live instanceof HTMLCanvasElement)) return
-        const context = clone.getContext('2d')
-        if (!context) return
-        context.drawImage(live, 0, 0)
-    })
+    await pinNotesScenes(livePage, container)
     paintStripes(livePage, container)
     await bakeSelectedDice(livePage, container)
     await bakeFrameLabels(livePage, container)

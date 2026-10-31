@@ -5,23 +5,6 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
-### T-158: Pin the notes scene image to the live canvas box
-status: proposed
-source: rewrite-ledger/download-character.md, 2026-10-30 (notes scene CSS box)
-why: html2pdf 0.14.0 replaces each notes `canvas` with an `img` whose `width` and `height` attributes are the bitmap (`canvas.width` and `canvas.height`). Excalidraw 0.18.1 sets that bitmap to CSS size times `devicePixelRatio` and sets the on-screen CSS size separately. Above ratio 1 the scene grows from the editor origin, the page edge clips the frame, and the DOM name stays in CSS pixels. At ratio 1 the two sizes are the same number, which is why T-157’s check lined up.
-scope: `app/src/pages/v2/hooks/utilities/downloadCharacter.ts` (`copyFields`). Owner: `download-character.md`. Do not edit `app/src/pages/v1/`, `PageType4.tsx`, Excalidraw, sheet CSS, worker options, the sidebar, the banner, or the frame-label raster. Do not add a dependency. Do not call `exportToCanvas`. Do not fork html2pdf.js or html2canvas.
-steps:
-1. In `copyFields`, pair `livePage.querySelectorAll('.excalidraw')` with the same list on the clone container, tree order. If the counts differ, remove the clones and throw. Do not zip the whole card. The cloner wraps a scrolled node’s children in an extra div (`html2pdf.js` `dist/html2pdf.js` clone, the scroll block). Notes canvases are the only canvases on the card, and they sit inside `.excalidraw`.
-2. Walk each pair’s child nodes in order. A live `canvas` is a leaf: do not walk its children (the cloner drops them). Its clone node must be an `img` or a `canvas`. Otherwise remove the clones and throw. For any other element, walk its element children. When `scrollLeft` or `scrollTop` is non-zero, the clone’s children sit in one inserted `div`; descend into that `div`. Any other child-count mismatch removes the clones and throws.
-3. Pin the matched node: `position: absolute`, `margin: 0`, `z-index` from `getComputedStyle(live).zIndex`, and `top`, `left`, `width`, and `height` from the live canvas `getBoundingClientRect()` minus the live `.excalidraw` `getBoundingClientRect()`. The static canvas’s wrapper is not positioned, so both notes canvases use `.excalidraw` as the containing block, which is the same rectangle the frame-name pin uses.
-4. When the clone node is an `img`, remove its `width` and `height` attributes, leave `src` as the data URL from the cloner, and `await` `decode()`. When the clone node is a `canvas`, leave its bitmap `width` and `height` attributes, `drawImage(live, 0, 0)` so the copy is 1:1 pixels, and set the CSS box from step 3. Do not pass a CSS-sized destination into `drawImage` on that bitmap. A device-pixel canvas drawn into a CSS-sized destination, then scaled again into that CSS box by html2canvas, shrinks the scene.
-5. Remove the `querySelectorAll('canvas')` pair that `drawImage`s only when both nodes are canvases. After this cloner that list on the clone is empty, so it does not paint the notes sheet. Do not change `bakeFrameLabels`, `workerOptions`, or the 816×1056 check.
-done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `downloadCharacter.ts` finds no `drawImage(live, 0, 0)` whose destination size is the CSS box. Grep of `app/src/pages/v1` for `html2pdf` is 0. In the browser, a capture with `devicePixelRatio` 2 shows the word Frame on the frame’s top-left, the diamond and rounded rectangle in the same places as the screen, and the frame’s right side on the page. A capture at ratio 1 still shows `Frame` in the gap above the stroke. Worker scale is still 2 and each PDF page is 816×1056.
-depends on: T-157
-open questions: none
-deviations from design: The walk starts at each `.excalidraw`, not at the card. A card-level zip breaks on the cloner’s scroll wrapper, and the notes canvases are inside `.excalidraw`. A surviving clone `canvas` is copied 1:1 onto its existing bitmap and then given the CSS box. The design’s CSS-sized `drawImage` destination would scale that bitmap twice.
-result:
-
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
@@ -37,6 +20,23 @@ deviations from design: Left blocked. The design chose the full POST and did not
 result:
 
 ## Done
+
+### T-158: Pin the notes scene image to the live canvas box
+status: done
+source: rewrite-ledger/download-character.md, 2026-10-30 (notes scene CSS box)
+why: html2pdf 0.14.0 replaces each notes `canvas` with an `img` whose `width` and `height` attributes are the bitmap (`canvas.width` and `canvas.height`). Excalidraw 0.18.1 sets that bitmap to CSS size times `devicePixelRatio` and sets the on-screen CSS size separately. Above ratio 1 the scene grows from the editor origin, the page edge clips the frame, and the DOM name stays in CSS pixels. At ratio 1 the two sizes are the same number, which is why T-157’s check lined up.
+scope: `app/src/pages/v2/hooks/utilities/downloadCharacter.ts` (`copyFields`). Owner: `download-character.md`. Do not edit `app/src/pages/v1/`, `PageType4.tsx`, Excalidraw, sheet CSS, worker options, the sidebar, the banner, or the frame-label raster. Do not add a dependency. Do not call `exportToCanvas`. Do not fork html2pdf.js or html2canvas.
+steps:
+1. In `copyFields`, pair `livePage.querySelectorAll('.excalidraw')` with the same list on the clone container, tree order. If the counts differ, remove the clones and throw. Do not zip the whole card. The cloner wraps a scrolled node’s children in an extra div (`html2pdf.js` `dist/html2pdf.js` clone, the scroll block). Notes canvases are the only canvases on the card, and they sit inside `.excalidraw`.
+2. Walk each pair’s child nodes in order. A live `canvas` is a leaf: do not walk its children (the cloner drops them). Its clone node must be an `img` or a `canvas`. Otherwise remove the clones and throw. For any other element, walk its element children. When `scrollLeft` or `scrollTop` is non-zero, the clone’s children sit in one inserted `div`; descend into that `div`. Any other child-count mismatch removes the clones and throws.
+3. Pin the matched node: `position: absolute`, `margin: 0`, `z-index` from `getComputedStyle(live).zIndex`, and `top`, `left`, `width`, and `height` from the live canvas `getBoundingClientRect()` minus the live `.excalidraw` `getBoundingClientRect()`. The static canvas’s wrapper is not positioned, so both notes canvases use `.excalidraw` as the containing block, which is the same rectangle the frame-name pin uses.
+4. When the clone node is an `img`, remove its `width` and `height` attributes, leave `src` as the data URL from the cloner, and `await` `decode()`. When the clone node is a `canvas`, leave its bitmap `width` and `height` attributes, `drawImage(live, 0, 0)` so the copy is 1:1 pixels, and set the CSS box from step 3. Do not pass a CSS-sized destination into `drawImage` on that bitmap. A device-pixel canvas drawn into a CSS-sized destination, then scaled again into that CSS box by html2canvas, shrinks the scene.
+5. Remove the `querySelectorAll('canvas')` pair that `drawImage`s only when both nodes are canvases. After this cloner that list on the clone is empty, so it does not paint the notes sheet. Do not change `bakeFrameLabels`, `workerOptions`, or the 816×1056 check.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `downloadCharacter.ts` finds no `drawImage(live, 0, 0)` whose destination size is the CSS box. Grep of `app/src/pages/v1` for `html2pdf` is 0. In the browser, a capture with `devicePixelRatio` 2 shows the word Frame on the frame’s top-left, the diamond and rounded rectangle in the same places as the screen, and the frame’s right side on the page. A capture at ratio 1 still shows `Frame` in the gap above the stroke. Worker scale is still 2 and each PDF page is 816×1056.
+depends on: T-157
+open questions: none
+deviations from design: The walk starts at each `.excalidraw`, not at the card. A card-level zip breaks on the cloner’s scroll wrapper, and the notes canvases are inside `.excalidraw`. A surviving clone `canvas` is copied 1:1 onto its existing bitmap and then given the CSS box. The design’s CSS-sized `drawImage` destination would scale that bitmap twice.
+result: At `devicePixelRatio` 2 the notes bitmap is twice the CSS size and the PDF still matches the screen: the word Frame sits on the frame’s top-left, the diamond covers that corner, the rounded rectangle meets the frame’s bottom, and the frame’s right side is on the page. The same scene at ratio 1 matches. The earlier ratio-1 sheet still has `Frame` in the gap above the stroke (label average 240.88, the band under it 229.79). Four letter pages, each JPEG 1632×2112. App tsc exits 0.
 
 ### T-157: Paint ruled lines, selected dice, and frame labels in the PDF clone
 status: done
