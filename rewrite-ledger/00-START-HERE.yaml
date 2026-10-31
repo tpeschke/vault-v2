@@ -37,6 +37,7 @@ routing:
   session-phases: phases.md
   schema-on-boot: schema-on-boot.md
   textarea / textarea height / textarea limit / 1350: textarea-limits.md
+  download character / character pdf: download-character.md
   observed_code_paths:
     app: ../app
     backend: ../backend

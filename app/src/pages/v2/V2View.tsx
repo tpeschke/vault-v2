@@ -1,9 +1,10 @@
 import '../View.css'
 import './V2View.css'
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import { useBlocker } from "react-router-dom"
 import { toast } from "react-toastify"
 import { SetLoadingFunction } from "../../components/loading/Loading"
+import LoadingIndicator from "../../components/loading/components/LoadingIndicator"
 import characterHook from './hooks/characterHook'
 import PageType1 from './pageTypes/pageType1/PageType1'
 import PageType2 from './pageTypes/pageType2/PageType2'
@@ -12,6 +13,7 @@ import PageType4 from './pageTypes/pageType4/PageType4'
 import EditingContext from './contexts/EditingContext'
 import BlankContext from './contexts/BlankContext'
 import Sidebar from './components/sidebar/Sidebar'
+import { downloadPages, pdfFileName } from './hooks/utilities/downloadCharacter'
 import { SHEET_PAGE_CAP_MESSAGE, SHEET_PAGE_MAX } from '@vault/common/interfaces/v2/sheetPageCap'
 
 interface Props {
@@ -24,6 +26,8 @@ export default function V2View({ setLoading, pathname, blank = false }: Props) {
     const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
     const [viewQuickEdit, setViewQuickEdit] = useState(false)
+    const [isDownloading, setIsDownloading] = useState(false)
+    const downloadStarted = useRef(false)
 
     const { character, isDirty, isViewSaving, notesEpoch, restoreCatalogFromSnapshot, updateFunctions } = characterHook(pathname, isEditing, blank)
     const { saveCharacterToBackend, revertCharacter, pageType1Updates, pageType2Updates, pageType3Updates, pageType4Updates, pageGutterUpdates } = updateFunctions
@@ -121,6 +125,29 @@ export default function V2View({ setLoading, pathname, blank = false }: Props) {
         setArmedDeletePageIDs(ids => ids.filter(id => id !== pageID))
     }
 
+    const onDownload = () => {
+        setViewQuickEdit(false)
+        setIsDownloading(true)
+    }
+
+    useEffect(() => {
+        if (!isDownloading || !character || downloadStarted.current) return
+        downloadStarted.current = true
+        ;(async () => {
+            try {
+                await document.fonts.ready
+                const pages = [...document.querySelectorAll<HTMLElement>('.version-two-shell .page')]
+                if (pages.length === 0) return
+                await downloadPages(pages, pdfFileName(character.name))
+            } catch {
+                toast.error('The character could not be downloaded.')
+            } finally {
+                downloadStarted.current = false
+                setIsDownloading(false)
+            }
+        })()
+    }, [isDownloading, character])
+
     const scrollSheetIntoView = (pageID: number) => {
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -131,6 +158,12 @@ export default function V2View({ setLoading, pathname, blank = false }: Props) {
 
     return (
         <div className="home-shell v2">
+            {isDownloading && (
+                <div className="download-banner">
+                    <h1>Downloading</h1>
+                    <LoadingIndicator stylings="" secondary={true} />
+                </div>
+            )}
             <BlankContext value={blank}>
             <EditingContext value={isEditing}>
                 <div className="version-two-shell">
@@ -360,6 +393,8 @@ export default function V2View({ setLoading, pathname, blank = false }: Props) {
                             revertCharacterToUnedited={revertCharacterToUnedited}
                             ownsThisCharacter={character.userInfo.ownsThisCharacter}
                             isViewSaving={isViewSaving}
+                            onDownload={onDownload}
+                            isDownloading={isDownloading}
                         />
                     }
                 </div>

@@ -11,7 +11,9 @@ interface Props {
     toggleViewQuickEdit: () => void,
     viewQuickEdit: boolean,
     ownsThisCharacter: boolean
-    isViewSaving: boolean
+    isViewSaving: boolean,
+    onDownload: () => void,
+    isDownloading: boolean
 }
 
 export default function Sidebar({
@@ -21,7 +23,9 @@ export default function Sidebar({
     toggleViewQuickEdit,
     viewQuickEdit,
     ownsThisCharacter,
-    isViewSaving
+    isViewSaving,
+    onDownload,
+    isDownloading
 }: Props) {
     const isEditing = useContext(EditingContext)
     const isBlank = useContext(BlankContext)
@@ -42,14 +46,15 @@ export default function Sidebar({
                     <button onClick={revertCharacterToUnedited}><i className="fa-solid fa-arrow-rotate-left"></i> Revert</button>
                 </>
             }
-            {!isBlank && !isEditing &&
+            {!isEditing &&
                 <>
-                    {ownsThisCharacter && <button onClick={toggleIsEditing}><i className="fa-solid fa-pen-nib"></i> Edit</button>}
-                    {viewQuickEdit ?
-                        <button onClick={toggleViewQuickEdit}><i className="fa-solid fa-eye-slash"></i> Hide Quick Edit Locations</button>
+                    {!isBlank && ownsThisCharacter && <button onClick={toggleIsEditing} disabled={isDownloading}><i className="fa-solid fa-pen-nib"></i> Edit</button>}
+                    <button onClick={onDownload} disabled={isDownloading}><i className="fa-solid fa-download"></i> Download</button>
+                    {!isBlank && (viewQuickEdit ?
+                        <button onClick={toggleViewQuickEdit} disabled={isDownloading}><i className="fa-solid fa-eye-slash"></i> Hide Quick Edit Locations</button>
                         :
-                        <button onClick={toggleViewQuickEdit}><i className="fa-solid fa-eye"></i> Show Quick Edit Locations</button>
-                    }
+                        <button onClick={toggleViewQuickEdit} disabled={isDownloading}><i className="fa-solid fa-eye"></i> Show Quick Edit Locations</button>
+                    )}
                 </>
             }
         </div>
