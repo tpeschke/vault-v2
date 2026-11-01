@@ -20,6 +20,9 @@ export default function Header({ }: Props) {
                 <Link to={'/v/blank'} data-tooltip-id="my-tooltip" data-tooltip-content="View Blank Character Sheet">
                     <i className="fa-solid fa-cards-blank"></i>
                 </Link>
+                <Link to={'/s/blank'} data-tooltip-id="my-tooltip" data-tooltip-content="View Blank Safehouse Sheet">
+                    <i className="fa-solid fa-cards-blank"></i>
+                </Link>
                 <Link to={'/'}>
                     <i className="fa-solid fa-house"></i>
                 </Link>

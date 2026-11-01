@@ -1,0 +1,84 @@
+.page-type-safehouse {
+    overflow: visible;
+}
+
+.safehouse-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.safehouse-header-fields {
+    flex: 1;
+    min-width: 0;
+}
+
+.safehouse-header label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.safehouse-header label > span {
+    display: block;
+    font-family: 'oldClaude';
+    font-size: 13px;
+}
+
+.safehouse-header .character-value {
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid black;
+    min-height: 17.38px;
+    margin: 0;
+}
+
+.safehouse-header-line {
+    display: flex;
+    gap: 16px;
+}
+
+.safehouse-header-line > label {
+    flex: 1;
+}
+
+.safehouse-header em,
+.safehouse-footer em {
+    display: block;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.safehouse-wordmark {
+    width: 240px;
+    height: auto;
+    flex: 0 0 auto;
+}
+
+.page-type-safehouse > h1 {
+    margin: 8px 0 0;
+}
+
+.safehouse-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 10px;
+    align-items: flex-end;
+}
+
+.safehouse-footer > div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.safehouse-footer input.character-value {
+    width: 52px;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.safehouse-footer p.character-value {
+    margin: 0;
+    min-width: 24px;
+}
