@@ -58,6 +58,8 @@ How the next agent proceeds (only when the designer names a new page type and at
 
 This file existing is not Order or Execute for a new page type.
 
+A safehouse is not a character page type. Its catalog, `/s` view, and `/api/s` HTTP are `safehouse.md`. Do not add it as `pageTypeID` 5 or as a `V2View` case.
+
 Another **instance** of an existing type on the same character is the labeled gutter adds (`add-page-type-1.md`). That is not a new page type.
 
 Code verified after Execute 2026-10-04 (T-076–T-087, T-100–T-112):
@@ -100,6 +102,9 @@ Revised 2026-10-30 (page type 4 general notes):
 - Create-character note stopped at type 3 — **revised**: type 4 yes, index 3 (`page4-view.md`).
 - Sheet-wide blank, fonts, and `character-value` on every v2 sheet page — **revised** for type 4 only. Types 1, 2, and 3 **retained**.
 - “Attaches that page’s official blank” before Order — **revised** for type 4: the designer named Excalidraw and no blank. Later types still bring a blank.
+
+Revised 2026-11-01 (`safehouse.md`):
+- “When the designer names a new page type” — **retained** for a character page. A safehouse is not that. It does not walk this vertical slice and it does not join `PageV2`.
 
 Revised 2026-10-30 (gutter disclosure, `add-page-type-1.md`):
 - Gutter lists both clusters as one always-visible row — **revised**: resting versus disclosed. Labeled adds, including **+ Notes**, stay the disclosed set.

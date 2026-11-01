@@ -29,6 +29,7 @@ routing:
   page3-view / page type 3 / NPCs & Equipment / gear page: page3-view.md
   page4-view / page type 4 / general notes sheet / excalidraw: page4-view.md
   blank sheet / /v/blank / view blank sheet: blank-sheet.md
+  safehouse / safehouses / /s /api/s: safehouse.md
   edit-character: edit-character.md
   add-page-type-1 / add another page-type-1 / add sheet page / add page type 2 sheet / add page type 3 sheet: add-page-type-1.md
   page reorder / swap sheets / move sheet to top / move sheet to bottom: page-reorder.md
@@ -43,4 +44,4 @@ routing:
     backend: ../backend
     replaceScripts: ../replaceScripts
   gaps:
-    - Remaining FSD layers not created (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`); view slices are `app/src/pages/v1` and `app/src/pages/v2`
+    - Remaining FSD layers not created (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`); character view slices are `app/src/pages/v1` and `app/src/pages/v2`; safehouse slice is `app/src/pages/safehouse` when T-163 runs (`fsd-colocation.md`)

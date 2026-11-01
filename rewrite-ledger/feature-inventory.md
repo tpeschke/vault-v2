@@ -3,7 +3,7 @@ status: accepted   date: 2026-10-04
 
 Unmarked **character** means v2. v1 rows are marked. Sheet widgets are not features.
 
-Home is one page; list objectives stay split by version. Create character stays on that home page slice on the frontend (not a route, not `features/create-character`). View slices are `app/src/pages/v1` and `app/src/pages/v2`. Canonical: `fsd-colocation.md`.
+Home is one page; list objectives stay split by version. Create character stays on that home page slice on the frontend (not a route, not `features/create-character`). Character view slices are `app/src/pages/v1` and `app/src/pages/v2`. The safehouse list is on that home page, under Your Characters. Canonical: `fsd-colocation.md`, `safehouse.md`.
 
 ## Unversioned
 
@@ -34,6 +34,19 @@ Add sheet page: while editing, each sheet card’s gutter rests on reorder plus 
 Not present: quick-edit.
 
 Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current Damage, Current Stress, Current Emotions; type-2 leftover notes; type-3 Relationship P and Gear) are view controls, not a feature. View inputs persist on blur; view die clicks persist `dieIndex`; type-3 flag clicks persist the boolean. A v1-matched sidebar button highlights those locations. Canonical: `quick-view-inputs.md`.
+
+## Safehouse
+
+- List safehouses
+- Create safehouse
+- View safehouse sheet
+- View blank safehouse
+- Edit safehouse sheet
+- Download safehouse as PDF
+- Add safehouse sheet page
+- Delete safehouse
+
+The list, create, and delete sit in the Your Characters card, below the character footer. View is `/s/:safehouseID`. Blank is `/s/blank`. HTTP is `/api/s`. Page catalog is safehouse page type 1 only. Slot pool is separate; the formula matches the character footer. Canonical: `safehouse.md`.
 
 ## v1 (ancient)
 

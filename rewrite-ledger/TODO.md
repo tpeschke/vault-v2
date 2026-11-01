@@ -19,6 +19,146 @@ open questions: What `limit` string replaces `'10mb'`? Sheet count is at most 15
 deviations from design: Left blocked. The design chose the full POST and did not name a request ceiling.
 result:
 
+### T-159: Safehouse tables and page-type-1 contract
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: Assemble, save, and the editor need one page shape. The tables must exist before create.
+scope: new `backend/common/interfaces/safehouse/` (page shape, section keys, caps 10 / 11 / 10 / 15, `SAFEHOUSE_SHEET_MAX` 15, `SAFEHOUSE_SHEET_CAP_MESSAGE`). New `backend/server/safehouse/safehouse.sql`. Unindexed `backend/server/db/ensureSchema.ts`. Owner: `safehouse.md`. Do not edit `pageTypes.ts`, `v2CharacterPages`, or `sheetPageCap.ts`. Do not add a character foreign key. Do not add `features/`.
+steps:
+1. Export the page-1 shape and the four section caps from `backend/common/interfaces/safehouse/`. `name` and `notes` are strings. `rank`, `space`, header `cRankLimit`, and footer `wealth` / `spaceLimit` / `wear` are `number | ''`. `r` is boolean. Caps: living 10, workspace 11, recreational 10, defenses 15.
+2. `CREATE TABLE IF NOT EXISTS` for `safehouses`, `safehousePages`, `safehousePage1`, and `safehousePage1Functions` as `safehouse.md` lists them. Snapshot that DDL in `backend/server/safehouse/safehouse.sql`.
+3. Call the new statements from `ensureSchema` after the existing patches. Re-running them is safe. Do not insert rows for existing users.
+done when: `npx tsc --noEmit -p backend/common` exits 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of `safehouse.sql` finds `safehousePage1Functions` and finds no `characterID`. Grep of `ensureSchema.ts` finds `safehousePages`.
+depends on: none
+open questions: none
+deviations from design: none
+result:
+
+### T-160: Create a safehouse
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: Create is a character ability. A new safehouse is one page type 1, not four character pages.
+scope: new `backend/server/safehouse/add/`. Unindexed `backend/server/vault.ts` (`app.use('/api/s', …)`). Owner: `safehouse.md`. Do not edit `addV2CharacterController.ts`. Do not enforce the Patreon formula. Do not insert a character page.
+steps:
+1. `POST /api/s`. No session user: the logged-out refusal shape character create uses, with the word Safehouse. With a user: insert `safehouses` (`userID`), then `safehousePages` (`index` 0, `pageTypeID` 1), then `safehousePage1` (`name` `'New Safehouse'`, empty location, null numbers). Fail closed when an insert returns no numeric `id > 0`.
+2. Respond with that safehouse id on success.
+3. Mount the router at `/api/s` in `vault.ts`. Do not mount it under `/v2` or `/home`.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of `vault.ts` finds `app.use('/api/s'`. Grep of `addV2CharacterController.ts` finds no `safehouse`.
+depends on: T-159
+open questions: none
+deviations from design: none
+result:
+
+### T-161: Assemble a safehouse
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: `/s/:safehouseID` and the catalog hover need one payload.
+scope: new `backend/server/safehouse/view/`. The `/api/s` router from T-160. Owner: `safehouse.md`. Do not call `assembleV2Character`. Do not read `v2CharacterPages`.
+steps:
+1. `GET /api/s/:safehouseID`. Non-numeric id, including `blank`: `{ message: 'Bad ID' }`. No page rows: `{ message: 'No Pages' }`.
+2. Order pages by `index`. `pageTypeID` 1 assembles header, footer numbers (`null` → `''`), and four function lists ordered by `index`. `r` is boolean. A missing page-1 row yields the create defaults. Any other `pageTypeID` assembles `{ type: 404 }`.
+3. Include `ownsThisSafehouse` from `safehouses.userID` and `request.user?.id`. Include the catalog name from the first page type 1.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of the view module finds `Bad ID` and `pageTypeID`. Grep of `assembleV2Character.ts` finds no `safehouse`.
+depends on: T-159, T-160
+open questions: none
+deviations from design: none
+result:
+
+### T-162: List, add, and delete safehouses on the catalog
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01 (question 3, question 11)
+why: The list sits under Your Characters, with its own slot pool and the same limit formula.
+scope: `GET /api/s` and `DELETE /api/s/:safehouseID` on the safehouse router. New `app/src/hooks/UsersSafehousesHook.tsx`. `app/src/pages/home/components/V2CharacterDisplay/V2CharacterDisplay.tsx` and a safehouse block beside `charactersRowDisplay/`. Unindexed `app/src/redux/slices/usersCharactersSlice.tsx` and `characterCacheSlice.tsx`. `app/src/pages/home/Home.tsx`. Owner: `safehouse.md`. Do not change the character footer formula, character rows, or v1 display. Do not put safehouses in `usersCharactersCache` index 0 or 1.
+steps:
+1. `GET /api/s` returns the session user’s safehouses: `id`, `name` (first page type 1, `'New Safehouse'` when that name is empty), `otherPageType1Names` for every later type 1 in `index` order. No user: an empty list, not a character list.
+2. `DELETE /api/s/:id` deletes the safehouse, its pages, its page-1 row, and its function rows only when `userID` matches. Otherwise `{ message: "You Don't Own This Safehouse" }`.
+3. In the Your Characters card, below `HomeFooter`, render heading **Safehouses**, the rows, and a footer. Row click goes to `/s/${id}`. Empty copy: `You Have No Safehouses`. Delete confirm matches `CharacterRow`. Extra names use `fa-user` and `my-tooltip`, empty extra `New Safehouse`.
+4. Footer limit is `(patreon * 20) + 10`, owner `∞`, counted on safehouses only. Copy the disabled-button behavior. Tooltips are the three Safehouse sentences in `safehouse.md`. Add calls `POST /api/s` and navigates to `/s/${id}`.
+5. Hover preload and a successful save write a safehouse cache map. Do not use `characterCache[2]`. A first-page name edit updates that catalog row only.
+6. `Home.tsx` still loads characters as it does. Fetch the safehouse list beside that, inside the logged-in branch.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `HomeFooter.tsx` finds `(usersPatreon * 20) + 10` once. Grep of the safehouse footer finds that same formula. Grep of `V2CharacterDisplay.tsx` finds `Safehouses` after `HomeFooter`.
+depends on: T-160, T-161
+open questions: none
+deviations from design: none
+result:
+
+### T-163: Safehouse view, blank, and page type 1
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01 (questions 4, 5, 6, 8, 10)
+why: `/s` has to render the sheet without going through `V2View`.
+scope: new `app/src/pages/safehouse/` (`SafehouseView`, page type 1, Functions, header, footer). `app/src/routes/AllRoutes.tsx`. `app/src/components/header/Header.tsx`. Reuse v2 `Sidebar`, `EditingContext`, and `BlankContext`. Owner: `safehouse.md`. Do not edit `V2View.tsx` or `pageType3/`. Do not import `Relationships.tsx`. Do not add `features/`.
+steps:
+1. `path="s/blank"` before `path="s/:safehouseID"`, both before the `*` redirect. Blank builds one in-memory page type 1 and does not call `axios`. `/s/:id` calls `GET /api/s/:id`.
+2. Shell classes `home-shell v2` and `safehouse-shell`. Card `.page.card.page-type-safehouse`. Document title `${name || 'Blank'} - Bonfire Character Vault`.
+3. Header: name, location, C Rank Limit, italic `x2 C of location`, wordmark on the right (`bonfire-wordmark.png`). Header values are `p.character-value` in this TODO. Footer stored numbers are inputs. Printed `10` is text. Total Ranks and Upkeep are `p.character-value` from the sum rules in `safehouse.md`.
+4. Four function lists, caps from the contract, Relationships row mechanics, **R?** a page-local 12×12 flag box as `safehouse.md` specifies. Do not reuse `.page3-flag-box`.
+5. Header link after the character blank link: `/s/blank`, tooltip `View Blank Safehouse Sheet`, `fa-solid fa-cards-blank`. On the blank, ink is empty, the flag does not toggle, and the sidebar hides Edit, Save, Revert, and Quick Edit Locations. Download’s button can wait for T-167; the shell stays.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `AllRoutes.tsx` finds `s/blank` before `s/:safehouseID`. Grep of `V2View.tsx` finds no `safehouse`. Grep of `pageType3/` for `safehouse` is 0.
+depends on: T-161
+open questions: The blank header icon is `fa-cards-blank`, the same glyph as the character blank. A different kit glyph needs a designer name. Do not add one to the kit in this TODO.
+deviations from design: none
+result:
+
+### T-164: Edit, save, and the safehouse gutter
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: Edit, reorder, add, and sheet delete are character abilities. The add inserts a safehouse page, not a character page.
+scope: `POST /api/s/:safehouseID` in `backend/server/safehouse/edit/`. Safehouse view sidebar and gutter. Owner: `safehouse.md`. Do not edit `V2View.tsx`, `add-page-type-1` handlers, or `editV2CharacterController.ts`. Do not import `sheetPageCap.ts`.
+steps:
+1. Owner-only Edit. Save posts the whole safehouse. Revert restores the load snapshot. Whitespace-only name: client toast, no POST. Backend stores `'New Safehouse'` for a missing or whitespace name. Owner mismatch refuses. Failed Save restores the draft and stays in edit. Success replaces local state and the safehouse cache, then exits edit. Leave-warn only while editing and dirty.
+2. Header inputs exist only while editing. Function inputs and footer number inputs exist in both modes. Total Ranks and Upkeep stay `p.character-value`.
+3. Gutter matches `safehouse.md`: reorder, disclose **+ Safehouse**, delete, cap 15 with `SAFEHOUSE_SHEET_CAP_MESSAGE`, first type 1 protected. Inserts are local until Save. Save writes `index` from array order, inserts `pageID <= 0`, and deletes omitted persisted type-1 ids. Refuse a list with no type 1, a list longer than 15, or a short stored count, with the sentences in `safehouse.md`.
+4. A local edit of the first page’s name updates the catalog row. Reorder that changes which type 1 is first does too. A local sheet removal does not.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. App tsc exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `V2View.tsx` finds no `+ Safehouse`. Grep of the safehouse gutter finds `Safehouse` and `SAFEHOUSE_SHEET_CAP_MESSAGE`.
+depends on: T-163
+open questions: none
+deviations from design: none
+result:
+
+### T-165: Play-time fields on a safehouse
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01 (questions 6, 7, 9)
+why: Function rows and the stored footer numbers follow the character view-field path. Header and the computed totals do not.
+scope: `POST /api/s/:safehouseID/field`. The safehouse view’s blur, flag click, insert, and delete. Quick-edit toggle. Owner: `safehouse.md` and `quick-view-inputs.md` for the session rules. Do not POST header fields. Do not POST Total Ranks or Upkeep. Do not add a character field attribute.
+steps:
+1. Allow only the attributes named in `safehouse.md`. Refuse a longer name or notes string than 500. `id > 0` and this safehouse’s page, or the insert mints a row and returns `id`. Delete removes that row. Unknown attribute refuses. Owner mismatch refuses. A blank id does not POST.
+2. On the view, blur and the flag click call that route. While editing, they do not. Insert merges the returned `id`. Clearing the last stored field deletes when `id > 0`.
+3. Show / Hide Quick Edit Locations matches the character button. It highlights function inputs, the flag box, and Wealth, Space Limit, and Wear. It does not highlight header `p` nodes or the computed totals. Hidden on `/s/blank` and while editing.
+done when: App tsc and server tsc exit 0, or the only app error is the pre-existing missing `frontend-config`. Grep of the field module finds `safehouseFunctionR` and finds no `cRankLimit`. Grep of the safehouse view finds the quick-edit toggle.
+depends on: T-164
+open questions: none
+deviations from design: none
+result:
+
+### T-166: Download a safehouse PDF
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01; mechanics `download-character.md`
+why: Download is a character ability. The character writer is tied to `.version-two-shell` and character painters.
+scope: new download function under `app/src/pages/safehouse/`. The safehouse sidebar. Owner: `safehouse.md`. Do not edit `downloadCharacter.ts` or v1 download. Do not add a dependency. Do not add a backend route.
+steps:
+1. Sidebar Download, view only, including the blank, not owner-gated. While it runs, Edit, Quick Edit, and Download are HTML `disabled`, Quick Edit view is turned off, and the v1-style “Downloading” banner shows. The sidebar stays mounted.
+2. Capture each `.safehouse-shell .page` with the worker options in `download-character.md` (`html2pdf.js` 0.14.0, `pdf-lib` 1.17.1, letter, `px`, `hotfixes: ['px_scaling']`, scale 2). Copy input and textarea values. Filename is the catalog name, sanitized as the character file is, or `Blank`.
+3. Do not run the character painters for dice, Contacts gradients, or Excalidraw. Function zebra is the row background.
+done when: App tsc exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `downloadCharacter.ts` finds no `safehouse`. Grep of the safehouse download finds `safehouse-shell` and `px_scaling`.
+depends on: T-163
+open questions: none
+deviations from design: none
+result:
+
+### T-167: Index safehouse on L1
+status: proposed
+source: rewrite-ledger/safehouse.md, 2026-11-01; `feature-index.md`
+why: New files need routes on the existing index. There is no “page type 5” objective.
+scope: repository `00-START-HERE.yaml` `routing` only. Owner: `safehouse.md`. Do not edit `unindexed`. Do not remove character keys.
+steps:
+1. Add keys: list safehouses, create safehouse, view safehouse sheet, view blank safehouse, edit safehouse sheet, download safehouse as pdf, add safehouse sheet page, delete safehouse. Primaries and adjacencies are the paths `safehouse.md` names. View blank safehouse’s primary is `app/src/pages/safehouse/SafehouseView.tsx`.
+2. Grep that file for a key line whose text is only `safehouse page` or `page type 5`. Expect zero.
+done when: Those eight keys are present. The `page type 5` key line is absent. Character `view character sheet` still lists `app/src/pages/v2/`.
+depends on: T-162, T-163, T-164, T-165, T-166
+open questions: none
+deviations from design: none
+result:
+
 ## Done
 
 ### T-158: Pin the notes scene image to the live canvas box

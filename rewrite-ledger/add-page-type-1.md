@@ -28,7 +28,7 @@ Constraints it imposes:
 - Catalog Name / ancestry / class / subclass / level: first page-type-1 only (`order by index`, same as `assembleV2Character` `getCharacterName`). Home list is one row per character. `updateCatalogInfo` and `character.name` do not follow later pages. Slot limit unchanged. When two or more type-1s are **persisted**, a `fa-solid fa-user` icon sits in its own slot beside the catalog name (not inside the name `<strong>`). Hover lists the other type-1 names (first omitted, `index` order), one per line, on the existing `Tooltip id="my-tooltip"`. Empty extra names display as `New Character`. Icon color/size inherit the name column. Icon click is the row click (open the character). v1: no icon. Unsaved local `+` pages do not appear. No second catalog row. No new tooltip package. No `data-tooltip-html` with unsanitized names. Extra names ride the v2 home payload as `otherPageType1Names`. `updateCatalogInfo` keeps that field when a first-page identity patch omits it. A successful full Save writes it from reassembled type-1s after the first.
 - Empty-name Save gate stays the first page-type-1. A new page’s empty name still becomes `'New Character'` on persist (`saveGeneralInfo`).
 - Sheet-wide card/session contract: `v2-page-type.md`. Play-time view controls: only cells that page’s topic names (`quick-view-inputs.md`). They stay skipped while `isEditing`, except the type-4 scene (`page4-view.md`). **+ Notes** still does not POST on click. The first finished stroke on a temp type-4 page mints that page.
-- Do not add `features/`. Do not add a dropdown type picker. The labeled add buttons are the type choice. Sheet delete is `delete-sheet-page.md`. Reorder: `page-reorder.md`. Page type 2: `page2-view.md`. Page type 3: `page3-view.md`. Page type 4: `page4-view.md`. Type N instance add is a playbook vertical-slice row (`v2-page-type.md`). “Do not delete unknown page types” on Save — **retained**.
+- Do not add `features/`. Do not add a dropdown type picker. The labeled add buttons are the type choice. A safehouse add is not one of these four buttons (`safehouse.md`). Sheet delete is `delete-sheet-page.md`. Reorder: `page-reorder.md`. Page type 2: `page2-view.md`. Page type 3: `page3-view.md`. Page type 4: `page4-view.md`. Type N instance add is a playbook vertical-slice row (`v2-page-type.md`). “Do not delete unknown page types” on Save — **retained**.
 
 Rejected:
 - Persist on click / a new add-page route.
@@ -97,6 +97,9 @@ Revised 2026-10-30 (sheet cap; Q1 and Q2 tooltip `You can only have 15 pages per
 - `aria-disabled` — **rejected**. Native `disabled`, tooltip on a wrapper.
 - Closing every open add row, or disabling the four labeled buttons, when another card’s add reaches 15 — **rejected**. That row is left as it is.
 - Allowing a full Save of a character already stored above 15 when the list does not grow — **rejected**. `pages.length > 15` refuses before `savePages`.
+
+Revised 2026-11-01 (`safehouse.md`):
+- The disclosed set is **+ Main Info**, **+ Skills & Abilities**, **+ NPCs & Equipment**, and **+ Notes** — **retained** for a character. A safehouse gutter is not this set.
 
 Revised 2026-10-30 (add click at the cap; Q1 default toast):
 - “Those labeled buttons can insert past 15” — **revised**: the click checks `character.pages.length >= SHEET_PAGE_MAX` before the insert. At the cap it does not insert, returns that card to resting, and toasts `SHEET_PAGE_CAP_MESSAGE`.
