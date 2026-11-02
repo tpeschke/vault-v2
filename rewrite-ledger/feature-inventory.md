@@ -46,7 +46,7 @@ Quick view inputs (Unspent CrP, Current Favor, vitals dice, Die Penalty, Current
 - Add safehouse sheet page
 - Delete safehouse
 
-The list, create, and delete sit in the Your Characters card, below the character footer. View is `/s/:safehouseID`. Blank is `/s/blank`. HTTP is `/api/s`. Page catalog is safehouse page type 1 only. Slot pool is separate; the formula matches the character footer. Canonical: `safehouse.md`.
+The list, create, and delete sit in the Your Characters card, below the character footer. View is `/s/:safehouseID`. Blank is `/s/blank`. HTTP is `/api/s`. Page catalog is safehouse page type 1 (Functions) and page type 2 (Damage Healing). A new safehouse gets both. Existing safehouses are not backfilled. Slot pool is separate; the formula matches the character footer. Canonical: `safehouse.md`. Type 2: `safehouse-damage-healing.md`.
 
 ## v1 (ancient)
 

@@ -14,8 +14,10 @@ import {
     SafehouseNumber,
     SafehousePage,
     SafehousePage1,
+    SafehousePage2,
     SafehouseSection,
-    emptyPage1
+    emptyPage1,
+    emptyPage2
 } from '@vault/common/interfaces/safehouse/safehouse'
 import { safehouseApiURL } from '../../frontend-config'
 import { cacheSafehouse, SafehouseCacheMap } from '../../redux/slices/characterCacheSlice'
@@ -30,7 +32,10 @@ export interface SafehouseUpdates {
     toggleFunctionR: (pageID: number, section: SafehouseSection, index: number, row: SafehouseFunctionRow) => void,
     setFooter: (pageID: number, field: 'wealth' | 'spaceLimit' | 'wear', value: SafehouseNumber) => void,
     blurFooter: (pageID: number, field: 'wealth' | 'spaceLimit' | 'wear', value: SafehouseNumber) => void,
+    setDamage: (pageID: number, field: 'npcs' | 'resources', value: string) => void,
+    blurDamage: (pageID: number, field: 'npcs' | 'resources', value: string) => void,
     addPageAfter: (index: number) => void,
+    addDamageHealingAfter: (index: number) => void,
     removePageAt: (index: number) => void,
     swapWithNext: (index: number) => void,
     moveToTop: (index: number) => void,
@@ -59,6 +64,13 @@ function rowIsEmpty(row: { name: string, rank: SafehouseNumber, r: boolean, spac
     return row.name === '' && row.rank === '' && row.space === '' && row.notes === '' && !row.r
 }
 
+function mapPage2(safehouse: Safehouse, pageID: number, mapper: (page: SafehousePage2) => SafehousePage2): Safehouse {
+    return {
+        ...safehouse,
+        pages: safehouse.pages.map(page => page.type === 2 && page.pageID === pageID ? mapper(page) : page)
+    }
+}
+
 function mapPage(safehouse: Safehouse, pageID: number, mapper: (page: SafehousePage1) => SafehousePage1): Safehouse {
     return {
         ...safehouse,
@@ -75,7 +87,7 @@ function blankSafehouse(): Safehouse {
         id: 0,
         name: 'New Safehouse',
         ownsThisSafehouse: false,
-        pages: [emptyPage1(0)]
+        pages: [emptyPage1(0), emptyPage2(-1)]
     }
 }
 
@@ -366,6 +378,15 @@ export default function safehouseHook(pathname: string, isEditing: boolean, blan
         }
     }
 
+    function setDamage(pageID: number, field: 'npcs' | 'resources', value: string) {
+        write(current => mapPage2(current, pageID, page => ({ ...page, [field]: value })))
+    }
+
+    function blurDamage(pageID: number, field: 'npcs' | 'resources', value: string) {
+        const attribute: SafehouseFieldAttribute = field === 'npcs' ? 'safehouseNpcs' : 'safehouseResources'
+        void postField(pageID, attribute, value)
+    }
+
     function addPageAfter(index: number) {
         const current = safehouseRef.current
         if (!current) {
@@ -382,6 +403,22 @@ export default function safehouseHook(pathname: string, isEditing: boolean, blan
         replacePages(current, pages, true)
     }
 
+    function addDamageHealingAfter(index: number) {
+        const current = safehouseRef.current
+        if (!current) {
+            return
+        }
+        if (current.pages.length >= SAFEHOUSE_SHEET_MAX) {
+            toast.error(SAFEHOUSE_SHEET_CAP_MESSAGE)
+            return
+        }
+        tempPageID.current -= 1
+        const page = emptyPage2(tempPageID.current, makeTempID())
+        const pages = current.pages.slice()
+        pages.splice(index + 1, 0, page)
+        replacePages(current, pages, true)
+    }
+
     function removePageAt(index: number) {
         const current = safehouseRef.current
         if (!current) {
@@ -389,10 +426,12 @@ export default function safehouseHook(pathname: string, isEditing: boolean, blan
         }
         const page = current.pages[index]
         const firstIndex = current.pages.findIndex(candidate => candidate.type === 1)
-        if (!page || page.type !== 1 || index === firstIndex) {
+        if (!page || (page.type === 1 && index === firstIndex)) {
             return
         }
-        replacePages(current, current.pages.filter((_, pageIndex) => pageIndex !== index), false)
+        if (page.type === 2 || page.type === 1) {
+            replacePages(current, current.pages.filter((_, pageIndex) => pageIndex !== index), false)
+        }
     }
 
     function swapWithNext(index: number) {
@@ -493,7 +532,10 @@ export default function safehouseHook(pathname: string, isEditing: boolean, blan
         toggleFunctionR,
         setFooter,
         blurFooter,
+        setDamage,
+        blurDamage,
         addPageAfter,
+        addDamageHealingAfter,
         removePageAt,
         swapWithNext,
         moveToTop,

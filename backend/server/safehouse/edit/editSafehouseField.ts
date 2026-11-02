@@ -6,6 +6,7 @@ import {
     isSafehouseNumber,
     isSection
 } from '@vault/common/interfaces/safehouse/safehouse'
+import { TEXTAREA_DEFAULT_MAX, textareaCharCount } from '@vault/common/textareaLimits'
 import { checkForContentTypeBeforeSending } from '../../controllers/common/sendingFunctions'
 import query from '../../db/database'
 import { Response } from '../../interfaces/apiInterfaces'
@@ -21,7 +22,9 @@ const attributes: SafehouseFieldAttribute[] = [
     'safehouseFunctionDelete',
     'safehouseWealth',
     'safehouseSpaceLimit',
-    'safehouseWear'
+    'safehouseWear',
+    'safehouseNpcs',
+    'safehouseResources'
 ]
 
 interface FieldRequest extends SafehouseRequest {
@@ -44,7 +47,7 @@ function sqlNumber(value: SafehouseNumber): number | null {
     return value === '' ? null : Math.trunc(value)
 }
 
-async function pageIsOwned(safehouseID: number, pageID: number, userID: number | undefined): Promise<boolean> {
+async function pageIsOwned(safehouseID: number, pageID: number, userID: number | undefined, pageTypeID: number): Promise<boolean> {
     if (!userID || !(pageID > 0)) {
         return false
     }
@@ -52,8 +55,8 @@ async function pageIsOwned(safehouseID: number, pageID: number, userID: number |
         `select s.userID as userid
         from safehouses s
         join safehousePages p on p.safehouseID = s.id
-        where s.id = $1 and p.id = $2 and p.pageTypeID = 1`,
-        [safehouseID, pageID]
+        where s.id = $1 and p.id = $2 and p.pageTypeID = $3`,
+        [safehouseID, pageID, pageTypeID]
     )
     return !!userID && Number(rows[0]?.userid) === userID
 }
@@ -114,7 +117,33 @@ export async function editSafehouseField(request: FieldRequest, response: Respon
         refuse(response, isAttribute(attribute) ? 'Invalid field' : 'Unknown attribute')
         return
     }
-    if (!await pageIsOwned(safehouseID, pageID, request.user?.id)) {
+    if (attribute === 'safehouseNpcs' || attribute === 'safehouseResources') {
+        if (!await pageIsOwned(safehouseID, pageID, request.user?.id, 2)) {
+            refuse(response, "You Don't Own This Safehouse")
+            return
+        }
+        if (typeof value !== 'string') {
+            refuse(response, 'Invalid field')
+            return
+        }
+        if (textareaCharCount(value) > TEXTAREA_DEFAULT_MAX) {
+            refuse(response, 'Text is too long')
+            return
+        }
+        const column = attribute === 'safehouseNpcs' ? 'npcs' : 'resources'
+        const rows = await query(
+            `update safehousePage2 set ${column} = $1 where pageID = $2 returning pageID`,
+            [value, pageID]
+        )
+        if (!(Number(rows[0]?.pageid) > 0)) {
+            refuse(response, 'Invalid field')
+            return
+        }
+        checkForContentTypeBeforeSending(response, { success: true })
+        return
+    }
+
+    if (!await pageIsOwned(safehouseID, pageID, request.user?.id, 1)) {
         refuse(response, "You Don't Own This Safehouse")
         return
     }

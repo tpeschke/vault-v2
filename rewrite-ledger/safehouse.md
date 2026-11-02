@@ -1,30 +1,30 @@
 # Safehouse
 status: accepted   date: 2026-11-01
 
-Decision: A safehouse is its own record, with the same abilities as a v2 character sheet and its own page catalog. The only page type in this decision is safehouse page type 1, the first page of the Safehouse template. Browser view is `/s/:safehouseID`. Blank is `/s/blank`. HTTP is under `/api/s`. The user’s safehouses are listed under **Your Characters** on the home catalog. A link from a safehouse to a character is not part of this decision.
+Decision: A safehouse is its own record, with the same abilities as a v2 character sheet and its own page catalog. Page type 1 is the Functions sheet, the first page of the Safehouse template. Page type 2 is the Damage Healing sheet (`safehouse-damage-healing.md`). Browser view is `/s/:safehouseID`. Blank is `/s/blank`. HTTP is under `/api/s`. The user’s safehouses are listed under **Your Characters** on the home catalog. A link from a safehouse to a character is not part of this decision.
 
 Why: The designer named a sheet that is not a character page, then said it has the character sheet’s abilities and a different set of pages, then answered Design questions 1–12 (2026-11-01). Official blank page 1 is the layout source. The NPCs Relationships list is the Functions template. The Gear flag is the **R?** template. Character list, edit, gutter, blank, and download are the ability templates.
 
 Constraints it imposes:
 
 Record:
-- Tables are owned here and applied from `ensureSchema` plus `backend/server/safehouse/safehouse.sql` in the same change (`schema-on-boot.md`). No character foreign key. No backfill onto characters. No row in `v2CharacterPages`.
+- Tables are owned here and applied from `ensureSchema` plus `backend/server/safehouse/safehouse.sql` in the same change (`schema-on-boot.md`). No character foreign key. No backfill onto characters. No row in `v2CharacterPages`. `safehousePage2` is `safehouse-damage-healing.md`.
 - `safehouses`: `id`, `userID` not null.
 - `safehousePages`: `id`, `safehouseID`, `index`, `pageTypeID`. Several rows per safehouse. `id` is the PK. Do not unique `safehouseID` alone.
 - `safehousePage1`: unique `pageID`; `name varchar(250)` default `'New Safehouse'`; `location varchar(250)` default `''`; `cRankLimit` `wealth` `spaceLimit` `wear` integer, null when empty.
 - `safehousePage1Functions`: `pageID`, `section` (`living` `workspace` `recreational` `defenses`), `name varchar(500)`, `rank` integer null, `r` boolean default false, `space` integer null, `notes varchar(500)`, `index`.
-- Page type id 1 is this sheet. A later safehouse page type is a later decision and a further gutter label. It is not a character `pageTypeID`.
+- Page type id 1 is the Functions sheet. Page type id 2 is Damage Healing (`safehouse-damage-healing.md`). Neither id is a character `pageTypeID`.
 
 Abilities (parallel to the v2 character set; v1 is not the template):
 - **List.** Inside the Your Characters card (`V2CharacterDisplay`), below that card’s character footer, a **Safehouses** block: rows, then its own add/limit footer. Not a character row. Not the v1 card. Logged-out home stays the existing login heading.
-- **Create.** That footer’s add. `POST /api/s` inserts one safehouse and one page type 1 at index 0. Returns the id. The client opens `/s/:id`. Logged-out create is refused. Server does not apply the slot formula; character create does not either (`addV2Character` leaves that check commented).
+- **Create.** That footer’s add. `POST /api/s` inserts one safehouse, one page type 1 at index 0, and one page type 2 at index 1 (`safehouse-damage-healing.md`). Returns the id. The client opens `/s/:id`. Logged-out create is refused. Server does not apply the slot formula; character create does not either (`addV2Character` leaves that check commented). Existing safehouses are not given a type 2.
 - **Slot pool.** Separate from the character count. Same formula: `(patreon * 20) + 10`, and the owner sees `∞`. The footer shows `count/limit`. At the limit the add is the disabled control. Tooltips: `Add New Safehouse`; `You're unable to add a new Safehouse. Upgrade Your Patreon For More.`; `Safehouse Limit. Upgrade Your Patreon For More.`
 - **Catalog row.** Safehouse Name of the first page type 1. Empty stored name displays `New Safehouse`. Extra persisted type-1 names use the character `fa-user` tooltip pattern, one per line, empty extra shown as `New Safehouse`. Row click opens `/s/:id`. Hover preload stores `GET /api/s/:id` in its own cache map, not `characterCache[1]` or `[2]`. Delete is the character row’s two-step confirm. `DELETE /api/s/:id` runs only for the owning `userID`; otherwise `{ message: "You Don't Own This Safehouse" }`.
 - **View.** `GET /api/s/:safehouseID`. A non-numeric id, including `blank`, is `{ message: 'Bad ID' }` and no sheet. Unknown id with no pages is `{ message: 'No Pages' }`. Any caller who can hit the route may view, matching character view. `ownsThisSafehouse` is session user id equals `safehouses.userID`.
-- **Blank.** `/s/blank` is registered before `s/:safehouseID`. One empty page type 1. No fetch, no create, no Save, no field POST. Signed out. Read-only. Hover at rest. Header stays. Sidebar shell stays; Edit, Save, Revert, and Show / Hide Quick Edit Locations hide; Download stays. `character-value` ink is empty, including a stored `0` and a checked **R?**. The wordmark, section labels, slashes, the printed `10`, and the italic hints stay. Document title `Blank - Bonfire Character Vault`. Header icon shell, directly after the character blank link: `Link` to `/s/blank`, tooltip `View Blank Safehouse Sheet`, icon `fa-solid fa-cards-blank`. Do not add a kit icon.
+- **Blank.** `/s/blank` is registered before `s/:safehouseID`. One empty page type 1, then one empty page type 2 (`safehouse-damage-healing.md`). No fetch, no create, no Save, no field POST. Signed out. Read-only. Hover at rest. Header stays. Sidebar shell stays; Edit, Save, Revert, and Show / Hide Quick Edit Locations hide; Download stays. `character-value` ink is empty, including a stored `0` and a checked **R?**. The wordmark, section labels, slashes, the printed `10`, and the italic hints stay. Document title `Blank - Bonfire Character Vault`. Header icon shell, directly after the character blank link: `Link` to `/s/blank`, tooltip `View Blank Safehouse Sheet`, icon `fa-solid fa-cards-blank`. Do not add a kit icon.
 - **Edit.** Owner-only Edit. Save and Revert on that sidebar. `POST /api/s/:id` is the whole safehouse. Owner mismatch refuses. Do not trust a body user id. Failed Save restores the draft, stays in edit, `toast.error`. Whitespace-only name does not POST and stays in edit. Backend writes `'New Safehouse'` when the submitted name is missing or whitespace. Revert exits edit. Save exits edit only after success. Leave-warn only while editing and dirty. Play-time writes do not warn. While editing, field POSTs do not run.
 - **Download.** Same sidebar rules as `download-character.md`, on this view: not owner-gated, visible on the blank, other sidebar buttons locked while the file builds, Quick Edit view forced off, one letter page per `.page`, filename from the catalog name or `Blank`. Implement it on the safehouse shell. Do not change `downloadCharacter.ts`. Do not query `.version-two-shell`.
-- **Gutter.** While editing, under each safehouse card, outside `.page`: resting reorder, `fa-file-circle-plus`, delete. Disclosed: **+ Safehouse** (`fa-plus` plus that text, no tooltip), then far-right `fa-rotate-left` (`Never mind`). That button inserts a blank page type 1 after that card. Local until Save. Cap 15, counted on `pages.length`, including sheets added this session. Sentence `You can only have 15 pages per safehouse sheet.` Same disable, wrapper tooltip, disclosed counter, and Save refusal as `add-page-type-1.md`, with this sentence. The number lives in the safehouse contract, not in `sheetPageCap.ts`. The first page type 1 cannot be removed (`You can never remove this page.`). Other type-1 sheets use the armed delete in `delete-sheet-page.md`. A posted list with no type 1, or a removal that does not stick, is `{ message: "Pages weren't able to be removed" }` and no pages key. A short stored count is `{ message: 'Could not save all sheets' }`. Do not add **+ Safehouse** to the character gutter.
+- **Gutter.** While editing, under each safehouse card, outside `.page`: resting reorder, `fa-file-circle-plus`, delete. Disclosed: **+ Functions**, then **+ Damage Healing** (`fa-plus` plus that text, no tooltip), then far-right `fa-rotate-left` (`Never mind`). **+ Functions** inserts a blank page type 1. **+ Damage Healing** inserts a blank page type 2 (`safehouse-damage-healing.md`). Local until Save. Cap 15, counted on `pages.length`, including sheets added this session. Sentence `You can only have 15 pages per safehouse sheet.` Same disable, wrapper tooltip, disclosed counter, and Save refusal as `add-page-type-1.md`, with this sentence. The number lives in the safehouse contract, not in `sheetPageCap.ts`. The first page type 1 cannot be removed (`You can never remove this page.`). Other type-1 sheets, and every type-2 sheet, use the armed delete in `delete-sheet-page.md`. A posted list with no type 1, or a removal that does not stick, is `{ message: "Pages weren't able to be removed" }` and no pages key. A short stored count is `{ message: 'Could not save all sheets' }`. Do not add **+ Functions** or **+ Damage Healing** to the character gutter.
 - **Quick view.** The character sidebar toggle, on a real safehouse. Hidden on the blank and while editing. It highlights the play-time cells named below.
 
 Page type 1:
@@ -72,7 +72,7 @@ Rejected:
 - Computing C Rank Limit from Location.
 - Putting safehouses in the character slot count, the character cache maps, or `usersCharactersCache` index 0 or 1.
 - A character foreign key.
-- PDF pages 2 and 3 of the template.
+- PDF pages 2 and 3 of the template. (Retained 2026-11-02. Damage Healing is not that layout.)
 - A server slot check the character create does not have.
 - Importing `Relationships.tsx` or the Gear flag class.
 - Casting the function-insert `section` parameter, or computing its next index in JavaScript. (2026-11-02.)
@@ -86,4 +86,13 @@ Rejected:
 - A gray fill on the words **Total Ranks**, HamletOrNot or the Wealth size for those words, or a **Total Ranks** cell that includes the Rank track. (2026-11-02. The face was set back to oldClaude, bold.)
 
 Touches: `app/src/pages/safehouse/`; `app/src/pages/v2/components/sidebar/Sidebar.css`; `app/src/pages/home/`; `app/src/routes/AllRoutes.tsx`; `app/src/components/header/Header.tsx`; `app/src/hooks/UsersSafehousesHook.tsx`; unindexed `app/src/redux/slices/usersCharactersSlice.tsx` and `characterCacheSlice.tsx`; `backend/common/interfaces/safehouse/`; `backend/server/safehouse/`; unindexed `backend/server/vault.ts`; unindexed `backend/server/db/ensureSchema.ts`; `00-START-HERE.yaml`
-TODOs: T-159–T-178
+TODOs: T-159–T-178; Damage Healing: T-179–T-182 (`safehouse-damage-healing.md`)
+
+Revised 2026-11-02 (`safehouse-damage-healing.md`):
+- “The only page type in this decision is safehouse page type 1” — **revised**: type 1 stays Functions. Type 2 is Damage Healing.
+- “A later safehouse page type is a later decision and a further gutter label” — **relocated**: that decision is `safehouse-damage-healing.md`.
+- Create inserts only type 1 at index 0 — **revised**: also type 2 at index 1. Existing safehouses are not backfilled.
+- Blank is one empty type 1 — **revised**: type 1, then type 2.
+- Gutter label **+ Safehouse** inserts type 1 — **revised**: **+ Functions** inserts type 1. **+ Damage Healing** inserts type 2.
+- “Do not add **+ Safehouse** to the character gutter” — **revised**: do not add **+ Functions** or **+ Damage Healing** either.
+- Rejected “PDF pages 2 and 3 of the template” — **retained**.

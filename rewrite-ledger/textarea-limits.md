@@ -8,7 +8,7 @@ Why: The designer answered Design questions 1–6 on 2026-10-30. CSS `overflow: 
 Constraints it imposes:
 - Box: keep each textarea’s current used height. Do not change the page-type-2 note-pane 16-vs-19 numbers, the Contacts live min-height (ledger 18 bands; CSS is `calc(20 * 17.38px)`), the two-line `calc(2 * 17.38px)` notes box, the Gear Notes `calc(6 * 17.38px)` height, the v1 `lines` heights, or the v1 bonus-shell heights. `overflow: hidden` on the textarea and on the view `p` that shows the same string. Do not put `overflow: hidden` on a Gear head or row (`page3-view.md`). `resize: none` where it is not already set. On textarea scroll, set `scrollTop` and `scrollLeft` to 0. Do not refuse input because `scrollHeight` exceeds the box. Remove `field-sizing: content` from the two Discount leftover notes. The view `p` does not grow. Contacts and Gear Notes have no view `p`.
 - Counter: normalize CR and CRLF to LF, then count code points. `string.length` is not the counter. Do not count graphemes. In-limit strings are not rewritten. Over-cap trim keeps the first N code points of the normalized string.
-- Default cap 1350. Known tighter caps, column type unchanged: attack notes and defense notes `varchar(150)`; Favor `divineRelationship` `varchar(500)`. These stay `text` and use 1350: page-type-2 `generalSkillNotes`, `combatSkillNotes`, `abilities`, `burdens`; page-type-3 `contacts` and `notes`. `<input>` limits stay, including Current Emotions 25, description emotions 25, and relationship `value` 500.
+- Default cap 1350. Known tighter caps, column type unchanged: attack notes and defense notes `varchar(150)`; Favor `divineRelationship` `varchar(500)`. These stay `text` and use 1350: page-type-2 `generalSkillNotes`, `combatSkillNotes`, `abilities`, `burdens`; page-type-3 `contacts` and `notes`; safehouse page type 2 `npcs` and `resources` (`safehouse-damage-healing.md`). `<input>` limits stay, including Current Emotions 25, description emotions 25, and relationship `value` 500. The Damage Healing box is 57 bands. That count is owned by `safehouse-damage-healing.md`. Do not retune it from this file.
 - v1 textarea columns are not in this repo. If `information_schema.columns.character_maximum_length` is set, that number is the cap and the column type stays. If the type is `text`, the cap is 1350 and the column stays `text`. Do not guess. v1 Allies, Contacts, & Assets (`cvcharactermain.contacts`) is not the Contacts textarea and is not forced to 1350.
 - Browser: `maxLength` plus a clamp with this counter after IME composition ends. Do not slice during composition. The shared v1 `TextArea` does not hard-code 1350; the caller passes the field cap.
 - Server: refuse the write when the counter is over the cap. Do not slice on the write. Same `{ success: false }` shape as an invalid Current Emotions field write; full Save does not persist that over-cap textarea string. Boot trim is the only trim (`schema-on-boot.md`).
@@ -25,6 +25,10 @@ Rejected:
 - Grapheme or UTF-16 counts.
 - Silent slice of a new over-cap write.
 - A new `app/src/shared/` layer for this constant.
+
+Revised 2026-11-02 (`safehouse-damage-healing.md`):
+- The 1350 `text` list stopped at page-type-3 `contacts` and `notes` — **revised**: also safehouse `npcs` and `resources`. The 57-band box is not a textarea-limits height. It stays on `safehouse-damage-healing.md`.
+- “Server refuses an over-cap write. Do not slice” — **retained** for these two strings.
 
 Touches: `backend/common/textareaLimits.ts`; v1 `app/src/components/textArea/`; v1 page-one / page-two / page-three textarea callers; v2 page-type-1 Attacks, Defenses, Favor; v2 page-type-2 GeneralSkills, CombatSkills, NotesPanes; v2 page-type-3 Contacts and Gear Notes; `backend/server/v2/edit/`; `backend/server/v1/controllers/edit/`; `backend/server/v1/controllers/quickEdit/`; unindexed `backend/server/db/ensureSchema.ts`
 TODOs: T-134–T-139

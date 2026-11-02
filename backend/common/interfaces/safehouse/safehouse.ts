@@ -60,12 +60,20 @@ export interface SafehousePage1 {
     functions: SafehouseFunctions
 }
 
+export interface SafehousePage2 {
+    type: 2,
+    pageID: number,
+    key?: string,
+    npcs: string,
+    resources: string
+}
+
 export interface SafehouseMissingPage {
     type: 404,
     pageID: number
 }
 
-export type SafehousePage = SafehousePage1 | SafehouseMissingPage
+export type SafehousePage = SafehousePage1 | SafehousePage2 | SafehouseMissingPage
 
 export interface Safehouse {
     id: number,
@@ -86,6 +94,16 @@ export function emptyFunctions(): SafehouseFunctions {
         workspace: [],
         recreational: [],
         defenses: []
+    }
+}
+
+export function emptyPage2(pageID: number, key?: string): SafehousePage2 {
+    return {
+        type: 2,
+        pageID,
+        key,
+        npcs: '',
+        resources: ''
     }
 }
 
@@ -164,6 +182,8 @@ export type SafehouseFieldAttribute =
     | 'safehouseWealth'
     | 'safehouseSpaceLimit'
     | 'safehouseWear'
+    | 'safehouseNpcs'
+    | 'safehouseResources'
 
 export interface SafehouseFunctionInsertValue {
     section: SafehouseSection,
