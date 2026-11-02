@@ -61,7 +61,7 @@ function SafehouseRow({ safehouse, onDelete }: { safehouse: SafehouseHomeInfo, o
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={extras.map(extraName => extraName.trim() ? extraName : 'New Safehouse').join('\n')}
                 >
-                    <i className="fa-solid fa-user"></i>
+                    <i className="fa-solid fa-house-heart"></i>
                 </span>
             ) : (
                 <span></span>
