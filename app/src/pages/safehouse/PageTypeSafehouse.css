@@ -15,7 +15,11 @@
 }
 
 .safehouse-header label {
-    display: block;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: end;
+    align-content: start;
+    column-gap: 8px;
     margin-bottom: 6px;
 }
 
@@ -44,6 +48,7 @@
 
 .safehouse-header em {
     display: block;
+    grid-column: 1 / -1;
     font-style: italic;
     font-size: 12px;
 }
@@ -63,6 +68,7 @@
     grid-template-columns: var(--safehouse-columns);
     grid-template-rows: 19px 19px;
     margin-top: 0;
+    border-top: 1px solid #323232;
 }
 
 .safehouse-footer-name {
@@ -73,10 +79,8 @@
     min-width: 0;
 }
 
-.safehouse-footer-wealth,
 .safehouse-footer-space-label,
 .safehouse-footer-upkeep-label,
-.safehouse-footer-wear-label,
 .safehouse-footer-slash,
 .safehouse-footer-total,
 .safehouse-footer-ten {
@@ -87,7 +91,9 @@
 .safehouse-footer-wealth {
     display: flex;
     align-items: center;
+    font-family: 'HamletOrNot';
     font-size: 21px;
+    line-height: 1;
     padding-left: 2px;
 }
 
@@ -209,7 +215,9 @@
     grid-row: 1 / span 2;
     display: flex;
     align-items: center;
+    font-family: 'HamletOrNot';
     font-size: 23px;
+    line-height: 1;
     padding-right: 4px;
 }
 
