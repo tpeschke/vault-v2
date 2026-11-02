@@ -120,12 +120,11 @@
 }
 
 .safehouse-footer-rank-ruin {
-    grid-column: 2 / span 2;
+    grid-column: 3 / span 2;
     grid-row: 2;
-    background: #f3f3f3;
     border-top: 1px solid #bdbdbd;
     overflow: hidden;
-    font-family: 'oldClaude';
+    font-family: 'HamletOrNot';
     font-size: 10px;
     line-height: 19px;
     white-space: nowrap;
@@ -139,8 +138,9 @@
 }
 
 .safehouse-footer-total {
-    grid-column: 4;
+    grid-column: 2;
     grid-row: 2;
+    background: #f3f3f3;
     border-top: 1px solid #bdbdbd;
 }
 

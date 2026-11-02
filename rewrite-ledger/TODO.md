@@ -5,35 +5,6 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
-### T-177: Give Recreational Space an eleventh row
-status: proposed
-source: rewrite-ledger/safehouse.md, revised 2026-11-02
-why: Recreational Space paints 10 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
-scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, `SAFEHOUSE_SHEET_MAX`, the row pitch, or the footer.
-steps:
-1. Set `recreational` to 11. Leave `living` 10, `workspace` 11, and `defenses` 15. Leave `SAFEHOUSE_SHEET_MAX` at 15.
-done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `recreational: 11` and finds no `recreational: 10`. Grep finds `living: 10`, `workspace: 11`, `defenses: 15`, and `SAFEHOUSE_SHEET_MAX = 15`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
-depends on: none
-open questions: none
-deviations from design: none
-result:
-
-### T-176: Move the safehouse rank sum, space sum, and Total Ranks
-status: proposed
-source: rewrite-ledger/safehouse.md, revised 2026-11-02
-why: The rank sum sits in the Rank top cell. The words **Total Ranks** sit in the gray Rank+Ruin bottom cell in oldClaude. The space sum sits in the Space bottom cell. The rank sum belongs in the Rank cell directly below. The words belong under the ruin count and the space sum, in HamletOrNot, on the sheet background. Those two sums are Kalam on gray.
-scope: `app/src/pages/safehouse/PageTypeSafehouse.tsx` and `PageTypeSafehouse.css`, the Rank, Ruin, and Space footer cells. Owner: `safehouse.md`. Do not edit `backend/common/interfaces/safehouse/safehouse.ts`, `editSafehouseField.ts`, `Functions.tsx`, or the Upkeep label string. Do not change the helpers, the caps, the header, or the sidebar. Do not give the ruin count a gray fill. Do not wrap the words in `p.character-value`.
-steps:
-1. Leave `.safehouse-footer-rank` empty at column 2, row 1. Move the rank-sum `p.character-value` into `.safehouse-footer-total`. Place that cell at column 2, row 2, with `background: #f3f3f3` and its `border-top`. The `p` stays Kalam through the existing footer `p.character-value` rule and `blankInk`.
-2. Move the space-sum `p.character-value` into `.safehouse-footer-space`. Leave that cell at column 4, row 1, with `background: #f3f3f3`.
-3. Leave the words **Total Ranks** as text in `.safehouse-footer-rank-ruin`. Place that cell at `grid-column: 3 / span 2`, `grid-row: 2`. Remove its gray background. Set `font-family: 'HamletOrNot'`, `font-size: 10px`, and `line-height: 19px`. Keep `overflow: hidden`, `white-space: nowrap`, `padding-left: 2px`, and `border-top: 1px solid #bdbdbd`.
-4. Keep the shared `border-left` on these cells. The empty Rank top and the rank-sum cell carry the name|Rank rule. The label’s left edge is the Rank|Ruin rule on both rows. The Space top cell’s left edge is the Ruin|Space rule, and that rule stops on the bottom row because the label spans Ruin and Space. The words stay inside the cell.
-done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `PageTypeSafehouse.tsx` finds `Total Ranks` inside `safehouse-footer-rank-ruin`, finds `blankInk(isBlank, totalRanks)` inside `safehouse-footer-total`, finds `blankInk(isBlank, totalSpace)` inside `safehouse-footer-space`, and finds no `totalRanks` in `.safehouse-footer-rank`. Grep of `PageTypeSafehouse.css` finds `HamletOrNot` on `.safehouse-footer-rank-ruin`, finds no `oldClaude` and no `#f3f3f3` on that rule, finds `#f3f3f3` on `.safehouse-footer-total`, and finds `grid-column: 3 / span 2` on `.safehouse-footer-rank-ruin`. The Upkeep `em` text is still `(1/10th total Ranks + # in Ruin) gc`. Grep of `safehouse.ts` finds `safehouseUpkeep` still dividing by 10.
-depends on: none
-open questions: none
-deviations from design: none
-result:
-
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
@@ -49,6 +20,35 @@ deviations from design: Left blocked. The design chose the full POST and did not
 result:
 
 ## Done
+
+### T-177: Give Recreational Space an eleventh row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Recreational Space paints 10 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, `SAFEHOUSE_SHEET_MAX`, the row pitch, or the footer.
+steps:
+1. Set `recreational` to 11. Leave `living` 10, `workspace` 11, and `defenses` 15. Leave `SAFEHOUSE_SHEET_MAX` at 15.
+done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `recreational: 11` and finds no `recreational: 10`. Grep finds `living: 10`, `workspace: 11`, `defenses: 15`, and `SAFEHOUSE_SHEET_MAX = 15`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: Recreational Space paints 11 rows. Living Space 10, Workspace 11, and Defenses 15 are unchanged. `SAFEHOUSE_SHEET_MAX` stays 15. `tsc -p backend/common` exits 0. The field insert does not read the cap.
+
+### T-176: Move the safehouse rank sum, space sum, and Total Ranks
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: The rank sum sits in the Rank top cell. The words **Total Ranks** sit in the gray Rank+Ruin bottom cell in oldClaude. The space sum sits in the Space bottom cell. The rank sum belongs in the Rank cell directly below. The words belong under the ruin count and the space sum, in HamletOrNot, on the sheet background. Those two sums are Kalam on gray.
+scope: `app/src/pages/safehouse/PageTypeSafehouse.tsx` and `PageTypeSafehouse.css`, the Rank, Ruin, and Space footer cells. Owner: `safehouse.md`. Do not edit `backend/common/interfaces/safehouse/safehouse.ts`, `editSafehouseField.ts`, `Functions.tsx`, or the Upkeep label string. Do not change the helpers, the caps, the header, or the sidebar. Do not give the ruin count a gray fill. Do not wrap the words in `p.character-value`.
+steps:
+1. Leave `.safehouse-footer-rank` empty at column 2, row 1. Move the rank-sum `p.character-value` into `.safehouse-footer-total`. Place that cell at column 2, row 2, with `background: #f3f3f3` and its `border-top`. The `p` stays Kalam through the existing footer `p.character-value` rule and `blankInk`.
+2. Move the space-sum `p.character-value` into `.safehouse-footer-space`. Leave that cell at column 4, row 1, with `background: #f3f3f3`.
+3. Leave the words **Total Ranks** as text in `.safehouse-footer-rank-ruin`. Place that cell at `grid-column: 3 / span 2`, `grid-row: 2`. Remove its gray background. Set `font-family: 'HamletOrNot'`, `font-size: 10px`, and `line-height: 19px`. Keep `overflow: hidden`, `white-space: nowrap`, `padding-left: 2px`, and `border-top: 1px solid #bdbdbd`.
+4. Keep the shared `border-left` on these cells. The empty Rank top and the rank-sum cell carry the name|Rank rule. The label’s left edge is the Rank|Ruin rule on both rows. The Space top cell’s left edge is the Ruin|Space rule, and that rule stops on the bottom row because the label spans Ruin and Space. The words stay inside the cell.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `PageTypeSafehouse.tsx` finds `Total Ranks` inside `safehouse-footer-rank-ruin`, finds `blankInk(isBlank, totalRanks)` inside `safehouse-footer-total`, finds `blankInk(isBlank, totalSpace)` inside `safehouse-footer-space`, and finds no `totalRanks` in `.safehouse-footer-rank`. Grep of `PageTypeSafehouse.css` finds `HamletOrNot` on `.safehouse-footer-rank-ruin`, finds no `oldClaude` and no `#f3f3f3` on that rule, finds `#f3f3f3` on `.safehouse-footer-total`, and finds `grid-column: 3 / span 2` on `.safehouse-footer-rank-ruin`. The Upkeep `em` text is still `(1/10th total Ranks + # in Ruin) gc`. Grep of `safehouse.ts` finds `safehouseUpkeep` still dividing by 10.
+depends on: none
+open questions: none
+deviations from design: none
+result: On `/s/blank` the rank-sum cell is the 51px gray cell directly under the empty Rank top, and its `p` is Kalam. The space-sum `p` is in the gray Space top cell. **Total Ranks** is HamletOrNot at 10px, with no gray fill, and its box starts on the Ruin track and ends on the Space track, 1px before the slash. App tsc exits 0. `safehouseUpkeep` still divides by 10. The Upkeep subtitle is unchanged.
 
 ### T-175: Give Defenses a fifteenth row
 status: done

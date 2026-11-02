@@ -109,16 +109,16 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
                         onBlur={event => updates.blurFooter(page.pageID, 'wealth', numberFromInput(event.target.value))}
                     />
                 </div>
-                <div className="safehouse-footer-rank">
-                    <p className="character-value">{blankInk(isBlank, totalRanks)}</p>
-                </div>
+                <div className="safehouse-footer-rank"></div>
                 <div className="safehouse-footer-ruin">
                     <p className="character-value">{blankInk(isBlank, ruinCount)}</p>
                 </div>
                 <div className="safehouse-footer-rank-ruin">Total Ranks</div>
-                <div className="safehouse-footer-space"></div>
-                <div className="safehouse-footer-total">
+                <div className="safehouse-footer-space">
                     <p className="character-value">{blankInk(isBlank, totalSpace)}</p>
+                </div>
+                <div className="safehouse-footer-total">
+                    <p className="character-value">{blankInk(isBlank, totalRanks)}</p>
                 </div>
                 <div className="safehouse-footer-notes">
                     <span className="safehouse-footer-slash">/</span>
