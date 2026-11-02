@@ -5,6 +5,21 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-170: Raise the safehouse footer by one Defenses row
+status: proposed
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Defenses paints 15 data rows, so the footer sits one 17.38px row too low. Wealth and Wear are oldClaude. The band has no top edge.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. `app/src/pages/safehouse/PageTypeSafehouse.css`, the Wealth and Wear labels and `.safehouse-footer`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, the row pitch, or the column tracks.
+steps:
+1. Set `defenses` to 14. Leave `living` 10, `workspace` 11, and `recreational` 10.
+2. Set `font-family: 'HamletOrNot'` on `.safehouse-footer-wealth` and `.safehouse-footer-wear-label`. Leave the sizes at 21px and 23px. Leave letter-spacing. Leave the other footer labels oldClaude.
+3. Add `border-top: 1px solid #323232` on `.safehouse-footer`. Leave the two row tracks at 19px. Leave the `#bdbdbd` column rules.
+done when: `npx tsc --noEmit -p backend/common` exits 0. `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `safehouse.ts` finds `defenses: 14` and finds no `defenses: 15`. Grep of `PageTypeSafehouse.css` finds `HamletOrNot` on the Wealth rule and the Wear label rule, and finds `border-top: 1px solid #323232` on `.safehouse-footer`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: T-168
+open questions: none
+deviations from design: none
+result:
+
 ### T-169: Bind function-insert section twice
 status: proposed
 source: rewrite-ledger/safehouse.md, revised 2026-11-02
