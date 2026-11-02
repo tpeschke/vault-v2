@@ -46,6 +46,8 @@ Page type 1:
 
 Field attributes, shipped with the controls: `safehouseFunctionName`, `safehouseFunctionRank`, `safehouseFunctionR`, `safehouseFunctionSpace`, `safehouseFunctionNotes` are `{ id, ... }` for that cell. `safehouseFunctionInsert` is `{ section, name, rank, r, space, notes }` and returns `id`. `safehouseFunctionDelete` is `{ id }`. `safehouseWealth`, `safehouseSpaceLimit`, `safehouseWear` are the page’s number. Refuse a name or notes string longer than 500.
 
+The function insert binds `section` twice. `$2` is only the inserted value. `$8` is only the comparison `section = $8` in the next-index subquery. `$1` stays shared. A missing returned id is still `Invalid field`. (Revised 2026-11-02: `$2` was also that comparison. Postgres rejects the reuse as `text` versus `varchar`, `42P08`.)
+
 HTTP, all under `/api/s`, mounted from `vault.ts`:
 - `GET /api/s` list for the session user
 - `POST /api/s` create
@@ -71,6 +73,7 @@ Rejected:
 - PDF pages 2 and 3 of the template.
 - A server slot check the character create does not have.
 - Importing `Relationships.tsx` or the Gear flag class.
+- Casting the function-insert `section` parameter, or computing its next index in JavaScript. (2026-11-02.)
 
 Touches: `app/src/pages/safehouse/`; `app/src/pages/home/`; `app/src/routes/AllRoutes.tsx`; `app/src/components/header/Header.tsx`; `app/src/hooks/UsersSafehousesHook.tsx`; unindexed `app/src/redux/slices/usersCharactersSlice.tsx` and `characterCacheSlice.tsx`; `backend/common/interfaces/safehouse/`; `backend/server/safehouse/`; unindexed `backend/server/vault.ts`; unindexed `backend/server/db/ensureSchema.ts`; `00-START-HERE.yaml`
-TODOs: T-159–T-167, T-168
+TODOs: T-159–T-169

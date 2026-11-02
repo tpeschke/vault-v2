@@ -5,6 +5,21 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-169: Bind function-insert section twice
+status: proposed
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: `safehouseFunctionInsert` uses `$2` as the `section` value and as `section = $2`. Postgres deduces `text` and `varchar` for that one parameter and returns `42P08`. `query()` swallows it, so the handler answers `Invalid field`.
+scope: `backend/server/safehouse/edit/editSafehouseField.ts`, the `safehouseFunctionInsert` statement only. Owner: `safehouse.md`. Do not edit `editSafehouse.ts`, the cell updates, the client, `database.ts`, or `safehouse.sql`. Do not add a cast.
+steps:
+1. Keep the insert columns and the `coalesce(max(index), -1) + 1` subquery. Compare `section` to `$8` only. Leave `$1` shared.
+2. Pass `row.section` as both `$2` and `$8`. Leave the other six values in their current order.
+3. Leave the `Invalid field` refusal when the returned id is not greater than 0.
+done when: Grep of `editSafehouseField.ts` finds `section = $8` and finds no `section = $2`. Grep of that insert’s parameter array finds `row.section` twice. Grep of `::varchar` and `::text` under `backend/server/safehouse/` is 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`.
+depends on: T-165
+open questions: none
+deviations from design: none
+result:
+
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
