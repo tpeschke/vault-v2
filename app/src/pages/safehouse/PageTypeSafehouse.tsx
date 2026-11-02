@@ -132,7 +132,7 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
                     </div>
                     <div className="safehouse-footer-copy">
                         <span className="safehouse-footer-space-label">Space Limit</span>
-                        <span className="safehouse-footer-upkeep-label">Upkeep <em>1/10th total Ranks in gc</em></span>
+                        <span className="safehouse-footer-upkeep-label">Upkeep <em>(1/10th total Ranks + # in Ruin) gc</em></span>
                         <span className="safehouse-footer-wear-label">Wear</span>
                     </div>
                     <div className="safehouse-footer-wear">

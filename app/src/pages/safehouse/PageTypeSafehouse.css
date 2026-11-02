@@ -47,6 +47,7 @@
 }
 
 .safehouse-header em {
+    text-align: right;
     display: block;
     grid-column: 1 / -1;
     font-style: italic;
@@ -84,6 +85,7 @@
 .safehouse-footer-slash,
 .safehouse-footer-total,
 .safehouse-footer-ten {
+    font-weight: bold;
     font-family: 'oldClaude';
     line-height: 1;
 }
@@ -205,6 +207,7 @@
 }
 
 .safehouse-footer em {
+    font-weight: 100;
     display: inline;
     font-style: italic;
     font-size: 10px;
