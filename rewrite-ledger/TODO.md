@@ -5,6 +5,21 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-174: Split the safehouse footer totals
+status: proposed
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Total Ranks counts checked Ruin boxes, and that count feeds Upkeep. The words **Total Ranks** sit in the bottom of the Space column. The cell under the ruin count is empty, and the Space column has no total.
+scope: `safehouseTotalRanks` and `safehouseUpkeep` in `backend/common/interfaces/safehouse/safehouse.ts`. Add `safehouseRuinCount` and `safehouseTotalSpace` beside them. `app/src/pages/safehouse/PageTypeSafehouse.tsx` and `app/src/pages/safehouse/PageTypeSafehouse.css`, the Rank, Ruin, and Space footer cells. Owner: `safehouse.md`. Do not edit `editSafehouseField.ts`, `safehouse.sql`, or `Functions.tsx`. Do not store a sum. Do not add a field attribute. Do not sum a row only when `r` is true. Do not add a per-section total.
+steps:
+1. Change `safehouseTotalRanks` to the sum of numeric `rank` across `living`, `workspace`, `recreational`, and `defenses`. An empty rank adds 0. Add `safehouseRuinCount` as the count of rows whose `r` is true. Add `safehouseTotalSpace` as the sum of numeric `space`, with an empty space adding 0. Leave `safehouseUpkeep` as it is. Pass the rank sum into it.
+2. Rank top (`.safehouse-footer-rank`): `p.character-value` of the rank sum. Ruin top (`.safehouse-footer-ruin`): `p.character-value` of the ruin count. Rank and Ruin bottom (`.safehouse-footer-rank-ruin`): the words **Total Ranks**, about 10px, oldClaude. Leave that cell one gray cell and leave the Rank|Ruin rule stopped at the split. Do not let the words spill into the slash.
+3. Leave the Space top (`.safehouse-footer-space`) empty and `#f3f3f3`. Space bottom (`.safehouse-footer-total`): `p.character-value` of the space sum. Remove `overflow: visible` from that cell. Pass all three numerals through `blankInk`. Do not highlight them for quick edit.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `row.rank` inside `safehouseTotalRanks` and finds no `row.r` there. Grep finds `safehouseRuinCount` using `row.r`, and `safehouseTotalSpace` using `row.space`. Grep of `PageTypeSafehouse.tsx` finds `safehouseUpkeep` called with the rank sum, and finds `Total Ranks` inside `safehouse-footer-rank-ruin`. Grep of `PageTypeSafehouse.css` finds no `overflow: visible` on `.safehouse-footer-total`. Grep of `editSafehouseField.ts` finds no `safehouseTotalSpace` and no `safehouseRuinCount`.
+depends on: none
+open questions: none
+deviations from design: none
+result:
+
 ### T-173: Drop the black fill on a checked Ruin box
 status: proposed
 source: rewrite-ledger/safehouse.md, revised 2026-11-02
