@@ -1,7 +1,7 @@
 .safehouse-section-headers,
 .safehouse-function-row {
     display: grid;
-    grid-template-columns: 19% 38px 19px 38px minmax(0, 1fr);
+    grid-template-columns: var(--safehouse-columns);
     box-sizing: border-box;
 }
 

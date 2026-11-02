@@ -96,8 +96,8 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
                 />
             ))}
             <div className="safehouse-footer">
-                <div>
-                    <span>Wealth</span>
+                <div className="safehouse-footer-name">
+                    <span className="safehouse-footer-wealth">Wealth</span>
                     <input
                         className="character-value"
                         type="number"
@@ -106,38 +106,46 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
                         onChange={event => updates.setFooter(page.pageID, 'wealth', numberFromInput(event.target.value))}
                         onBlur={event => updates.blurFooter(page.pageID, 'wealth', numberFromInput(event.target.value))}
                     />
-                    <span>/</span>
-                    <span>Space Limit</span>
-                    <input
-                        className="character-value"
-                        type="number"
-                        readOnly={isBlank}
-                        value={blankInk(isBlank, page.spaceLimit)}
-                        onChange={event => updates.setFooter(page.pageID, 'spaceLimit', numberFromInput(event.target.value))}
-                        onBlur={event => updates.blurFooter(page.pageID, 'spaceLimit', numberFromInput(event.target.value))}
-                    />
                 </div>
-                <div>
-                    <span>Wear</span>
-                    <input
-                        className="character-value"
-                        type="number"
-                        readOnly={isBlank}
-                        value={blankInk(isBlank, page.wear)}
-                        onChange={event => updates.setFooter(page.pageID, 'wear', numberFromInput(event.target.value))}
-                        onBlur={event => updates.blurFooter(page.pageID, 'wear', numberFromInput(event.target.value))}
-                    />
-                    <span>/</span>
-                    <span>10</span>
-                </div>
-                <div>
-                    <span>Total Ranks</span>
+                <div className="safehouse-footer-rank"></div>
+                <div className="safehouse-footer-ruin">
                     <p className="character-value">{blankInk(isBlank, total)}</p>
                 </div>
-                <div>
-                    <span>Upkeep</span>
-                    <p className="character-value">{blankInk(isBlank, upkeep)}</p>
-                    <em>1/10th total Ranks in gc</em>
+                <div className="safehouse-footer-rank-ruin"></div>
+                <div className="safehouse-footer-space"></div>
+                <div className="safehouse-footer-total">Total Ranks</div>
+                <div className="safehouse-footer-notes">
+                    <span className="safehouse-footer-slash">/</span>
+                    <div className="safehouse-footer-slash-gap"></div>
+                    <div className="safehouse-footer-space-limit">
+                        <input
+                            className="character-value"
+                            type="number"
+                            readOnly={isBlank}
+                            value={blankInk(isBlank, page.spaceLimit)}
+                            onChange={event => updates.setFooter(page.pageID, 'spaceLimit', numberFromInput(event.target.value))}
+                            onBlur={event => updates.blurFooter(page.pageID, 'spaceLimit', numberFromInput(event.target.value))}
+                        />
+                    </div>
+                    <div className="safehouse-footer-upkeep">
+                        <p className="character-value">{blankInk(isBlank, upkeep)}</p>
+                    </div>
+                    <div className="safehouse-footer-copy">
+                        <span className="safehouse-footer-space-label">Space Limit</span>
+                        <span className="safehouse-footer-upkeep-label">Upkeep <em>1/10th total Ranks in gc</em></span>
+                        <span className="safehouse-footer-wear-label">Wear</span>
+                    </div>
+                    <div className="safehouse-footer-wear">
+                        <input
+                            className="character-value"
+                            type="number"
+                            readOnly={isBlank}
+                            value={blankInk(isBlank, page.wear)}
+                            onChange={event => updates.setFooter(page.pageID, 'wear', numberFromInput(event.target.value))}
+                            onBlur={event => updates.blurFooter(page.pageID, 'wear', numberFromInput(event.target.value))}
+                        />
+                    </div>
+                    <div className="safehouse-footer-ten"><span>/</span><span>10</span></div>
                 </div>
             </div>
         </div>

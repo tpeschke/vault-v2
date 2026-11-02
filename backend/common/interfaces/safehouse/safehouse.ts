@@ -105,15 +105,15 @@ export function emptyPage1(pageID: number, key?: string): SafehousePage1 {
 }
 
 export function safehouseTotalRanks(page: SafehousePage1): number {
-    let sum = 0
+    let count = 0
     for (const section of SAFEHOUSE_SECTIONS) {
         for (const row of page.functions[section]) {
-            if (typeof row.rank === 'number' && Number.isFinite(row.rank)) {
-                sum += row.rank
+            if (row.r) {
+                count += 1
             }
         }
     }
-    return sum
+    return count
 }
 
 export function safehouseUpkeep(total: number): string {

@@ -5,21 +5,6 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
-### T-168: Match the safehouse footer to the template
-status: proposed
-source: rewrite-ledger/safehouse.md, revised 2026-11-02
-why: The shipped footer is one label row, and Total Ranks sums the Rank column. The template is a two-row band on the function rules. The Ruin-column cell counts checked Ruin boxes. The Upkeep numeral is the gray cell directly left of the word Upkeep.
-scope: `app/src/pages/safehouse/Functions.css`, `app/src/pages/safehouse/PageTypeSafehouse.css`, `app/src/pages/safehouse/PageTypeSafehouse.tsx`, `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, the header labels, `editSafehouseField.ts`, `safehouse.sql`, `downloadSafehouse.ts`, `downloadCharacter.ts`, `V2View.tsx`, or `pageType3/`. Do not add a field attribute, a column, or an L1 key.
-steps:
-1. Set one track list, `--safehouse-columns: 19% 51px 26px 51px minmax(0, 1fr)`, on `.page-type-safehouse`. Use it for `.safehouse-section-headers`, `.safehouse-function-row`, and the footer’s outer grid. Leave the 16px card padding. Function rows stay 17.38px. The footer is two rows of 19px. Rules stay `1px solid #bdbdbd` and continue through the footer on those tracks.
-2. Replace the flex footer with the band in `safehouse.md`. Name track, both rows: **Wealth** at about 21px oldClaude on the left half, the wealth input on the right half. Rank top empty. Ruin top is `p.character-value` from `safehouseTotalRanks`. Rank and Ruin bottom are one empty `#f3f3f3` cell, and the Rank|Ruin rule stops at the split. Space top is empty `#f3f3f3`. Space bottom is chrome **Total Ranks** at about 10px, overflow visible across the cell under the slash. Notes, from the left: 26px `/` at about 10px on the top row; a 78px `#f3f3f3` column with the Space Limit input on top and the Upkeep `p.character-value` on the bottom; **Space Limit** at about 10px on the left of the remaining text and **Wear** at about 23px on the right, with **Upkeep** and italic `1/10th total Ranks in gc` on the bottom line; a 52px `#f3f3f3` wear input spanning both rows; `/` and **10** at about 23px spanning both rows. Values stay Kalam.
-3. Change `safehouseTotalRanks` to the count of rows whose `r` is true across `living`, `workspace`, `recreational`, and `defenses`. Do not add `rank`. Leave `safehouseUpkeep` dividing that count by 10. Pass both through `blankInk`. Wealth, Space Limit, and Wear stay the play-time inputs they are. Do not POST the count or Upkeep. Do not highlight either computed cell for quick edit.
-done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep of `Functions.css` finds `var(--safehouse-columns)` and finds no `38px 19px 38px`. Grep of `safehouse.ts` finds `row.r` inside `safehouseTotalRanks` and finds no `row.rank` there. Grep of `PageTypeSafehouse.tsx` finds `1/10th total Ranks in gc` and finds `Upkeep`. Grep of `editSafehouseField.ts` finds no `safehouseTotal` and no `safehouseUpkeep`. Grep of `Functions.tsx` finds `fa-house-crack` and finds no `>R?<`.
-depends on: T-159
-open questions: none
-deviations from design: The Ruin header icon and the header `strong` labels are already on this branch. This TODO does not redo them.
-result:
-
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
@@ -35,6 +20,21 @@ deviations from design: Left blocked. The design chose the full POST and did not
 result:
 
 ## Done
+
+### T-168: Match the safehouse footer to the template
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: The shipped footer is one label row, and Total Ranks sums the Rank column. The template is a two-row band on the function rules. The Ruin-column cell counts checked Ruin boxes. The Upkeep numeral is the gray cell directly left of the word Upkeep.
+scope: `app/src/pages/safehouse/Functions.css`, `app/src/pages/safehouse/PageTypeSafehouse.css`, `app/src/pages/safehouse/PageTypeSafehouse.tsx`, `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, the header labels, `editSafehouseField.ts`, `safehouse.sql`, `downloadSafehouse.ts`, `downloadCharacter.ts`, `V2View.tsx`, or `pageType3/`. Do not add a field attribute, a column, or an L1 key.
+steps:
+1. Set one track list, `--safehouse-columns: 19% 51px 26px 51px minmax(0, 1fr)`, on `.page-type-safehouse`. Use it for `.safehouse-section-headers`, `.safehouse-function-row`, and the footer’s outer grid. Leave the 16px card padding. Function rows stay 17.38px. The footer is two rows of 19px. Rules stay `1px solid #bdbdbd` and continue through the footer on those tracks.
+2. Replace the flex footer with the band in `safehouse.md`. Name track, both rows: **Wealth** at about 21px oldClaude on the left half, the wealth input on the right half. Rank top empty. Ruin top is `p.character-value` from `safehouseTotalRanks`. Rank and Ruin bottom are one empty `#f3f3f3` cell, and the Rank|Ruin rule stops at the split. Space top is empty `#f3f3f3`. Space bottom is chrome **Total Ranks** at about 10px, overflow visible across the cell under the slash. Notes, from the left: 26px `/` at about 10px on the top row; a 78px `#f3f3f3` column with the Space Limit input on top and the Upkeep `p.character-value` on the bottom; **Space Limit** at about 10px on the left of the remaining text and **Wear** at about 23px on the right, with **Upkeep** and italic `1/10th total Ranks in gc` on the bottom line; a 52px `#f3f3f3` wear input spanning both rows; `/` and **10** at about 23px spanning both rows. Values stay Kalam.
+3. Change `safehouseTotalRanks` to the count of rows whose `r` is true across `living`, `workspace`, `recreational`, and `defenses`. Do not add `rank`. Leave `safehouseUpkeep` dividing that count by 10. Pass both through `blankInk`. Wealth, Space Limit, and Wear stay the play-time inputs they are. Do not POST the count or Upkeep. Do not highlight either computed cell for quick edit.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep of `Functions.css` finds `var(--safehouse-columns)` and finds no `38px 19px 38px`. Grep of `safehouse.ts` finds `row.r` inside `safehouseTotalRanks` and finds no `row.rank` there. Grep of `PageTypeSafehouse.tsx` finds `1/10th total Ranks in gc` and finds `Upkeep`. Grep of `editSafehouseField.ts` finds no `safehouseTotal` and no `safehouseUpkeep`. Grep of `Functions.tsx` finds `fa-house-crack` and finds no `>R?<`.
+depends on: T-159
+open questions: none
+deviations from design: The Ruin header icon and the header `strong` labels are already on this branch. This TODO does not redo them.
+result: The footer is the two-row band on `--safehouse-columns`. Header cells and footer cells share x positions (delta 0). `safehouseTotalRanks` counts `row.r`. Two checked rows and one ranked unchecked row count as 2, and upkeep of that count is `0.2`. On `/s/blank` the two computed cells are empty `p` nodes, and quick-edit washes the three inputs only. App tsc and `tsc -p backend/common` exit 0.
 
 ### T-159: Safehouse tables and page-type-1 contract
 status: done
