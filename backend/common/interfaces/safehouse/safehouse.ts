@@ -8,7 +8,7 @@ export const SAFEHOUSE_SECTION_CAPS: Record<SafehouseSection, number> = {
     living: 10,
     workspace: 11,
     recreational: 10,
-    defenses: 14
+    defenses: 15
 }
 
 export const SAFEHOUSE_SHEET_MAX = 15
@@ -105,6 +105,18 @@ export function emptyPage1(pageID: number, key?: string): SafehousePage1 {
 }
 
 export function safehouseTotalRanks(page: SafehousePage1): number {
+    let sum = 0
+    for (const section of SAFEHOUSE_SECTIONS) {
+        for (const row of page.functions[section]) {
+            if (typeof row.rank === 'number') {
+                sum += row.rank
+            }
+        }
+    }
+    return sum
+}
+
+export function safehouseRuinCount(page: SafehousePage1): number {
     let count = 0
     for (const section of SAFEHOUSE_SECTIONS) {
         for (const row of page.functions[section]) {
@@ -114,6 +126,18 @@ export function safehouseTotalRanks(page: SafehousePage1): number {
         }
     }
     return count
+}
+
+export function safehouseTotalSpace(page: SafehousePage1): number {
+    let sum = 0
+    for (const section of SAFEHOUSE_SECTIONS) {
+        for (const row of page.functions[section]) {
+            if (typeof row.space === 'number') {
+                sum += row.space
+            }
+        }
+    }
+    return sum
 }
 
 export function safehouseUpkeep(total: number): string {

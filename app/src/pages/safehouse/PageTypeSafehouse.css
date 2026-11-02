@@ -83,7 +83,6 @@
 .safehouse-footer-space-label,
 .safehouse-footer-upkeep-label,
 .safehouse-footer-slash,
-.safehouse-footer-total,
 .safehouse-footer-ten {
     font-weight: bold;
     font-family: 'oldClaude';
@@ -125,6 +124,12 @@
     grid-row: 2;
     background: #f3f3f3;
     border-top: 1px solid #bdbdbd;
+    overflow: hidden;
+    font-family: 'oldClaude';
+    font-size: 10px;
+    line-height: 19px;
+    white-space: nowrap;
+    padding-left: 2px;
 }
 
 .safehouse-footer-space {
@@ -136,14 +141,7 @@
 .safehouse-footer-total {
     grid-column: 4;
     grid-row: 2;
-    position: relative;
-    z-index: 1;
-    overflow: visible;
     border-top: 1px solid #bdbdbd;
-    font-size: 10px;
-    line-height: 19px;
-    white-space: nowrap;
-    padding-left: 2px;
 }
 
 .safehouse-footer-notes {

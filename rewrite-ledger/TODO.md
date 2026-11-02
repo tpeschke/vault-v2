@@ -21,6 +21,49 @@ result:
 
 ## Done
 
+### T-175: Give Defenses a fifteenth row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Defenses paints 14 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, the row pitch, or the footer.
+steps:
+1. Set `defenses` to 15. Leave `living` 10, `workspace` 11, and `recreational` 10.
+done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `defenses: 15` and finds no `defenses: 14`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: Defenses paints 15 rows. Living Space 10, Workspace 11, and Recreational Space 10 are unchanged. `tsc -p backend/common` exits 0. The field insert does not read the cap.
+
+### T-174: Split the safehouse footer totals
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Total Ranks counts checked Ruin boxes, and that count feeds Upkeep. The words **Total Ranks** sit in the bottom of the Space column. The cell under the ruin count is empty, and the Space column has no total.
+scope: `safehouseTotalRanks` and `safehouseUpkeep` in `backend/common/interfaces/safehouse/safehouse.ts`. Add `safehouseRuinCount` and `safehouseTotalSpace` beside them. `app/src/pages/safehouse/PageTypeSafehouse.tsx` and `app/src/pages/safehouse/PageTypeSafehouse.css`, the Rank, Ruin, and Space footer cells. Owner: `safehouse.md`. Do not edit `editSafehouseField.ts`, `safehouse.sql`, or `Functions.tsx`. Do not store a sum. Do not add a field attribute. Do not sum a row only when `r` is true. Do not add a per-section total.
+steps:
+1. Change `safehouseTotalRanks` to the sum of numeric `rank` across `living`, `workspace`, `recreational`, and `defenses`. An empty rank adds 0. Add `safehouseRuinCount` as the count of rows whose `r` is true. Add `safehouseTotalSpace` as the sum of numeric `space`, with an empty space adding 0. Leave `safehouseUpkeep` as it is. Pass the rank sum into it.
+2. Rank top (`.safehouse-footer-rank`): `p.character-value` of the rank sum. Ruin top (`.safehouse-footer-ruin`): `p.character-value` of the ruin count. Rank and Ruin bottom (`.safehouse-footer-rank-ruin`): the words **Total Ranks**, about 10px, oldClaude. Leave that cell one gray cell and leave the Rank|Ruin rule stopped at the split. Do not let the words spill into the slash.
+3. Leave the Space top (`.safehouse-footer-space`) empty and `#f3f3f3`. Space bottom (`.safehouse-footer-total`): `p.character-value` of the space sum. Remove `overflow: visible` from that cell. Pass all three numerals through `blankInk`. Do not highlight them for quick edit.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `row.rank` inside `safehouseTotalRanks` and finds no `row.r` there. Grep finds `safehouseRuinCount` using `row.r`, and `safehouseTotalSpace` using `row.space`. Grep of `PageTypeSafehouse.tsx` finds `safehouseUpkeep` called with the rank sum, and finds `Total Ranks` inside `safehouse-footer-rank-ruin`. Grep of `PageTypeSafehouse.css` finds no `overflow: visible` on `.safehouse-footer-total`. Grep of `editSafehouseField.ts` finds no `safehouseTotalSpace` and no `safehouseRuinCount`.
+depends on: none
+open questions: none
+deviations from design: The label cell uses `overflow: hidden` so the words stay inside the merged Rank and Ruin cell.
+result: Ranks 4, empty, and 9 sum to 14. Two checked rows count as 2. Spaces 3 and 1 sum to 4. Upkeep of 14 is `1.4`. On `/s/blank` the words **Total Ranks** occupy the 77px cell under Rank and Ruin and end before the slash. The Space bottom is an empty `p`. App tsc and `tsc -p backend/common` exit 0.
+
+### T-173: Drop the black fill on a checked Ruin box
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: A checked Ruin box paints `background: black` at rest and again in edit and quick-edit. The green check is the checked mark. Those washes should show when the box is checked.
+scope: `app/src/pages/safehouse/Functions.css`, the two `.safehouse-flag-box.checked` background rules. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `Gear.css`, `index.css`, or the blank rules. Do not change the box size, the check size, or the check color. Do not add a fill.
+steps:
+1. Delete the rule `.safehouse-flag-box.checked, .safehouse-flag-box.checked:hover` that sets `background: black`.
+2. Delete the `.v2 .view-edit` and `.v2 .view-quick-edit` rule that sets `.safehouse-flag-box.checked` to `background: black !important`.
+3. Leave the hover `rgba(173, 216, 230)`, the edit and quick-edit wash of that same color, the hover `rgb(145, 181, 194)`, and the blank transparent rule.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Functions.css` for `background: black` is 0. Grep of `Gear.css` still finds `background: black !important` on `.page3-flag-box.checked`. Grep of `index.css` still finds `.fa-check` with `color: green`.
+depends on: none
+open questions: none
+deviations from design: none
+result: Both black checked rules are gone. A checked box with the blank class removed computes to a transparent background. Gear’s edit flag is still `background: black !important`. `.fa-check` stays green. App tsc exits 0.
+
 ### T-172: Put the safehouse sidebar beside the card
 status: done
 source: rewrite-ledger/safehouse.md, revised 2026-11-02

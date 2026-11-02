@@ -92,11 +92,6 @@
     left: -4px;
 }
 
-.safehouse-flag-box.checked,
-.safehouse-flag-box.checked:hover {
-    background: black;
-}
-
 .v2 .view-edit .safehouse-flag-box,
 .v2 .view-quick-edit .safehouse-flag-box {
     background: rgba(173, 216, 230) !important;
@@ -105,13 +100,6 @@
 .v2 .view-edit .safehouse-flag-box:hover,
 .v2 .view-quick-edit .safehouse-flag-box:hover {
     background: rgb(145, 181, 194) !important;
-}
-
-.v2 .view-edit .safehouse-flag-box.checked,
-.v2 .view-edit .safehouse-flag-box.checked:hover,
-.v2 .view-quick-edit .safehouse-flag-box.checked,
-.v2 .view-quick-edit .safehouse-flag-box.checked:hover {
-    background: black !important;
 }
 
 .v2 .page-shell.blank .safehouse-flag-box,
