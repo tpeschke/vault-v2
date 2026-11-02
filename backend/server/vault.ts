@@ -29,6 +29,7 @@ import addV2Routes from './v2/add/addV2CharacterRoutes'
 import homeRoutes from './controllers/home/HomeRoutes'
 import deleteV2Routes from './v2/delete/deleteV2CharacterRoutes'
 import editV2Routes from './v2/edit/editV2CharacterRoutes'
+import safehouseRoutes from './safehouse/safehouseRoutes'
 
 import { NOTES_STROKE_OVER_REQUEST } from '@vault/common/interfaces/v2/page4/notesScene'
 import { secret, domain, clientID, clientSecret, callbackURL, fakeAuth, server } from './server-config'
@@ -86,6 +87,7 @@ app.use('/v2/getView', characterV2Routes)
 app.use('/v2', addV2Routes)
 app.use('/v2/remove', deleteV2Routes)
 app.use('/v2/edit', editV2Routes)
+app.use('/api/s', safehouseRoutes)
 
 app.use(express.static(__dirname + `/../../app/dist`));
 app.all('/{*any}', (_: Request, response: Response) => {

@@ -162,6 +162,57 @@ routing:
       - app/src/hooks/UsersCharactersHook.tsx
       - app/src/pages/home/components/v1CharacterDisplay/
       - app/src/pages/home/components/charactersRowDisplay/
+  list safehouses:
+    primary: backend/server/safehouse/list/
+    adjacent:
+      - app/src/pages/home/Home.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
+      - app/src/pages/home/components/safehouses/
+      - app/src/hooks/UsersSafehousesHook.tsx
+      - backend/common/interfaces/safehouse/
+  create safehouse:
+    primary: backend/server/safehouse/add/
+    adjacent:
+      - app/src/hooks/UsersSafehousesHook.tsx
+      - app/src/pages/home/components/safehouses/
+      - app/src/pages/home/components/V2CharacterDisplay/
+  view safehouse sheet:
+    primary: backend/server/safehouse/view/
+    adjacent:
+      - app/src/pages/safehouse/
+      - app/src/routes/AllRoutes.tsx
+      - app/src/pages/View.css
+      - backend/common/interfaces/safehouse/
+  view blank safehouse:
+    primary: app/src/pages/safehouse/SafehouseView.tsx
+    adjacent:
+      - app/src/routes/AllRoutes.tsx
+      - app/src/pages/safehouse/
+      - app/src/components/header/Header.tsx
+  edit safehouse sheet:
+    primary: backend/server/safehouse/edit/
+    adjacent:
+      - app/src/pages/safehouse/
+      - app/src/pages/View.css
+      - backend/common/interfaces/safehouse/
+  download safehouse as pdf:
+    primary: app/src/pages/safehouse/downloadSafehouse.ts
+    adjacent:
+      - app/src/pages/v2/components/sidebar/Sidebar.tsx
+      - app/src/pages/safehouse/SafehouseView.tsx
+      - app/src/pages/v2/V2View.css
+      - app/src/pages/View.css
+  add safehouse sheet page:
+    primary: backend/server/safehouse/edit/
+    adjacent:
+      - app/src/pages/safehouse/
+      - backend/common/interfaces/safehouse/
+  delete safehouse:
+    primary: backend/server/safehouse/delete/
+    adjacent:
+      - app/src/hooks/UsersSafehousesHook.tsx
+      - app/src/pages/home/components/V2CharacterDisplay/
+      - app/src/pages/home/components/safehouses/
 unindexed:
   # Remaining machinery and chrome. Not features.
   - replaceScripts/

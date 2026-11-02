@@ -1,0 +1,276 @@
+.page-type-safehouse {
+    --safehouse-columns: 19% 51px 26px 51px minmax(0, 1fr);
+    overflow: visible;
+}
+
+.safehouse-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.safehouse-header-fields {
+    flex: 1;
+    min-width: 0;
+}
+
+.safehouse-header label {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: end;
+    align-content: start;
+    column-gap: 8px;
+    margin-bottom: 6px;
+}
+
+.safehouse-header label > span {
+    display: block;
+    font-family: 'oldClaude';
+    font-size: 13px;
+}
+
+.safehouse-header .character-value {
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid black;
+    min-height: 17.38px;
+    margin: 0;
+}
+
+.safehouse-header-line {
+    display: flex;
+    gap: 16px;
+}
+
+.safehouse-header-line > label {
+    flex: 1;
+}
+
+.safehouse-header em {
+    text-align: right;
+    display: block;
+    grid-column: 1 / -1;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.safehouse-wordmark {
+    width: 240px;
+    height: auto;
+    flex: 0 0 auto;
+}
+
+.safehouse-footer {
+    display: grid;
+    grid-template-columns: var(--safehouse-columns);
+    grid-template-rows: 19px 19px;
+    margin-top: 0;
+    border-top: 1px solid #323232;
+}
+
+.safehouse-footer-name {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-width: 0;
+}
+
+.safehouse-footer-space-label,
+.safehouse-footer-upkeep-label,
+.safehouse-footer-slash,
+.safehouse-footer-ten {
+    font-weight: bold;
+    font-family: 'oldClaude';
+    line-height: 1;
+}
+
+.safehouse-footer-wealth {
+    display: flex;
+    align-items: center;
+    font-family: 'HamletOrNot';
+    font-size: 21px;
+    line-height: 1;
+    padding-left: 2px;
+}
+
+.safehouse-footer-rank,
+.safehouse-footer-ruin,
+.safehouse-footer-rank-ruin,
+.safehouse-footer-space,
+.safehouse-footer-total,
+.safehouse-footer-notes {
+    border-left: 1px solid #bdbdbd;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.safehouse-footer-rank {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.safehouse-footer-ruin {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.safehouse-footer-rank-ruin {
+    grid-column: 3 / span 2;
+    grid-row: 2;
+    border-top: 1px solid #bdbdbd;
+    overflow: hidden;
+    font-family: 'OldClaude';
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 19px;
+    white-space: nowrap;
+    padding-left: 2px;
+}
+
+.safehouse-footer-space {
+    grid-column: 4;
+    grid-row: 1;
+    background: #f3f3f3;
+}
+
+.safehouse-footer-total {
+    grid-column: 2;
+    grid-row: 2;
+    background: #f3f3f3;
+    border-top: 1px solid #bdbdbd;
+}
+
+.safehouse-footer-notes {
+    grid-column: 5;
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-columns: 26px 78px minmax(0, 1fr) 52px 77px;
+    grid-template-rows: 19px 19px;
+}
+
+.safehouse-footer-slash {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+.safehouse-footer-slash-gap {
+    grid-area: 2 / 1;
+    border-top: 1px solid #bdbdbd;
+}
+
+.safehouse-footer-space-limit {
+    grid-area: 1 / 2;
+    background: #f3f3f3;
+    min-width: 0;
+}
+
+.safehouse-footer-upkeep {
+    grid-area: 2 / 2;
+    background: #f3f3f3;
+    border-top: 1px solid #bdbdbd;
+    min-width: 0;
+}
+
+.safehouse-footer-copy {
+    grid-area: 1 / 3 / span 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 19px 19px;
+    min-width: 0;
+}
+
+.safehouse-footer-space-label {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 10px;
+    line-height: 19px;
+    padding-left: 4px;
+}
+
+.safehouse-footer-upkeep-label {
+    grid-column: 1;
+    grid-row: 2;
+    border-top: 1px solid #bdbdbd;
+    font-size: 10px;
+    line-height: 19px;
+    padding-left: 4px;
+    white-space: nowrap;
+}
+
+.safehouse-footer em {
+    font-weight: 100;
+    display: inline;
+    font-style: italic;
+    font-size: 10px;
+}
+
+.safehouse-footer-wear-label {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    align-items: center;
+    font-family: 'HamletOrNot';
+    font-size: 23px;
+    line-height: 1;
+    padding-right: 4px;
+}
+
+.safehouse-footer-wear {
+    grid-area: 1 / 4 / span 2;
+    background: #f3f3f3;
+    min-width: 0;
+}
+
+.safehouse-footer-ten {
+    grid-area: 1 / 5 / span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 23px;
+}
+
+.safehouse-footer input.character-value {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: center;
+    background: #f3f3f3;
+    font-size: 15px;
+}
+
+.safehouse-footer-name input.character-value,
+.safehouse-footer-wear input.character-value {
+    font-size: 26px;
+    line-height: 38px;
+}
+
+.safehouse-footer-space-limit input.character-value {
+    line-height: 19px;
+}
+
+.view-quick-edit .safehouse-footer input.character-value,
+.view-edit .safehouse-footer input.character-value {
+    background: rgba(173, 216, 230);
+}
+
+.view-quick-edit .safehouse-footer input.character-value:hover,
+.view-edit .safehouse-footer input.character-value:hover {
+    background: rgb(145, 181, 194);
+}
+
+.safehouse-footer p.character-value {
+    margin: 0;
+    min-height: 0;
+    height: 19px;
+    line-height: 19px;
+    text-align: center;
+    font-size: 15px;
+}

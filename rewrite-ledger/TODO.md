@@ -21,6 +21,306 @@ result:
 
 ## Done
 
+### T-178: Give Living Space an eleventh row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Living Space paints 10 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, `SAFEHOUSE_SHEET_MAX`, the row pitch, or the footer.
+steps:
+1. Set `living` to 11. Leave `workspace` 11, `recreational` 11, and `defenses` 15. Leave `SAFEHOUSE_SHEET_MAX` at 15.
+done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `living: 11` and finds no `living: 10`. Grep finds `workspace: 11`, `recreational: 11`, `defenses: 15`, and `SAFEHOUSE_SHEET_MAX = 15`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: Living Space paints 11 rows. Workspace 11, Recreational Space 11, and Defenses 15 are unchanged. `SAFEHOUSE_SHEET_MAX` stays 15. `tsc -p backend/common` exits 0. The field insert does not read the cap.
+
+### T-177: Give Recreational Space an eleventh row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Recreational Space paints 10 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, `SAFEHOUSE_SHEET_MAX`, the row pitch, or the footer.
+steps:
+1. Set `recreational` to 11. Leave `living` 10, `workspace` 11, and `defenses` 15. Leave `SAFEHOUSE_SHEET_MAX` at 15.
+done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `recreational: 11` and finds no `recreational: 10`. Grep finds `living: 10`, `workspace: 11`, `defenses: 15`, and `SAFEHOUSE_SHEET_MAX = 15`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: Recreational Space paints 11 rows. Living Space 10, Workspace 11, and Defenses 15 are unchanged. `SAFEHOUSE_SHEET_MAX` stays 15. `tsc -p backend/common` exits 0. The field insert does not read the cap.
+
+### T-176: Move the safehouse rank sum, space sum, and Total Ranks
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: The rank sum sits in the Rank top cell. The words **Total Ranks** sit in the gray Rank+Ruin bottom cell in oldClaude. The space sum sits in the Space bottom cell. The rank sum belongs in the Rank cell directly below. The words belong under the ruin count and the space sum, in HamletOrNot, on the sheet background. Those two sums are Kalam on gray.
+scope: `app/src/pages/safehouse/PageTypeSafehouse.tsx` and `PageTypeSafehouse.css`, the Rank, Ruin, and Space footer cells. Owner: `safehouse.md`. Do not edit `backend/common/interfaces/safehouse/safehouse.ts`, `editSafehouseField.ts`, `Functions.tsx`, or the Upkeep label string. Do not change the helpers, the caps, the header, or the sidebar. Do not give the ruin count a gray fill. Do not wrap the words in `p.character-value`.
+steps:
+1. Leave `.safehouse-footer-rank` empty at column 2, row 1. Move the rank-sum `p.character-value` into `.safehouse-footer-total`. Place that cell at column 2, row 2, with `background: #f3f3f3` and its `border-top`. The `p` stays Kalam through the existing footer `p.character-value` rule and `blankInk`.
+2. Move the space-sum `p.character-value` into `.safehouse-footer-space`. Leave that cell at column 4, row 1, with `background: #f3f3f3`.
+3. Leave the words **Total Ranks** as text in `.safehouse-footer-rank-ruin`. Place that cell at `grid-column: 3 / span 2`, `grid-row: 2`. Remove its gray background. Set `font-family: 'HamletOrNot'`, `font-size: 10px`, and `line-height: 19px`. Keep `overflow: hidden`, `white-space: nowrap`, `padding-left: 2px`, and `border-top: 1px solid #bdbdbd`.
+4. Keep the shared `border-left` on these cells. The empty Rank top and the rank-sum cell carry the name|Rank rule. The label’s left edge is the Rank|Ruin rule on both rows. The Space top cell’s left edge is the Ruin|Space rule, and that rule stops on the bottom row because the label spans Ruin and Space. The words stay inside the cell.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `PageTypeSafehouse.tsx` finds `Total Ranks` inside `safehouse-footer-rank-ruin`, finds `blankInk(isBlank, totalRanks)` inside `safehouse-footer-total`, finds `blankInk(isBlank, totalSpace)` inside `safehouse-footer-space`, and finds no `totalRanks` in `.safehouse-footer-rank`. Grep of `PageTypeSafehouse.css` finds `HamletOrNot` on `.safehouse-footer-rank-ruin`, finds no `oldClaude` and no `#f3f3f3` on that rule, finds `#f3f3f3` on `.safehouse-footer-total`, and finds `grid-column: 3 / span 2` on `.safehouse-footer-rank-ruin`. The Upkeep `em` text is still `(1/10th total Ranks + # in Ruin) gc`. Grep of `safehouse.ts` finds `safehouseUpkeep` still dividing by 10.
+depends on: none
+open questions: none
+deviations from design: none
+result: On `/s/blank` the rank-sum cell is the 51px gray cell directly under the empty Rank top, and its `p` is Kalam. The space-sum `p` is in the gray Space top cell. **Total Ranks** is HamletOrNot at 10px, with no gray fill, and its box starts on the Ruin track and ends on the Space track, 1px before the slash. App tsc exits 0. `safehouseUpkeep` still divides by 10. The Upkeep subtitle is unchanged.
+
+### T-175: Give Defenses a fifteenth row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Defenses paints 14 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, the row pitch, or the footer.
+steps:
+1. Set `defenses` to 15. Leave `living` 10, `workspace` 11, and `recreational` 10.
+done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `defenses: 15` and finds no `defenses: 14`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: Defenses paints 15 rows. Living Space 10, Workspace 11, and Recreational Space 10 are unchanged. `tsc -p backend/common` exits 0. The field insert does not read the cap.
+
+### T-174: Split the safehouse footer totals
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Total Ranks counts checked Ruin boxes, and that count feeds Upkeep. The words **Total Ranks** sit in the bottom of the Space column. The cell under the ruin count is empty, and the Space column has no total.
+scope: `safehouseTotalRanks` and `safehouseUpkeep` in `backend/common/interfaces/safehouse/safehouse.ts`. Add `safehouseRuinCount` and `safehouseTotalSpace` beside them. `app/src/pages/safehouse/PageTypeSafehouse.tsx` and `app/src/pages/safehouse/PageTypeSafehouse.css`, the Rank, Ruin, and Space footer cells. Owner: `safehouse.md`. Do not edit `editSafehouseField.ts`, `safehouse.sql`, or `Functions.tsx`. Do not store a sum. Do not add a field attribute. Do not sum a row only when `r` is true. Do not add a per-section total.
+steps:
+1. Change `safehouseTotalRanks` to the sum of numeric `rank` across `living`, `workspace`, `recreational`, and `defenses`. An empty rank adds 0. Add `safehouseRuinCount` as the count of rows whose `r` is true. Add `safehouseTotalSpace` as the sum of numeric `space`, with an empty space adding 0. Leave `safehouseUpkeep` as it is. Pass the rank sum into it.
+2. Rank top (`.safehouse-footer-rank`): `p.character-value` of the rank sum. Ruin top (`.safehouse-footer-ruin`): `p.character-value` of the ruin count. Rank and Ruin bottom (`.safehouse-footer-rank-ruin`): the words **Total Ranks**, about 10px, oldClaude. Leave that cell one gray cell and leave the Rank|Ruin rule stopped at the split. Do not let the words spill into the slash.
+3. Leave the Space top (`.safehouse-footer-space`) empty and `#f3f3f3`. Space bottom (`.safehouse-footer-total`): `p.character-value` of the space sum. Remove `overflow: visible` from that cell. Pass all three numerals through `blankInk`. Do not highlight them for quick edit.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `row.rank` inside `safehouseTotalRanks` and finds no `row.r` there. Grep finds `safehouseRuinCount` using `row.r`, and `safehouseTotalSpace` using `row.space`. Grep of `PageTypeSafehouse.tsx` finds `safehouseUpkeep` called with the rank sum, and finds `Total Ranks` inside `safehouse-footer-rank-ruin`. Grep of `PageTypeSafehouse.css` finds no `overflow: visible` on `.safehouse-footer-total`. Grep of `editSafehouseField.ts` finds no `safehouseTotalSpace` and no `safehouseRuinCount`.
+depends on: none
+open questions: none
+deviations from design: The label cell uses `overflow: hidden` so the words stay inside the merged Rank and Ruin cell.
+result: Ranks 4, empty, and 9 sum to 14. Two checked rows count as 2. Spaces 3 and 1 sum to 4. Upkeep of 14 is `1.4`. On `/s/blank` the words **Total Ranks** occupy the 77px cell under Rank and Ruin and end before the slash. The Space bottom is an empty `p`. App tsc and `tsc -p backend/common` exit 0.
+
+### T-173: Drop the black fill on a checked Ruin box
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: A checked Ruin box paints `background: black` at rest and again in edit and quick-edit. The green check is the checked mark. Those washes should show when the box is checked.
+scope: `app/src/pages/safehouse/Functions.css`, the two `.safehouse-flag-box.checked` background rules. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `Gear.css`, `index.css`, or the blank rules. Do not change the box size, the check size, or the check color. Do not add a fill.
+steps:
+1. Delete the rule `.safehouse-flag-box.checked, .safehouse-flag-box.checked:hover` that sets `background: black`.
+2. Delete the `.v2 .view-edit` and `.v2 .view-quick-edit` rule that sets `.safehouse-flag-box.checked` to `background: black !important`.
+3. Leave the hover `rgba(173, 216, 230)`, the edit and quick-edit wash of that same color, the hover `rgb(145, 181, 194)`, and the blank transparent rule.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Functions.css` for `background: black` is 0. Grep of `Gear.css` still finds `background: black !important` on `.page3-flag-box.checked`. Grep of `index.css` still finds `.fa-check` with `color: green`.
+depends on: none
+open questions: none
+deviations from design: none
+result: Both black checked rules are gone. A checked box with the blank class removed computes to a transparent background. Gear’s edit flag is still `background: black !important`. `.fa-check` stays green. App tsc exits 0.
+
+### T-172: Put the safehouse sidebar beside the card
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Edit, Download, and Show Quick Edit Locations sit in a row under the card. The character sheet places that same sidebar in a sticky column, and those rules match only `.version-two-shell`.
+scope: `app/src/pages/v2/components/sidebar/Sidebar.css`, the three `.version-two-shell` rules. Owner: `safehouse.md`. Do not edit `Sidebar.tsx`, `SafehouseView.tsx`, `V2View.tsx`, `downloadSafehouse.ts`, or `downloadCharacter.ts`. Do not add `version-two-shell` to the safehouse DOM. Do not add `align-self`. Do not change the declarations. Do not move `.page-gutter`.
+steps:
+1. Add `.safehouse-shell` as a second selector on `.version-two-shell` (`display: flex`).
+2. Add `.safehouse-shell .sidebar-shell` as a second selector on the sticky column. Leave `top: 15px`, `height: 150px`, `width: 100%`, `margin-left: 15px`, and `flex-direction: column`.
+3. Add `.safehouse-shell .sidebar-shell button` as a second selector on the button rule. Leave `text-align: left`, `margin-bottom: 15px`, and the shadow.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Sidebar.css` finds `.safehouse-shell` on the flex rule, `.safehouse-shell .sidebar-shell` on the sticky rule, and `.safehouse-shell .sidebar-shell button` on the button rule. Grep of `SafehouseView.tsx` and `downloadSafehouse.ts` for `version-two-shell` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: `.safehouse-shell` is on all three sidebar rules. On `/s/blank` the shell is flex, Download is a sticky column beside the card, and the character blank sidebar is unchanged. App tsc exits 0. Grep of `SafehouseView.tsx` and `downloadSafehouse.ts` for `version-two-shell` is 0.
+
+### T-171: Put safehouse header values on the title line
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Each header value is a block under its title. On the template the value shares the title’s line, and the underline runs from the end of the title to the end of that field.
+scope: `app/src/pages/safehouse/PageTypeSafehouse.css`, `.safehouse-header label`, `.safehouse-header .character-value`, and `.safehouse-header em`. Owner: `safehouse.md`. Do not edit `PageTypeSafehouse.tsx`, `safehouseHook.tsx`, `View.css`, or the footer rules. Do not change the wordmark, the save path, or blank ink.
+steps:
+1. Set `.safehouse-header label` to `display: grid`, `grid-template-columns: max-content minmax(0, 1fr)`, `align-items: end`, and `column-gap: 8px`. Leave `margin-bottom: 6px`.
+2. Leave `.safehouse-header .character-value` at `width: 100%`, `min-height: 17.38px`, `margin: 0`, and `border-bottom: 1px solid black`. It occupies the second cell in both view and edit.
+3. Set `.safehouse-header em` to `grid-column: 1 / -1`. Leave it italic, 12px, and left-aligned. Leave `.safehouse-header-line` as the flex row of Location and C Rank Limit. Leave the wordmark at 240px on the right.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `PageTypeSafehouse.css` finds `grid-template-columns: max-content minmax(0, 1fr)` and `column-gap: 8px` on `.safehouse-header label`, and finds `grid-column: 1 / -1` on `.safehouse-header em`. Grep of `PageTypeSafehouse.tsx` finds `<strong>Safehouse Name</strong>`, `<strong>Location</strong>`, and `<strong>C Rank Limit</strong>` still each inside their own `label`.
+depends on: none
+open questions: none
+deviations from design: Added `align-content: start` on `.safehouse-header label`. Without it the Location label stretched to the C Rank label and `align-items: end` put Location on the hint line.
+result: On `/s/blank` the three titles and their underlines share a bottom edge, the gap is 8px, and `x2 C of location` starts at that edge. The three `strong` labels are still each inside their own `label`. App tsc exits 0.
+
+### T-170: Raise the safehouse footer by one Defenses row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Defenses paints 15 data rows, so the footer sits one 17.38px row too low. Wealth and Wear are oldClaude. The band has no top edge.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. `app/src/pages/safehouse/PageTypeSafehouse.css`, the Wealth and Wear labels and `.safehouse-footer`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, the row pitch, or the column tracks.
+steps:
+1. Set `defenses` to 14. Leave `living` 10, `workspace` 11, and `recreational` 10.
+2. Set `font-family: 'HamletOrNot'` on `.safehouse-footer-wealth` and `.safehouse-footer-wear-label`. Leave the sizes at 21px and 23px. Leave letter-spacing. Leave the other footer labels oldClaude.
+3. Add `border-top: 1px solid #323232` on `.safehouse-footer`. Leave the two row tracks at 19px. Leave the `#bdbdbd` column rules.
+done when: `npx tsc --noEmit -p backend/common` exits 0. `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `safehouse.ts` finds `defenses: 14` and finds no `defenses: 15`. Grep of `PageTypeSafehouse.css` finds `HamletOrNot` on the Wealth rule and the Wear label rule, and finds `border-top: 1px solid #323232` on `.safehouse-footer`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: T-168
+open questions: none
+deviations from design: none
+result: Defenses paints 14 rows. Living Space 10, Workspace 11, and Recreational Space 10 are unchanged. Wealth is HamletOrNot at 21px and Wear is HamletOrNot at 23px. Space Limit stays oldClaude. The footer top border computes to `1px solid rgb(50, 50, 50)` and the row tracks stay `19px 19px`. `tsc -p backend/common` and app tsc exit 0.
+
+### T-169: Bind function-insert section twice
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: `safehouseFunctionInsert` uses `$2` as the `section` value and as `section = $2`. Postgres deduces `text` and `varchar` for that one parameter and returns `42P08`. `query()` swallows it, so the handler answers `Invalid field`.
+scope: `backend/server/safehouse/edit/editSafehouseField.ts`, the `safehouseFunctionInsert` statement only. Owner: `safehouse.md`. Do not edit `editSafehouse.ts`, the cell updates, the client, `database.ts`, or `safehouse.sql`. Do not add a cast.
+steps:
+1. Keep the insert columns and the `coalesce(max(index), -1) + 1` subquery. Compare `section` to `$8` only. Leave `$1` shared.
+2. Pass `row.section` as both `$2` and `$8`. Leave the other six values in their current order.
+3. Leave the `Invalid field` refusal when the returned id is not greater than 0.
+done when: Grep of `editSafehouseField.ts` finds `section = $8` and finds no `section = $2`. Grep of that insert’s parameter array finds `row.section` twice. Grep of `::varchar` and `::text` under `backend/server/safehouse/` is 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`.
+depends on: T-165
+open questions: none
+deviations from design: none
+result: The insert compares `section` to `$8` and passes `row.section` as `$2` and `$8`. No cast was added. `tsc -p backend/server` exits 0.
+
+### T-168: Match the safehouse footer to the template
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: The shipped footer is one label row, and Total Ranks sums the Rank column. The template is a two-row band on the function rules. The Ruin-column cell counts checked Ruin boxes. The Upkeep numeral is the gray cell directly left of the word Upkeep.
+scope: `app/src/pages/safehouse/Functions.css`, `app/src/pages/safehouse/PageTypeSafehouse.css`, `app/src/pages/safehouse/PageTypeSafehouse.tsx`, `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, the header labels, `editSafehouseField.ts`, `safehouse.sql`, `downloadSafehouse.ts`, `downloadCharacter.ts`, `V2View.tsx`, or `pageType3/`. Do not add a field attribute, a column, or an L1 key.
+steps:
+1. Set one track list, `--safehouse-columns: 19% 51px 26px 51px minmax(0, 1fr)`, on `.page-type-safehouse`. Use it for `.safehouse-section-headers`, `.safehouse-function-row`, and the footer’s outer grid. Leave the 16px card padding. Function rows stay 17.38px. The footer is two rows of 19px. Rules stay `1px solid #bdbdbd` and continue through the footer on those tracks.
+2. Replace the flex footer with the band in `safehouse.md`. Name track, both rows: **Wealth** at about 21px oldClaude on the left half, the wealth input on the right half. Rank top empty. Ruin top is `p.character-value` from `safehouseTotalRanks`. Rank and Ruin bottom are one empty `#f3f3f3` cell, and the Rank|Ruin rule stops at the split. Space top is empty `#f3f3f3`. Space bottom is chrome **Total Ranks** at about 10px, overflow visible across the cell under the slash. Notes, from the left: 26px `/` at about 10px on the top row; a 78px `#f3f3f3` column with the Space Limit input on top and the Upkeep `p.character-value` on the bottom; **Space Limit** at about 10px on the left of the remaining text and **Wear** at about 23px on the right, with **Upkeep** and italic `1/10th total Ranks in gc` on the bottom line; a 52px `#f3f3f3` wear input spanning both rows; `/` and **10** at about 23px spanning both rows. Values stay Kalam.
+3. Change `safehouseTotalRanks` to the count of rows whose `r` is true across `living`, `workspace`, `recreational`, and `defenses`. Do not add `rank`. Leave `safehouseUpkeep` dividing that count by 10. Pass both through `blankInk`. Wealth, Space Limit, and Wear stay the play-time inputs they are. Do not POST the count or Upkeep. Do not highlight either computed cell for quick edit.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. `npx tsc --noEmit -p backend/common` exits 0. Grep of `Functions.css` finds `var(--safehouse-columns)` and finds no `38px 19px 38px`. Grep of `safehouse.ts` finds `row.r` inside `safehouseTotalRanks` and finds no `row.rank` there. Grep of `PageTypeSafehouse.tsx` finds `1/10th total Ranks in gc` and finds `Upkeep`. Grep of `editSafehouseField.ts` finds no `safehouseTotal` and no `safehouseUpkeep`. Grep of `Functions.tsx` finds `fa-house-crack` and finds no `>R?<`.
+depends on: T-159
+open questions: none
+deviations from design: The Ruin header icon and the header `strong` labels are already on this branch. This TODO does not redo them.
+result: The footer is the two-row band on `--safehouse-columns`. Header cells and footer cells share x positions (delta 0). `safehouseTotalRanks` counts `row.r`. Two checked rows and one ranked unchecked row count as 2, and upkeep of that count is `0.2`. On `/s/blank` the two computed cells are empty `p` nodes, and quick-edit washes the three inputs only. App tsc and `tsc -p backend/common` exit 0.
+
+### T-159: Safehouse tables and page-type-1 contract
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: Assemble, save, and the editor need one page shape. The tables must exist before create.
+scope: new `backend/common/interfaces/safehouse/` (page shape, section keys, caps 10 / 11 / 10 / 15, `SAFEHOUSE_SHEET_MAX` 15, `SAFEHOUSE_SHEET_CAP_MESSAGE`). New `backend/server/safehouse/safehouse.sql`. Unindexed `backend/server/db/ensureSchema.ts`. Owner: `safehouse.md`. Do not edit `pageTypes.ts`, `v2CharacterPages`, or `sheetPageCap.ts`. Do not add a character foreign key. Do not add `features/`.
+steps:
+1. Export the page-1 shape and the four section caps from `backend/common/interfaces/safehouse/`. `name` and `notes` are strings. `rank`, `space`, header `cRankLimit`, and footer `wealth` / `spaceLimit` / `wear` are `number | ''`. `r` is boolean. Caps: living 10, workspace 11, recreational 10, defenses 15.
+2. `CREATE TABLE IF NOT EXISTS` for `safehouses`, `safehousePages`, `safehousePage1`, and `safehousePage1Functions` as `safehouse.md` lists them. Snapshot that DDL in `backend/server/safehouse/safehouse.sql`.
+3. Call the new statements from `ensureSchema` after the existing patches. Re-running them is safe. Do not insert rows for existing users.
+done when: `npx tsc --noEmit -p backend/common` exits 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of `safehouse.sql` finds `safehousePage1Functions` and finds no `characterID`. Grep of `ensureSchema.ts` finds `safehousePages`.
+depends on: none
+open questions: none
+deviations from design: none
+result: Tables and the page-1 contract are in `backend/common/interfaces/safehouse/safehouse.ts` and `backend/server/safehouse/safehouse.sql`, applied from `ensureSchema`. `npx tsc --noEmit -p backend/common` and `backend/server` exit 0. `safehouse.sql` names `safehousePage1Functions` and has no `characterID`.
+
+### T-160: Create a safehouse
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: Create is a character ability. A new safehouse is one page type 1, not four character pages.
+scope: new `backend/server/safehouse/add/`. Unindexed `backend/server/vault.ts` (`app.use('/api/s', …)`). Owner: `safehouse.md`. Do not edit `addV2CharacterController.ts`. Do not enforce the Patreon formula. Do not insert a character page.
+steps:
+1. `POST /api/s`. No session user: the logged-out refusal shape character create uses, with the word Safehouse. With a user: insert `safehouses` (`userID`), then `safehousePages` (`index` 0, `pageTypeID` 1), then `safehousePage1` (`name` `'New Safehouse'`, empty location, null numbers). Fail closed when an insert returns no numeric `id > 0`.
+2. Respond with that safehouse id on success.
+3. Mount the router at `/api/s` in `vault.ts`. Do not mount it under `/v2` or `/home`.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of `vault.ts` finds `app.use('/api/s'`. Grep of `addV2CharacterController.ts` finds no `safehouse`.
+depends on: T-159
+open questions: none
+deviations from design: An insert that returns no id responds `{ color: 'red', message: 'Could not add a Safehouse' }` and deletes the partial row. The design said fail closed and did not name that sentence.
+result: `POST /api/s` inserts one safehouse and one page type 1 and returns the numeric id. Logged-out refusal uses Safehouse. `vault.ts` mounts `app.use('/api/s'`. `addV2CharacterController.ts` has no safehouse.
+
+### T-161: Assemble a safehouse
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: `/s/:safehouseID` and the catalog hover need one payload.
+scope: new `backend/server/safehouse/view/`. The `/api/s` router from T-160. Owner: `safehouse.md`. Do not call `assembleV2Character`. Do not read `v2CharacterPages`.
+steps:
+1. `GET /api/s/:safehouseID`. Non-numeric id, including `blank`: `{ message: 'Bad ID' }`. No page rows: `{ message: 'No Pages' }`.
+2. Order pages by `index`. `pageTypeID` 1 assembles header, footer numbers (`null` → `''`), and four function lists ordered by `index`. `r` is boolean. A missing page-1 row yields the create defaults. Any other `pageTypeID` assembles `{ type: 404 }`.
+3. Include `ownsThisSafehouse` from `safehouses.userID` and `request.user?.id`. Include the catalog name from the first page type 1.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of the view module finds `Bad ID` and `pageTypeID`. Grep of `assembleV2Character.ts` finds no `safehouse`.
+depends on: T-159, T-160
+open questions: none
+deviations from design: none
+result: `GET /api/s/:safehouseID` returns Bad ID, No Pages, page type 1, or `{ type: 404 }`. `ownsThisSafehouse` compares the session user with `safehouses.userID`. `assembleV2Character.ts` has no safehouse. Server tsc exits 0.
+
+### T-162: List, add, and delete safehouses on the catalog
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01 (question 3, question 11)
+why: The list sits under Your Characters, with its own slot pool and the same limit formula.
+scope: `GET /api/s` and `DELETE /api/s/:safehouseID` on the safehouse router. New `app/src/hooks/UsersSafehousesHook.tsx`. `app/src/pages/home/components/V2CharacterDisplay/V2CharacterDisplay.tsx` and a safehouse block beside `charactersRowDisplay/`. Unindexed `app/src/redux/slices/usersCharactersSlice.tsx` and `characterCacheSlice.tsx`. `app/src/pages/home/Home.tsx`. Owner: `safehouse.md`. Do not change the character footer formula, character rows, or v1 display. Do not put safehouses in `usersCharactersCache` index 0 or 1.
+steps:
+1. `GET /api/s` returns the session user’s safehouses: `id`, `name` (first page type 1, `'New Safehouse'` when that name is empty), `otherPageType1Names` for every later type 1 in `index` order. No user: an empty list, not a character list.
+2. `DELETE /api/s/:id` deletes the safehouse, its pages, its page-1 row, and its function rows only when `userID` matches. Otherwise `{ message: "You Don't Own This Safehouse" }`.
+3. In the Your Characters card, below `HomeFooter`, render heading **Safehouses**, the rows, and a footer. Row click goes to `/s/${id}`. Empty copy: `You Have No Safehouses`. Delete confirm matches `CharacterRow`. Extra names use `fa-user` and `my-tooltip`, empty extra `New Safehouse`.
+4. Footer limit is `(patreon * 20) + 10`, owner `∞`, counted on safehouses only. Copy the disabled-button behavior. Tooltips are the three Safehouse sentences in `safehouse.md`. Add calls `POST /api/s` and navigates to `/s/${id}`.
+5. Hover preload and a successful save write a safehouse cache map. Do not use `characterCache[2]`. A first-page name edit updates that catalog row only.
+6. `Home.tsx` still loads characters as it does. Fetch the safehouse list beside that, inside the logged-in branch.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `HomeFooter.tsx` finds `(usersPatreon * 20) + 10` once. Grep of the safehouse footer finds that same formula. Grep of `V2CharacterDisplay.tsx` finds `Safehouses` after `HomeFooter`.
+depends on: T-160, T-161
+open questions: none
+deviations from design: The catalog add control uses `fa-plus`. The design named the tooltip and not the glyph. `app/src/redux/store.tsx` ignores `chapter/cacheSafehouse` so the hover promise matches the character cache.
+result: List and delete are on `/api/s`. The Your Characters card renders Safehouses under `HomeFooter`, with its own rows and the same limit formula on safehouses only. Caches are `usersSafehousesCache` and `characterCache.safehouse`. App tsc exits 0.
+
+### T-163: Safehouse view, blank, and page type 1
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01 (questions 4, 5, 6, 8, 10)
+why: `/s` has to render the sheet without going through `V2View`.
+scope: new `app/src/pages/safehouse/` (`SafehouseView`, page type 1, Functions, header, footer). `app/src/routes/AllRoutes.tsx`. `app/src/components/header/Header.tsx`. Reuse v2 `Sidebar`, `EditingContext`, and `BlankContext`. Owner: `safehouse.md`. Do not edit `V2View.tsx` or `pageType3/`. Do not import `Relationships.tsx`. Do not add `features/`.
+steps:
+1. `path="s/blank"` before `path="s/:safehouseID"`, both before the `*` redirect. Blank builds one in-memory page type 1 and does not call `axios`. `/s/:id` calls `GET /api/s/:id`.
+2. Shell classes `home-shell v2` and `safehouse-shell`. Card `.page.card.page-type-safehouse`. Document title `${name || 'Blank'} - Bonfire Character Vault`.
+3. Header: name, location, C Rank Limit, italic `x2 C of location`, wordmark on the right (`bonfire-wordmark.png`). Header values are `p.character-value` in this TODO. Footer stored numbers are inputs. Printed `10` is text. Total Ranks and Upkeep are `p.character-value` from the sum rules in `safehouse.md`.
+4. Four function lists, caps from the contract, Relationships row mechanics, **R?** a page-local 12×12 flag box as `safehouse.md` specifies. Do not reuse `.page3-flag-box`.
+5. Header link after the character blank link: `/s/blank`, tooltip `View Blank Safehouse Sheet`, `fa-solid fa-cards-blank`. On the blank, ink is empty, the flag does not toggle, and the sidebar hides Edit, Save, Revert, and Quick Edit Locations. Download’s button can wait for T-167; the shell stays.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `AllRoutes.tsx` finds `s/blank` before `s/:safehouseID`. Grep of `V2View.tsx` finds no `safehouse`. Grep of `pageType3/` for `safehouse` is 0.
+depends on: T-161
+open questions: The blank header icon is `fa-cards-blank`, the same glyph as the character blank. A different kit glyph needs a designer name. Do not add one to the kit in this TODO.
+deviations from design: The blank document title is `Blank` even though the in-memory page name is `New Safehouse`, matching the Blank section of `safehouse.md`.
+result: `/s/blank` is registered before `/s/:safehouseID`. The sheet uses `safehouse-shell` and `page-type-safehouse` and does not render `V2View`. Blank ink is empty and the flag does not toggle. Header icon is `fa-cards-blank`.
+
+### T-164: Edit, save, and the safehouse gutter
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01
+why: Edit, reorder, add, and sheet delete are character abilities. The add inserts a safehouse page, not a character page.
+scope: `POST /api/s/:safehouseID` in `backend/server/safehouse/edit/`. Safehouse view sidebar and gutter. Owner: `safehouse.md`. Do not edit `V2View.tsx`, `add-page-type-1` handlers, or `editV2CharacterController.ts`. Do not import `sheetPageCap.ts`.
+steps:
+1. Owner-only Edit. Save posts the whole safehouse. Revert restores the load snapshot. Whitespace-only name: client toast, no POST. Backend stores `'New Safehouse'` for a missing or whitespace name. Owner mismatch refuses. Failed Save restores the draft and stays in edit. Success replaces local state and the safehouse cache, then exits edit. Leave-warn only while editing and dirty.
+2. Header inputs exist only while editing. Function inputs and footer number inputs exist in both modes. Total Ranks and Upkeep stay `p.character-value`.
+3. Gutter matches `safehouse.md`: reorder, disclose **+ Safehouse**, delete, cap 15 with `SAFEHOUSE_SHEET_CAP_MESSAGE`, first type 1 protected. Inserts are local until Save. Save writes `index` from array order, inserts `pageID <= 0`, and deletes omitted persisted type-1 ids. Refuse a list with no type 1, a list longer than 15, or a short stored count, with the sentences in `safehouse.md`.
+4. A local edit of the first page’s name updates the catalog row. Reorder that changes which type 1 is first does too. A local sheet removal does not.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. App tsc exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `V2View.tsx` finds no `+ Safehouse`. Grep of the safehouse gutter finds `Safehouse` and `SAFEHOUSE_SHEET_CAP_MESSAGE`.
+depends on: T-163
+open questions: none
+deviations from design: A posted page that is neither type 1 nor 404 is ignored. Type 404 can be reordered and can add a sheet, and it has no delete control, because save does not delete unknown page types. A string past its column cap is refused with `Text is too long` before any write.
+result: Owner save posts the whole safehouse. Revert restores the load snapshot. Leave-warn runs only while editing and dirty. The gutter adds Safehouse pages and uses `SAFEHOUSE_SHEET_CAP_MESSAGE`. `V2View.tsx` has no `+ Safehouse`. Server and app tsc exit 0.
+
+### T-165: Play-time fields on a safehouse
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01 (questions 6, 7, 9)
+why: Function rows and the stored footer numbers follow the character view-field path. Header and the computed totals do not.
+scope: `POST /api/s/:safehouseID/field`. The safehouse view’s blur, flag click, insert, and delete. Quick-edit toggle. Owner: `safehouse.md` and `quick-view-inputs.md` for the session rules. Do not POST header fields. Do not POST Total Ranks or Upkeep. Do not add a character field attribute.
+steps:
+1. Allow only the attributes named in `safehouse.md`. Refuse a longer name or notes string than 500. `id > 0` and this safehouse’s page, or the insert mints a row and returns `id`. Delete removes that row. Unknown attribute refuses. Owner mismatch refuses. A blank id does not POST.
+2. On the view, blur and the flag click call that route. While editing, they do not. Insert merges the returned `id`. Clearing the last stored field deletes when `id > 0`.
+3. Show / Hide Quick Edit Locations matches the character button. It highlights function inputs, the flag box, and Wealth, Space Limit, and Wear. It does not highlight header `p` nodes or the computed totals. Hidden on `/s/blank` and while editing.
+done when: App tsc and server tsc exit 0, or the only app error is the pre-existing missing `frontend-config`. Grep of the field module finds `safehouseFunctionR` and finds no `cRankLimit`. Grep of the safehouse view finds the quick-edit toggle.
+depends on: T-164
+open questions: none
+deviations from design: none
+result: `POST /api/s/:id/field` accepts the function and footer attributes, including `safehouseFunctionR`, and the field module has no `cRankLimit`. Blur and the flag post only when the sheet is not being edited. The safehouse view has the quick-edit toggle. Server and app tsc exit 0.
+
+### T-166: Download a safehouse PDF
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01; mechanics `download-character.md`
+why: Download is a character ability. The character writer is tied to `.version-two-shell` and character painters.
+scope: new download function under `app/src/pages/safehouse/`. The safehouse sidebar. Owner: `safehouse.md`. Do not edit `downloadCharacter.ts` or v1 download. Do not add a dependency. Do not add a backend route.
+steps:
+1. Sidebar Download, view only, including the blank, not owner-gated. While it runs, Edit, Quick Edit, and Download are HTML `disabled`, Quick Edit view is turned off, and the v1-style “Downloading” banner shows. The sidebar stays mounted.
+2. Capture each `.safehouse-shell .page` with the worker options in `download-character.md` (`html2pdf.js` 0.14.0, `pdf-lib` 1.17.1, letter, `px`, `hotfixes: ['px_scaling']`, scale 2). Copy input and textarea values. Filename is the catalog name, sanitized as the character file is, or `Blank`.
+3. Do not run the character painters for dice, Contacts gradients, or Excalidraw. Function zebra is the row background.
+done when: App tsc exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `downloadCharacter.ts` finds no `safehouse`. Grep of the safehouse download finds `safehouse-shell` and `px_scaling`.
+depends on: T-163
+open questions: none
+deviations from design: none
+result: `app/src/pages/safehouse/downloadSafehouse.ts` captures `.safehouse-shell .page` with `px_scaling`. `downloadCharacter.ts` has no safehouse. Download stays available on the blank and disables Edit, Quick Edit, and Download while the file builds. App tsc exits 0.
+
+### T-167: Index safehouse on L1
+status: done
+source: rewrite-ledger/safehouse.md, 2026-11-01; `feature-index.md`
+why: New files need routes on the existing index. There is no “page type 5” objective.
+scope: repository `00-START-HERE.yaml` `routing` only. Owner: `safehouse.md`. Do not edit `unindexed`. Do not remove character keys.
+steps:
+1. Add keys: list safehouses, create safehouse, view safehouse sheet, view blank safehouse, edit safehouse sheet, download safehouse as pdf, add safehouse sheet page, delete safehouse. Primaries and adjacencies are the paths `safehouse.md` names. View blank safehouse’s primary is `app/src/pages/safehouse/SafehouseView.tsx`.
+2. Grep that file for a key line whose text is only `safehouse page` or `page type 5`. Expect zero.
+done when: Those eight keys are present. The `page type 5` key line is absent. Character `view character sheet` still lists `app/src/pages/v2/`.
+depends on: T-162, T-163, T-164, T-165, T-166
+open questions: none
+deviations from design: none
+result: Eight safehouse keys are on repository `00-START-HERE.yaml`. No key line is only `safehouse page` or `page type 5`. `view character sheet` still lists `app/src/pages/v2/`. View blank safehouse’s primary is `app/src/pages/safehouse/SafehouseView.tsx`.
+
 ### T-158: Pin the notes scene image to the live canvas box
 status: done
 source: rewrite-ledger/download-character.md, 2026-10-30 (notes scene CSS box)

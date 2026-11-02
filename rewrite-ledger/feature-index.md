@@ -11,7 +11,7 @@ Constraints it imposes:
 - One file, one primary owner; primary is backend when the feature has a backend. Frontend paths are adjacencies. View blank sheet has no backend sheet: its primary is the v2 view (`blank-sheet.md`). The controller path on that key only retires an unfinished branch.
 - `dist/` is excluded from the completeness rule (generated SPA output).
 - Do not create remaining FSD layer folders (`app/src/app`, `widgets/`, `features/`, `entities/`, `shared/`) until a TODO executes that move. Canonical: `rewrite-ledger/fsd-colocation.md`.
-- When FSD is executed, layers live at `app/src/{app,pages,widgets,features,entities,shared}`. Repo `app/` stays the Vite/React package. View slices are `app/src/pages/v1` and `app/src/pages/v2`. Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`.
+- When FSD is executed, layers live at `app/src/{app,pages,widgets,features,entities,shared}`. Repo `app/` stays the Vite/React package. Character view slices are `app/src/pages/v1` and `app/src/pages/v2`. The safehouse slice is `app/src/pages/safehouse` (`fsd-colocation.md`). Backend stays L1-only. Create character stays on the home page slice; do not add `features/create-character`. Do not add `features/create-safehouse`.
 - v1 has no create-character objective, ever. Do not add it to the inventory or to L1 routing.
 - Designer speech: unmarked “character” means v2. Canonical: repository `00-START-HERE.md` § Designer vocabulary.
 
@@ -23,6 +23,10 @@ Rejected:
 
 Revised 2026-10-30 (blank sheet; `blank-sheet.md`):
 - “primary is backend when the feature has a backend” — **retained**. View blank sheet — **exception**: primary is the v2 view. The controller adjacency only retires an unfinished branch.
+
+Revised 2026-11-01 (`safehouse.md`):
+- “View slices are `app/src/pages/v1` and `app/src/pages/v2`” — **revised**: character views stay there. Safehouse is its own slice and its own L1 keys. It is not a character page-type key.
+- View blank safehouse — **exception**, same shape as view blank sheet: primary is the safehouse view.
 
 Touches: repository `00-START-HERE.md`, `00-START-HERE.yaml`; `rewrite-ledger/feature-inventory.md`; observed `app/`, `backend/`
 TODOs: T-001–T-008 (all done)

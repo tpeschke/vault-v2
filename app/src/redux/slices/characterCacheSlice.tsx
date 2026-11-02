@@ -1,8 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { CharacterVersion1, CharacterVersion2 } from "@vault/common/interfaces/characterInterfaces"
+import { Safehouse } from "@vault/common/interfaces/safehouse/safehouse"
 
 interface State {
     characterCache: CharacterCache
+}
+
+export interface SafehouseCacheInfo {
+    id: number,
+    safehouseInfo: Promise<Safehouse>
+}
+
+export type SafehouseCacheMap = {
+    [key: number]: SafehouseCacheInfo
 }
 
 export interface CharacterCache {
@@ -11,7 +21,8 @@ export interface CharacterCache {
     },
     2: {
         [key: number]: V2CharacterCacheInfo
-    }
+    },
+    safehouse: SafehouseCacheMap
 }
 
 export interface V1CharacterCacheInfo {
@@ -29,7 +40,8 @@ export interface V2CharacterCacheInfo {
 const initialState: State = {
     characterCache: {
         1: {},
-        2: {}
+        2: {},
+        safehouse: {}
     }
 }
 
@@ -48,10 +60,16 @@ export const charactersCacheSlice = createSlice({
             if (payload.id) {
                 state.characterCache[2][payload.id] = payload
             }
+        },
+        cacheSafehouse: (state: State, action: PayloadAction<SafehouseCacheInfo>) => {
+            const { payload } = action
+            if (payload.id) {
+                state.characterCache.safehouse[payload.id] = payload
+            }
         }
     }
 })
 
-export const { cacheCharacterV1, cacheCharacterV2 } = charactersCacheSlice.actions
+export const { cacheCharacterV1, cacheCharacterV2, cacheSafehouse } = charactersCacheSlice.actions
 
 export default charactersCacheSlice.reducer

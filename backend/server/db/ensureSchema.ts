@@ -82,6 +82,7 @@ export default async function ensureSchema() {
     await createPageType2Tables()
     await createPageType3Tables()
     await createPageType4Tables()
+    await createSafehouseTables()
 }
 
 async function createPageType2Tables() {
@@ -253,6 +254,45 @@ async function createPageType4Tables() {
     )`)
     if (!await tableExists('v2page4notes')) {
         throw new Error('ensureSchema: v2page4notes missing')
+    }
+}
+
+async function createSafehouseTables() {
+    await query(`create table if not exists safehouses (
+        id serial primary key,
+        userID integer not null
+    )`)
+    await query(`create table if not exists safehousePages (
+        id serial primary key,
+        safehouseID integer not null,
+        index integer not null,
+        pageTypeID integer not null
+    )`)
+    await query(`create table if not exists safehousePage1 (
+        pageID integer primary key,
+        name varchar(250) not null default 'New Safehouse',
+        location varchar(250) not null default '',
+        cRankLimit integer,
+        wealth integer,
+        spaceLimit integer,
+        wear integer
+    )`)
+    await query(`create table if not exists safehousePage1Functions (
+        id serial primary key,
+        pageID integer not null,
+        section varchar(20) not null,
+        name varchar(500) not null default '',
+        rank integer,
+        r boolean not null default false,
+        space integer,
+        notes varchar(500) not null default '',
+        index integer not null
+    )`)
+    if (!await tableExists('safehousepages')) {
+        throw new Error('ensureSchema: safehousePages missing')
+    }
+    if (!await tableExists('safehousepage1functions')) {
+        throw new Error('ensureSchema: safehousePage1Functions missing')
     }
 }
 

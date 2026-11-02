@@ -3,6 +3,7 @@ import Loading from "../components/loading/Loading";
 import Home from "../pages/home/Home";
 import V1View from "../pages/v1/V1View";
 import V2View from "../pages/v2/V2View";
+import SafehouseView from "../pages/safehouse/SafehouseView";
 
 interface Props {
     pathname: string
@@ -29,6 +30,16 @@ export default function AllRoutes({ pathname }: Props) {
             <Route path="v/:characterID" element={
                 <Loading>
                     <V2View pathname={pathname} />
+                </Loading>
+            } />
+            <Route path="s/blank" element={
+                <Loading>
+                    <SafehouseView pathname={pathname} blank />
+                </Loading>
+            } />
+            <Route path="s/:safehouseID" element={
+                <Loading>
+                    <SafehouseView pathname={pathname} />
                 </Loading>
             } />
             <Route path="*" element={<Navigate to='/' replace />} />

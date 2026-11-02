@@ -1,0 +1,47 @@
+.safehouses-block > h2 {
+    margin: 20px 0 8px;
+    font-size: 22px;
+    color: #06465b;
+}
+
+.safehouse-rows > div {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.safehouse-rows > div:nth-child(even) {
+    background: whitesmoke;
+}
+
+.safehouse-rows > div:hover {
+    background: lightgray;
+}
+
+.safehouse-rows .catalog-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.safehouse-rows .catalog-name strong {
+    color: #06465b;
+    font-family: 'oldClaude';
+    font-size: 15px;
+}
+
+.safehouse-rows > div > span {
+    width: 24px;
+    color: gray;
+    text-align: center;
+}
+
+.safehouse-rows button {
+    width: 75px;
+}
+
+.safehouse-rows button.primary {
+    margin-left: 15px;
+}

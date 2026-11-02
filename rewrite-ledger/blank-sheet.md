@@ -1,7 +1,7 @@
 # Blank character sheet
 status: accepted   date: 2026-10-30
 
-Decision: `/v/blank` is a v2 view of one page type 1, one page type 2, and one page type 3, in that order. It uses the same page components as a character view, so a layout change on those types shows here. Every `character-value` node has empty text. The sheet is read-only. Signed-out visitors can open it. `/view/blank` is the v1 blank and stays as it is.
+Decision: `/v/blank` is a v2 view of one page type 1, one page type 2, and one page type 3, in that order. `/s/blank` is the safehouse blank (`safehouse.md`), not this sheet. It uses the same page components as a character view, so a layout change on those types shows here. Every `character-value` node has empty text. The sheet is read-only. Signed-out visitors can open it. `/view/blank` is the v1 blank and stays as it is.
 
 Why: The designer asked for a blank sheet at `/v/blank` whose handwritten places are empty, then answered: signed out; read-only with Quick Edit disabled; header stays and edit controls leave the sidebar while the sidebar shell stays for later items; `/v/blank` only; the URL is enough; a new inventory feature whose layout follows the page types; numeric handwriting is empty, not `0`.
 
@@ -35,6 +35,9 @@ Rejected:
 
 Touches: `app/src/routes/AllRoutes.tsx`; `app/src/pages/v2/V2View.tsx`; `app/src/pages/v2/hooks/characterHook.tsx`; `app/src/pages/v2/hooks/updates/emptyPageType1.ts`; `emptyPageType2.ts`; `emptyPageType3.ts`; `app/src/pages/v2/components/sidebar/Sidebar.tsx`; `app/src/pages/v2/contexts/` (new blank context); mounted `character-value` widgets under `pageType1/`, `pageType2/`, `pageType3/`; `backend/server/v2/view/viewV2CharacterController.ts`; `00-START-HERE.yaml`; `feature-inventory.md`
 TODOs: T-152, T-153 (done); hover rest: T-154 (done)
+
+Revised 2026-11-01 (`safehouse.md`):
+- “`/v/blank` only” — **retained** for the character blank. `/s/blank` is a different sheet.
 
 Revised 2026-10-30 (hover rest):
 - Read-only meant clicks and Quick Edit only — **revised**: this URL also keeps hover at the resting paint, uses the arrow on die cells and flag boxes, and shows no focus ring on sheet fields.

@@ -1,0 +1,124 @@
+.safehouse-section-headers,
+.safehouse-function-row {
+    display: grid;
+    grid-template-columns: var(--safehouse-columns);
+    box-sizing: border-box;
+}
+
+.safehouse-section-headers > h2 {
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0;
+    padding: 2px 0;
+}
+
+.safehouse-section-headers > h2:first-child,
+.safehouse-section-headers > h2:last-child {
+    text-align: left;
+    padding-left: 4px;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.safehouse-section-headers > :not(:first-child),
+.safehouse-function-row > :not(:first-child) {
+    border-left: 1px solid #bdbdbd;
+}
+
+.safehouse-function-row {
+    height: 17.38px;
+    min-height: 17.38px;
+}
+
+.safehouse-function-list > .safehouse-function-row:nth-child(even) {
+    background: #f3f3f3;
+}
+
+.safehouse-function-row > * {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 1px;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.safehouse-function-row input.character-value {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    font-size: 15px;
+    line-height: 1.2;
+    text-align: left;
+}
+
+.safehouse-function-row input.character-value[type=number] {
+    text-align: center;
+}
+
+.safehouse-flag-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    padding: 0;
+}
+
+.safehouse-flag-box {
+    display: block;
+    width: 12px;
+    height: 12px;
+    min-height: 12px;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 3px;
+}
+
+.safehouse-flag-box:hover {
+    background: rgba(173, 216, 230);
+}
+
+.safehouse-flag-box i,
+.safehouse-flag-box > svg.svg-inline--fa.fa-check {
+    font-size: 20px;
+    position: absolute;
+    top: -4px;
+    left: -4px;
+}
+
+.v2 .view-edit .safehouse-flag-box,
+.v2 .view-quick-edit .safehouse-flag-box {
+    background: rgba(173, 216, 230) !important;
+}
+
+.v2 .view-edit .safehouse-flag-box:hover,
+.v2 .view-quick-edit .safehouse-flag-box:hover {
+    background: rgb(145, 181, 194) !important;
+}
+
+.v2 .page-shell.blank .safehouse-flag-box,
+.v2 .page-shell.blank .safehouse-flag-box:hover {
+    background: transparent !important;
+    cursor: default;
+}
+
+.v2 .view-edit .safehouse-function-list > .safehouse-function-row:nth-child(even) input {
+    background: rgb(159, 199, 212) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .safehouse-function-list > .safehouse-function-row:nth-child(even) input:hover {
+    background: rgb(145, 181, 194) !important;
+    background-clip: content-box !important;
+}
+
+.v2 .view-edit .safehouse-function-list input,
+.v2 .view-edit .safehouse-function-list input:hover {
+    background-clip: content-box !important;
+}

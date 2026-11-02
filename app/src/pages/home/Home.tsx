@@ -2,6 +2,7 @@ import "./Home.css"
 import { useEffect } from "react"
 import { SetLoadingFunction } from "../../components/loading/Loading"
 import UsersCharactersHook from "../../hooks/UsersCharactersHook"
+import UsersSafehousesHook from "../../hooks/UsersSafehousesHook"
 import { useSelector } from "react-redux"
 import { isUserLoggedOn } from "../../redux/slices/userSlice"
 import V1CharacterDisplay from "./components/v1CharacterDisplay/V1CharacterDisplay"
@@ -18,6 +19,7 @@ export default function Home({ setLoading, pathname }: Props) {
     const userIsLoggedIn = useSelector(isUserLoggedOn)
 
     const { usersCharacters, deleteCharacter, addCharacter } = UsersCharactersHook(pathname)
+    const { safehouses, deleteSafehouse, addSafehouse } = UsersSafehousesHook(pathname)
 
     useEffect(() => {
         if (setLoading) {
@@ -29,7 +31,7 @@ export default function Home({ setLoading, pathname }: Props) {
         <div className="home-shell">
             {userIsLoggedIn && usersCharacters ? (
                 <>
-                    <V2CharacterDisplay usersCharacters={usersCharacters[1]} addCharacter={addCharacter} deleteCharacter={deleteCharacter.deleteV2Character} />
+                    <V2CharacterDisplay usersCharacters={usersCharacters[1]} addCharacter={addCharacter} deleteCharacter={deleteCharacter.deleteV2Character} safehouses={safehouses} addSafehouse={addSafehouse} deleteSafehouse={deleteSafehouse} />
                     <V1CharacterDisplay usersCharacters={usersCharacters[0]} deleteCharacter={deleteCharacter.deleteV1Character} />
                 </>
             ) : (
