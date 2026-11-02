@@ -63,7 +63,7 @@ export default function Functions({ section, label, rows, onCommit, onInsert, on
             <div className="safehouse-section-headers">
                 <h2>{label}</h2>
                 <h2>Rank</h2>
-                <h2>R?</h2>
+                <h2 data-tooltip-id="my-tooltip" data-tooltip-content="Is this a ruin?"><i className="fa-solid fa-house-crack"></i></h2>
                 <h2>Space</h2>
                 <h2>Notes</h2>
             </div>

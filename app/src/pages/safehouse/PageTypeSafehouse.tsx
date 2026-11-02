@@ -38,7 +38,7 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
             <div className="safehouse-header">
                 <div className="safehouse-header-fields">
                     <label>
-                        <span>Safehouse Name</span>
+                        <strong>Safehouse Name</strong>
                         {isEditing && !isBlank ? (
                             <input
                                 className="character-value"
@@ -52,7 +52,7 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
                     </label>
                     <div className="safehouse-header-line">
                         <label>
-                            <span>Location</span>
+                            <strong>Location</strong>
                             {isEditing && !isBlank ? (
                                 <input
                                     className="character-value"
@@ -65,7 +65,7 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
                             )}
                         </label>
                         <label>
-                            <span>C Rank Limit</span>
+                            <strong>C Rank Limit</strong>
                             {isEditing && !isBlank ? (
                                 <input
                                     className="character-value"
