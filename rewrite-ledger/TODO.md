@@ -5,6 +5,21 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-173: Drop the black fill on a checked Ruin box
+status: proposed
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: A checked Ruin box paints `background: black` at rest and again in edit and quick-edit. The green check is the checked mark. Those washes should show when the box is checked.
+scope: `app/src/pages/safehouse/Functions.css`, the two `.safehouse-flag-box.checked` background rules. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `Gear.css`, `index.css`, or the blank rules. Do not change the box size, the check size, or the check color. Do not add a fill.
+steps:
+1. Delete the rule `.safehouse-flag-box.checked, .safehouse-flag-box.checked:hover` that sets `background: black`.
+2. Delete the `.v2 .view-edit` and `.v2 .view-quick-edit` rule that sets `.safehouse-flag-box.checked` to `background: black !important`.
+3. Leave the hover `rgba(173, 216, 230)`, the edit and quick-edit wash of that same color, the hover `rgb(145, 181, 194)`, and the blank transparent rule.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Functions.css` for `background: black` is 0. Grep of `Gear.css` still finds `background: black !important` on `.page3-flag-box.checked`. Grep of `index.css` still finds `.fa-check` with `color: green`.
+depends on: none
+open questions: none
+deviations from design: none
+result:
+
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
