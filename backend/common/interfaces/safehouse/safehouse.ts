@@ -5,7 +5,7 @@ export const SAFEHOUSE_SECTIONS = ['living', 'workspace', 'recreational', 'defen
 export type SafehouseSection = typeof SAFEHOUSE_SECTIONS[number]
 
 export const SAFEHOUSE_SECTION_CAPS: Record<SafehouseSection, number> = {
-    living: 10,
+    living: 11,
     workspace: 11,
     recreational: 11,
     defenses: 15

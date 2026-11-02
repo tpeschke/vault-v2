@@ -21,6 +21,19 @@ result:
 
 ## Done
 
+### T-178: Give Living Space an eleventh row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Living Space paints 10 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, `SAFEHOUSE_SHEET_MAX`, the row pitch, or the footer.
+steps:
+1. Set `living` to 11. Leave `workspace` 11, `recreational` 11, and `defenses` 15. Leave `SAFEHOUSE_SHEET_MAX` at 15.
+done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `living: 11` and finds no `living: 10`. Grep finds `workspace: 11`, `recreational: 11`, `defenses: 15`, and `SAFEHOUSE_SHEET_MAX = 15`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: Living Space paints 11 rows. Workspace 11, Recreational Space 11, and Defenses 15 are unchanged. `SAFEHOUSE_SHEET_MAX` stays 15. `tsc -p backend/common` exits 0. The field insert does not read the cap.
+
 ### T-177: Give Recreational Space an eleventh row
 status: done
 source: rewrite-ledger/safehouse.md, revised 2026-11-02
