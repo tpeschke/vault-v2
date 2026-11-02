@@ -60,10 +60,6 @@
     flex: 0 0 auto;
 }
 
-.page-type-safehouse > h1 {
-    margin: 8px 0 0;
-}
-
 .safehouse-footer {
     display: grid;
     grid-template-columns: var(--safehouse-columns);
@@ -124,7 +120,8 @@
     grid-row: 2;
     border-top: 1px solid #bdbdbd;
     overflow: hidden;
-    font-family: 'HamletOrNot';
+    font-family: 'OldClaude';
+    font-weight: bold;
     font-size: 10px;
     line-height: 19px;
     white-space: nowrap;
@@ -251,6 +248,7 @@
 
 .safehouse-footer-name input.character-value,
 .safehouse-footer-wear input.character-value {
+    font-size: 26px;
     line-height: 38px;
 }
 

@@ -33,7 +33,7 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
     const totalRanks = safehouseTotalRanks(page)
     const ruinCount = safehouseRuinCount(page)
     const totalSpace = safehouseTotalSpace(page)
-    const upkeep = safehouseUpkeep(totalRanks)
+    const upkeep = safehouseUpkeep(totalRanks, ruinCount)
 
     return (
         <div className="page card page-type-safehouse">

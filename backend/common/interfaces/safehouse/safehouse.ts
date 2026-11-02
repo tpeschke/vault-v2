@@ -140,17 +140,17 @@ export function safehouseTotalSpace(page: SafehousePage1): number {
     return sum
 }
 
-export function safehouseUpkeep(total: number): string {
+export function safehouseUpkeep(total: number, ruinCount: number): string {
     if (!Number.isFinite(total)) {
         return '0'
     }
     const negative = total < 0
     const tenths = Math.round((Math.abs(total) / 10) * 10) / 10
-    const text = tenths.toFixed(1).replace(/\.0$/, '')
-    if (text === '0') {
+    const text = +tenths.toFixed(1).replace(/\.0$/, '') + ruinCount
+    if (text === 0) {
         return '0'
     }
-    return negative ? `-${text}` : text
+    return negative ? `-${text}` : `${text}`
 }
 
 export type SafehouseFieldAttribute =
