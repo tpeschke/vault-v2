@@ -1,6 +1,6 @@
 import './PageTypeSafehouse.css'
 import { useContext } from 'react'
-import { SafehousePage1, safehouseTotalRanks, safehouseUpkeep } from '@vault/common/interfaces/safehouse/safehouse'
+import { SafehousePage1, safehouseRuinCount, safehouseTotalRanks, safehouseTotalSpace, safehouseUpkeep } from '@vault/common/interfaces/safehouse/safehouse'
 import wordmark from '../../assets/images/bonfire-wordmark.png'
 import BlankContext, { blankInk } from '../v2/contexts/BlankContext'
 import EditingContext from '../v2/contexts/EditingContext'
@@ -30,8 +30,10 @@ function numberFromInput(raw: string) {
 export default function PageTypeSafehouse({ page, updates }: Props) {
     const isBlank = useContext(BlankContext)
     const isEditing = useContext(EditingContext)
-    const total = safehouseTotalRanks(page)
-    const upkeep = safehouseUpkeep(total)
+    const totalRanks = safehouseTotalRanks(page)
+    const ruinCount = safehouseRuinCount(page)
+    const totalSpace = safehouseTotalSpace(page)
+    const upkeep = safehouseUpkeep(totalRanks)
 
     return (
         <div className="page card page-type-safehouse">
@@ -107,13 +109,17 @@ export default function PageTypeSafehouse({ page, updates }: Props) {
                         onBlur={event => updates.blurFooter(page.pageID, 'wealth', numberFromInput(event.target.value))}
                     />
                 </div>
-                <div className="safehouse-footer-rank"></div>
-                <div className="safehouse-footer-ruin">
-                    <p className="character-value">{blankInk(isBlank, total)}</p>
+                <div className="safehouse-footer-rank">
+                    <p className="character-value">{blankInk(isBlank, totalRanks)}</p>
                 </div>
-                <div className="safehouse-footer-rank-ruin"></div>
+                <div className="safehouse-footer-ruin">
+                    <p className="character-value">{blankInk(isBlank, ruinCount)}</p>
+                </div>
+                <div className="safehouse-footer-rank-ruin">Total Ranks</div>
                 <div className="safehouse-footer-space"></div>
-                <div className="safehouse-footer-total">Total Ranks</div>
+                <div className="safehouse-footer-total">
+                    <p className="character-value">{blankInk(isBlank, totalSpace)}</p>
+                </div>
                 <div className="safehouse-footer-notes">
                     <span className="safehouse-footer-slash">/</span>
                     <div className="safehouse-footer-slash-gap"></div>
