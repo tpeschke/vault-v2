@@ -5,6 +5,21 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-171: Put safehouse header values on the title line
+status: proposed
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Each header value is a block under its title. On the template the value shares the title’s line, and the underline runs from the end of the title to the end of that field.
+scope: `app/src/pages/safehouse/PageTypeSafehouse.css`, `.safehouse-header label`, `.safehouse-header .character-value`, and `.safehouse-header em`. Owner: `safehouse.md`. Do not edit `PageTypeSafehouse.tsx`, `safehouseHook.tsx`, `View.css`, or the footer rules. Do not change the wordmark, the save path, or blank ink.
+steps:
+1. Set `.safehouse-header label` to `display: grid`, `grid-template-columns: max-content minmax(0, 1fr)`, `align-items: end`, and `column-gap: 8px`. Leave `margin-bottom: 6px`.
+2. Leave `.safehouse-header .character-value` at `width: 100%`, `min-height: 17.38px`, `margin: 0`, and `border-bottom: 1px solid black`. It occupies the second cell in both view and edit.
+3. Set `.safehouse-header em` to `grid-column: 1 / -1`. Leave it italic, 12px, and left-aligned. Leave `.safehouse-header-line` as the flex row of Location and C Rank Limit. Leave the wordmark at 240px on the right.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `PageTypeSafehouse.css` finds `grid-template-columns: max-content minmax(0, 1fr)` and `column-gap: 8px` on `.safehouse-header label`, and finds `grid-column: 1 / -1` on `.safehouse-header em`. Grep of `PageTypeSafehouse.tsx` finds `<strong>Safehouse Name</strong>`, `<strong>Location</strong>`, and `<strong>C Rank Limit</strong>` still each inside their own `label`.
+depends on: none
+open questions: none
+deviations from design: none
+result:
+
 ### T-170: Raise the safehouse footer by one Defenses row
 status: proposed
 source: rewrite-ledger/safehouse.md, revised 2026-11-02
