@@ -288,11 +288,19 @@ async function createSafehouseTables() {
         notes varchar(500) not null default '',
         index integer not null
     )`)
+    await query(`create table if not exists safehousePage2 (
+        pageID integer primary key,
+        npcs text not null default '',
+        resources text not null default ''
+    )`)
     if (!await tableExists('safehousepages')) {
         throw new Error('ensureSchema: safehousePages missing')
     }
     if (!await tableExists('safehousepage1functions')) {
         throw new Error('ensureSchema: safehousePage1Functions missing')
+    }
+    if (!await tableExists('safehousepage2')) {
+        throw new Error('ensureSchema: safehousePage2 missing')
     }
 }
 

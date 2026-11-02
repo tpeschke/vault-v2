@@ -16,6 +16,10 @@ interface Html2PdfWorker {
 
 const LETTER_WIDTH = 816
 const LETTER_HEIGHT = 1056
+const CAPTURE_SCALE = 2
+const RULE_BAND = 17.38
+const RULE_PERIOD = 34.76
+const RULED_SELECTOR = '.page-type-safehouse-damage .safehouse-damage-notes > .character-value'
 
 const workerOptions = {
     margin: 0,
@@ -68,6 +72,42 @@ function copyControlStyle(live: HTMLElement, clone: HTMLElement) {
     block.scrollTop = live.scrollTop
 }
 
+function paintStripes(livePage: HTMLElement, container: HTMLElement) {
+    const liveRuled = [...livePage.querySelectorAll(RULED_SELECTOR)]
+    const cloneRuled = [...container.querySelectorAll(RULED_SELECTOR)]
+    if (liveRuled.length === 0 && cloneRuled.length === 0) {
+        return
+    }
+    if (liveRuled.length !== cloneRuled.length) {
+        removeClones()
+        throw new Error('Download ruled-line count does not match the sheet.')
+    }
+    liveRuled.forEach((live, index) => {
+        const clone = cloneRuled[index]
+        if (!(live instanceof HTMLElement) || !(clone instanceof HTMLElement)) return
+        const width = clone.offsetWidth
+        const height = clone.offsetHeight
+        if (width < 1 || height < 1) return
+        const canvas = clone.ownerDocument.createElement('canvas')
+        canvas.width = Math.max(1, Math.round(width * CAPTURE_SCALE))
+        canvas.height = Math.max(1, Math.round(height * CAPTURE_SCALE))
+        const context = canvas.getContext('2d')
+        if (!context) return
+        context.scale(CAPTURE_SCALE, CAPTURE_SCALE)
+        const scrollTop = live.scrollTop
+        for (let y = 0; y < height; y += 1) {
+            const phase = ((y + scrollTop) % RULE_PERIOD + RULE_PERIOD) % RULE_PERIOD
+            context.fillStyle = phase < RULE_BAND ? '#ffffff' : '#f3f3f3'
+            context.fillRect(0, y, width, 1)
+        }
+        clone.scrollTop = scrollTop
+        clone.style.setProperty('background-image', `url("${canvas.toDataURL('image/png')}")`, 'important')
+        clone.style.setProperty('background-repeat', 'no-repeat', 'important')
+        clone.style.setProperty('background-size', `${width}px ${height}px`, 'important')
+        clone.style.setProperty('background-attachment', 'scroll', 'important')
+    })
+}
+
 function copyFields(livePage: HTMLElement, container: HTMLElement) {
     const liveFields = [...livePage.querySelectorAll('input, textarea')]
     const cloneFields = [...container.querySelectorAll('input, textarea')]
@@ -82,6 +122,7 @@ function copyFields(livePage: HTMLElement, container: HTMLElement) {
         if (!(clone instanceof HTMLElement)) return
         copyControlStyle(live, clone)
     })
+    paintStripes(livePage, container)
 }
 
 async function renderPage(html2pdf: () => Html2PdfWorker, page: HTMLElement): Promise<ArrayBuffer> {

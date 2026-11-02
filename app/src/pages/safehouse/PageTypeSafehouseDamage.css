@@ -1,0 +1,87 @@
+.page-type-safehouse-damage .double-column {
+    gap: 15px;
+}
+
+.page-type-safehouse-damage .left-column,
+.page-type-safehouse-damage .right-column {
+    width: calc(50% - 7.5px);
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.safehouse-damage-notes > textarea {
+    width: 100%;
+    min-height: calc(57 * 17.38px);
+    max-height: calc(57 * 17.38px);
+    overflow: hidden;
+    padding: 0 1px;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    font-size: 15px;
+    line-height: 1.2;
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        #fff 0,
+        #fff 17.38px,
+        #f3f3f3 17.38px,
+        #f3f3f3 34.76px
+    );
+    background-attachment: local;
+}
+
+.v2 .safehouse-damage-notes > textarea {
+    background-color: transparent !important;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        #fff 0,
+        #fff 17.38px,
+        #f3f3f3 17.38px,
+        #f3f3f3 34.76px
+    ) !important;
+    background-attachment: local !important;
+}
+
+.v2 .safehouse-damage-notes > textarea:hover {
+    background-color: transparent !important;
+    background-image:
+        linear-gradient(rgba(145, 181, 194, 0.35), rgba(145, 181, 194, 0.35)),
+        repeating-linear-gradient(
+            to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px
+        ) !important;
+    background-attachment: local !important;
+}
+
+.v2 .view-edit .safehouse-damage-notes > textarea,
+.v2 .view-quick-edit .safehouse-damage-notes > textarea {
+    background-color: transparent !important;
+    background-image:
+        linear-gradient(rgba(173, 216, 230, 0.35), rgba(173, 216, 230, 0.35)),
+        repeating-linear-gradient(
+            to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px
+        ) !important;
+    background-attachment: local !important;
+}
+
+.v2 .view-edit .safehouse-damage-notes > textarea:hover,
+.v2 .view-quick-edit .safehouse-damage-notes > textarea:hover {
+    background-color: transparent !important;
+    background-image:
+        linear-gradient(rgba(145, 181, 194, 0.35), rgba(145, 181, 194, 0.35)),
+        repeating-linear-gradient(
+            to bottom,
+            #fff 0,
+            #fff 17.38px,
+            #f3f3f3 17.38px,
+            #f3f3f3 34.76px
+        ) !important;
+    background-attachment: local !important;
+}

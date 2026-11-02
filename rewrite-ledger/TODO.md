@@ -5,6 +5,7 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+
 ### T-139: Raise the JSON body limit for a notes scene
 status: blocked
 source: rewrite-ledger/page4-view.md, 2026-10-30
@@ -20,6 +21,67 @@ deviations from design: Left blocked. The design chose the full POST and did not
 result:
 
 ## Done
+
+### T-182: Paint Damage Healing bands in the safehouse PDF
+status: done
+source: rewrite-ledger/safehouse-damage-healing.md, 2026-11-02
+why: html2pdf drops the CSS gradient. The character downloader already paints Abilities bands as a bitmap. This sheet has its own downloader.
+scope: `app/src/pages/safehouse/downloadSafehouse.ts` only. Owner: `safehouse-damage-healing.md`. Do not edit `downloadCharacter.ts`. Do not add the safehouse class to the character paint list.
+steps:
+1. In the safehouse worker clone, paint each `.page-type-safehouse-damage` notes textarea. Bands are 17.38px `#fff` then 17.38px `#f3f3f3`, shifted by the live `scrollTop`. Set the image with `!important` and `background-attachment: scroll`. Leave Functions pages unpainted by this step. Leave the on-screen sheet on its CSS gradient.
+2. The capture set stays `.safehouse-shell .page`, so the new card is already a letter page. Do not add a second query.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `downloadSafehouse.ts` finds `page-type-safehouse-damage`. Grep of `downloadCharacter.ts` finds no `page-type-safehouse-damage`. Grep of `downloadCharacter.ts` still finds `page-type-two-notes`.
+depends on: T-181
+open questions: none
+deviations from design: none
+result: The safehouse worker paints `.page-type-safehouse-damage .safehouse-damage-notes > .character-value` after the textarea is copied to a block. `downloadCharacter.ts` still paints `.page-type-two-notes` and does not name the safehouse class. App tsc’s only errors are the pre-existing missing `frontend-config`.
+
+### T-181: Draw Damage Healing and rename the gutter adds
+status: done
+source: rewrite-ledger/safehouse-damage-healing.md, 2026-11-02
+why: The card, the blank, and the two gutter labels are the page the designer named. Both strings edit at play time.
+scope: `app/src/pages/safehouse/` (`SafehouseView.tsx`, `safehouseHook.tsx`, a page-local Damage Healing card and its CSS). `app/src/pages/v2/pageTypes/components/doubleColumn/DoubleColumn.tsx` is reused, not edited. Do not edit `DoubleColumn.css`, `NotesPanes`, `PageTypeSafehouse.tsx`, or `V2View.tsx`. Owner: `safehouse-damage-healing.md`.
+steps:
+1. Render `type: 2` as `.page.card.page-type-safehouse-damage`. Do not add `page-type-safehouse`. No wordmark, no Functions header, no Functions footer. Inside `DoubleColumn`: **NPCs** then **Resources**. Each pane is an `h1` and one `textarea.character-value`. Gap 15px on `.page-type-safehouse-damage .double-column` only.
+2. Both textareas use `min-height` and `max-height` of `calc(57 * 17.38px)`, `overflow: hidden`, `white-space: pre-wrap`, the Abilities zebra (`#fff` / `#f3f3f3`, first band white, `background-attachment: local`). Text 15px, line-height 1.2. `maxLength` and the shared clamp use `textareaCaps.safehouseNpcs` and `textareaCaps.safehouseResources`. `holdTextareaScroll`. Washes match Contacts: plain view rest is zebra; plain view hover stacks `rgba(145, 181, 194, 0.35)`; `.view-edit` and `.view-quick-edit` rest `rgba(173, 216, 230, 0.35)` and hover `rgba(145, 181, 194, 0.35)`, each over the zebra. Beat the solid `index.css` textarea fills.
+3. The textarea is mounted in view and in edit. Blank uses `blankInk` and `readOnly`, and blur does not POST. Otherwise blur POSTs `safehouseNpcs` or `safehouseResources` with the trimmed string when `pageID > 0`, the viewer owns the safehouse, and Edit is off. While editing, the change stays local until Save. The full Save body includes `type`, `pageID`, `npcs`, and `resources`.
+4. `blankSafehouse` pages are `emptyPage1(0)` then `emptyPage2(-1)`. `addPageAfter` stays type 1 and the button text is `Functions`. Add `addDamageHealingAfter` that splices `emptyPage2` with the next temp id `<= 0`. The disclosed gutter is **+ Functions**, then **+ Damage Healing**, then `fa-rotate-left`. No tooltip on either add. At the cap, both adds use the existing toast and counter. `removePageAt` removes a type 2 at any index, and still refuses the first type 1. The idle and armed delete already used for other type-1 sheets also mount for type 2. The first type 1 stays the disabled trash with `You can never remove this page.` `00-START-HERE.yaml` already lists `app/src/pages/safehouse/` on the safehouse view, blank, edit, and add keys. Do not add a key whose text is only `safehouse page` or `page type 2`.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `SafehouseView.tsx` finds `Functions` and `Damage Healing`, and finds no `> Safehouse`. Grep of `V2View.tsx` finds no `Damage Healing` and no `> Functions`. Grep of the damage-healing CSS finds `calc(57 * 17.38px)` and finds no `calc(19 * 17.38px)`. Grep of `safehouseHook.tsx` finds `emptyPage2(-1)`. Grep of `removePageAt` in that file finds `type === 2`. In the browser, `/s/blank` shows the Functions card and then a card whose headings are NPCs and Resources, the textareas are empty and read-only, and each `.page` border box is 816×1056.
+depends on: T-179, T-180
+open questions: none
+deviations from design: Column widths are `calc(50% - 7.5px)`, the same split page type 2 uses so a 15px gap fits the card. The TODO named the gap and not the widths.
+result: `/s/blank` shows Functions, then NPCs and Resources. Both textareas are empty, read-only, and 990.66px tall. Both `.page` boxes are 816×1056, and the damage card’s scroll height stays 1056. App tsc’s only errors are the pre-existing missing `frontend-config`. `V2View.tsx` has neither label.
+
+### T-180: Read and write Damage Healing on the server
+status: done
+source: rewrite-ledger/safehouse-damage-healing.md, 2026-11-02
+why: Create, view, full Save, and play-time blur have to round-trip the two strings. Existing safehouses stay without the page.
+scope: `backend/server/safehouse/add/addSafehouse.ts`; `backend/server/safehouse/view/viewSafehouse.ts`; `backend/server/safehouse/edit/editSafehouse.ts`; `backend/server/safehouse/edit/editSafehouseField.ts`. Owner: `safehouse-damage-healing.md`. Do not change the home list query. Do not backfill. Do not change Functions field attributes.
+steps:
+1. Create, after the type-1 page and its `safehousePage1` row: insert `safehousePages` (`index` 1, `pageTypeID` 2) and one `safehousePage2` row for that id. On any failure, the existing partial delete also deletes `safehousePage2` for that safehouse before it deletes `safehousePages`. The response stays the safehouse id.
+2. Assemble: `pageTypeID` 2 returns `{ type: 2, pageID, npcs, resources }`. A missing `safehousePage2` row uses `''` and `''`, not `type: 404`. Any other `pageTypeID` stays `{ type: 404, pageID }`. Catalog name stays the first type 1.
+3. Full Save accepts `type: 2`. `pageID <= 0` inserts a `safehousePages` row with `pageTypeID` 2 and a `safehousePage2` row. `pageID > 0` updates that page’s index and the two strings, and only when the row is `pageTypeID` 2 for this safehouse. Trim is not used: if `textareaCharCount` of either string is over 1350, respond `{ message: 'Text is too long' }` and do not write that page. Omitted persisted type-2 ids delete `safehousePage2` then that `safehousePages` row. A posted list with no type 1 is still `{ message: "Pages weren't able to be removed" }`. A list with no type 2 is saved. Type 404 still takes the existing keep path. A short stored type-2 count uses the existing `{ message: 'Could not save all sheets' }`.
+4. Field POST: `safehouseNpcs` and `safehouseResources` take a string value. Over 1350 code points returns `{ success: false, message: 'Text is too long' }` and does not write. A legal string updates that one column. The page must be `pageTypeID` 2 on this safehouse; otherwise refuse. `safehouseWealth`, `safehouseSpaceLimit`, `safehouseWear`, and the function attributes still require `pageTypeID` 1.
+done when: `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of `addSafehouse.ts` finds `pageTypeID` 2 and `safehousePage2`. Grep of `viewSafehouse.ts` finds `type: 2`. Grep of `editSafehouse.ts` finds `safehousePage2`. Grep of `editSafehouseField.ts` finds `safehouseNpcs` and `safehouseResources`. Grep of `listSafehouses.ts` finds no `safehousePage2`.
+depends on: T-179
+open questions: none
+deviations from design: none
+result: Create inserts page type 2 at index 1 and deletes `safehousePage2` on a partial failure. View assembles the two strings. Save inserts, updates, and deletes type 2. Field POST writes one column and refuses an over-cap string with `Text is too long`. Server tsc’s only errors are the pre-existing missing `server-config`. The list query does not name `safehousePage2`.
+
+### T-179: Add the Damage Healing store
+status: done
+source: rewrite-ledger/safehouse-damage-healing.md, 2026-11-02
+why: The page needs a type, two strings, and a table before view, save, or the card can name them.
+scope: `backend/common/interfaces/safehouse/safehouse.ts` (`SafehousePage2`, `emptyPage2`, `SafehousePage`, `SafehouseFieldAttribute`). `backend/common/textareaLimits.ts` (`textareaCaps.safehouseNpcs`, `textareaCaps.safehouseResources`). `backend/server/db/ensureSchema.ts` `createSafehouseTables`. `backend/server/safehouse/safehouse.sql`. Owner: `safehouse-damage-healing.md`. Do not insert rows for existing safehouses. Do not edit Functions columns. Do not add a character foreign key.
+steps:
+1. Add `SafehousePage2`: `{ type: 2, pageID, key?, npcs, resources }`, both strings. `emptyPage2(pageID, key?)` returns those strings as `''`. Widen `SafehousePage` with that type. Leave `SafehousePage1` and `SafehouseMissingPage` as they are.
+2. Add `'safehouseNpcs'` and `'safehouseResources'` to `SafehouseFieldAttribute`. Add both keys to `textareaCaps`, each `TEXTAREA_DEFAULT_MAX`.
+3. In `createSafehouseTables` and in `safehouse.sql`, `CREATE TABLE IF NOT EXISTS safehousePage2 (pageID integer primary key, npcs text not null default '', resources text not null default '')`. After the create, fail closed when `safehousepage2` is missing, the same way `safehousepage1functions` already fails closed. Do not insert into it.
+done when: `npx tsc --noEmit -p backend/common` exits 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are pre-existing. Grep of `safehouse.ts` finds `type: 2` on `SafehousePage2` and finds `safehouseNpcs` and `safehouseResources`. Grep of `textareaLimits.ts` finds both cap keys. Grep of `ensureSchema.ts` and of `safehouse.sql` finds `safehousePage2` and finds no `insert into safehousePage2`.
+depends on: none
+open questions: none
+deviations from design: none
+result: `SafehousePage2`, `emptyPage2`, and the two field attributes are in `safehouse.ts`. Both textarea caps are 1350. `safehousePage2` is created from `ensureSchema` and `safehouse.sql`, and neither file inserts a row. `tsc -p backend/common` exits 0.
 
 ### T-178: Give Living Space an eleventh row
 status: done

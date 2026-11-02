@@ -14,7 +14,7 @@ Constraints it imposes:
 - Keep `rank` on the renamed descriptions table (player-facing number, not list order).
 - Update `backupTables/page1.sql` in the same change as each page-1 rename so the snapshot matches live names. Page-type-2 snapshot is `backupTables/page2.sql` (`page2-view.md`). Page-type-3 snapshot is `backupTables/page3.sql` (`page3-view.md`). Page-type-4 snapshot is `backupTables/page4.sql` (`page4-view.md`).
 - Page-type-4 table `v2Page4Notes` (`pageID` unique, `scene` text default `''`) via `CREATE TABLE IF NOT EXISTS` plus that snapshot (`page4-view.md`). Do not insert type-4 page rows for existing characters.
-- Safehouse tables (`safehouses`, `safehousePages`, `safehousePage1`, `safehousePage1Functions`) via `CREATE TABLE IF NOT EXISTS` plus `backend/server/safehouse/safehouse.sql` (`safehouse.md`). Do not insert safehouse rows for existing users. Do not add a character foreign key.
+- Safehouse tables (`safehouses`, `safehousePages`, `safehousePage1`, `safehousePage1Functions`, `safehousePage2`) via `CREATE TABLE IF NOT EXISTS` plus `backend/server/safehouse/safehouse.sql` (`safehouse.md`, `safehouse-damage-healing.md`). Do not insert safehouse rows for existing users. Do not insert type-2 pages for safehouses that already exist. Do not add a character foreign key.
 - Update `backupTables/page1.sql` in the same change as each page-1 rename so the snapshot matches live names. Page-type-2 snapshot is `backupTables/page2.sql` (`page2-view.md`). Page-type-3 snapshot is `backupTables/page3.sql` (`page3-view.md`).
 - Textarea trim: `textarea-limits.md`. This script trims stored textarea strings to their caps. `v2Page3Basics.contacts` stays `text`. Skip a statement when the table or column is absent. Do not add a second migration path.
 - Quarter Mastering gear size is `'S'` for `qm1`–`qm15`. The boot script updates existing `v2Page3Gear` rows. Idempotent. The cell rule and the slot list stay on `page3-view.md`. `backupTables/page3.sql` stays the table snapshot.
@@ -22,6 +22,9 @@ Constraints it imposes:
 Rejected:
 - `node-pg-migrate` / a versioned history table (four renames and one column).
 - Applying DDL only by hand.
+
+Revised 2026-11-02 (`safehouse-damage-healing.md`):
+- Safehouse boot tables stop at `safehousePage1Functions` — **revised**: also `safehousePage2`. No type-2 page backfill.
 
 Revised 2026-11-01 (`safehouse.md`):
 - Boot patches stopped at character page type 4 — **revised**: also `safehouses`, `safehousePages`, `safehousePage1`, `safehousePage1Functions`, snapshotted at `backend/server/safehouse/safehouse.sql`. No character foreign key. No backfill.

@@ -4,6 +4,7 @@ import {
     SafehouseNumber,
     SafehousePage,
     SafehousePage1,
+    SafehousePage2,
     SafehouseSection,
     emptyFunctions,
     isSection
@@ -72,6 +73,20 @@ async function assemblePage1(pageID: number): Promise<SafehousePage1> {
     }
 }
 
+async function assemblePage2(pageID: number): Promise<SafehousePage2> {
+    const rows = await query(
+        `select npcs, resources from safehousePage2 where pageID = $1`,
+        pageID
+    )
+    const row = rows[0] ?? {}
+    return {
+        type: 2,
+        pageID,
+        npcs: typeof row.npcs === 'string' ? row.npcs : '',
+        resources: typeof row.resources === 'string' ? row.resources : ''
+    }
+}
+
 export async function assembleSafehouse(safehouseID: number, userID: number | undefined): Promise<Safehouse | { message: string }> {
     const pageRows = await query(
         `select id, pageTypeID as pagetypeid from safehousePages where safehouseID = $1 order by index`,
@@ -87,6 +102,8 @@ export async function assembleSafehouse(safehouseID: number, userID: number | un
         const pageID = Number(row.id)
         if (Number(row.pagetypeid) === 1) {
             pages.push(await assemblePage1(pageID))
+        } else if (Number(row.pagetypeid) === 2) {
+            pages.push(await assemblePage2(pageID))
         } else {
             pages.push({ type: 404, pageID })
         }

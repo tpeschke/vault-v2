@@ -31,3 +31,9 @@ create table if not exists safehousePage1Functions (
     notes varchar(500) not null default '',
     index integer not null
 );
+
+create table if not exists safehousePage2 (
+    pageID integer primary key,
+    npcs text not null default '',
+    resources text not null default ''
+);

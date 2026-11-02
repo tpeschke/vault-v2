@@ -9,7 +9,9 @@ export const textareaCaps = {
     abilities: TEXTAREA_DEFAULT_MAX,
     burdens: TEXTAREA_DEFAULT_MAX,
     page3Contacts: TEXTAREA_DEFAULT_MAX,
-    page3Notes: TEXTAREA_DEFAULT_MAX
+    page3Notes: TEXTAREA_DEFAULT_MAX,
+    safehouseNpcs: TEXTAREA_DEFAULT_MAX,
+    safehouseResources: TEXTAREA_DEFAULT_MAX
 } as const
 
 const NEWLINE = /\r\n|\r/g

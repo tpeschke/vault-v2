@@ -10,6 +10,7 @@ import {
     emptyFunctions,
     isSafehouseNumber
 } from '@vault/common/interfaces/safehouse/safehouse'
+import { TEXTAREA_DEFAULT_MAX, textareaCharCount } from '@vault/common/textareaLimits'
 import { checkForContentTypeBeforeSending } from '../../controllers/common/sendingFunctions'
 import query from '../../db/database'
 import { Response } from '../../interfaces/apiInterfaces'
@@ -27,6 +28,12 @@ interface PostedFunction {
     r: boolean,
     space: SafehouseNumber,
     notes: string
+}
+
+interface PostedPage2 {
+    pageID: number,
+    npcs: string,
+    resources: string
 }
 
 interface PostedPage1 {
@@ -121,9 +128,36 @@ function readPage1(value: unknown): PostedPage1 | null {
     }
 }
 
+function readPage2(value: unknown): PostedPage2 | null {
+    if (!value || typeof value !== 'object') {
+        return null
+    }
+    const page = value as Record<string, unknown>
+    if (page.type !== 2 || typeof page.pageID !== 'number' || !Number.isFinite(page.pageID)) {
+        return null
+    }
+    if (typeof page.npcs !== 'string' || typeof page.resources !== 'string') {
+        return null
+    }
+    return {
+        pageID: page.pageID,
+        npcs: page.npcs,
+        resources: page.resources
+    }
+}
+
 function textTooLong(pages: unknown[]): boolean {
     return pages.some(page => {
-        if (!page || typeof page !== 'object' || (page as { type?: unknown }).type !== 1) {
+        if (!page || typeof page !== 'object') {
+            return false
+        }
+        const kind = (page as { type?: unknown }).type
+        if (kind === 2) {
+            const candidate = page as Record<string, unknown>
+            return (typeof candidate.npcs === 'string' && textareaCharCount(candidate.npcs) > TEXTAREA_DEFAULT_MAX)
+                || (typeof candidate.resources === 'string' && textareaCharCount(candidate.resources) > TEXTAREA_DEFAULT_MAX)
+        }
+        if (kind !== 1) {
             return false
         }
         const candidate = page as Record<string, unknown>
@@ -232,6 +266,37 @@ async function insertPage(safehouseID: number, index: number, page: PostedPage1)
     return replaceFunctions(pageID, page.functions)
 }
 
+async function updateExistingPage2(safehouseID: number, index: number, page: PostedPage2): Promise<boolean> {
+    const updated = await query(
+        `update safehousePages set index = $1 where id = $2 and safehouseID = $3 and pageTypeID = 2 returning id`,
+        [index, page.pageID, safehouseID]
+    )
+    if (!(Number(updated[0]?.id) > 0)) {
+        return false
+    }
+    const rows = await query(
+        `update safehousePage2 set npcs = $1, resources = $2 where pageID = $3 returning pageID`,
+        [page.npcs, page.resources, page.pageID]
+    )
+    return Number(rows[0]?.pageid) > 0
+}
+
+async function insertPage2(safehouseID: number, index: number, page: PostedPage2): Promise<boolean> {
+    const inserted = await query(
+        `insert into safehousePages (safehouseID, index, pageTypeID) values ($1, $2, $3) returning id`,
+        [safehouseID, index, 2]
+    )
+    const pageID = Number(inserted[0]?.id)
+    if (!(pageID > 0)) {
+        return false
+    }
+    const rows = await query(
+        `insert into safehousePage2 (pageID, npcs, resources) values ($1, $2, $3) returning pageID`,
+        [pageID, page.npcs, page.resources]
+    )
+    return Number(rows[0]?.pageid) > 0
+}
+
 async function keepUnknown(safehouseID: number, index: number, pageID: number) {
     await query(
         `update safehousePages set index = $1 where id = $2 and safehouseID = $3 and pageTypeID <> 1`,
@@ -271,12 +336,38 @@ export async function editSafehouse(request: EditRequest, response: Response) {
         safehouseID
     )
     const existingIDs = existingRows.map((row: { id: number | string }) => Number(row.id))
+    const existingDamageRows = await query(
+        `select id from safehousePages where safehouseID = $1 and pageTypeID = 2`,
+        safehouseID
+    )
+    const existingDamageIDs = existingDamageRows.map((row: { id: number | string }) => Number(row.id))
     const kept = new Set<number>()
+    const keptDamage = new Set<number>()
     let postedType1 = 0
+    let postedType2 = 0
     for (let index = 0; index < pages.length; index++) {
         const page = pages[index] as { type?: unknown, pageID?: unknown }
         if (page?.type === 404 && typeof page.pageID === 'number') {
             await keepUnknown(safehouseID, index, page.pageID)
+            continue
+        }
+        if (page?.type === 2) {
+            const parsed = readPage2(page)
+            if (!parsed) {
+                checkForContentTypeBeforeSending(response, { message: 'Could not save all sheets' })
+                return
+            }
+            postedType2 += 1
+            const wrote = parsed.pageID > 0
+                ? await updateExistingPage2(safehouseID, index, parsed)
+                : await insertPage2(safehouseID, index, parsed)
+            if (!wrote) {
+                checkForContentTypeBeforeSending(response, { message: 'Could not save all sheets' })
+                return
+            }
+            if (parsed.pageID > 0) {
+                keptDamage.add(parsed.pageID)
+            }
             continue
         }
         if (page?.type !== 1) {
@@ -318,11 +409,36 @@ export async function editSafehouse(request: EditRequest, response: Response) {
         }
     }
 
+    const omittedDamage = existingDamageIDs.filter((id: number) => !keptDamage.has(id))
+    for (const pageID of omittedDamage) {
+        await query(`delete from safehousePage2 where pageID = $1`, pageID)
+        await query(`delete from safehousePages where id = $1 and safehouseID = $2 and pageTypeID = 2`, [pageID, safehouseID])
+    }
+    if (omittedDamage.length > 0) {
+        const remainingDamage = await query(
+            `select id from safehousePages where safehouseID = $1 and pageTypeID = 2`,
+            safehouseID
+        )
+        const remainingDamageIDs = remainingDamage.map((row: { id: number | string }) => Number(row.id))
+        if (omittedDamage.some((id: number) => remainingDamageIDs.includes(id))) {
+            checkForContentTypeBeforeSending(response, { message: "Pages weren't able to be removed" })
+            return
+        }
+    }
+
     const storedType1 = await query(
         `select id from safehousePages where safehouseID = $1 and pageTypeID = 1`,
         safehouseID
     )
     if (storedType1.length < postedType1) {
+        checkForContentTypeBeforeSending(response, { message: 'Could not save all sheets' })
+        return
+    }
+    const storedType2 = await query(
+        `select id from safehousePages where safehouseID = $1 and pageTypeID = 2`,
+        safehouseID
+    )
+    if (storedType2.length < postedType2) {
         checkForContentTypeBeforeSending(response, { message: 'Could not save all sheets' })
         return
     }

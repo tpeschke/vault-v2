@@ -10,6 +10,7 @@ import Sidebar from '../v2/components/sidebar/Sidebar'
 import BlankContext from '../v2/contexts/BlankContext'
 import EditingContext from '../v2/contexts/EditingContext'
 import PageTypeSafehouse from './PageTypeSafehouse'
+import PageTypeSafehouseDamage from './PageTypeSafehouseDamage'
 import { downloadSafehouse, safehousePdfFileName } from './downloadSafehouse'
 import safehouseHook from './safehouseHook'
 
@@ -158,13 +159,15 @@ export default function SafehouseView({ setLoading, pathname, blank = false }: P
                                     <div id={'sheet-' + page.pageID}>
                                         {page.type === 1 ? (
                                             <PageTypeSafehouse page={page} updates={updates} />
+                                        ) : page.type === 2 ? (
+                                            <PageTypeSafehouseDamage page={page} updates={updates} />
                                         ) : (
                                             <div className="page card page-type-safehouse"></div>
                                         )}
                                     </div>
                                     {isEditing && (
                                         <div className="page-gutter">
-                                            {armedDeletePageIDs.includes(page.pageID) && page.type === 1 && index !== firstType1Index ? (
+                                            {armedDeletePageIDs.includes(page.pageID) && (page.type === 2 || (page.type === 1 && index !== firstType1Index)) ? (
                                                 <>
                                                     <button
                                                         type="button"
@@ -202,7 +205,20 @@ export default function SafehouseView({ setLoading, pathname, blank = false }: P
                                                             updates.addPageAfter(index)
                                                             restPage(page.pageID)
                                                         }}
-                                                    ><i className="fa-solid fa-plus"></i> Safehouse</button>
+                                                    ><i className="fa-solid fa-plus"></i> Functions</button>
+                                                    <button
+                                                        type="button"
+                                                        className="bottom-buttons add-page"
+                                                        onClick={() => {
+                                                            if (safehouse.pages.length >= SAFEHOUSE_SHEET_MAX) {
+                                                                toast.error(SAFEHOUSE_SHEET_CAP_MESSAGE)
+                                                                restPage(page.pageID)
+                                                                return
+                                                            }
+                                                            updates.addDamageHealingAfter(index)
+                                                            restPage(page.pageID)
+                                                        }}
+                                                    ><i className="fa-solid fa-plus"></i> Damage Healing</button>
                                                     <button
                                                         type="button"
                                                         className="primary"
@@ -278,7 +294,7 @@ export default function SafehouseView({ setLoading, pathname, blank = false }: P
                                                             data-tooltip-content="You can never remove this page."
                                                             onClick={() => { return }}
                                                         ><i className="fa-solid fa-trash"></i></button>
-                                                    ) : page.type === 1 ? (
+                                                    ) : page.type === 1 || page.type === 2 ? (
                                                         <button
                                                             type="button"
                                                             className="bottom-buttons delete-page"

@@ -60,6 +60,7 @@ Do not park new meaning in `core`, `common`, `shared`, `types`, `utilities`, or 
 | Page type 4 general notes sheet | `page4-view.md` |
 | Blank sheet (`/v/blank`) | `blank-sheet.md` |
 | Safehouse | `safehouse.md` |
+| Safehouse Damage Healing page | `safehouse-damage-healing.md` |
 | Download a character | `download-character.md` |
 | Edit character sheet | `edit-character.md` |
 | Add sheet page (same type as the card) | `add-page-type-1.md` |

@@ -10,6 +10,7 @@ function insertedID(rows: { id?: number | string }[]): number {
 async function removePartial(safehouseID: number) {
     await query(`delete from safehousePage1Functions where pageID in (select id from safehousePages where safehouseID = $1)`, safehouseID)
     await query(`delete from safehousePage1 where pageID in (select id from safehousePages where safehouseID = $1)`, safehouseID)
+    await query(`delete from safehousePage2 where pageID in (select id from safehousePages where safehouseID = $1)`, safehouseID)
     await query(`delete from safehousePages where safehouseID = $1`, safehouseID)
     await query(`delete from safehouses where id = $1`, safehouseID)
 }
@@ -41,6 +42,23 @@ export default async function addSafehouse(request: Request, response: Response)
     const page1 = await query(`insert into safehousePage1 (pageID) values ($1) returning pageID`, pageID)
     const storedPageID = Number(page1[0]?.pageid)
     if (!(storedPageID > 0)) {
+        await removePartial(safehouseID)
+        checkForContentTypeBeforeSending(response, { color: 'red', message: 'Could not add a Safehouse' })
+        return
+    }
+
+    const damagePageID = insertedID(await query(
+        `insert into safehousePages (safehouseID, index, pageTypeID) values ($1, $2, $3) returning id`,
+        [safehouseID, 1, 2]
+    ))
+    if (!(damagePageID > 0)) {
+        await removePartial(safehouseID)
+        checkForContentTypeBeforeSending(response, { color: 'red', message: 'Could not add a Safehouse' })
+        return
+    }
+
+    const page2 = await query(`insert into safehousePage2 (pageID) values ($1) returning pageID`, damagePageID)
+    if (!(Number(page2[0]?.pageid) > 0)) {
         await removePartial(safehouseID)
         checkForContentTypeBeforeSending(response, { color: 'red', message: 'Could not add a Safehouse' })
         return
