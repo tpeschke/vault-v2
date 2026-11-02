@@ -95,6 +95,7 @@ function SafehouseFooter({ count, onAdd }: { count: number, onAdd: () => void })
         <div className="home-footer-shell">
             {!userIsAtLimit && (
                 <button onClick={onAdd} className="secondary" data-tooltip-id="my-tooltip" data-tooltip-content="Add New Safehouse">
+                    <i className="fa-solid fa-house-heart"></i>
                     <i className="fa-solid fa-plus"></i>
                 </button>
             )}

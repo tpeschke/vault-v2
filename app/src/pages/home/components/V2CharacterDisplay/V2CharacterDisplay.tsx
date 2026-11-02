@@ -17,14 +17,22 @@ interface Props {
 
 export default function V2CharacterDisplay({ usersCharacters, deleteCharacter, addCharacter, safehouses, addSafehouse, deleteSafehouse }: Props) {
     return (
-        <div className="card">
-            <div className="home-shell-heading">
-                <i className="fa-solid fa-users"></i>
-                <h1>Your Characters</h1>
+        <>
+            <div className="card">
+                <div className="home-shell-heading">
+                    <i className="fa-solid fa-users"></i>
+                    <h1>Your Characters</h1>
+                </div>
+                <CharacterRowDisplay usersCharacters={usersCharacters} deleteCharacter={deleteCharacter} />
+                <HomeFooter numberOfCharacters={usersCharacters?.length} addCharacter={addCharacter} />
             </div>
-            <CharacterRowDisplay usersCharacters={usersCharacters} deleteCharacter={deleteCharacter} />
-            <HomeFooter numberOfCharacters={usersCharacters?.length} addCharacter={addCharacter} />
-            <Safehouses safehouses={safehouses} onAdd={addSafehouse} onDelete={deleteSafehouse} />
-        </div>
+            <div className="card">
+                <div className="home-shell-heading">
+                    <i className="fa-solid fa-users"></i>
+                    <h1>Your Strongholds</h1>
+                </div>
+                <Safehouses safehouses={safehouses} onAdd={addSafehouse} onDelete={deleteSafehouse} />
+            </div>
+        </>
     )
 }
