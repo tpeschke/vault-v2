@@ -5,6 +5,19 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-175: Give Defenses a fifteenth row
+status: proposed
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Defenses paints 14 data rows. One more row is a data slot, and the in-flow footer moves down by that row.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, the row pitch, or the footer.
+steps:
+1. Set `defenses` to 15. Leave `living` 10, `workspace` 11, and `recreational` 10.
+done when: `npx tsc --noEmit -p backend/common` exits 0. Grep of `safehouse.ts` finds `defenses: 15` and finds no `defenses: 14`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result:
+
 ### T-174: Split the safehouse footer totals
 status: proposed
 source: rewrite-ledger/safehouse.md, revised 2026-11-02
