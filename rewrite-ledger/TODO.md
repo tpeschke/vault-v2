@@ -21,6 +21,66 @@ result:
 
 ## Done
 
+### T-172: Put the safehouse sidebar beside the card
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Edit, Download, and Show Quick Edit Locations sit in a row under the card. The character sheet places that same sidebar in a sticky column, and those rules match only `.version-two-shell`.
+scope: `app/src/pages/v2/components/sidebar/Sidebar.css`, the three `.version-two-shell` rules. Owner: `safehouse.md`. Do not edit `Sidebar.tsx`, `SafehouseView.tsx`, `V2View.tsx`, `downloadSafehouse.ts`, or `downloadCharacter.ts`. Do not add `version-two-shell` to the safehouse DOM. Do not add `align-self`. Do not change the declarations. Do not move `.page-gutter`.
+steps:
+1. Add `.safehouse-shell` as a second selector on `.version-two-shell` (`display: flex`).
+2. Add `.safehouse-shell .sidebar-shell` as a second selector on the sticky column. Leave `top: 15px`, `height: 150px`, `width: 100%`, `margin-left: 15px`, and `flex-direction: column`.
+3. Add `.safehouse-shell .sidebar-shell button` as a second selector on the button rule. Leave `text-align: left`, `margin-bottom: 15px`, and the shadow.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Sidebar.css` finds `.safehouse-shell` on the flex rule, `.safehouse-shell .sidebar-shell` on the sticky rule, and `.safehouse-shell .sidebar-shell button` on the button rule. Grep of `SafehouseView.tsx` and `downloadSafehouse.ts` for `version-two-shell` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result: `.safehouse-shell` is on all three sidebar rules. On `/s/blank` the shell is flex, Download is a sticky column beside the card, and the character blank sidebar is unchanged. App tsc exits 0. Grep of `SafehouseView.tsx` and `downloadSafehouse.ts` for `version-two-shell` is 0.
+
+### T-171: Put safehouse header values on the title line
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Each header value is a block under its title. On the template the value shares the title’s line, and the underline runs from the end of the title to the end of that field.
+scope: `app/src/pages/safehouse/PageTypeSafehouse.css`, `.safehouse-header label`, `.safehouse-header .character-value`, and `.safehouse-header em`. Owner: `safehouse.md`. Do not edit `PageTypeSafehouse.tsx`, `safehouseHook.tsx`, `View.css`, or the footer rules. Do not change the wordmark, the save path, or blank ink.
+steps:
+1. Set `.safehouse-header label` to `display: grid`, `grid-template-columns: max-content minmax(0, 1fr)`, `align-items: end`, and `column-gap: 8px`. Leave `margin-bottom: 6px`.
+2. Leave `.safehouse-header .character-value` at `width: 100%`, `min-height: 17.38px`, `margin: 0`, and `border-bottom: 1px solid black`. It occupies the second cell in both view and edit.
+3. Set `.safehouse-header em` to `grid-column: 1 / -1`. Leave it italic, 12px, and left-aligned. Leave `.safehouse-header-line` as the flex row of Location and C Rank Limit. Leave the wordmark at 240px on the right.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `PageTypeSafehouse.css` finds `grid-template-columns: max-content minmax(0, 1fr)` and `column-gap: 8px` on `.safehouse-header label`, and finds `grid-column: 1 / -1` on `.safehouse-header em`. Grep of `PageTypeSafehouse.tsx` finds `<strong>Safehouse Name</strong>`, `<strong>Location</strong>`, and `<strong>C Rank Limit</strong>` still each inside their own `label`.
+depends on: none
+open questions: none
+deviations from design: Added `align-content: start` on `.safehouse-header label`. Without it the Location label stretched to the C Rank label and `align-items: end` put Location on the hint line.
+result: On `/s/blank` the three titles and their underlines share a bottom edge, the gap is 8px, and `x2 C of location` starts at that edge. The three `strong` labels are still each inside their own `label`. App tsc exits 0.
+
+### T-170: Raise the safehouse footer by one Defenses row
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Defenses paints 15 data rows, so the footer sits one 17.38px row too low. Wealth and Wear are oldClaude. The band has no top edge.
+scope: `SAFEHOUSE_SECTION_CAPS` in `backend/common/interfaces/safehouse/safehouse.ts`. `app/src/pages/safehouse/PageTypeSafehouse.css`, the Wealth and Wear labels and `.safehouse-footer`. Owner: `safehouse.md`. Do not edit `Functions.tsx`, `safehouseHook.tsx`, `editSafehouseField.ts`, or `safehouse.sql`. Do not trim stored rows. Do not add a server cap. Do not change the other three caps, the row pitch, or the column tracks.
+steps:
+1. Set `defenses` to 14. Leave `living` 10, `workspace` 11, and `recreational` 10.
+2. Set `font-family: 'HamletOrNot'` on `.safehouse-footer-wealth` and `.safehouse-footer-wear-label`. Leave the sizes at 21px and 23px. Leave letter-spacing. Leave the other footer labels oldClaude.
+3. Add `border-top: 1px solid #323232` on `.safehouse-footer`. Leave the two row tracks at 19px. Leave the `#bdbdbd` column rules.
+done when: `npx tsc --noEmit -p backend/common` exits 0. `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `safehouse.ts` finds `defenses: 14` and finds no `defenses: 15`. Grep of `PageTypeSafehouse.css` finds `HamletOrNot` on the Wealth rule and the Wear label rule, and finds `border-top: 1px solid #323232` on `.safehouse-footer`. Grep of `editSafehouseField.ts` for `SAFEHOUSE_SECTION_CAPS` is 0.
+depends on: T-168
+open questions: none
+deviations from design: none
+result: Defenses paints 14 rows. Living Space 10, Workspace 11, and Recreational Space 10 are unchanged. Wealth is HamletOrNot at 21px and Wear is HamletOrNot at 23px. Space Limit stays oldClaude. The footer top border computes to `1px solid rgb(50, 50, 50)` and the row tracks stay `19px 19px`. `tsc -p backend/common` and app tsc exit 0.
+
+### T-169: Bind function-insert section twice
+status: done
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: `safehouseFunctionInsert` uses `$2` as the `section` value and as `section = $2`. Postgres deduces `text` and `varchar` for that one parameter and returns `42P08`. `query()` swallows it, so the handler answers `Invalid field`.
+scope: `backend/server/safehouse/edit/editSafehouseField.ts`, the `safehouseFunctionInsert` statement only. Owner: `safehouse.md`. Do not edit `editSafehouse.ts`, the cell updates, the client, `database.ts`, or `safehouse.sql`. Do not add a cast.
+steps:
+1. Keep the insert columns and the `coalesce(max(index), -1) + 1` subquery. Compare `section` to `$8` only. Leave `$1` shared.
+2. Pass `row.section` as both `$2` and `$8`. Leave the other six values in their current order.
+3. Leave the `Invalid field` refusal when the returned id is not greater than 0.
+done when: Grep of `editSafehouseField.ts` finds `section = $8` and finds no `section = $2`. Grep of that insert’s parameter array finds `row.section` twice. Grep of `::varchar` and `::text` under `backend/server/safehouse/` is 0. `npx tsc --noEmit -p backend/server` exits 0, or the only errors are the pre-existing missing `server-config`.
+depends on: T-165
+open questions: none
+deviations from design: none
+result: The insert compares `section` to `$8` and passes `row.section` as `$2` and `$8`. No cast was added. `tsc -p backend/server` exits 0.
+
 ### T-168: Match the safehouse footer to the template
 status: done
 source: rewrite-ledger/safehouse.md, revised 2026-11-02

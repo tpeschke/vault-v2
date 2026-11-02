@@ -8,7 +8,7 @@ export const SAFEHOUSE_SECTION_CAPS: Record<SafehouseSection, number> = {
     living: 10,
     workspace: 11,
     recreational: 10,
-    defenses: 15
+    defenses: 14
 }
 
 export const SAFEHOUSE_SHEET_MAX = 15

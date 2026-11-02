@@ -133,9 +133,9 @@ export async function editSafehouseField(request: FieldRequest, response: Respon
             `insert into safehousePage1Functions (pageID, section, name, rank, r, space, notes, index)
             values (
                 $1, $2, $3, $4, $5, $6, $7,
-                (select coalesce(max(index), -1) + 1 from safehousePage1Functions where pageID = $1 and section = $2)
+                (select coalesce(max(index), -1) + 1 from safehousePage1Functions where pageID = $1 and section = $8)
             ) returning id`,
-            [pageID, row.section, row.name, sqlNumber(row.rank), row.r, sqlNumber(row.space), row.notes]
+            [pageID, row.section, row.name, sqlNumber(row.rank), row.r, sqlNumber(row.space), row.notes, row.section]
         )
         const id = Number(inserted[0]?.id)
         if (!(id > 0)) {
