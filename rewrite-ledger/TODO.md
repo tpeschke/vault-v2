@@ -5,6 +5,21 @@ status: active   date: 2026-09-30
 Order writes `proposed`. Execute approval is the designer naming TODOs, not the session’s overall goal (canonical: `AGENTS.md`). Keep finished entries in Done and prune old ones so the active list stays short.
 
 ## Active
+### T-172: Put the safehouse sidebar beside the card
+status: proposed
+source: rewrite-ledger/safehouse.md, revised 2026-11-02
+why: Edit, Download, and Show Quick Edit Locations sit in a row under the card. The character sheet places that same sidebar in a sticky column, and those rules match only `.version-two-shell`.
+scope: `app/src/pages/v2/components/sidebar/Sidebar.css`, the three `.version-two-shell` rules. Owner: `safehouse.md`. Do not edit `Sidebar.tsx`, `SafehouseView.tsx`, `V2View.tsx`, `downloadSafehouse.ts`, or `downloadCharacter.ts`. Do not add `version-two-shell` to the safehouse DOM. Do not add `align-self`. Do not change the declarations. Do not move `.page-gutter`.
+steps:
+1. Add `.safehouse-shell` as a second selector on `.version-two-shell` (`display: flex`).
+2. Add `.safehouse-shell .sidebar-shell` as a second selector on the sticky column. Leave `top: 15px`, `height: 150px`, `width: 100%`, `margin-left: 15px`, and `flex-direction: column`.
+3. Add `.safehouse-shell .sidebar-shell button` as a second selector on the button rule. Leave `text-align: left`, `margin-bottom: 15px`, and the shadow.
+done when: `./node_modules/.bin/tsc --noEmit -p app` exits 0, or the only error is the pre-existing missing `frontend-config`. Grep of `Sidebar.css` finds `.safehouse-shell` on the flex rule, `.safehouse-shell .sidebar-shell` on the sticky rule, and `.safehouse-shell .sidebar-shell button` on the button rule. Grep of `SafehouseView.tsx` and `downloadSafehouse.ts` for `version-two-shell` is 0.
+depends on: none
+open questions: none
+deviations from design: none
+result:
+
 ### T-171: Put safehouse header values on the title line
 status: proposed
 source: rewrite-ledger/safehouse.md, revised 2026-11-02
